@@ -1,0 +1,11 @@
+{
+  "require": true,
+  "package": "me.lambdaurora.spruceui.accessor",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "DrawableHelperAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

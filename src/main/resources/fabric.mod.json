@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "spruceui",
+  "name": "SpruceUI",
+  "version": "${version}",
+  "description": "Just a GUI library.",
+  "authors": [
+    "LambdAurora"
+  ],
+  "contact": {
+    "homepage": "https://github.com/LambdAurora/SpruceUI",
+    "sources": "https://github.com/LambdAurora/SpruceUI.git",
+    "issues": "https://github.com/LambdAurora/SpruceUI/issues"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+  },
+  "mixins": [
+    "spruceui.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "minecraft": "1.15.x"
+  },
+  "suggests": {
+  },
+  "custom": {
+    "modmenu:api": true,
+    "modmenu:clientsideOnly": true
+  }
+}
