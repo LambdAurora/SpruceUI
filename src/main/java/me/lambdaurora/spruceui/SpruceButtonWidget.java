@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 LambdAurora <aurora42lambda@gmail.com>
+ * Copyright © 2020 LambdAurora <aurora42lambda@gmail.com>
  *
  * This file is part of SpruceUI.
  *
@@ -20,6 +20,10 @@ import java.util.Optional;
 
 /**
  * Represents a button widget.
+ *
+ * @author LambdAurora
+ * @version 1.0.0
+ * @since 1.0.0
  */
 public class SpruceButtonWidget extends ButtonWidget implements Tooltipable
 {

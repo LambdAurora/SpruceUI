@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 LambdAurora <aurora42lambda@gmail.com>
+ * Copyright © 2020 LambdAurora <aurora42lambda@gmail.com>
  *
  * This file is part of SpruceUI.
  *
@@ -24,6 +24,10 @@ import java.util.function.BiFunction;
  * Represents a cycling option.
  * <p>
  * Works the same as the vanilla one but can provide a tooltip.
+ *
+ * @author LambdAurora
+ * @version 1.0.0
+ * @since 1.0.0
  */
 public class SpruceCyclingOption extends Option
 {

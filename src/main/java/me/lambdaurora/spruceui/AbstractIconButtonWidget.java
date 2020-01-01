@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 LambdAurora <aurora42lambda@gmail.com>
+ * Copyright © 2020 LambdAurora <aurora42lambda@gmail.com>
  *
  * This file is part of SpruceUI.
  *
@@ -18,6 +18,10 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a button with an icon.
+ *
+ * @author LambdAurora
+ * @version 1.0.0
+ * @since 1.0.0
  */
 public abstract class AbstractIconButtonWidget extends ButtonWidget
 {

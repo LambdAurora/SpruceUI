@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 LambdAurora <aurora42lambda@gmail.com>
+ * Copyright © 2020 LambdAurora <aurora42lambda@gmail.com>
  *
  * This file is part of SpruceUI.
  *
@@ -19,6 +19,10 @@ import java.util.function.BiConsumer;
 
 /**
  * Represents a textured button widget.
+ *
+ * @author LambdAurora
+ * @version 1.0.0
+ * @since 1.0.0
  */
 public class SpruceTexturedButtonWidget extends TexturedButtonWidget
 {
