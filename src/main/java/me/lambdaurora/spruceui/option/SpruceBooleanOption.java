@@ -13,6 +13,7 @@ import me.lambdaurora.spruceui.SpruceButtonWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.util.TextFormat;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,20 +27,27 @@ import java.util.function.Predicate;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.0.3
+ * @version 1.1.0
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption
 {
     private final Predicate<GameOptions>           getter;
     private final BiConsumer<GameOptions, Boolean> setter;
+    private final boolean                          colored;
     private final Text                             tooltip;
 
     public SpruceBooleanOption(@NotNull String key, @NotNull Predicate<GameOptions> getter, @NotNull BiConsumer<GameOptions, Boolean> setter, @Nullable Text tooltip)
     {
+        this(key, getter, setter, tooltip, false);
+    }
+
+    public SpruceBooleanOption(@NotNull String key, @NotNull Predicate<GameOptions> getter, @NotNull BiConsumer<GameOptions, Boolean> setter, @Nullable Text tooltip, boolean colored)
+    {
         super(key);
         this.getter = getter;
         this.setter = setter;
+        this.colored = colored;
         this.tooltip = tooltip;
     }
 
@@ -64,6 +72,16 @@ public class SpruceBooleanOption extends SpruceOption
         return this.getter.test(options);
     }
 
+    /**
+     * Returns whether the option value is colored or not.
+     *
+     * @return True if the option value is colored, else false.
+     */
+    public boolean is_colored()
+    {
+        return this.colored;
+    }
+
     @Override
     public @NotNull AbstractButtonWidget createButton(@NotNull GameOptions options, int x, int y, int width)
     {
@@ -77,6 +95,7 @@ public class SpruceBooleanOption extends SpruceOption
 
     public @NotNull String get_display_string(@NotNull GameOptions options)
     {
-        return this.getDisplayPrefix() + I18n.translate(this.get(options) ? "options.on" : "options.off");
+        boolean value = this.get(options);
+        return this.getDisplayPrefix() + (this.colored ? (value ? TextFormat.GREEN : TextFormat.RED) : "") + I18n.translate(value ? "options.on" : "options.off");
     }
 }
