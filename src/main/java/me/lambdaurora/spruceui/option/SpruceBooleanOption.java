@@ -12,7 +12,6 @@ package me.lambdaurora.spruceui.option;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.options.Option;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
@@ -27,10 +26,10 @@ import java.util.function.Predicate;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.0.3
  * @since 1.0.0
  */
-public class SpruceBooleanOption extends Option
+public class SpruceBooleanOption extends SpruceOption
 {
     private final Predicate<GameOptions>           getter;
     private final BiConsumer<GameOptions, Boolean> setter;

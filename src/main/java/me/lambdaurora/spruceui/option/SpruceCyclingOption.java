@@ -12,7 +12,6 @@ package me.lambdaurora.spruceui.option;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.options.Option;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,10 +25,10 @@ import java.util.function.BiFunction;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.0.3
  * @since 1.0.0
  */
-public class SpruceCyclingOption extends Option
+public class SpruceCyclingOption extends SpruceOption
 {
     private final BiConsumer<GameOptions, Integer>                     setter;
     private final BiFunction<GameOptions, SpruceCyclingOption, String> message_provider;

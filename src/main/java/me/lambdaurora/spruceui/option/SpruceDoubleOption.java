@@ -12,7 +12,6 @@ package me.lambdaurora.spruceui.option;
 import me.lambdaurora.spruceui.SpruceOptionSliderWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.options.Option;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
@@ -28,10 +27,10 @@ import java.util.function.Function;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.0.3
  * @since 1.0.0
  */
-public class SpruceDoubleOption extends Option
+public class SpruceDoubleOption extends SpruceOption
 {
     protected final float                                               step;
     protected final double                                              min;

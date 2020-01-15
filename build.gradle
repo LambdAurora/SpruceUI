@@ -21,7 +21,6 @@ repositories {
 }
 
 dependencies {
-	//to change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}"
 	modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
@@ -32,9 +31,6 @@ dependencies {
 	implementation "org.aperlambda:lambdajcommon:1.7.2"
 	include "org.jetbrains:annotations:17.0.0"
 	include "org.aperlambda:lambdajcommon:1.7.2"
-
-	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-	// You may need to force-disable transitiveness on them.
 }
 
 processResources {
@@ -50,16 +46,10 @@ processResources {
 	}
 }
 
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile) {
 	options.encoding = "UTF-8"
 }
 
-// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-// if it is present.
-// If you remove this task, sources will not be generated.
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = "sources"
 	from sourceSets.main.allSource
@@ -83,7 +73,6 @@ publishing {
 		}
 	}
 
-	// select the repositories you want to publish to
 	repositories {
 		mavenLocal()
 	}

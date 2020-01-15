@@ -13,6 +13,7 @@
     "issues": "https://github.com/LambdAurora/SpruceUI/issues"
   },
   "license": "MIT",
+  "icon": "assets/spruceui/icon.png",
   "environment": "client",
   "entrypoints": {
   },

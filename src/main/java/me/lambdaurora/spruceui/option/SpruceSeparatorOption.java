@@ -10,10 +10,8 @@
 package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.SpruceSeparatorWidget;
-import me.lambdaurora.spruceui.accessor.OptionAccessor;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.options.Option;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.NotNull;
@@ -23,10 +21,10 @@ import org.jetbrains.annotations.Nullable;
  * Represents a separator option.
  *
  * @author LambdAurora
- * @version 1.0.2
+ * @version 1.0.3
  * @since 1.0.1
  */
-public class SpruceSeparatorOption extends Option
+public class SpruceSeparatorOption extends SpruceOption
 {
     private final boolean show_title;
     private final Text    tooltip;
@@ -41,7 +39,7 @@ public class SpruceSeparatorOption extends Option
     @Override
     public AbstractButtonWidget createButton(GameOptions options, int x, int y, int width)
     {
-        SpruceSeparatorWidget separator = new SpruceSeparatorWidget(this.show_title ? new TranslatableText(((OptionAccessor) this).spruceui_get_key()) : null, x, y, width);
+        SpruceSeparatorWidget separator = new SpruceSeparatorWidget(this.show_title ? new TranslatableText(this.key) : null, x, y, width);
         separator.set_tooltip(this.tooltip);
         return new SpruceSeparatorWidget.ButtonWrapper(separator, 20);
     }

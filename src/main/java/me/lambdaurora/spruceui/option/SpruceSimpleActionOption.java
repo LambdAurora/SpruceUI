@@ -10,11 +10,8 @@
 package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.SpruceButtonWidget;
-import me.lambdaurora.spruceui.accessor.OptionAccessor;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.options.Option;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.TranslatableText;
 import org.aperlambda.lambdacommon.utils.Nameable;
 import org.jetbrains.annotations.NotNull;
@@ -26,10 +23,10 @@ import java.util.function.Consumer;
  * Represents an option with a simple action.
  *
  * @author LambdAurora
- * @version 1.0.2
+ * @version 1.0.3
  * @since 1.0.1
  */
-public class SpruceSimpleActionOption extends Option implements Nameable
+public class SpruceSimpleActionOption extends SpruceOption implements Nameable
 {
     private final Consumer<AbstractButtonWidget> action;
     private final TranslatableText               tooltip;
@@ -52,11 +49,5 @@ public class SpruceSimpleActionOption extends Option implements Nameable
         SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.get_name(), action::accept);
         button.set_tooltip(this.tooltip);
         return button;
-    }
-
-    @Override
-    public @NotNull String get_name()
-    {
-        return I18n.translate(((OptionAccessor) this).spruceui_get_key());
     }
 }
