@@ -28,7 +28,7 @@ import java.util.Optional;
  * Represents an object which can show a tooltip.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.0.2
  * @since 1.0.0
  */
 public interface Tooltipable
@@ -91,15 +91,15 @@ public interface Tooltipable
 
             helper.setBlitOffset(300);
             client.getItemRenderer().zOffset = 300.0F;
-            helper_accessor.fill_gradient(k - 3, l - 4, k + i + 3, l - 3, -267386864, -267386864);
-            helper_accessor.fill_gradient(k - 3, l + n + 3, k + i + 3, l + n + 4, -267386864, -267386864);
-            helper_accessor.fill_gradient(k - 3, l - 3, k + i + 3, l + n + 3, -267386864, -267386864);
-            helper_accessor.fill_gradient(k - 4, l - 3, k - 3, l + n + 3, -267386864, -267386864);
-            helper_accessor.fill_gradient(k + i + 3, l - 3, k + i + 4, l + n + 3, -267386864, -267386864);
-            helper_accessor.fill_gradient(k - 3, l - 3 + 1, k - 3 + 1, l + n + 3 - 1, 1347420415, 1344798847);
-            helper_accessor.fill_gradient(k + i + 2, l - 3 + 1, k + i + 3, l + n + 3 - 1, 1347420415, 1344798847);
-            helper_accessor.fill_gradient(k - 3, l - 3, k + i + 3, l - 3 + 1, 1347420415, 1347420415);
-            helper_accessor.fill_gradient(k - 3, l + n + 2, k + i + 3, l + n + 3, 1344798847, 1344798847);
+            helper_accessor.spruceui_fill_gradient(k - 3, l - 4, k + i + 3, l - 3, -267386864, -267386864);
+            helper_accessor.spruceui_fill_gradient(k - 3, l + n + 3, k + i + 3, l + n + 4, -267386864, -267386864);
+            helper_accessor.spruceui_fill_gradient(k - 3, l - 3, k + i + 3, l + n + 3, -267386864, -267386864);
+            helper_accessor.spruceui_fill_gradient(k - 4, l - 3, k - 3, l + n + 3, -267386864, -267386864);
+            helper_accessor.spruceui_fill_gradient(k + i + 3, l - 3, k + i + 4, l + n + 3, -267386864, -267386864);
+            helper_accessor.spruceui_fill_gradient(k - 3, l - 3 + 1, k - 3 + 1, l + n + 3 - 1, 1347420415, 1344798847);
+            helper_accessor.spruceui_fill_gradient(k + i + 2, l - 3 + 1, k + i + 3, l + n + 3 - 1, 1347420415, 1344798847);
+            helper_accessor.spruceui_fill_gradient(k - 3, l - 3, k + i + 3, l - 3 + 1, 1347420415, 1347420415);
+            helper_accessor.spruceui_fill_gradient(k - 3, l + n + 2, k + i + 3, l + n + 3, 1344798847, 1344798847);
             MatrixStack matrix_stack = new MatrixStack();
             VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
             matrix_stack.translate(0.0D, 0.0D, client.getItemRenderer().zOffset);

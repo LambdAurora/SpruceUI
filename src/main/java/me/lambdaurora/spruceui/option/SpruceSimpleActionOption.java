@@ -26,7 +26,7 @@ import java.util.function.Consumer;
  * Represents an option with a simple action.
  *
  * @author LambdAurora
- * @version 1.0.1
+ * @version 1.0.2
  * @since 1.0.1
  */
 public class SpruceSimpleActionOption extends Option implements Nameable
@@ -57,6 +57,6 @@ public class SpruceSimpleActionOption extends Option implements Nameable
     @Override
     public @NotNull String get_name()
     {
-        return I18n.translate(((OptionAccessor) this).get_key());
+        return I18n.translate(((OptionAccessor) this).spruceui_get_key());
     }
 }

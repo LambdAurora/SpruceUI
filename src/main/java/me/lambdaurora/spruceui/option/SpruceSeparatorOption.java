@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a separator option.
  *
  * @author LambdAurora
- * @version 1.0.1
+ * @version 1.0.2
  * @since 1.0.1
  */
 public class SpruceSeparatorOption extends Option
@@ -41,7 +41,7 @@ public class SpruceSeparatorOption extends Option
     @Override
     public AbstractButtonWidget createButton(GameOptions options, int x, int y, int width)
     {
-        SpruceSeparatorWidget separator = new SpruceSeparatorWidget(this.show_title ? new TranslatableText(((OptionAccessor) this).get_key()) : null, x, y, width);
+        SpruceSeparatorWidget separator = new SpruceSeparatorWidget(this.show_title ? new TranslatableText(((OptionAccessor) this).spruceui_get_key()) : null, x, y, width);
         separator.set_tooltip(this.tooltip);
         return new SpruceSeparatorWidget.ButtonWrapper(separator, 20);
     }
