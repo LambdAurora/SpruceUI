@@ -74,48 +74,48 @@ public interface Tooltipable
                 }
             }
 
-            int k = x + 12;
-            int l = y - 12;
+            int text_x = x + 12;
+            int text_y = y - 12;
             int n = 8;
             if (text.size() > 1) {
                 n += 2 + (text.size() - 1) * 10;
             }
 
-            if (k + i > client.getWindow().getScaledWidth()) {
-                k -= 28 + i;
+            if (text_x + i > client.getWindow().getScaledWidth()) {
+                text_x -= 28 + i;
             }
 
-            if (l + n + 6 > client.getWindow().getScaledHeight()) {
-                l = client.getWindow().getScaledHeight() - n - 6;
+            if (text_y + n + 6 > client.getWindow().getScaledHeight()) {
+                text_y = client.getWindow().getScaledHeight() - n - 6;
             }
 
             helper.setBlitOffset(300);
             client.getItemRenderer().zOffset = 300.0F;
-            helper_accessor.spruceui_fill_gradient(k - 3, l - 4, k + i + 3, l - 3, -267386864, -267386864);
-            helper_accessor.spruceui_fill_gradient(k - 3, l + n + 3, k + i + 3, l + n + 4, -267386864, -267386864);
-            helper_accessor.spruceui_fill_gradient(k - 3, l - 3, k + i + 3, l + n + 3, -267386864, -267386864);
-            helper_accessor.spruceui_fill_gradient(k - 4, l - 3, k - 3, l + n + 3, -267386864, -267386864);
-            helper_accessor.spruceui_fill_gradient(k + i + 3, l - 3, k + i + 4, l + n + 3, -267386864, -267386864);
-            helper_accessor.spruceui_fill_gradient(k - 3, l - 3 + 1, k - 3 + 1, l + n + 3 - 1, 1347420415, 1344798847);
-            helper_accessor.spruceui_fill_gradient(k + i + 2, l - 3 + 1, k + i + 3, l + n + 3 - 1, 1347420415, 1344798847);
-            helper_accessor.spruceui_fill_gradient(k - 3, l - 3, k + i + 3, l - 3 + 1, 1347420415, 1347420415);
-            helper_accessor.spruceui_fill_gradient(k - 3, l + n + 2, k + i + 3, l + n + 3, 1344798847, 1344798847);
+            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y - 4, text_x + i + 3, text_y - 3, -267386864, -267386864);
+            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y + n + 3, text_x + i + 3, text_y + n + 4, -267386864, -267386864);
+            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y - 3, text_x + i + 3, text_y + n + 3, -267386864, -267386864);
+            helper_accessor.spruceui_fill_gradient(text_x - 4, text_y - 3, text_x - 3, text_y + n + 3, -267386864, -267386864);
+            helper_accessor.spruceui_fill_gradient(text_x + i + 3, text_y - 3, text_x + i + 4, text_y + n + 3, -267386864, -267386864);
+            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y - 3 + 1, text_x - 3 + 1, text_y + n + 3 - 1, 1347420415, 1344798847);
+            helper_accessor.spruceui_fill_gradient(text_x + i + 2, text_y - 3 + 1, text_x + i + 3, text_y + n + 3 - 1, 1347420415, 1344798847);
+            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y - 3, text_x + i + 3, text_y - 3 + 1, 1347420415, 1347420415);
+            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y + n + 2, text_x + i + 3, text_y + n + 3, 1344798847, 1344798847);
             MatrixStack matrix_stack = new MatrixStack();
             VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
             matrix_stack.translate(0.0D, 0.0D, client.getItemRenderer().zOffset);
             Matrix4f matrix4f = matrix_stack.peek().getModel();
 
-            for (int r = 0; r < text.size(); ++r) {
-                String string2 = text.get(r);
-                if (string2 != null) {
-                    client.textRenderer.draw(string2, (float) k, (float) l, -1, true, matrix4f, immediate, false, 0, 15728880);
+            for (int line_index = 0; line_index < text.size(); ++line_index) {
+                String line = text.get(line_index);
+                if (line != null) {
+                    client.textRenderer.draw(line, (float) text_x, (float) text_y, -1, true, matrix4f, immediate, false, 0, 15728880);
                 }
 
-                if (r == 0) {
-                    l += 2;
+                if (line_index == 0) {
+                    text_y += 2;
                 }
 
-                l += 10;
+                text_y += 10;
             }
 
             immediate.draw();

@@ -1,5 +1,6 @@
 plugins {
 	id 'fabric-loom' version '0.2.6-SNAPSHOT'
+	id 'java-library'
 	id 'maven-publish'
 }
 
@@ -29,10 +30,16 @@ dependencies {
 
 	modCompile "io.github.prospector:modmenu:1.8.0+build.16"
 
-	implementation "org.jetbrains:annotations:17.0.0"
-	implementation "org.aperlambda:lambdajcommon:1.7.4"
+	api "org.jetbrains:annotations:17.0.0"
+	api("org.aperlambda:lambdajcommon:1.7.4") {
+		exclude group: 'com.google.code.gson'
+		exclude group: 'com.google.guava'
+	}
 	include "org.jetbrains:annotations:17.0.0"
-	include "org.aperlambda:lambdajcommon:1.7.4"
+	include("org.aperlambda:lambdajcommon:1.7.4")  {
+		exclude group: 'com.google.code.gson'
+		exclude group: 'com.google.guava'
+	}
 }
 
 processResources {
