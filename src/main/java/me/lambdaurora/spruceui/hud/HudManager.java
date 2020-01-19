@@ -10,7 +10,7 @@
 package me.lambdaurora.spruceui.hud;
 
 import me.lambdaurora.spruceui.event.ResolutionChangedCallback;
-import me.lambdaurora.spruceui.event.ScreenOpenCallback;
+import me.lambdaurora.spruceui.event.OpenScreenCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 import net.minecraft.client.MinecraftClient;
@@ -44,7 +44,7 @@ public class HudManager
                     hud.tick();
             });
         });
-        ScreenOpenCallback.EVENT.register((client, screen) -> init_all(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
+        OpenScreenCallback.EVENT.register((client, screen) -> init_all(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
         ResolutionChangedCallback.EVENT.register(client -> init_all(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
     }
 

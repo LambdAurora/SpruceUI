@@ -20,14 +20,14 @@ import org.jetbrains.annotations.Nullable;
  * Represents an event callback which is fired when an {@link Screen} is opened.
  *
  * @author LambdAurora
- * @version 1.2.0
+ * @version 1.2.1
  * @since 1.2.0
  */
 @FunctionalInterface
-public interface ScreenOpenCallback
+public interface OpenScreenCallback
 {
-    Event<ScreenOpenCallback> EVENT = EventFactory.createArrayBacked(ScreenOpenCallback.class, listeners -> (client, screen) -> {
-        for (ScreenOpenCallback event : listeners) {
+    Event<OpenScreenCallback> EVENT = EventFactory.createArrayBacked(OpenScreenCallback.class, listeners -> (client, screen) -> {
+        for (OpenScreenCallback event : listeners) {
             event.apply(client, screen);
         }
     });
