@@ -11,6 +11,7 @@ package me.lambdaurora.spruceui.accessor;
 
 import net.minecraft.client.gui.DrawableHelper;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 /**
@@ -23,6 +24,12 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(DrawableHelper.class)
 public interface DrawableHelperAccessor
 {
+    @Accessor("blitOffset")
+    int spruceui_get_blit_offset();
+
+    @Accessor("blitOffset")
+    void spruceui_set_blit_offset(int blit_offset);
+
     @Invoker("fillGradient")
     void spruceui_fill_gradient(int top, int left, int right, int bottom, int color1, int color2);
 }

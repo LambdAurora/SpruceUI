@@ -13,8 +13,8 @@ import me.lambdaurora.spruceui.SpruceButtonWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.util.TextFormat;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -96,6 +96,6 @@ public class SpruceBooleanOption extends SpruceOption
     public @NotNull String get_display_string(@NotNull GameOptions options)
     {
         boolean value = this.get(options);
-        return this.getDisplayPrefix() + (this.colored ? (value ? TextFormat.GREEN : TextFormat.RED) : "") + I18n.translate(value ? "options.on" : "options.off");
+        return this.getDisplayPrefix() + (this.colored ? (value ? Formatting.GREEN : Formatting.RED) : "") + I18n.translate(value ? "options.on" : "options.off");
     }
 }

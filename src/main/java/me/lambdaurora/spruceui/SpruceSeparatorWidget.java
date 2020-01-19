@@ -17,7 +17,7 @@ import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.NarratorManager;
 import net.minecraft.text.Text;
-import net.minecraft.util.Util;
+import net.minecraft.util.SystemUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -175,7 +175,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
 
     protected void narrate()
     {
-        if (this.is_hovered() && Util.getMeasuringTimeMs() > this.next_narration) {
+        if (this.is_hovered() && SystemUtil.getMeasuringTimeMs() > this.next_narration) {
             String string = this.get_narration_message();
             if (!string.isEmpty()) {
                 NarratorManager.INSTANCE.narrate(string);
@@ -194,7 +194,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
 
     public void queue_narration(int ticks)
     {
-        this.next_narration = Util.getMeasuringTimeMs() + (long) ticks;
+        this.next_narration = SystemUtil.getMeasuringTimeMs() + (long) ticks;
     }
 
     @Override

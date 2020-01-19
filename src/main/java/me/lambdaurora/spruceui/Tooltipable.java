@@ -9,14 +9,10 @@
 
 package me.lambdaurora.spruceui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.platform.GlStateManager;
 import me.lambdaurora.spruceui.accessor.DrawableHelperAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.math.Matrix4f;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,8 +59,8 @@ public interface Tooltipable
         if (!text.isEmpty()) {
             DrawableHelperAccessor helper_accessor = (DrawableHelperAccessor) helper;
 
-            RenderSystem.disableRescaleNormal();
-            RenderSystem.disableDepthTest();
+            GlStateManager.disableRescaleNormal();
+            GlStateManager.disableDepthTest();
             int i = 0;
 
             for (String string : text) {
@@ -81,15 +77,15 @@ public interface Tooltipable
                 n += 2 + (text.size() - 1) * 10;
             }
 
-            if (text_x + i > client.getWindow().getScaledWidth()) {
+            if (text_x + i > client.window.getScaledWidth()) {
                 text_x -= 28 + i;
             }
 
-            if (text_y + n + 6 > client.getWindow().getScaledHeight()) {
-                text_y = client.getWindow().getScaledHeight() - n - 6;
+            if (text_y + n + 6 > client.window.getScaledHeight()) {
+                text_y = client.window.getScaledHeight() - n - 6;
             }
 
-            helper.setBlitOffset(300);
+            helper_accessor.spruceui_set_blit_offset(300);
             client.getItemRenderer().zOffset = 300.0F;
             helper_accessor.spruceui_fill_gradient(text_x - 3, text_y - 4, text_x + i + 3, text_y - 3, -267386864, -267386864);
             helper_accessor.spruceui_fill_gradient(text_x - 3, text_y + n + 3, text_x + i + 3, text_y + n + 4, -267386864, -267386864);
@@ -100,15 +96,11 @@ public interface Tooltipable
             helper_accessor.spruceui_fill_gradient(text_x + i + 2, text_y - 3 + 1, text_x + i + 3, text_y + n + 3 - 1, 1347420415, 1344798847);
             helper_accessor.spruceui_fill_gradient(text_x - 3, text_y - 3, text_x + i + 3, text_y - 3 + 1, 1347420415, 1347420415);
             helper_accessor.spruceui_fill_gradient(text_x - 3, text_y + n + 2, text_x + i + 3, text_y + n + 3, 1344798847, 1344798847);
-            MatrixStack matrix_stack = new MatrixStack();
-            VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
-            matrix_stack.translate(0.0D, 0.0D, client.getItemRenderer().zOffset);
-            Matrix4f matrix4f = matrix_stack.peek().getModel();
 
             for (int line_index = 0; line_index < text.size(); ++line_index) {
                 String line = text.get(line_index);
                 if (line != null) {
-                    client.textRenderer.draw(line, (float) text_x, (float) text_y, -1, true, matrix4f, immediate, false, 0, 15728880);
+                    client.textRenderer.drawWithShadow(line, (float) text_x, (float) text_y, -1);
                 }
 
                 if (line_index == 0) {
@@ -118,11 +110,10 @@ public interface Tooltipable
                 text_y += 10;
             }
 
-            immediate.draw();
-            helper.setBlitOffset(0);
+            helper_accessor.spruceui_set_blit_offset(0);
             client.getItemRenderer().zOffset = 0.0F;
-            RenderSystem.enableDepthTest();
-            RenderSystem.enableRescaleNormal();
+            GlStateManager.enableDepthTest();
+            GlStateManager.enableRescaleNormal();
         }
     }
 }

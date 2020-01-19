@@ -3,6 +3,7 @@
   "package": "me.lambdaurora.spruceui.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "InGameHudMixin",
     "MinecraftClientMixin"
   ],
   "injectors": {
