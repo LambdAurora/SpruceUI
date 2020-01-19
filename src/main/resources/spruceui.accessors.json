@@ -1,9 +1,9 @@
 {
   "require": true,
-  "package": "me.lambdaurora.spruceui.mixin",
+  "package": "me.lambdaurora.spruceui.accessor",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "MinecraftClientMixin"
+    "DrawableHelperAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

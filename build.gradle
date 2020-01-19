@@ -25,10 +25,12 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}"
 	modCompile "net.fabricmc:fabric-loader:${project.loader_version}"
 
+	modApi "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
 	modCompile "io.github.prospector:modmenu:1.8.0+build.16"
 
 	implementation "org.jetbrains:annotations:17.0.0"
-	implementation "org.aperlambda:lambdajcommon:1.7.2"
+	implementation "org.aperlambda:lambdajcommon:1.7.4"
 	include "org.jetbrains:annotations:17.0.0"
 	include "org.aperlambda:lambdajcommon:1.7.2"
 }
