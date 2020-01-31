@@ -23,7 +23,7 @@ import java.util.HashMap;
  * Represents the HUD manager.
  *
  * @author LambdAurora
- * @version 1.3.1
+ * @version 1.3.4
  * @since 1.2.0
  */
 public class HudManager
@@ -33,14 +33,14 @@ public class HudManager
     public void initialize()
     {
         HudRenderCallback.EVENT.register(tickDelta -> HUDS.forEach((id, hud) -> {
-            if (hud.isEnabled())
+            if (hud.isEnabled() && hud.isVisible())
                 hud.render(tickDelta);
         }));
         ClientTickCallback.EVENT.register(client -> {
             if (!canRenderHuds(client))
                 return;
             HUDS.forEach((id, hud) -> {
-                if (hud.isEnabled() && hud.hasTicks())
+                if (hud.isEnabled() && hud.isVisible() && hud.hasTicks())
                     hud.tick();
             });
         });

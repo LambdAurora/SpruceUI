@@ -23,14 +23,15 @@ import java.util.List;
  * Represents a HUD.
  *
  * @author LambdAurora
- * @version 1.3.3
+ * @version 1.3.4
  * @since 1.2.0
  */
 public abstract class Hud extends DrawableHelper implements Identifiable
 {
     protected final Identifier         identifier;
     protected final List<HudComponent> components = new ArrayList<>();
-    protected       boolean            enabled    = true;
+    private         boolean            enabled    = true;
+    protected       boolean            visible    = true;
 
     public Hud(@NotNull Identifier identifier)
     {
@@ -64,6 +65,26 @@ public abstract class Hud extends DrawableHelper implements Identifiable
             MinecraftClient client = MinecraftClient.getInstance();
             this.init(client, client.window.getScaledWidth(), client.window.getScaledHeight());
         }
+    }
+
+    /**
+     * Returns whether the HUD is visible or not.
+     *
+     * @return True if the HUD is visible, else false.
+     */
+    public boolean isVisible()
+    {
+        return this.visible;
+    }
+
+    /**
+     * Sets whether the HUD is visible or not.
+     *
+     * @param visible True if the HUD is visible, else false.
+     */
+    public void setVisible(boolean visible)
+    {
+        this.visible = visible;
     }
 
     public void init(@NotNull MinecraftClient client, int screenWidth, int screenHeight)
