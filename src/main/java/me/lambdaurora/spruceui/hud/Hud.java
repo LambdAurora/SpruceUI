@@ -23,7 +23,7 @@ import java.util.List;
  * Represents a HUD.
  *
  * @author LambdAurora
- * @version 1.3.0
+ * @version 1.3.3
  * @since 1.2.0
  */
 public abstract class Hud extends DrawableHelper implements Identifiable
