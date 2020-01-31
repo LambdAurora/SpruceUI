@@ -23,7 +23,7 @@ import java.util.function.Consumer;
  * Represents a slightly modified slider widget.
  *
  * @author LambdAurora
- * @version 1.3.0
+ * @version 1.3.1
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends SliderWidget implements Tooltipable
@@ -127,9 +127,9 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
     }
 
     @Override
-    public void render(int mouse_x, int mouse_y, float delta)
+    public void render(int mouseX, int mouseY, float delta)
     {
-        super.render(mouse_x, mouse_y, delta);
+        super.render(mouseX, mouseY, delta);
 
         if (this.visible && this.tooltip != null) {
             long currentRender = System.currentTimeMillis();
@@ -147,7 +147,7 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
             if (!tooltipText.isEmpty() && this.tooltipTicks >= 30) {
                 List<String> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltipText, Math.max(this.width * 2 / 3, 200));
                 if (this.isHovered)
-                    new Tooltip(mouse_x, mouse_y, wrappedTooltipText).queue();
+                    new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
                 else if (this.isFocused())
                     new Tooltip(this.x - 12, this.y + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
             }

@@ -23,7 +23,7 @@ import java.util.HashMap;
  * Represents the HUD manager.
  *
  * @author LambdAurora
- * @version 1.3.0
+ * @version 1.3.1
  * @since 1.2.0
  */
 public class HudManager
@@ -32,9 +32,9 @@ public class HudManager
 
     public void initialize()
     {
-        HudRenderCallback.EVENT.register(tick_delta -> HUDS.forEach((id, hud) -> {
+        HudRenderCallback.EVENT.register(tickDelta -> HUDS.forEach((id, hud) -> {
             if (hud.isEnabled())
-                hud.render(tick_delta);
+                hud.render(tickDelta);
         }));
         ClientTickCallback.EVENT.register(client -> {
             if (!canRenderHuds(client))
@@ -48,13 +48,13 @@ public class HudManager
         ResolutionChangedCallback.EVENT.register(client -> initAll(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
     }
 
-    protected static void initAll(@NotNull MinecraftClient client, int screen_width, int screen_height)
+    protected static void initAll(@NotNull MinecraftClient client, int screenWidth, int screenHeight)
     {
         if (!canRenderHuds(client))
             return;
         HUDS.forEach((id, hud) -> {
             if (hud.isEnabled())
-                hud.init(client, screen_width, screen_height);
+                hud.init(client, screenWidth, screenHeight);
         });
     }
 

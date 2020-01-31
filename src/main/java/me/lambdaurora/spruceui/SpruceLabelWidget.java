@@ -26,7 +26,7 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 1.3.0
+ * @version 1.3.1
  * @since 1.0.0
  */
 public class SpruceLabelWidget extends DrawableHelper implements Element, Drawable, Tooltipable
@@ -134,11 +134,11 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     }
 
     @Override
-    public void render(int mouse_x, int mouse_y, float delta)
+    public void render(int mouseX, int mouseY, float delta)
     {
         if (this.visible) {
             int x = this.centered ? this.x - this.client.textRenderer.getStringWidth(this.text) / 2 : this.x;
-            this.hovered = mouse_x >= x && mouse_y >= this.y && mouse_x < x + this.width && mouse_y < this.y + this.height;
+            this.hovered = mouseX >= x && mouseY >= this.y && mouseX < x + this.width && mouseY < this.y + this.height;
             this.drawString(this.client.textRenderer, this.text, x, this.y, 10526880);
 
             if (this.tooltip != null) {
@@ -146,7 +146,7 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
                 if (!tooltipText.isEmpty()) {
                     List<String> wrappedTooltipText = this.client.textRenderer.wrapStringToWidthAsList(tooltipText, Math.max(this.width / 2, 200));
                     if (this.hovered)
-                        new Tooltip(mouse_x, mouse_y, wrappedTooltipText).queue();
+                        new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
                     else if (this.focused)
                         new Tooltip(this.x - 12, this.y, wrappedTooltipText).queue();
                 }
@@ -155,7 +155,7 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     }
 
     @Override
-    public boolean mouseClicked(double mouse_x, double mouse_y, int button)
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
         if (this.visible && button == GLFW.GLFW_MOUSE_BUTTON_1) {
             if (this.hovered) {

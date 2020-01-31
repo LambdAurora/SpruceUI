@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a HUD component.
  *
  * @author LambdAurora
- * @version 1.3.0
+ * @version 1.3.1
  * @since 1.2.0
  */
 public abstract class HudComponent extends DrawableHelper implements Identifiable
@@ -50,7 +50,7 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
      *
      * @param enabled True if the HUD component is enabled, else false.
      */
-    public void set_enabled(boolean enabled)
+    public void setEnabled(boolean enabled)
     {
         this.enabled = enabled;
     }
@@ -58,10 +58,10 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
     /**
      * Renders the HUD component if enabled.
      *
-     * @param tick_delta Progress for linearly interpolating between the previous and current game state.
+     * @param tickDelta Progress for linearly interpolating between the previous and current game state.
      * @see #isEnabled()
      */
-    public abstract void render(float tick_delta);
+    public abstract void render(float tickDelta);
 
     /**
      * Updates the HUD each tick if enabled and has tick updates.

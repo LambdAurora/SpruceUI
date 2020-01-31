@@ -117,10 +117,10 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
     }
 
     @Override
-    public void render(int mouse_x, int mouse_y, float delta)
+    public void render(int mouseX, int mouseY, float delta)
     {
         if (this.visible) {
-            this.hovered = mouse_x >= this.x && mouse_y >= this.y && mouse_x < this.x + this.width && mouse_y < this.y + 9;
+            this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + 9;
 
             if (this.title != null) {
                 if (this.wasHovered != this.isHovered()) {
@@ -162,7 +162,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
                 if (!tooltipText.isEmpty() && this.tooltipTicks >= 30) {
                     List<String> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltipText, Math.max(this.width * 2 / 3, 200));
                     if (this.hovered)
-                        new Tooltip(mouse_x, mouse_y, wrappedTooltipText).queue();
+                        new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
                     else if (this.focused)
                         new Tooltip(this.x - 12, this.y + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
                 }
@@ -212,7 +212,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
      * Represents a button wrapper for the option.
      *
      * @author LambdAurora
-     * @version 1.3.0
+     * @version 1.3.1
      * @since 1.0.1
      */
     public static class ButtonWrapper extends AbstractButtonWidget
@@ -226,10 +226,10 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
         }
 
         @Override
-        public void render(int mouse_x, int mouse_y, float delta)
+        public void render(int mouseX, int mouseY, float delta)
         {
             this.widget.y = this.y + this.height / 2 - 9 / 2;
-            this.widget.render(mouse_x, mouse_y, delta);
+            this.widget.render(mouseX, mouseY, delta);
         }
 
         @Override
