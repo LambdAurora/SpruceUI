@@ -15,23 +15,23 @@ import java.util.function.Consumer;
  * Represents a checkbox widget.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.3.0
  * @since 1.0.0
  */
 public class SpruceCheckboxWidget extends net.minecraft.client.gui.widget.CheckboxWidget
 {
-    private final Consumer<SpruceCheckboxWidget> on_press;
+    private final Consumer<SpruceCheckboxWidget> action;
 
-    public SpruceCheckboxWidget(int x, int y, int width, int height, String message, boolean checked, Consumer<SpruceCheckboxWidget> on_press)
+    public SpruceCheckboxWidget(int x, int y, int width, int height, String message, boolean checked, Consumer<SpruceCheckboxWidget> action)
     {
         super(x, y, width, height, message, checked);
-        this.on_press = on_press;
+        this.action = action;
     }
 
     @Override
     public void onPress()
     {
         super.onPress();
-        this.on_press.accept(this);
+        this.action.accept(this);
     }
 }

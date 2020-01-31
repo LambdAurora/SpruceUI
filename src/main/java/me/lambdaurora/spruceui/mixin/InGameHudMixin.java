@@ -29,8 +29,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class InGameHudMixin
 {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/InGameHud;renderStatusEffectOverlay()V", shift = At.Shift.AFTER))
-    public void render(float tick_delta, CallbackInfo ci)
+    public void render(float tickDelta, CallbackInfo ci)
     {
-        HudRenderCallback.EVENT.invoker().on_hud_render(tick_delta);
+        HudRenderCallback.EVENT.invoker().onHudRender(tickDelta);
     }
 }

@@ -22,7 +22,7 @@ import java.util.Queue;
  * Represents a tooltip.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.3.0
  * @since 1.0.0
  */
 public class Tooltip extends DrawableHelper
@@ -32,14 +32,14 @@ public class Tooltip extends DrawableHelper
     private final        int            y;
     private final        List<String>   tooltip;
 
-    public Tooltip(int x, int y, @NotNull Text tooltip, int parent_width)
+    public Tooltip(int x, int y, @NotNull Text tooltip, int parentWidth)
     {
-        this(x, y, tooltip.asFormattedString(), parent_width);
+        this(x, y, tooltip.asFormattedString(), parentWidth);
     }
 
-    public Tooltip(int x, int y, @NotNull String tooltip, int parent_width)
+    public Tooltip(int x, int y, @NotNull String tooltip, int parentWidth)
     {
-        this(x, y, MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltip, Math.max(parent_width * 2 / 3, 200)));
+        this(x, y, MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltip, Math.max(parentWidth * 2 / 3, 200)));
     }
 
     public Tooltip(int x, int y, @NotNull List<String> tooltip)
@@ -49,7 +49,7 @@ public class Tooltip extends DrawableHelper
         this.tooltip = tooltip;
     }
 
-    public boolean should_render()
+    public boolean shouldRender()
     {
         return !this.tooltip.isEmpty();
     }
@@ -71,7 +71,7 @@ public class Tooltip extends DrawableHelper
         TOOLTIPS.add(this);
     }
 
-    public static void render_all()
+    public static void renderAll()
     {
         synchronized (TOOLTIPS) {
             Tooltip tooltip;

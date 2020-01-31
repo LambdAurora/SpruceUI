@@ -21,23 +21,23 @@ import java.util.function.BiConsumer;
  * Represents a textured button widget.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.3.0
  * @since 1.0.0
  */
 public class SpruceTexturedButtonWidget extends TexturedButtonWidget
 {
     private       boolean                           silent = false;
-    private final BiConsumer<ButtonWidget, Boolean> on_change_state;
+    private final BiConsumer<ButtonWidget, Boolean> onChangeState;
 
-    public SpruceTexturedButtonWidget(int x, int y, int width, int height, int u, int v, int hovered_v_offset, Identifier texture, @NotNull BiConsumer<ButtonWidget, Boolean> on_changed_state)
+    public SpruceTexturedButtonWidget(int x, int y, int width, int height, int u, int v, int hoveredVOffset, Identifier texture, @NotNull BiConsumer<ButtonWidget, Boolean> onChangedState)
     {
-        super(x, y, width, height, u, v, hovered_v_offset, texture, 256, 256, btn -> on_changed_state.accept(btn, true));
-        this.on_change_state = on_changed_state;
+        super(x, y, width, height, u, v, hoveredVOffset, texture, 256, 256, btn -> onChangedState.accept(btn, true));
+        this.onChangeState = onChangedState;
     }
 
-    public SpruceTexturedButtonWidget(int x, int y, int width, int height, int u, int v, int hovered_v_offset, Identifier texture, @NotNull BiConsumer<ButtonWidget, Boolean> on_changed_state, boolean silent)
+    public SpruceTexturedButtonWidget(int x, int y, int width, int height, int u, int v, int hoveredVOffset, Identifier texture, @NotNull BiConsumer<ButtonWidget, Boolean> onChangedState, boolean silent)
     {
-        this(x, y, width, height, u, v, hovered_v_offset, texture, on_changed_state);
+        this(x, y, width, height, u, v, hoveredVOffset, texture, onChangedState);
         this.silent = silent;
     }
 
@@ -46,7 +46,7 @@ public class SpruceTexturedButtonWidget extends TexturedButtonWidget
      *
      * @return True if the button is silent, else false.
      */
-    public boolean is_silent()
+    public boolean isSilent()
     {
         return this.silent;
     }
@@ -56,7 +56,7 @@ public class SpruceTexturedButtonWidget extends TexturedButtonWidget
      *
      * @param silent True if the button is silent, else false.
      */
-    public void set_silent(boolean silent)
+    public void setSilent(boolean silent)
     {
         this.silent = silent;
     }
@@ -65,7 +65,7 @@ public class SpruceTexturedButtonWidget extends TexturedButtonWidget
     public void onRelease(double mouseX, double mouseY)
     {
         super.onRelease(mouseX, mouseY);
-        this.on_change_state.accept(this, false);
+        this.onChangeState.accept(this, false);
     }
 
     @Override
@@ -88,6 +88,6 @@ public class SpruceTexturedButtonWidget extends TexturedButtonWidget
     {
         super.onDrag(mouseX, mouseY, deltaX, deltaY);
         if (this.active && !this.isHovered)
-            this.on_change_state.accept(this, false);
+            this.onChangeState.accept(this, false);
     }
 }

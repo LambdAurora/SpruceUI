@@ -25,20 +25,20 @@ import java.util.function.BiFunction;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.0.3
+ * @version 1.3.0
  * @since 1.0.0
  */
 public class SpruceCyclingOption extends SpruceOption
 {
     private final BiConsumer<GameOptions, Integer>                     setter;
-    private final BiFunction<GameOptions, SpruceCyclingOption, String> message_provider;
+    private final BiFunction<GameOptions, SpruceCyclingOption, String> messageProvider;
     private final Text                                                 tooltip;
 
-    public SpruceCyclingOption(@NotNull String key, @NotNull BiConsumer<GameOptions, Integer> setter, @NotNull BiFunction<GameOptions, SpruceCyclingOption, String> message_provider, @Nullable Text tooltip)
+    public SpruceCyclingOption(@NotNull String key, @NotNull BiConsumer<GameOptions, Integer> setter, @NotNull BiFunction<GameOptions, SpruceCyclingOption, String> messageProvider, @Nullable Text tooltip)
     {
         super(key);
         this.setter = setter;
-        this.message_provider = message_provider;
+        this.messageProvider = messageProvider;
         this.tooltip = tooltip;
     }
 
@@ -51,16 +51,16 @@ public class SpruceCyclingOption extends SpruceOption
     @Override
     public @NotNull AbstractButtonWidget createButton(@NotNull GameOptions options, int x, int y, int width)
     {
-        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.get_message(options), btn -> {
+        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.getMessage(options), btn -> {
             this.cycle(options, 1);
-            btn.setMessage(this.get_message(options));
+            btn.setMessage(this.getMessage(options));
         });
-        button.set_tooltip(this.tooltip);
+        button.setTooltip(this.tooltip);
         return button;
     }
 
-    public @NotNull String get_message(@NotNull GameOptions options)
+    public @NotNull String getMessage(@NotNull GameOptions options)
     {
-        return this.message_provider.apply(options, this);
+        return this.messageProvider.apply(options, this);
     }
 }

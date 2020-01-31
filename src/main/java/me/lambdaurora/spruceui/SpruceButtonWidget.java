@@ -22,59 +22,57 @@ import java.util.Optional;
  * Represents a button widget.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.3.1
  * @since 1.0.0
  */
 public class SpruceButtonWidget extends ButtonWidget implements Tooltipable
 {
     private Text tooltip;
-    private int  tooltip_ticks;
-    private long last_tick;
+    private int  tooltipTicks;
+    private long lastTick;
 
-    public SpruceButtonWidget(int x, int y, int width, int height, String message, PressAction on_press)
+    public SpruceButtonWidget(int x, int y, int width, int height, String message, PressAction action)
     {
-        super(x, y, width, height, message, on_press);
+        super(x, y, width, height, message, action);
     }
 
     @Override
-    public @NotNull Optional<Text> get_tooltip()
+    public @NotNull Optional<Text> getTooltip()
     {
         return Optional.ofNullable(this.tooltip);
     }
 
     @Override
-    public void set_tooltip(@Nullable Text tooltip)
+    public void setTooltip(@Nullable Text tooltip)
     {
         this.tooltip = tooltip;
     }
 
     @Override
-    public void render(int mouse_x, int mouse_y, float delta)
+    public void render(int mouseX, int mouseY, float delta)
     {
-        super.render(mouse_x, mouse_y, delta);
+        super.render(mouseX, mouseY, delta);
 
         if (this.visible && this.tooltip != null) {
-            long current_render = System.currentTimeMillis();
-            if (this.last_tick != 0) {
-                if (current_render - this.last_tick >= 20) {
-                    this.tooltip_ticks++;
-                    this.last_tick = current_render;
+            long currentRender = System.currentTimeMillis();
+            if (this.lastTick != 0) {
+                if (currentRender - this.lastTick >= 20) {
+                    this.tooltipTicks++;
+                    this.lastTick = currentRender;
                 }
-            } else this.last_tick = current_render;
+            } else this.lastTick = currentRender;
 
             if (!this.isFocused() && !this.isHovered)
-                this.tooltip_ticks = 0;
+                this.tooltipTicks = 0;
 
-            String tooltip_text = this.tooltip.asFormattedString();
-            if (!tooltip_text.isEmpty() && this.tooltip_ticks >= 30) {
-                List<String> wrapped_tooltip_text = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltip_text, Math.max(this.width * 2 / 3, 200));
+            String tooltipText = this.tooltip.asFormattedString();
+            if (!tooltipText.isEmpty() && this.tooltipTicks >= 30) {
+                List<String> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltipText, Math.max(this.width * 2 / 3, 200));
                 if (this.isHovered)
-                    new Tooltip(mouse_x, mouse_y, wrapped_tooltip_text).queue();
+                    new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
                 else if (this.isFocused())
-                    new Tooltip(this.x - 12, this.y + 12 + wrapped_tooltip_text.size() * 10, wrapped_tooltip_text).queue();
+                    new Tooltip(this.x - 12, this.y + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
             }
         }
     }
-
-
 }

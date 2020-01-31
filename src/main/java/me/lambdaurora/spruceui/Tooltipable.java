@@ -24,7 +24,7 @@ import java.util.Optional;
  * Represents an object which can show a tooltip.
  *
  * @author LambdAurora
- * @version 1.0.2
+ * @version 1.3.0
  * @since 1.0.0
  */
 public interface Tooltipable
@@ -34,14 +34,14 @@ public interface Tooltipable
      *
      * @return The tooltip to show.
      */
-    @NotNull Optional<Text> get_tooltip();
+    @NotNull Optional<Text> getTooltip();
 
     /**
      * Sets the tooltip.
      *
      * @param tooltip The tooltip to show.
      */
-    void set_tooltip(@Nullable Text tooltip);
+    void setTooltip(@Nullable Text tooltip);
 
     /**
      * Renders a tooltip.
@@ -57,7 +57,7 @@ public interface Tooltipable
     static void render(@NotNull MinecraftClient client, @NotNull DrawableHelper helper, List<String> text, int x, int y)
     {
         if (!text.isEmpty()) {
-            DrawableHelperAccessor helper_accessor = (DrawableHelperAccessor) helper;
+            DrawableHelperAccessor helperAccessor = (DrawableHelperAccessor) helper;
 
             GlStateManager.disableRescaleNormal();
             GlStateManager.disableDepthTest();
@@ -70,47 +70,47 @@ public interface Tooltipable
                 }
             }
 
-            int text_x = x + 12;
-            int text_y = y - 12;
+            int textX = x + 12;
+            int textY = y - 12;
             int n = 8;
             if (text.size() > 1) {
                 n += 2 + (text.size() - 1) * 10;
             }
 
-            if (text_x + i > client.window.getScaledWidth()) {
-                text_x -= 28 + i;
+            if (textX + i > client.window.getScaledWidth()) {
+                textX -= 28 + i;
             }
 
-            if (text_y + n + 6 > client.window.getScaledHeight()) {
-                text_y = client.window.getScaledHeight() - n - 6;
+            if (textY + n + 6 > client.window.getScaledHeight()) {
+                textY = client.window.getScaledHeight() - n - 6;
             }
 
-            helper_accessor.spruceui_set_blit_offset(300);
+            helperAccessor.spruceui_setBlitOffset(300);
             client.getItemRenderer().zOffset = 300.0F;
-            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y - 4, text_x + i + 3, text_y - 3, -267386864, -267386864);
-            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y + n + 3, text_x + i + 3, text_y + n + 4, -267386864, -267386864);
-            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y - 3, text_x + i + 3, text_y + n + 3, -267386864, -267386864);
-            helper_accessor.spruceui_fill_gradient(text_x - 4, text_y - 3, text_x - 3, text_y + n + 3, -267386864, -267386864);
-            helper_accessor.spruceui_fill_gradient(text_x + i + 3, text_y - 3, text_x + i + 4, text_y + n + 3, -267386864, -267386864);
-            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y - 3 + 1, text_x - 3 + 1, text_y + n + 3 - 1, 1347420415, 1344798847);
-            helper_accessor.spruceui_fill_gradient(text_x + i + 2, text_y - 3 + 1, text_x + i + 3, text_y + n + 3 - 1, 1347420415, 1344798847);
-            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y - 3, text_x + i + 3, text_y - 3 + 1, 1347420415, 1347420415);
-            helper_accessor.spruceui_fill_gradient(text_x - 3, text_y + n + 2, text_x + i + 3, text_y + n + 3, 1344798847, 1344798847);
+            helperAccessor.spruceui_fillGradient(textX - 3, textY - 4, textX + i + 3, textY - 3, -267386864, -267386864);
+            helperAccessor.spruceui_fillGradient(textX - 3, textY + n + 3, textX + i + 3, textY + n + 4, -267386864, -267386864);
+            helperAccessor.spruceui_fillGradient(textX - 3, textY - 3, textX + i + 3, textY + n + 3, -267386864, -267386864);
+            helperAccessor.spruceui_fillGradient(textX - 4, textY - 3, textX - 3, textY + n + 3, -267386864, -267386864);
+            helperAccessor.spruceui_fillGradient(textX + i + 3, textY - 3, textX + i + 4, textY + n + 3, -267386864, -267386864);
+            helperAccessor.spruceui_fillGradient(textX - 3, textY - 3 + 1, textX - 3 + 1, textY + n + 3 - 1, 1347420415, 1344798847);
+            helperAccessor.spruceui_fillGradient(textX + i + 2, textY - 3 + 1, textX + i + 3, textY + n + 3 - 1, 1347420415, 1344798847);
+            helperAccessor.spruceui_fillGradient(textX - 3, textY - 3, textX + i + 3, textY - 3 + 1, 1347420415, 1347420415);
+            helperAccessor.spruceui_fillGradient(textX - 3, textY + n + 2, textX + i + 3, textY + n + 3, 1344798847, 1344798847);
 
-            for (int line_index = 0; line_index < text.size(); ++line_index) {
-                String line = text.get(line_index);
+            for (int lineIndex = 0; lineIndex < text.size(); ++lineIndex) {
+                String line = text.get(lineIndex);
                 if (line != null) {
-                    client.textRenderer.drawWithShadow(line, (float) text_x, (float) text_y, -1);
+                    client.textRenderer.drawWithShadow(line, (float) textX, (float) textY, -1);
                 }
 
-                if (line_index == 0) {
-                    text_y += 2;
+                if (lineIndex == 0) {
+                    textY += 2;
                 }
 
-                text_y += 10;
+                textY += 10;
             }
 
-            helper_accessor.spruceui_set_blit_offset(0);
+            helperAccessor.spruceui_setBlitOffset(0);
             client.getItemRenderer().zOffset = 0.0F;
             GlStateManager.enableDepthTest();
             GlStateManager.enableRescaleNormal();

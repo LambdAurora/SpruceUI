@@ -27,7 +27,7 @@ import java.util.function.Predicate;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.1.0
+ * @version 1.3.1
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption
@@ -77,7 +77,7 @@ public class SpruceBooleanOption extends SpruceOption
      *
      * @return True if the option value is colored, else false.
      */
-    public boolean is_colored()
+    public boolean isColored()
     {
         return this.colored;
     }
@@ -85,15 +85,15 @@ public class SpruceBooleanOption extends SpruceOption
     @Override
     public @NotNull AbstractButtonWidget createButton(@NotNull GameOptions options, int x, int y, int width)
     {
-        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.get_display_string(options), btn -> {
+        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.getDisplayString(options), btn -> {
             this.set(options);
-            btn.setMessage(this.get_display_string(options));
+            btn.setMessage(this.getDisplayString(options));
         });
-        button.set_tooltip(this.tooltip);
+        button.setTooltip(this.tooltip);
         return button;
     }
 
-    public @NotNull String get_display_string(@NotNull GameOptions options)
+    public @NotNull String getDisplayString(@NotNull GameOptions options)
     {
         boolean value = this.get(options);
         return this.getDisplayPrefix() + (this.colored ? (value ? Formatting.GREEN : Formatting.RED) : "") + I18n.translate(value ? "options.on" : "options.off");

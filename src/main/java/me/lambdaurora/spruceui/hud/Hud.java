@@ -23,7 +23,7 @@ import java.util.List;
  * Represents a HUD.
  *
  * @author LambdAurora
- * @version 1.2.0
+ * @version 1.3.0
  * @since 1.2.0
  */
 public abstract class Hud extends DrawableHelper implements Identifiable
@@ -47,7 +47,7 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      *
      * @return True if the HUD is enabled, else false.
      */
-    public boolean is_enabled()
+    public boolean isEnabled()
     {
         return this.enabled;
     }
@@ -57,12 +57,12 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      *
      * @param enabled True if the HUD is enabled, else false.
      */
-    public void set_enabled(boolean enabled)
+    public void setEnabled(boolean enabled)
     {
         this.enabled = enabled;
     }
 
-    public void init(@NotNull MinecraftClient client, int screen_width, int screen_height)
+    public void init(@NotNull MinecraftClient client, int screenWidth, int screenHeight)
     {
         this.components.clear();
     }
@@ -70,23 +70,23 @@ public abstract class Hud extends DrawableHelper implements Identifiable
     /**
      * Renders the HUD if enabled.
      *
-     * @param tick_delta Progress for linearly interpolating between the previous and current game state.
-     * @see #is_enabled()
+     * @param tickDelta Progress for linearly interpolating between the previous and current game state.
+     * @see #isEnabled()
      */
-    public void render(float tick_delta)
+    public void render(float tickDelta)
     {
-        this.components.stream().filter(HudComponent::is_enabled).forEach(component -> component.render(tick_delta));
+        this.components.stream().filter(HudComponent::isEnabled).forEach(component -> component.render(tickDelta));
     }
 
     /**
      * Updates the HUD each tick if enabled and has tick updates.
      *
-     * @see #is_enabled()
-     * @see #has_ticks()
+     * @see #isEnabled()
+     * @see #hasTicks()
      */
     public void tick()
     {
-        this.components.stream().filter(Predicates.and(HudComponent::has_ticks, HudComponent::is_enabled)).forEach(HudComponent::tick);
+        this.components.stream().filter(Predicates.and(HudComponent::hasTicks, HudComponent::isEnabled)).forEach(HudComponent::tick);
     }
 
     /**
@@ -95,13 +95,13 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      * @return True if this HUD has tick updates, else false.
      * @see #tick()
      */
-    public boolean has_ticks()
+    public boolean hasTicks()
     {
         return false;
     }
 
     @Override
-    public @NotNull Identifier get_identifier()
+    public @NotNull Identifier getIdentifier()
     {
         return this.identifier;
     }

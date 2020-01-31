@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents an option slider widget.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.3.0
  * @since 1.0.0
  */
 public class SpruceOptionSliderWidget extends SpruceSliderWidget
@@ -26,7 +26,7 @@ public class SpruceOptionSliderWidget extends SpruceSliderWidget
 
     public SpruceOptionSliderWidget(@NotNull GameOptions options, int x, int y, int width, int height, @NotNull SpruceDoubleOption option)
     {
-        super(x, y, width, height, "", option.get_ratio(option.get(options)), slider -> option.set(options, option.get_value(slider.get_value())));
+        super(x, y, width, height, "", option.getRatio(option.get(options)), slider -> option.set(options, option.getValue(slider.getValue())));
         this.option = option;
         this.updateMessage();
     }
@@ -35,6 +35,6 @@ public class SpruceOptionSliderWidget extends SpruceSliderWidget
     protected void updateMessage()
     {
         if (this.option != null)
-            this.setMessage(this.option.get_display_string(this.options));
+            this.setMessage(this.option.getDisplayString(this.options));
     }
 }
