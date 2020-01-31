@@ -18,8 +18,8 @@ import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Represents a boolean option.
@@ -27,22 +27,22 @@ import java.util.function.Predicate;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.3.1
+ * @version 1.3.2
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption
 {
-    private final Predicate<GameOptions>           getter;
-    private final BiConsumer<GameOptions, Boolean> setter;
-    private final boolean                          colored;
-    private final Text                             tooltip;
+    private final Supplier<Boolean> getter;
+    private final Consumer<Boolean> setter;
+    private final boolean           colored;
+    private final Text              tooltip;
 
-    public SpruceBooleanOption(@NotNull String key, @NotNull Predicate<GameOptions> getter, @NotNull BiConsumer<GameOptions, Boolean> setter, @Nullable Text tooltip)
+    public SpruceBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip)
     {
         this(key, getter, setter, tooltip, false);
     }
 
-    public SpruceBooleanOption(@NotNull String key, @NotNull Predicate<GameOptions> getter, @NotNull BiConsumer<GameOptions, Boolean> setter, @Nullable Text tooltip, boolean colored)
+    public SpruceBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored)
     {
         super(key);
         this.getter = getter;
@@ -51,25 +51,29 @@ public class SpruceBooleanOption extends SpruceOption
         this.tooltip = tooltip;
     }
 
-    public void set(@NotNull GameOptions options, @NotNull String value)
+    public void set(@NotNull String value)
     {
-        this.set(options, "true".equals(value));
+        this.set("true".equals(value));
     }
 
-    public void set(@NotNull GameOptions options)
+    public void set()
     {
-        this.set(options, !this.get(options));
-        options.write();
+        this.set(!this.get());
     }
 
-    private void set(@NotNull GameOptions options, boolean value)
+    private void set(boolean value)
     {
-        this.setter.accept(options, value);
+        this.setter.accept(value);
     }
 
-    public boolean get(@NotNull GameOptions options)
+    /**
+     * Gets the current value.
+     *
+     * @return The current value.
+     */
+    public boolean get()
     {
-        return this.getter.test(options);
+        return this.getter.get();
     }
 
     /**
@@ -85,17 +89,22 @@ public class SpruceBooleanOption extends SpruceOption
     @Override
     public @NotNull AbstractButtonWidget createButton(@NotNull GameOptions options, int x, int y, int width)
     {
-        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.getDisplayString(options), btn -> {
-            this.set(options);
-            btn.setMessage(this.getDisplayString(options));
+        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.getDisplayString(), btn -> {
+            this.set();
+            btn.setMessage(this.getDisplayString());
         });
         button.setTooltip(this.tooltip);
         return button;
     }
 
-    public @NotNull String getDisplayString(@NotNull GameOptions options)
+    /**
+     * Gets the display string.
+     *
+     * @return The display string.
+     */
+    public @NotNull String getDisplayString()
     {
-        boolean value = this.get(options);
+        boolean value = this.get();
         return this.getDisplayPrefix() + (this.colored ? (value ? Formatting.GREEN : Formatting.RED) : "") + I18n.translate(value ? "options.on" : "options.off");
     }
 }

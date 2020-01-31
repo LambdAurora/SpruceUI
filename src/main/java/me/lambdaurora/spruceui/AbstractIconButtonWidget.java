@@ -36,9 +36,9 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
      *
      * @param mouseX Mouse X.
      * @param mouseY Mouse Y.
-     * @param delta   Delta.
-     * @param x       X coordinates of the icon.
-     * @param y       Y coordinates of the icon.
+     * @param delta  Delta.
+     * @param x      X coordinates of the icon.
+     * @param y      Y coordinates of the icon.
      * @return The size of the icon.
      */
     protected abstract int renderIcon(int mouseX, int mouseY, float delta, int x, int y);
