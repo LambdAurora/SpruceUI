@@ -60,6 +60,10 @@ public abstract class Hud extends DrawableHelper implements Identifiable
     public void setEnabled(boolean enabled)
     {
         this.enabled = enabled;
+        if (enabled) {
+            MinecraftClient client = MinecraftClient.getInstance();
+            this.init(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
+        }
     }
 
     public void init(@NotNull MinecraftClient client, int screenWidth, int screenHeight)
