@@ -31,12 +31,12 @@ dependencies {
 	modCompile "io.github.prospector:modmenu:1.8.0+build.16"
 
 	api "org.jetbrains:annotations:17.0.0"
-	api("org.aperlambda:lambdajcommon:1.7.4") {
+	api("org.aperlambda:lambdajcommon:1.8.0") {
 		exclude group: 'com.google.code.gson'
 		exclude group: 'com.google.guava'
 	}
 	include "org.jetbrains:annotations:17.0.0"
-	include("org.aperlambda:lambdajcommon:1.7.4")  {
+	include("org.aperlambda:lambdajcommon:1.8.0")  {
 		exclude group: 'com.google.code.gson'
 		exclude group: 'com.google.guava'
 	}

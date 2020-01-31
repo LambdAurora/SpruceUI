@@ -23,32 +23,32 @@ import java.util.function.Consumer;
  * Represents a slightly modified slider widget.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.3.0
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends SliderWidget implements Tooltipable
 {
-    private       String                       base_message;
-    private final Consumer<SpruceSliderWidget> apply_consumer;
+    private       String                       baseMessage;
+    private final Consumer<SpruceSliderWidget> applyConsumer;
     private       double                       multiplier;
     private       String                       sign;
     private       Text                         tooltip;
-    private       int                          tooltip_ticks;
-    private       long                         last_tick;
+    private       int                          tooltipTicks;
+    private       long                         lastTick;
 
-    protected SpruceSliderWidget(int x, int y, int width, int height, @NotNull String message, double progress, @NotNull Consumer<SpruceSliderWidget> apply_consumer, double multiplier, String sign)
+    protected SpruceSliderWidget(int x, int y, int width, int height, @NotNull String message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign)
     {
         super(x, y, width, height, progress);
-        this.base_message = message;
-        this.apply_consumer = apply_consumer;
+        this.baseMessage = message;
+        this.applyConsumer = applyConsumer;
         this.multiplier = multiplier;
         this.sign = sign;
         this.updateMessage();
     }
 
-    protected SpruceSliderWidget(int x, int y, int width, int height, @NotNull String message, double progress, @NotNull Consumer<SpruceSliderWidget> apply_consumer)
+    protected SpruceSliderWidget(int x, int y, int width, int height, @NotNull String message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer)
     {
-        this(x, y, width, height, message, progress, apply_consumer, 100.0, "%");
+        this(x, y, width, height, message, progress, applyConsumer, 100.0, "%");
     }
 
     /**
@@ -56,7 +56,7 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
      *
      * @return The value of the slider.
      */
-    public double get_value()
+    public double getValue()
     {
         return this.value;
     }
@@ -66,7 +66,7 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
      *
      * @return The value as an integer.
      */
-    public int get_int_value()
+    public int getIntValue()
     {
         return (int) (this.value * this.multiplier);
     }
@@ -76,7 +76,7 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
      *
      * @param value The new value as an integer.
      */
-    public void set_int_value(int value)
+    public void setIntValue(int value)
     {
         this.value = value / this.multiplier;
         this.updateMessage();
@@ -87,41 +87,41 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
      *
      * @return The base message of the slider.
      */
-    public @NotNull String get_base_message()
+    public @NotNull String getBaseMessage()
     {
-        return base_message;
+        return baseMessage;
     }
 
     /**
      * Sets the base message of the slider.
      *
-     * @param base_message The base message of the slider.
+     * @param baseMessage The base message of the slider.
      */
-    public void set_base_message(@NotNull String base_message)
+    public void setBaseMessage(@NotNull String baseMessage)
     {
-        this.base_message = base_message;
+        this.baseMessage = baseMessage;
     }
 
     @Override
     protected void updateMessage()
     {
-        this.setMessage(this.base_message + ": " + this.get_int_value() + sign);
+        this.setMessage(this.baseMessage + ": " + this.getIntValue() + sign);
     }
 
     @Override
     protected void applyValue()
     {
-        this.apply_consumer.accept(this);
+        this.applyConsumer.accept(this);
     }
 
     @Override
-    public @NotNull Optional<Text> get_tooltip()
+    public @NotNull Optional<Text> getTooltip()
     {
         return Optional.ofNullable(this.tooltip);
     }
 
     @Override
-    public void set_tooltip(@Nullable Text tooltip)
+    public void setTooltip(@Nullable Text tooltip)
     {
         this.tooltip = tooltip;
     }
@@ -132,24 +132,24 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
         super.render(mouse_x, mouse_y, delta);
 
         if (this.visible && this.tooltip != null) {
-            long current_render = System.currentTimeMillis();
-            if (this.last_tick != 0) {
-                if (current_render - this.last_tick >= 20) {
-                    this.tooltip_ticks++;
-                    this.last_tick = current_render;
+            long currentRender = System.currentTimeMillis();
+            if (this.lastTick != 0) {
+                if (currentRender - this.lastTick >= 20) {
+                    this.tooltipTicks++;
+                    this.lastTick = currentRender;
                 }
-            } else this.last_tick = current_render;
+            } else this.lastTick = currentRender;
 
             if (!this.isFocused() && !this.isHovered)
-                this.tooltip_ticks = 0;
+                this.tooltipTicks = 0;
 
-            String tooltip_text = this.tooltip.asFormattedString();
-            if (!tooltip_text.isEmpty() && this.tooltip_ticks >= 30) {
-                List<String> wrapped_tooltip_text = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltip_text, Math.max(this.width * 2 / 3, 200));
+            String tooltipText = this.tooltip.asFormattedString();
+            if (!tooltipText.isEmpty() && this.tooltipTicks >= 30) {
+                List<String> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltipText, Math.max(this.width * 2 / 3, 200));
                 if (this.isHovered)
-                    new Tooltip(mouse_x, mouse_y, wrapped_tooltip_text).queue();
+                    new Tooltip(mouse_x, mouse_y, wrappedTooltipText).queue();
                 else if (this.isFocused())
-                    new Tooltip(this.x - 12, this.y + 12 + wrapped_tooltip_text.size() * 10, wrapped_tooltip_text).queue();
+                    new Tooltip(this.x - 12, this.y + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
             }
         }
     }

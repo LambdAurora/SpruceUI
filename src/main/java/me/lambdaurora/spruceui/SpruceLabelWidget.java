@@ -26,7 +26,7 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.3.0
  * @since 1.0.0
  */
 public class SpruceLabelWidget extends DrawableHelper implements Element, Drawable, Tooltipable
@@ -35,11 +35,11 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     };
 
     private final MinecraftClient             client = MinecraftClient.getInstance();
-    private final Consumer<SpruceLabelWidget> press_action;
+    private final Consumer<SpruceLabelWidget> action;
     private final int                         x;
     private final int                         y;
-    private final int                         max_width;
-    //private final int                   max_height;
+    private final int                         maxWidth;
+    //private final int                         maxHeight;
     private       String                      text;
     private       Text                        tooltip;
     public        boolean                     visible;
@@ -49,30 +49,30 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     protected     boolean                     hovered;
     protected     boolean                     focused;
 
-    public SpruceLabelWidget(int x, int y, @NotNull String text, int max_width, @NotNull Consumer<SpruceLabelWidget> press_action, boolean centered)
+    public SpruceLabelWidget(int x, int y, @NotNull String text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered)
     {
         this.visible = true;
         this.x = x;
         this.y = y;
-        this.max_width = max_width;
-        this.press_action = press_action;
+        this.maxWidth = maxWidth;
+        this.action = action;
         this.centered = centered;
-        this.set_text(text);
+        this.setText(text);
     }
 
-    public SpruceLabelWidget(int x, int y, @NotNull String text, int max_width, @NotNull Consumer<SpruceLabelWidget> press_action)
+    public SpruceLabelWidget(int x, int y, @NotNull String text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action)
     {
-        this(x, y, text, max_width, press_action, false);
+        this(x, y, text, maxWidth, action, false);
     }
 
-    public SpruceLabelWidget(int x, int y, @NotNull String text, int max_width, boolean centered)
+    public SpruceLabelWidget(int x, int y, @NotNull String text, int maxWidth, boolean centered)
     {
-        this(x, y, text, max_width, DEFAULT_ACTION, centered);
+        this(x, y, text, maxWidth, DEFAULT_ACTION, centered);
     }
 
-    public SpruceLabelWidget(int x, int y, @NotNull String text, int max_width)
+    public SpruceLabelWidget(int x, int y, @NotNull String text, int maxWidth)
     {
-        this(x, y, text, max_width, DEFAULT_ACTION);
+        this(x, y, text, maxWidth, DEFAULT_ACTION);
     }
 
     /**
@@ -80,10 +80,10 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
      *
      * @param text The text to set.
      */
-    public void set_text(@NotNull String text)
+    public void setText(@NotNull String text)
     {
         int width = this.client.textRenderer.getStringWidth(text);
-        while (width > this.max_width) {
+        while (width > this.maxWidth) {
             text = text.substring(0, text.length() - 1);
             width = this.client.textRenderer.getStringWidth(text);
         }
@@ -94,13 +94,13 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     }
 
     @Override
-    public @NotNull Optional<Text> get_tooltip()
+    public @NotNull Optional<Text> getTooltip()
     {
         return Optional.ofNullable(this.tooltip);
     }
 
     @Override
-    public void set_tooltip(@Nullable Text tooltip)
+    public void setTooltip(@Nullable Text tooltip)
     {
         this.tooltip = tooltip;
     }
@@ -110,7 +110,7 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
      *
      * @return The width of this label widget.
      */
-    public int get_width()
+    public int getWidth()
     {
         return this.width;
     }
@@ -120,7 +120,7 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
      *
      * @return The height of this label widget.
      */
-    public int get_height()
+    public int getHeight()
     {
         return this.height;
     }
@@ -128,9 +128,9 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     /**
      * Fires the press event on this label widget.
      */
-    public void on_press()
+    public void onPress()
     {
-        this.press_action.accept(this);
+        this.action.accept(this);
     }
 
     @Override
@@ -142,13 +142,13 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
             this.drawString(this.client.textRenderer, this.text, x, this.y, 10526880);
 
             if (this.tooltip != null) {
-                String tooltip_text = this.tooltip.asFormattedString();
-                if (!tooltip_text.isEmpty()) {
-                    List<String> wrapped_tooltip_text = this.client.textRenderer.wrapStringToWidthAsList(tooltip_text, Math.max(this.width / 2, 200));
+                String tooltipText = this.tooltip.asFormattedString();
+                if (!tooltipText.isEmpty()) {
+                    List<String> wrappedTooltipText = this.client.textRenderer.wrapStringToWidthAsList(tooltipText, Math.max(this.width / 2, 200));
                     if (this.hovered)
-                        new Tooltip(mouse_x, mouse_y, wrapped_tooltip_text).queue();
+                        new Tooltip(mouse_x, mouse_y, wrappedTooltipText).queue();
                     else if (this.focused)
-                        new Tooltip(this.x - 12, this.y, wrapped_tooltip_text).queue();
+                        new Tooltip(this.x - 12, this.y, wrappedTooltipText).queue();
                 }
             }
         }
@@ -159,7 +159,7 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     {
         if (this.visible && button == GLFW.GLFW_MOUSE_BUTTON_1) {
             if (this.hovered) {
-                this.on_press();
+                this.onPress();
                 return true;
             }
         }

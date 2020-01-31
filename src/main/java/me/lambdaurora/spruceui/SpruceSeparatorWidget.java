@@ -34,19 +34,19 @@ import java.util.Optional;
  */
 public class SpruceSeparatorWidget extends DrawableHelper implements Element, Drawable, Tooltipable
 {
-    private final MinecraftClient client         = MinecraftClient.getInstance();
+    private final MinecraftClient client        = MinecraftClient.getInstance();
     protected     int             x;
     protected     int             y;
     protected     int             width;
     private       Text            title;
-    public        boolean         visible        = true;
+    public        boolean         visible       = true;
     protected     boolean         hovered;
     protected     boolean         focused;
-    private       boolean         was_hovered;
-    protected     long            next_narration = Long.MAX_VALUE;
+    private       boolean         wasHovered;
+    protected     long            nextNarration = Long.MAX_VALUE;
     private       Text            tooltip;
-    private       int             tooltip_ticks;
-    private       long            last_tick;
+    private       int             tooltipTicks;
+    private       long            lastTick;
 
     public SpruceSeparatorWidget(@Nullable Text title, int x, int y, int width)
     {
@@ -56,12 +56,12 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
         this.width = width;
     }
 
-    public int get_x()
+    public int getX()
     {
         return this.x;
     }
 
-    public int get_y()
+    public int getY()
     {
         return this.y;
     }
@@ -71,7 +71,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
      *
      * @return The width of this separator widget.
      */
-    public int get_width()
+    public int getWidth()
     {
         return this.width;
     }
@@ -81,7 +81,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
      *
      * @return The title.
      */
-    public @NotNull Optional<Text> get_title()
+    public @NotNull Optional<Text> getTitle()
     {
         return Optional.ofNullable(this.title);
     }
@@ -91,27 +91,27 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
      *
      * @param title The title.
      */
-    public void set_title(@Nullable Text title)
+    public void setTitle(@Nullable Text title)
     {
         if (!Objects.equals(title, this.title)) {
-            this.queue_narration(250);
+            this.queueNarration(250);
         }
         this.title = title;
     }
 
-    public boolean is_hovered()
+    public boolean isHovered()
     {
         return this.hovered || this.focused;
     }
 
     @Override
-    public @NotNull Optional<Text> get_tooltip()
+    public @NotNull Optional<Text> getTooltip()
     {
         return Optional.ofNullable(this.tooltip);
     }
 
     @Override
-    public void set_tooltip(@Nullable Text tooltip)
+    public void setTooltip(@Nullable Text tooltip)
     {
         this.tooltip = tooltip;
     }
@@ -123,78 +123,78 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
             this.hovered = mouse_x >= this.x && mouse_y >= this.y && mouse_x < this.x + this.width && mouse_y < this.y + 9;
 
             if (this.title != null) {
-                if (this.was_hovered != this.is_hovered()) {
-                    if (this.is_hovered()) {
+                if (this.wasHovered != this.isHovered()) {
+                    if (this.isHovered()) {
                         if (this.focused)
-                            this.queue_narration(200);
+                            this.queueNarration(200);
                         else
-                            this.queue_narration(750);
+                            this.queueNarration(750);
 
                     } else
-                        this.next_narration = Long.MAX_VALUE;
+                        this.nextNarration = Long.MAX_VALUE;
                 }
 
                 String title = this.title.asFormattedString();
-                int title_width = this.client.textRenderer.getStringWidth(title);
-                int title_x = this.x + (this.width / 2 - title_width / 2);
-                if (this.width > title_width) {
-                    fill(this.x, this.y + 4, title_x - 5, this.y + 6, 0xffe0e0e0);
-                    fill(title_x + title_width + 5, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
+                int titleWidth = this.client.textRenderer.getStringWidth(title);
+                int titleX = this.x + (this.width / 2 - titleWidth / 2);
+                if (this.width > titleWidth) {
+                    fill(this.x, this.y + 4, titleX - 5, this.y + 6, 0xffe0e0e0);
+                    fill(titleX + titleWidth + 5, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
                 }
-                this.drawString(this.client.textRenderer, title, title_x, this.y, 0xffffff);
+                this.drawString(this.client.textRenderer, title, titleX, this.y, 0xffffff);
             } else {
                 fill(this.x, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
             }
 
             if (this.tooltip != null) {
-                long current_render = System.currentTimeMillis();
-                if (this.last_tick != 0) {
-                    if (current_render - this.last_tick >= 20) {
-                        this.tooltip_ticks++;
-                        this.last_tick = current_render;
+                long currentRender = System.currentTimeMillis();
+                if (this.lastTick != 0) {
+                    if (currentRender - this.lastTick >= 20) {
+                        this.tooltipTicks++;
+                        this.lastTick = currentRender;
                     }
-                } else this.last_tick = current_render;
+                } else this.lastTick = currentRender;
 
                 if (!this.focused && !this.hovered)
-                    this.tooltip_ticks = 0;
+                    this.tooltipTicks = 0;
 
-                String tooltip_text = this.tooltip.asFormattedString();
-                if (!tooltip_text.isEmpty() && this.tooltip_ticks >= 30) {
-                    List<String> wrapped_tooltip_text = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltip_text, Math.max(this.width * 2 / 3, 200));
+                String tooltipText = this.tooltip.asFormattedString();
+                if (!tooltipText.isEmpty() && this.tooltipTicks >= 30) {
+                    List<String> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltipText, Math.max(this.width * 2 / 3, 200));
                     if (this.hovered)
-                        new Tooltip(mouse_x, mouse_y, wrapped_tooltip_text).queue();
+                        new Tooltip(mouse_x, mouse_y, wrappedTooltipText).queue();
                     else if (this.focused)
-                        new Tooltip(this.x - 12, this.y + 12 + wrapped_tooltip_text.size() * 10, wrapped_tooltip_text).queue();
+                        new Tooltip(this.x - 12, this.y + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
                 }
             }
 
             this.narrate();
-            this.was_hovered = this.is_hovered();
+            this.wasHovered = this.isHovered();
         }
     }
 
     protected void narrate()
     {
-        if (this.is_hovered() && Util.getMeasuringTimeMs() > this.next_narration) {
-            String string = this.get_narration_message();
+        if (this.isHovered() && Util.getMeasuringTimeMs() > this.nextNarration) {
+            String string = this.getNarrationMessage();
             if (!string.isEmpty()) {
                 NarratorManager.INSTANCE.narrate(string);
-                this.next_narration = Long.MAX_VALUE;
+                this.nextNarration = Long.MAX_VALUE;
             }
         }
     }
 
-    protected String get_narration_message()
+    protected String getNarrationMessage()
     {
-        return this.get_title().map(Text::asFormattedString)
+        return this.getTitle().map(Text::asFormattedString)
                 .filter(title -> !title.isEmpty())
                 .map(title -> I18n.translate("spruceui.narrator.separator", title))
                 .orElse("");
     }
 
-    public void queue_narration(int ticks)
+    public void queueNarration(int ticks)
     {
-        this.next_narration = Util.getMeasuringTimeMs() + (long) ticks;
+        this.nextNarration = Util.getMeasuringTimeMs() + (long) ticks;
     }
 
     @Override
@@ -212,7 +212,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
      * Represents a button wrapper for the option.
      *
      * @author LambdAurora
-     * @version 1.0.1
+     * @version 1.3.0
      * @since 1.0.1
      */
     public static class ButtonWrapper extends AbstractButtonWidget
@@ -221,7 +221,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
 
         public ButtonWrapper(@NotNull SpruceSeparatorWidget separator, int height)
         {
-            super(separator.x, separator.y, separator.width, height, separator.get_title().map(Text::asFormattedString).orElse(""));
+            super(separator.x, separator.y, separator.width, height, separator.getTitle().map(Text::asFormattedString).orElse(""));
             this.widget = separator;
         }
 

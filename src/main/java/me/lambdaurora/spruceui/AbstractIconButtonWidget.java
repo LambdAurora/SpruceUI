@@ -20,16 +20,16 @@ import org.jetbrains.annotations.NotNull;
  * Represents a button with an icon.
  *
  * @author LambdAurora
- * @version 1.0.0
+ * @version 1.3.0
  * @since 1.0.0
  */
 public abstract class AbstractIconButtonWidget extends ButtonWidget
 {
     private int icon_size = 0;
 
-    public AbstractIconButtonWidget(int x, int y, int width, int height, @NotNull String message, @NotNull PressAction on_press)
+    public AbstractIconButtonWidget(int x, int y, int width, int height, @NotNull String message, @NotNull PressAction action)
     {
-        super(x, y, width, height, message, on_press);
+        super(x, y, width, height, message, action);
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
      * @param y       Y coordinates of the icon.
      * @return The size of the icon.
      */
-    protected abstract int render_icon(int mouse_x, int mouse_y, float delta, int x, int y);
+    protected abstract int renderIcon(int mouse_x, int mouse_y, float delta, int x, int y);
 
     @Override
     public void renderButton(int mouse_x, int mouse_y, float delta)
@@ -58,7 +58,7 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
         this.blit(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
         this.renderBg(client, mouse_x, mouse_y);
 
-        this.icon_size = this.render_icon(mouse_x, mouse_y, delta, this.x + 4, this.y + (this.height / 2 - this.icon_size / 2));
+        this.icon_size = this.renderIcon(mouse_x, mouse_y, delta, this.x + 4, this.y + (this.height / 2 - this.icon_size / 2));
 
         if (!this.getMessage().isEmpty()) {
             int j = this.active ? 16777215 : 10526880;

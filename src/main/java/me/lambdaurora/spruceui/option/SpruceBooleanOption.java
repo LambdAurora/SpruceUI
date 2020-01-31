@@ -27,7 +27,7 @@ import java.util.function.Predicate;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.1.0
+ * @version 1.3.0
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption
@@ -89,7 +89,7 @@ public class SpruceBooleanOption extends SpruceOption
             this.set(options);
             btn.setMessage(this.get_display_string(options));
         });
-        button.set_tooltip(this.tooltip);
+        button.setTooltip(this.tooltip);
         return button;
     }
 

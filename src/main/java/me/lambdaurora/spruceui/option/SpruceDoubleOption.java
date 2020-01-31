@@ -27,7 +27,7 @@ import java.util.function.Function;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.0.3
+ * @version 1.3.0
  * @since 1.0.0
  */
 public class SpruceDoubleOption extends SpruceOption
@@ -56,16 +56,16 @@ public class SpruceDoubleOption extends SpruceOption
     public @NotNull AbstractButtonWidget createButton(@NotNull GameOptions options, int x, int y, int width)
     {
         SpruceOptionSliderWidget slider = new SpruceOptionSliderWidget(options, x, y, width, 20, this);
-        slider.set_tooltip(this.tooltip);
+        slider.setTooltip(this.tooltip);
         return slider;
     }
 
-    public double get_ratio(double value)
+    public double getRatio(double value)
     {
         return MathHelper.clamp((this.adjust(value) - this.min) / (this.max - this.min), 0.0D, 1.0D);
     }
 
-    public double get_value(double ratio)
+    public double getValue(double ratio)
     {
         return this.adjust(MathHelper.lerp(MathHelper.clamp(ratio, 0.0D, 1.0D), this.min, this.max));
     }
@@ -79,17 +79,17 @@ public class SpruceDoubleOption extends SpruceOption
         return MathHelper.clamp(value, this.min, this.max);
     }
 
-    public double get_min()
+    public double getMin()
     {
         return this.min;
     }
 
-    public double get_max()
+    public double getMax()
     {
         return this.max;
     }
 
-    public void set_max(float max)
+    public void setMax(float max)
     {
         this.max = max;
     }
@@ -104,7 +104,7 @@ public class SpruceDoubleOption extends SpruceOption
         return this.getter.apply(options);
     }
 
-    public @NotNull String get_display_string(@NotNull GameOptions options)
+    public @NotNull String getDisplayString(@NotNull GameOptions options)
     {
         return this.displayStringGetter.apply(options, this);
     }

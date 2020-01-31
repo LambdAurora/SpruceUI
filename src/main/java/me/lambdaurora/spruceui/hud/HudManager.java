@@ -9,8 +9,8 @@
 
 package me.lambdaurora.spruceui.hud;
 
-import me.lambdaurora.spruceui.event.ResolutionChangedCallback;
 import me.lambdaurora.spruceui.event.OpenScreenCallback;
+import me.lambdaurora.spruceui.event.ResolutionChangedCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 import net.minecraft.client.MinecraftClient;
@@ -23,7 +23,7 @@ import java.util.HashMap;
  * Represents the HUD manager.
  *
  * @author LambdAurora
- * @version 1.2.0
+ * @version 1.3.0
  * @since 1.2.0
  */
 public class HudManager
@@ -33,27 +33,27 @@ public class HudManager
     public void initialize()
     {
         HudRenderCallback.EVENT.register(tick_delta -> HUDS.forEach((id, hud) -> {
-            if (hud.is_enabled())
+            if (hud.isEnabled())
                 hud.render(tick_delta);
         }));
         ClientTickCallback.EVENT.register(client -> {
-            if (!can_render_huds(client))
+            if (!canRenderHuds(client))
                 return;
             HUDS.forEach((id, hud) -> {
-                if (hud.is_enabled() && hud.has_ticks())
+                if (hud.isEnabled() && hud.hasTicks())
                     hud.tick();
             });
         });
-        OpenScreenCallback.EVENT.register((client, screen) -> init_all(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
-        ResolutionChangedCallback.EVENT.register(client -> init_all(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
+        OpenScreenCallback.EVENT.register((client, screen) -> initAll(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
+        ResolutionChangedCallback.EVENT.register(client -> initAll(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
     }
 
-    protected static void init_all(@NotNull MinecraftClient client, int screen_width, int screen_height)
+    protected static void initAll(@NotNull MinecraftClient client, int screen_width, int screen_height)
     {
-        if (!can_render_huds(client))
+        if (!canRenderHuds(client))
             return;
         HUDS.forEach((id, hud) -> {
-            if (hud.is_enabled())
+            if (hud.isEnabled())
                 hud.init(client, screen_width, screen_height);
         });
     }
@@ -65,9 +65,9 @@ public class HudManager
      */
     public static void register(@NotNull Hud hud)
     {
-        if (HUDS.containsKey(hud.get_identifier()))
+        if (HUDS.containsKey(hud.getIdentifier()))
             throw new IllegalArgumentException("Cannot register the same HUD twice!");
-        HUDS.put(hud.get_identifier(), hud);
+        HUDS.put(hud.getIdentifier(), hud);
     }
 
     /**
@@ -87,7 +87,7 @@ public class HudManager
      */
     public static void unregister(@NotNull Hud hud)
     {
-        unregister(hud.get_identifier());
+        unregister(hud.getIdentifier());
     }
 
     /**
@@ -96,7 +96,7 @@ public class HudManager
      * @param client The client instance.
      * @return True if the HUDs can be rendered, else false.
      */
-    public static boolean can_render_huds(@NotNull MinecraftClient client)
+    public static boolean canRenderHuds(@NotNull MinecraftClient client)
     {
         return client.world != null && (!client.options.hudHidden || client.currentScreen != null);
     }
