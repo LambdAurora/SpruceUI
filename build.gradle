@@ -8,7 +8,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version
+version = "${project.mod_version}+${project.minecraft_version}"
 group = project.maven_group
 
 minecraft {
@@ -28,7 +28,7 @@ dependencies {
 
 	modApi "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modCompile "io.github.prospector:modmenu:1.7.9+build.118"
+	modCompile "io.github.prospector:modmenu:${project.modmenu_version}"
 
 	api "org.jetbrains:annotations:17.0.0"
 	api("org.aperlambda:lambdajcommon:1.8.0") {

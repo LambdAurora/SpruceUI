@@ -9,6 +9,7 @@
 
 package me.lambdaurora.spruceui.hud;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import org.aperlambda.lambdacommon.Identifier;
@@ -23,7 +24,7 @@ import java.util.List;
  * Represents a HUD.
  *
  * @author LambdAurora
- * @version 1.3.4
+ * @version 1.3.5
  * @since 1.2.0
  */
 public abstract class Hud extends DrawableHelper implements Identifiable
@@ -123,6 +124,16 @@ public abstract class Hud extends DrawableHelper implements Identifiable
     public boolean hasTicks()
     {
         return false;
+    }
+
+    /**
+     * Returns a list of this HUD's components.
+     *
+     * @return The HUD's components.
+     */
+    public @NotNull List<HudComponent> getComponents()
+    {
+        return ImmutableList.copyOf(this.components);
     }
 
     @Override

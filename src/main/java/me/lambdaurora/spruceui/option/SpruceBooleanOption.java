@@ -10,7 +10,9 @@
 package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.SpruceButtonWidget;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.options.BooleanOption;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
@@ -27,7 +29,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.3.2
+ * @version 1.3.5
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption
@@ -106,5 +108,33 @@ public class SpruceBooleanOption extends SpruceOption
     {
         boolean value = this.get();
         return this.getDisplayPrefix() + (this.colored ? (value ? Formatting.GREEN : Formatting.RED) : "") + I18n.translate(value ? "options.on" : "options.off");
+    }
+
+    /**
+     * Returns a new SpruceUI Boolean Option from the Vanilla one.
+     *
+     * @param key     The option's key.
+     * @param vanilla The Vanilla option.
+     * @param tooltip The tooltip.
+     * @return The SpruceUI option.
+     */
+    public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip)
+    {
+        return fromVanilla(key, vanilla, tooltip, false);
+    }
+
+    /**
+     * Returns a new SpruceUI Boolean Option from the Vanilla one.
+     *
+     * @param key     The option's key.
+     * @param vanilla The Vanilla option.
+     * @param tooltip The tooltip.
+     * @param colored True if the option value is colored, else false.
+     * @return The SpruceUI option.
+     */
+    public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip, boolean colored)
+    {
+        GameOptions options = MinecraftClient.getInstance().options;
+        return new SpruceBooleanOption(key, () -> vanilla.get(options), newValue -> vanilla.set(options, String.valueOf(newValue)), tooltip, colored);
     }
 }

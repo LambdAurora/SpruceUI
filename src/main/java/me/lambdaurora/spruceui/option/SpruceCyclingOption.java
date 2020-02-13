@@ -10,7 +10,9 @@
 package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.SpruceButtonWidget;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.options.CyclingOption;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +27,7 @@ import java.util.function.Function;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.3.2
+ * @version 1.3.5
  * @since 1.0.0
  */
 public class SpruceCyclingOption extends SpruceOption
@@ -71,5 +73,19 @@ public class SpruceCyclingOption extends SpruceOption
     public @NotNull String getMessage()
     {
         return this.messageProvider.apply(this);
+    }
+
+    /**
+     * Returns a new SpruceUI Cycling Option from the Vanilla one.
+     *
+     * @param key     The option's key.
+     * @param vanilla The Vanilla option.
+     * @param tooltip The tooltip.
+     * @return The SpruceUI option.
+     */
+    public static @NotNull SpruceCyclingOption fromVanilla(@NotNull String key, @NotNull CyclingOption vanilla, @Nullable Text tooltip)
+    {
+        GameOptions options = MinecraftClient.getInstance().options;
+        return new SpruceCyclingOption(key, amount -> vanilla.cycle(options, amount), option -> vanilla.getMessage(options), tooltip);
     }
 }
