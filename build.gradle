@@ -28,7 +28,7 @@ dependencies {
 
 	modApi "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modCompile "io.github.prospector:modmenu:1.8.5+build.23"
+	modCompile "io.github.prospector:modmenu:${project.modmenu_version}"
 
 	api "org.jetbrains:annotations:17.0.0"
 	api("org.aperlambda:lambdajcommon:1.8.0") {

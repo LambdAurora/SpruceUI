@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a HUD component.
  *
  * @author LambdAurora
- * @version 1.3.1
+ * @version 1.3.5
  * @since 1.2.0
  */
 public abstract class HudComponent extends DrawableHelper implements Identifiable
@@ -28,7 +28,7 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
     protected       int        x;
     protected       int        y;
 
-    protected HudComponent(Identifier identifier, int x, int y)
+    protected HudComponent(@NotNull Identifier identifier, int x, int y)
     {
         this.identifier = identifier;
         this.x = x;
