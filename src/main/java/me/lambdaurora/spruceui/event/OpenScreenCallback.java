@@ -10,7 +10,6 @@
 package me.lambdaurora.spruceui.event;
 
 import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import org.jetbrains.annotations.NotNull;
@@ -20,17 +19,14 @@ import org.jetbrains.annotations.Nullable;
  * Represents an event callback which is fired when an {@link Screen} is opened.
  *
  * @author LambdAurora
- * @version 1.2.1
+ * @version 1.4.0
  * @since 1.2.0
  */
 @FunctionalInterface
 public interface OpenScreenCallback
 {
-    Event<OpenScreenCallback> EVENT = EventFactory.createArrayBacked(OpenScreenCallback.class, listeners -> (client, screen) -> {
-        for (OpenScreenCallback event : listeners) {
-            event.apply(client, screen);
-        }
-    });
+    Event<OpenScreenCallback> PRE   = EventUtil.makeOpenScreenEvent();
+    Event<OpenScreenCallback> EVENT = EventUtil.makeOpenScreenEvent();
 
     void apply(@NotNull MinecraftClient client, @Nullable Screen screen);
 }

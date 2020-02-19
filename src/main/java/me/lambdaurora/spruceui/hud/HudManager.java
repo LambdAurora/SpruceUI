@@ -10,20 +10,22 @@
 package me.lambdaurora.spruceui.hud;
 
 import me.lambdaurora.spruceui.event.OpenScreenCallback;
-import me.lambdaurora.spruceui.event.ResolutionChangedCallback;
+import me.lambdaurora.spruceui.event.ResolutionChangeCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 import net.minecraft.client.MinecraftClient;
 import org.aperlambda.lambdacommon.Identifier;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * Represents the HUD manager.
  *
  * @author LambdAurora
- * @version 1.3.4
+ * @version 1.4.0
  * @since 1.2.0
  */
 public class HudManager
@@ -45,7 +47,7 @@ public class HudManager
             });
         });
         OpenScreenCallback.EVENT.register((client, screen) -> initAll(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
-        ResolutionChangedCallback.EVENT.register(client -> initAll(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
+        ResolutionChangeCallback.EVENT.register(client -> initAll(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
     }
 
     protected static void initAll(@NotNull MinecraftClient client, int screenWidth, int screenHeight)
@@ -99,5 +101,26 @@ public class HudManager
     public static boolean canRenderHuds(@NotNull MinecraftClient client)
     {
         return client.world != null && (!client.options.hudHidden || client.currentScreen != null);
+    }
+
+    /**
+     * Returns the HUD from its identifier.
+     *
+     * @param identifier The identifier of the HUD.
+     * @return The optional HUD.
+     */
+    public static Optional<Hud> getHud(@NotNull Identifier identifier)
+    {
+        return Optional.ofNullable(HUDS.get(identifier));
+    }
+
+    /**
+     * Returns a collection of the registered HUDs.
+     *
+     * @return The registered HUDs.
+     */
+    public static Collection<Hud> getHuds()
+    {
+        return HUDS.values();
     }
 }

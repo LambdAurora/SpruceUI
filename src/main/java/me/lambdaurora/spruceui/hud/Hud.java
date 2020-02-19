@@ -24,7 +24,7 @@ import java.util.List;
  * Represents a HUD.
  *
  * @author LambdAurora
- * @version 1.3.5
+ * @version 1.4.0
  * @since 1.2.0
  */
 public abstract class Hud extends DrawableHelper implements Identifiable
@@ -42,6 +42,16 @@ public abstract class Hud extends DrawableHelper implements Identifiable
     public Hud(@NotNull net.minecraft.util.Identifier identifier)
     {
         this(new Identifier(identifier.toString()));
+    }
+
+    /**
+     * Returns the translation key of this HUD.
+     *
+     * @return The translation key.
+     */
+    public String getTranslationKey()
+    {
+        return this.identifier.getNamespace() + ".hud." + this.identifier.getName();
     }
 
     /**

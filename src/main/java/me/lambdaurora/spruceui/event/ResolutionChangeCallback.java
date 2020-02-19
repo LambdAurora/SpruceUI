@@ -18,14 +18,14 @@ import org.jetbrains.annotations.NotNull;
  * Represents an event callback which is fired when the Minecraft's resolution is changed.
  *
  * @author LambdAurora
- * @version 1.2.0
+ * @version 1.4.0
  * @since 1.2.0
  */
 @FunctionalInterface
-public interface ResolutionChangedCallback
+public interface ResolutionChangeCallback
 {
-    Event<ResolutionChangedCallback> EVENT = EventFactory.createArrayBacked(ResolutionChangedCallback.class, listeners -> client -> {
-        for (ResolutionChangedCallback event : listeners) {
+    Event<ResolutionChangeCallback> EVENT = EventFactory.createArrayBacked(ResolutionChangeCallback.class, listeners -> client -> {
+        for (ResolutionChangeCallback event : listeners) {
             event.apply(client);
         }
     });
