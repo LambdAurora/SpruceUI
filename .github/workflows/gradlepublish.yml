@@ -26,4 +26,4 @@ jobs:
           RUN_COUNT: ${{ github.run_number }}
           REPO_NAME: ${{ github.repository }}
           USERNAME: ${{ github.actor }}
-          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
