@@ -13,6 +13,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,14 +22,14 @@ import org.jetbrains.annotations.NotNull;
  * Represents a button with an icon.
  *
  * @author LambdAurora
- * @version 1.3.1
+ * @version 1.5.0
  * @since 1.0.0
  */
 public abstract class AbstractIconButtonWidget extends ButtonWidget
 {
     private int iconSize = 0;
 
-    public AbstractIconButtonWidget(int x, int y, int width, int height, @NotNull String message, @NotNull PressAction action)
+    public AbstractIconButtonWidget(int x, int y, int width, int height, @NotNull Text message, @NotNull PressAction action)
     {
         super(x, y, width, height, message, action);
     }
@@ -45,7 +47,7 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
     protected abstract int renderIcon(int mouseX, int mouseY, float delta, int x, int y);
 
     @Override
-    public void renderButton(int mouseX, int mouseY, float delta)
+    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
         MinecraftClient client = MinecraftClient.getInstance();
         client.getTextureManager().bindTexture(WIDGETS_LOCATION);
@@ -53,16 +55,16 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
         int i = this.getYImage(this.isHovered());
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
-        this.blit(this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
-        this.blit(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
-        this.renderBg(client, mouseX, mouseY);
+        RenderSystem.enableDepthTest();
+        this.drawTexture(matrices, this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
+        this.drawTexture(matrices, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+        this.renderBg(matrices, client, mouseX, mouseY);
 
         this.iconSize = this.renderIcon(mouseX, mouseY, delta, this.x + 4, this.y + (this.height / 2 - this.iconSize / 2));
 
-        if (!this.getMessage().isEmpty()) {
+        if (!this.getMessage().getString().isEmpty()) {
             int j = this.active ? 16777215 : 10526880;
-            this.drawCenteredString(client.textRenderer, this.getMessage(), this.x + 8 + this.iconSize + (this.width - 8 - this.iconSize - 6) / 2,
+            this.drawCenteredText(matrices, client.textRenderer, this.getMessage(), this.x + 8 + this.iconSize + (this.width - 8 - this.iconSize - 6) / 2,
                     this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
         }
     }

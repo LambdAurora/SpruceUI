@@ -29,20 +29,20 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.3.5
+ * @version 1.5.0
  * @since 1.0.0
  */
 public class SpruceDoubleOption extends SpruceOption
 {
-    protected final float                                step;
-    protected final double                               min;
-    protected       double                               max;
-    private final   Supplier<Double>                     getter;
-    private final   Consumer<Double>                     setter;
-    private final   Function<SpruceDoubleOption, String> displayStringGetter;
-    private final   Text                                 tooltip;
+    protected final float                              step;
+    protected final double                             min;
+    protected       double                             max;
+    private final   Supplier<Double>                   getter;
+    private final   Consumer<Double>                   setter;
+    private final   Function<SpruceDoubleOption, Text> displayStringGetter;
+    private final   Text                               tooltip;
 
-    public SpruceDoubleOption(@NotNull String key, double min, double max, float step, @NotNull Supplier<Double> getter, @NotNull Consumer<Double> setter, @NotNull Function<SpruceDoubleOption, String> displayStringGetter, @Nullable Text tooltip)
+    public SpruceDoubleOption(@NotNull String key, double min, double max, float step, @NotNull Supplier<Double> getter, @NotNull Consumer<Double> setter, @NotNull Function<SpruceDoubleOption, Text> displayStringGetter, @Nullable Text tooltip)
     {
         super(key);
         this.min = min;
@@ -116,7 +116,7 @@ public class SpruceDoubleOption extends SpruceOption
      *
      * @return The display string.
      */
-    public @NotNull String getDisplayString()
+    public @NotNull Text getDisplayString()
     {
         return this.displayStringGetter.apply(this);
     }

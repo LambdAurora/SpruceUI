@@ -11,6 +11,8 @@ package me.lambdaurora.spruceui;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,12 +25,12 @@ import java.util.function.Consumer;
  * Represents a slightly modified slider widget.
  *
  * @author LambdAurora
- * @version 1.3.1
+ * @version 1.5.0
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends SliderWidget implements Tooltipable
 {
-    private       String                       baseMessage;
+    private       Text                         baseMessage;
     private final Consumer<SpruceSliderWidget> applyConsumer;
     private       double                       multiplier;
     private       String                       sign;
@@ -36,9 +38,9 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
     private       int                          tooltipTicks;
     private       long                         lastTick;
 
-    protected SpruceSliderWidget(int x, int y, int width, int height, @NotNull String message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign)
+    protected SpruceSliderWidget(int x, int y, int width, int height, @NotNull Text message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign)
     {
-        super(x, y, width, height, progress);
+        super(x, y, width, height, message, progress);
         this.baseMessage = message;
         this.applyConsumer = applyConsumer;
         this.multiplier = multiplier;
@@ -46,7 +48,7 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
         this.updateMessage();
     }
 
-    protected SpruceSliderWidget(int x, int y, int width, int height, @NotNull String message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer)
+    protected SpruceSliderWidget(int x, int y, int width, int height, @NotNull Text message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer)
     {
         this(x, y, width, height, message, progress, applyConsumer, 100.0, "%");
     }
@@ -87,7 +89,7 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
      *
      * @return The base message of the slider.
      */
-    public @NotNull String getBaseMessage()
+    public @NotNull Text getBaseMessage()
     {
         return baseMessage;
     }
@@ -97,7 +99,7 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
      *
      * @param baseMessage The base message of the slider.
      */
-    public void setBaseMessage(@NotNull String baseMessage)
+    public void setBaseMessage(@NotNull Text baseMessage)
     {
         this.baseMessage = baseMessage;
     }
@@ -105,7 +107,7 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
     @Override
     protected void updateMessage()
     {
-        this.setMessage(this.baseMessage + ": " + this.getIntValue() + sign);
+        this.setMessage(this.baseMessage.copy().append(": " + this.getIntValue() + sign));
     }
 
     @Override
@@ -127,9 +129,9 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float delta)
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
-        super.render(mouseX, mouseY, delta);
+        super.render(matrices, mouseX, mouseY, delta);
 
         if (this.visible && this.tooltip != null) {
             long currentRender = System.currentTimeMillis();
@@ -140,13 +142,12 @@ public class SpruceSliderWidget extends SliderWidget implements Tooltipable
                 }
             } else this.lastTick = currentRender;
 
-            if (!this.isFocused() && !this.isHovered)
+            if (!this.isFocused() && !this.hovered)
                 this.tooltipTicks = 0;
 
-            String tooltipText = this.tooltip.asFormattedString();
-            if (!tooltipText.isEmpty() && this.tooltipTicks >= 30) {
-                List<String> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltipText, Math.max(this.width * 2 / 3, 200));
-                if (this.isHovered)
+            if (!this.tooltip.getString().isEmpty() && this.tooltipTicks >= 30) {
+                List<? extends StringRenderable> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(this.tooltip, Math.max(this.width * 2 / 3, 200));
+                if (this.hovered)
                     new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
                 else if (this.isFocused())
                     new Tooltip(this.x - 12, this.y + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();

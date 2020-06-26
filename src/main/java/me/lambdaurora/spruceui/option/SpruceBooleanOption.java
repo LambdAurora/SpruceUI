@@ -11,12 +11,12 @@ package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.SpruceButtonWidget;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.BooleanOption;
 import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.util.TextFormat;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +29,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.3.5
+ * @version 1.5.0
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption
@@ -104,10 +104,12 @@ public class SpruceBooleanOption extends SpruceOption
      *
      * @return The display string.
      */
-    public @NotNull String getDisplayString()
+    public @NotNull Text getDisplayString()
     {
         boolean value = this.get();
-        return this.getDisplayPrefix() + (this.colored ? (value ? TextFormat.GREEN : TextFormat.RED) : "") + I18n.translate(value ? "options.on" : "options.off");
+        Text toggleText = ScreenTexts.getToggleText(value);
+        toggleText = toggleText.copy().setStyle(toggleText.getStyle().withColor(value ? Formatting.GREEN : Formatting.RED));
+        return this.getDisplayPrefix().append(toggleText);
     }
 
     /**

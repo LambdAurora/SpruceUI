@@ -12,6 +12,7 @@ package me.lambdaurora.spruceui.hud;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.util.math.MatrixStack;
 import org.aperlambda.lambdacommon.Identifier;
 import org.aperlambda.lambdacommon.utils.Identifiable;
 import org.aperlambda.lambdacommon.utils.function.Predicates;
@@ -24,7 +25,7 @@ import java.util.List;
  * Represents a HUD.
  *
  * @author LambdAurora
- * @version 1.4.0
+ * @version 1.5.0
  * @since 1.2.0
  */
 public abstract class Hud extends DrawableHelper implements Identifiable
@@ -109,9 +110,9 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      * @param tickDelta Progress for linearly interpolating between the previous and current game state.
      * @see #isEnabled()
      */
-    public void render(float tickDelta)
+    public void render(MatrixStack matrices, float tickDelta)
     {
-        this.components.stream().filter(HudComponent::isEnabled).forEach(component -> component.render(tickDelta));
+        this.components.stream().filter(HudComponent::isEnabled).forEach(component -> component.render(matrices, tickDelta));
     }
 
     /**

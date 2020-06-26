@@ -16,6 +16,9 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.NarratorManager;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +32,7 @@ import java.util.Optional;
  * Represents a separator element.
  *
  * @author LambdAurora
- * @version 1.0.1
+ * @version 1.5.0
  * @since 1.0.1
  */
 public class SpruceSeparatorWidget extends DrawableHelper implements Element, Drawable, Tooltipable
@@ -117,7 +120,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float delta)
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
         if (this.visible) {
             this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + 9;
@@ -134,16 +137,15 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
                         this.nextNarration = Long.MAX_VALUE;
                 }
 
-                String title = this.title.asFormattedString();
-                int titleWidth = this.client.textRenderer.getStringWidth(title);
+                int titleWidth = this.client.textRenderer.getWidth(this.title);
                 int titleX = this.x + (this.width / 2 - titleWidth / 2);
                 if (this.width > titleWidth) {
-                    fill(this.x, this.y + 4, titleX - 5, this.y + 6, 0xffe0e0e0);
-                    fill(titleX + titleWidth + 5, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
+                    fill(matrices, this.x, this.y + 4, titleX - 5, this.y + 6, 0xffe0e0e0);
+                    fill(matrices,titleX + titleWidth + 5, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
                 }
-                this.drawString(this.client.textRenderer, title, titleX, this.y, 0xffffff);
+                this.drawTextWithShadow(matrices, this.client.textRenderer, this.title, titleX, this.y, 0xffffff);
             } else {
-                fill(this.x, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
+                fill(matrices, this.x, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
             }
 
             if (this.tooltip != null) {
@@ -158,9 +160,8 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
                 if (!this.focused && !this.hovered)
                     this.tooltipTicks = 0;
 
-                String tooltipText = this.tooltip.asFormattedString();
-                if (!tooltipText.isEmpty() && this.tooltipTicks >= 30) {
-                    List<String> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(tooltipText, Math.max(this.width * 2 / 3, 200));
+                if (!this.tooltip.getString().isEmpty() && this.tooltipTicks >= 30) {
+                    List<? extends StringRenderable> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(this.tooltip, Math.max(this.width * 2 / 3, 200));
                     if (this.hovered)
                         new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
                     else if (this.focused)
@@ -186,7 +187,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
 
     protected String getNarrationMessage()
     {
-        return this.getTitle().map(Text::asFormattedString)
+        return this.getTitle().map(Text::asString)
                 .filter(title -> !title.isEmpty())
                 .map(title -> I18n.translate("spruceui.narrator.separator", title))
                 .orElse("");
@@ -212,7 +213,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
      * Represents a button wrapper for the option.
      *
      * @author LambdAurora
-     * @version 1.3.1
+     * @version 1.5.0
      * @since 1.0.1
      */
     public static class ButtonWrapper extends AbstractButtonWidget
@@ -221,15 +222,15 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
 
         public ButtonWrapper(@NotNull SpruceSeparatorWidget separator, int height)
         {
-            super(separator.x, separator.y, separator.width, height, separator.getTitle().map(Text::asFormattedString).orElse(""));
+            super(separator.x, separator.y, separator.width, height, separator.getTitle().orElse(LiteralText.EMPTY));
             this.widget = separator;
         }
 
         @Override
-        public void render(int mouseX, int mouseY, float delta)
+        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
         {
             this.widget.y = this.y + this.height / 2 - 9 / 2;
-            this.widget.render(mouseX, mouseY, delta);
+            this.widget.render(matrices, mouseX, mouseY, delta);
         }
 
         @Override

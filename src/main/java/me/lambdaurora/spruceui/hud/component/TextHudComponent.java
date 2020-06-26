@@ -11,6 +11,8 @@ package me.lambdaurora.spruceui.hud.component;
 
 import me.lambdaurora.spruceui.hud.HudComponent;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
 import org.aperlambda.lambdacommon.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,21 +20,21 @@ import org.jetbrains.annotations.NotNull;
  * Represents a text HUD component.
  *
  * @author LambdAurora
- * @version 1.3.5
+ * @version 1.5.0
  * @since 1.3.5
  */
 public class TextHudComponent extends HudComponent
 {
     protected MinecraftClient client;
-    protected String          text;
+    protected Text            text;
     protected int             color;
 
-    public TextHudComponent(@NotNull Identifier identifier, int x, int y, String text)
+    public TextHudComponent(@NotNull Identifier identifier, int x, int y, Text text)
     {
         this(identifier, x, y, text, 0xffffffff);
     }
 
-    public TextHudComponent(@NotNull Identifier identifier, int x, int y, String text, int color)
+    public TextHudComponent(@NotNull Identifier identifier, int x, int y, Text text, int color)
     {
         super(identifier, x, y);
         this.client = MinecraftClient.getInstance();
@@ -45,7 +47,7 @@ public class TextHudComponent extends HudComponent
      *
      * @return The component's text.
      */
-    public String getText()
+    public Text getText()
     {
         return this.text;
     }
@@ -55,7 +57,7 @@ public class TextHudComponent extends HudComponent
      *
      * @param text The text.
      */
-    public void setText(String text)
+    public void setText(Text text)
     {
         this.text = text;
     }
@@ -81,8 +83,8 @@ public class TextHudComponent extends HudComponent
     }
 
     @Override
-    public void render(float tickDelta)
+    public void render(MatrixStack matrices, float tickDelta)
     {
-        this.drawString(client.textRenderer, this.text, this.x, this.y, this.color);
+        this.drawTextWithShadow(matrices, client.textRenderer, this.text, this.x, this.y, this.color);
     }
 }

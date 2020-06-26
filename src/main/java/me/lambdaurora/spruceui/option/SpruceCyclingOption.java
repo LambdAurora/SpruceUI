@@ -27,16 +27,16 @@ import java.util.function.Function;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.3.5
+ * @version 1.5.0
  * @since 1.0.0
  */
 public class SpruceCyclingOption extends SpruceOption
 {
     private final Consumer<Integer>                     setter;
-    private final Function<SpruceCyclingOption, String> messageProvider;
+    private final Function<SpruceCyclingOption, Text> messageProvider;
     private final Text                                  tooltip;
 
-    public SpruceCyclingOption(@NotNull String key, @NotNull Consumer<Integer> setter, @NotNull Function<SpruceCyclingOption, String> messageProvider, @Nullable Text tooltip)
+    public SpruceCyclingOption(@NotNull String key, @NotNull Consumer<Integer> setter, @NotNull Function<SpruceCyclingOption, Text> messageProvider, @Nullable Text tooltip)
     {
         super(key);
         this.setter = setter;
@@ -70,7 +70,7 @@ public class SpruceCyclingOption extends SpruceOption
      *
      * @return The option message.
      */
-    public @NotNull String getMessage()
+    public @NotNull Text getMessage()
     {
         return this.messageProvider.apply(this);
     }
