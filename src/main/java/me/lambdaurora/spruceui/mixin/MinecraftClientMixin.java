@@ -10,7 +10,7 @@
 package me.lambdaurora.spruceui.mixin;
 
 import me.lambdaurora.spruceui.event.OpenScreenCallback;
-import me.lambdaurora.spruceui.event.ResolutionChangedCallback;
+import me.lambdaurora.spruceui.event.ResolutionChangeCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Represents the injection point for the {@link OpenScreenCallback} and {@link ResolutionChangedCallback} events.
+ * Represents the injection point for the {@link OpenScreenCallback} and {@link ResolutionChangeCallback} events.
  *
  * @author LambdAurora
  * @version 1.4.0
@@ -43,6 +43,6 @@ public class MinecraftClientMixin
     @Inject(method = "onResolutionChanged", at = @At("RETURN"))
     private void spruceui_onResolutionChanged(CallbackInfo ci)
     {
-        ResolutionChangedCallback.EVENT.invoker().apply((MinecraftClient) (Object) this);
+        ResolutionChangeCallback.EVENT.invoker().apply((MinecraftClient) (Object) this);
     }
 }

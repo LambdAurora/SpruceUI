@@ -10,7 +10,6 @@
 package me.lambdaurora.spruceui.event;
 
 import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import org.jetbrains.annotations.NotNull;
@@ -26,16 +25,8 @@ import org.jetbrains.annotations.Nullable;
 @FunctionalInterface
 public interface OpenScreenCallback
 {
-    Event<OpenScreenCallback> PRE = EventFactory.createArrayBacked(OpenScreenCallback.class, listeners -> (client, screen) -> {
-        for (OpenScreenCallback event : listeners) {
-            event.apply(client, screen);
-        }
-    });
-    Event<OpenScreenCallback> EVENT = EventFactory.createArrayBacked(OpenScreenCallback.class, listeners -> (client, screen) -> {
-        for (OpenScreenCallback event : listeners) {
-            event.apply(client, screen);
-        }
-    });
+    Event<OpenScreenCallback> PRE   = EventUtil.makeOpenScreenEvent();
+    Event<OpenScreenCallback> EVENT = EventUtil.makeOpenScreenEvent();
 
     void apply(@NotNull MinecraftClient client, @Nullable Screen screen);
 }
