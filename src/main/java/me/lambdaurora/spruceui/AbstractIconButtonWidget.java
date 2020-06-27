@@ -9,7 +9,6 @@
 
 package me.lambdaurora.spruceui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a button with an icon.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.5.1
  * @since 1.0.0
  */
 public abstract class AbstractIconButtonWidget extends ButtonWidget
@@ -37,6 +36,7 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
     /**
      * Renders the icon.
      *
+     * @param matrices The matrix stack.
      * @param mouseX Mouse X.
      * @param mouseY Mouse Y.
      * @param delta  Delta.
@@ -44,7 +44,7 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
      * @param y      Y coordinates of the icon.
      * @return The size of the icon.
      */
-    protected abstract int renderIcon(int mouseX, int mouseY, float delta, int x, int y);
+    protected abstract int renderIcon(MatrixStack matrices, int mouseX, int mouseY, float delta, int x, int y);
 
     @Override
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta)
@@ -60,7 +60,7 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
         this.drawTexture(matrices, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
         this.renderBg(matrices, client, mouseX, mouseY);
 
-        this.iconSize = this.renderIcon(mouseX, mouseY, delta, this.x + 4, this.y + (this.height / 2 - this.iconSize / 2));
+        this.iconSize = this.renderIcon(matrices, mouseX, mouseY, delta, this.x + 4, this.y + (this.height / 2 - this.iconSize / 2));
 
         if (!this.getMessage().getString().isEmpty()) {
             int j = this.active ? 16777215 : 10526880;
