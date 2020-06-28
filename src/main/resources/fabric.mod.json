@@ -30,6 +30,7 @@
     "minecraft": ">=1.16"
   },
   "suggests": {
+    "ltr": "*"
   },
   "custom": {
     "modmenu:api": true,
