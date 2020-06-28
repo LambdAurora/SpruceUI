@@ -6,6 +6,8 @@
 # JetBrains
 .idea/
 *.iml
+*.ipr
+*.iws
 ## Intellij IDEA
 out/
 ## CLion
