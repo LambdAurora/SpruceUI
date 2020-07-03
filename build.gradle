@@ -13,9 +13,10 @@ minecraft {
 
 repositories {
     mavenLocal()
-    mavenCentral()
-    maven { url = 'https://aperlambda.github.io/maven' }
-    maven { url = "https://jitpack.io" }
+    maven {
+        name = "AperLambda"
+        url = 'https://aperlambda.github.io/maven'
+    }
 }
 
 configurations {
