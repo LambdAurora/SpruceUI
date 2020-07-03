@@ -3,7 +3,7 @@ name: Gradle Build
 on:
   push:
     branches:
-      - *
+      - '*'
 
 jobs:
   build:
