@@ -1,5 +1,6 @@
 {
   "spruceui.reset": "Reset",
   "spruceui.narrator.separator": "%s separator",
+  "spruceui.options.generic": "%s: %s",
   "spruceui.widget.separator": "Separator"
 }

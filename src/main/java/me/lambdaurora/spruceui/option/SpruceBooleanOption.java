@@ -29,7 +29,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.5.6
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption
@@ -91,9 +91,9 @@ public class SpruceBooleanOption extends SpruceOption
     @Override
     public @NotNull AbstractButtonWidget createButton(@NotNull GameOptions options, int x, int y, int width)
     {
-        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.getDisplayString(), btn -> {
+        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.getDisplayText(), btn -> {
             this.set();
-            btn.setMessage(this.getDisplayString());
+            btn.setMessage(this.getDisplayText());
         });
         button.setTooltip(this.tooltip);
         return button;
@@ -104,12 +104,12 @@ public class SpruceBooleanOption extends SpruceOption
      *
      * @return The display string.
      */
-    public @NotNull Text getDisplayString()
+    public @NotNull Text getDisplayText()
     {
         boolean value = this.get();
         Text toggleText = ScreenTexts.getToggleText(value);
         toggleText = toggleText.copy().setStyle(toggleText.getStyle().withColor(value ? Formatting.GREEN : Formatting.RED));
-        return this.getDisplayPrefix().append(toggleText);
+        return this.getDisplayText(toggleText);
     }
 
     /**

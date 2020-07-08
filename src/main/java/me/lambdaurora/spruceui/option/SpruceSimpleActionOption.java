@@ -47,7 +47,7 @@ public class SpruceSimpleActionOption extends SpruceOption implements Nameable
     @Override
     public AbstractButtonWidget createButton(GameOptions options, int x, int y, int width)
     {
-        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, new LiteralText(this.getName()), action::accept);
+        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, new TranslatableText(this.key), action::accept);
         button.setTooltip(this.tooltip);
         return button;
     }

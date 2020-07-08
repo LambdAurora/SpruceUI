@@ -13,7 +13,6 @@ import me.lambdaurora.spruceui.event.OpenScreenCallback;
 import me.lambdaurora.spruceui.event.ResolutionChangeCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.event.client.ClientTickCallback;
 import net.minecraft.client.MinecraftClient;
 import org.aperlambda.lambdacommon.Identifier;
 import org.jetbrains.annotations.NotNull;

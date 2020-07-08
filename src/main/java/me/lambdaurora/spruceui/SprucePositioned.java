@@ -13,16 +13,28 @@ package me.lambdaurora.spruceui;
  * Generic interface representing an object that provides a screen position.
  *
  * @author LambdAurora
- * @version 1.4.0
+ * @version 1.5.6
  * @since 1.4.0
  */
 public interface SprucePositioned
 {
-    default int getX() {
+    /**
+     * Returns the X coordinate.
+     *
+     * @return The X coordinate.
+     */
+    default int getX()
+    {
         return 0;
     }
 
-    default int getY() {
+    /**
+     * Returns the Y coordinate.
+     *
+     * @return The Y coordinate.
+     */
+    default int getY()
+    {
         return 0;
     }
 }

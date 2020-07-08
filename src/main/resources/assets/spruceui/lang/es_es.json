@@ -1,3 +1,4 @@
 {
-  "spruceui.reset": "Reiniciar"
+  "spruceui.reset": "Reiniciar",
+  "spruceui.options.generic": "%s: %s"
 }

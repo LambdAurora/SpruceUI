@@ -16,10 +16,10 @@ import net.fabricmc.fabric.api.event.EventFactory;
  * Represents a set of utilities for SpruceUI's events.
  *
  * @author LambdAurora
- * @version 1.4.0
+ * @version 1.5.6
  * @since 1.4.0
  */
-public class EventUtil
+public final class EventUtil
 {
     private EventUtil()
     {

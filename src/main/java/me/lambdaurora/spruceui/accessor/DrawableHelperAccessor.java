@@ -11,7 +11,6 @@ package me.lambdaurora.spruceui.accessor;
 
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
@@ -27,7 +26,8 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface DrawableHelperAccessor
 {
     @Invoker("fillGradient")
-    static void spruceui_fillGradient(Matrix4f matrix, BufferBuilder bufferBuilder, int top, int left, int right, int bottom, int i, int color1, int color2) {
+    static void spruceui_fillGradient(Matrix4f matrix, BufferBuilder bufferBuilder, int top, int left, int right, int bottom, int i, int color1, int color2)
+    {
         throw new IllegalStateException("Dummy method body invoked. A critical mixin failure has occured.");
     }
 }

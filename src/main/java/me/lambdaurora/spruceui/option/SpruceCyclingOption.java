@@ -32,9 +32,9 @@ import java.util.function.Function;
  */
 public class SpruceCyclingOption extends SpruceOption
 {
-    private final Consumer<Integer>                     setter;
+    private final Consumer<Integer>                   setter;
     private final Function<SpruceCyclingOption, Text> messageProvider;
-    private final Text                                  tooltip;
+    private final Text                                tooltip;
 
     public SpruceCyclingOption(@NotNull String key, @NotNull Consumer<Integer> setter, @NotNull Function<SpruceCyclingOption, Text> messageProvider, @Nullable Text tooltip)
     {

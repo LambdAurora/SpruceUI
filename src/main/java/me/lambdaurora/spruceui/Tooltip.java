@@ -14,7 +14,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.StringRenderable;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -24,10 +23,10 @@ import java.util.Queue;
  * Represents a tooltip.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.5.6
  * @since 1.0.0
  */
-public class Tooltip extends DrawableHelper
+public class Tooltip extends DrawableHelper implements SprucePositioned
 {
     private static final Queue<Tooltip>                   TOOLTIPS = Queues.newConcurrentLinkedQueue();
     private final        int                              x;
@@ -51,6 +50,23 @@ public class Tooltip extends DrawableHelper
         this.tooltip = tooltip;
     }
 
+    @Override
+    public int getX()
+    {
+        return this.x;
+    }
+
+    @Override
+    public int getY()
+    {
+        return this.y;
+    }
+
+    /**
+     * Returns whether the tooltip should render or not.
+     *
+     * @return True if the tooltip should render, else false.
+     */
     public boolean shouldRender()
     {
         return !this.tooltip.isEmpty();
@@ -73,6 +89,11 @@ public class Tooltip extends DrawableHelper
         TOOLTIPS.add(this);
     }
 
+    /**
+     * Renders all the tooltips.
+     *
+     * @param matrices The matrices.
+     */
     public static void renderAll(MatrixStack matrices)
     {
         synchronized (TOOLTIPS) {

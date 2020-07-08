@@ -141,7 +141,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
                 int titleX = this.x + (this.width / 2 - titleWidth / 2);
                 if (this.width > titleWidth) {
                     fill(matrices, this.x, this.y + 4, titleX - 5, this.y + 6, 0xffe0e0e0);
-                    fill(matrices,titleX + titleWidth + 5, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
+                    fill(matrices, titleX + titleWidth + 5, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
                 }
                 this.drawTextWithShadow(matrices, this.client.textRenderer, this.title, titleX, this.y, 0xffffff);
             } else {
