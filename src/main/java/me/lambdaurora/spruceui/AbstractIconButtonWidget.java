@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a button with an icon.
  *
  * @author LambdAurora
- * @version 1.5.1
+ * @version 1.4.1
  * @since 1.0.0
  */
 public abstract class AbstractIconButtonWidget extends ButtonWidget
@@ -30,7 +30,7 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
 
     public AbstractIconButtonWidget(int x, int y, int width, int height, @NotNull Text message, @NotNull PressAction action)
     {
-        super(x, y, width, height, message, action);
+        super(x, y, width, height, message.asFormattedString(), action);
     }
 
     /**
@@ -47,7 +47,7 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
     protected abstract int renderIcon(MatrixStack matrices, int mouseX, int mouseY, float delta, int x, int y);
 
     @Override
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta)
+    public void renderButton(int mouseX, int mouseY, float delta)
     {
         MinecraftClient client = MinecraftClient.getInstance();
         client.getTextureManager().bindTexture(WIDGETS_LOCATION);
@@ -56,15 +56,15 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
-        this.drawTexture(matrices, this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
-        this.drawTexture(matrices, this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
-        this.renderBg(matrices, client, mouseX, mouseY);
+        this.blit(this.x, this.y, 0, 46 + i * 20, this.width / 2, this.height);
+        this.blit(this.x + this.width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+        this.renderBg(client, mouseX, mouseY);
 
-        this.iconSize = this.renderIcon(matrices, mouseX, mouseY, delta, this.x + 4, this.y + (this.height / 2 - this.iconSize / 2));
+        this.iconSize = this.renderIcon(null, mouseX, mouseY, delta, this.x + 4, this.y + (this.height / 2 - this.iconSize / 2));
 
-        if (!this.getMessage().getString().isEmpty()) {
+        if (!this.getMessage().isEmpty()) {
             int j = this.active ? 16777215 : 10526880;
-            this.drawCenteredText(matrices, client.textRenderer, this.getMessage(), this.x + 8 + this.iconSize + (this.width - 8 - this.iconSize - 6) / 2,
+            this.drawCenteredString(client.textRenderer, this.getMessage(), this.x + 8 + this.iconSize + (this.width - 8 - this.iconSize - 6) / 2,
                     this.y + (this.height - 8) / 2, j | MathHelper.ceil(this.alpha * 255.0F) << 24);
         }
     }

@@ -21,7 +21,7 @@ import java.util.function.BiConsumer;
  * Represents a textured button widget.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.4.1
  * @since 1.0.0
  */
 public class SpruceTexturedButtonWidget extends TexturedButtonWidget
@@ -87,7 +87,7 @@ public class SpruceTexturedButtonWidget extends TexturedButtonWidget
     protected void onDrag(double mouseX, double mouseY, double deltaX, double deltaY)
     {
         super.onDrag(mouseX, mouseY, deltaX, deltaY);
-        if (this.active && !this.hovered)
+        if (this.active && !this.isHovered)
             this.onChangeState.accept(this, false);
     }
 }

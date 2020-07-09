@@ -11,8 +11,6 @@ package me.lambdaurora.spruceui;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +22,7 @@ import java.util.Optional;
  * Represents a button widget.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.4.1
  * @since 1.0.0
  */
 public class SpruceButtonWidget extends ButtonWidget implements Tooltipable
@@ -35,7 +33,7 @@ public class SpruceButtonWidget extends ButtonWidget implements Tooltipable
 
     public SpruceButtonWidget(int x, int y, int width, int height, Text message, PressAction action)
     {
-        super(x, y, width, height, message, action);
+        super(x, y, width, height, message.asFormattedString(), action);
     }
 
     @Override
@@ -51,9 +49,9 @@ public class SpruceButtonWidget extends ButtonWidget implements Tooltipable
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
+    public void render(int mouseX, int mouseY, float delta)
     {
-        super.render(matrices, mouseX, mouseY, delta);
+        super.render(mouseX, mouseY, delta);
 
         if (this.visible && this.tooltip != null) {
             long currentRender = System.currentTimeMillis();
@@ -64,12 +62,12 @@ public class SpruceButtonWidget extends ButtonWidget implements Tooltipable
                 }
             } else this.lastTick = currentRender;
 
-            if (!this.isFocused() && !this.hovered)
+            if (!this.isFocused() && !this.isHovered)
                 this.tooltipTicks = 0;
 
             if (!this.tooltip.getString().isEmpty() && this.tooltipTicks >= 30) {
-                List<? extends StringRenderable> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(this.tooltip, Math.max(this.width * 2 / 3, 200));
-                if (this.hovered)
+                List<String> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(this.tooltip.asFormattedString(), Math.max(this.width * 2 / 3, 200));
+                if (this.isHovered)
                     new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
                 else if (this.isFocused())
                     new Tooltip(this.x - 12, this.y + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();

@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  * Represents a checkbox widget.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.4.1
  * @since 1.0.0
  */
 public class SpruceCheckboxWidget extends net.minecraft.client.gui.widget.CheckboxWidget
@@ -26,7 +26,7 @@ public class SpruceCheckboxWidget extends net.minecraft.client.gui.widget.Checkb
 
     public SpruceCheckboxWidget(int x, int y, int width, int height, Text message, boolean checked, Consumer<SpruceCheckboxWidget> action)
     {
-        super(x, y, width, height, message, checked);
+        super(x, y, width, height, message.asFormattedString(), checked);
         this.action = action;
     }
 

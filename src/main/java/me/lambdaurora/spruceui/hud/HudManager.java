@@ -34,9 +34,9 @@ public class HudManager
 
     public void initialize()
     {
-        HudRenderCallback.EVENT.register((matrices, tickDelta) -> HUDS.forEach((id, hud) -> {
+        HudRenderCallback.EVENT.register(tickDelta -> HUDS.forEach((id, hud) -> {
             if (hud.isEnabled() && hud.isVisible())
-                hud.render(matrices, tickDelta);
+                hud.render(null, tickDelta);
         }));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (!canRenderHuds(client))

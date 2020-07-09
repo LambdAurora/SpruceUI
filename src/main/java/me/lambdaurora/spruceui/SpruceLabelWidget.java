@@ -13,8 +13,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +26,7 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.4.1
  * @since 1.0.0
  */
 public class SpruceLabelWidget extends DrawableHelper implements Element, Drawable, Tooltipable
@@ -84,7 +82,7 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
      */
     public void setText(@NotNull Text text)
     {
-        int width = this.client.textRenderer.getWidth(text);
+        int width = this.client.textRenderer.getStringWidth(text.asFormattedString());
         if (width > this.maxWidth) {
             width = this.maxWidth;
         }
@@ -135,20 +133,20 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
+    public void render(int mouseX, int mouseY, float delta)
     {
         if (this.visible) {
-            int x = this.centered ? this.x - this.client.textRenderer.getWidth(this.text) / 2 : this.x;
+            int x = this.centered ? this.x - this.client.textRenderer.getStringWidth(this.text.asFormattedString()) / 2 : this.x;
             this.hovered = mouseX >= x && mouseY >= this.y && mouseX < x + this.width && mouseY < this.y + this.height;
-            this.client.textRenderer.drawTrimmed(this.text, x, this.y, this.maxWidth, 10526880);
+            this.client.textRenderer.drawTrimmed(this.text.asFormattedString(), x, this.y, this.maxWidth, 10526880);
 
             if (this.tooltip != null) {
                 if (!this.tooltip.getString().isEmpty()) {
-                    List<? extends StringRenderable> wrappedTooltipText = this.client.textRenderer.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
+                    List<String> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapStringToWidthAsList(this.tooltip.asFormattedString(), Math.max(this.width * 2 / 3, 200));
                     if (this.hovered)
                         new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
                     else if (this.focused)
-                        new Tooltip(this.x - 12, this.y, wrappedTooltipText).queue();
+                        new Tooltip(this.x - 12, this.y + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
                 }
             }
         }

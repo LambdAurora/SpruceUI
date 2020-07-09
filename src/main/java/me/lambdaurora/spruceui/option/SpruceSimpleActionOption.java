@@ -12,7 +12,6 @@ package me.lambdaurora.spruceui.option;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.GameOptions;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import org.aperlambda.lambdacommon.utils.Nameable;
 import org.jetbrains.annotations.NotNull;

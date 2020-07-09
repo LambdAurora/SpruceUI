@@ -14,6 +14,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.CyclingOption;
 import net.minecraft.client.options.GameOptions;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +28,7 @@ import java.util.function.Function;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.4.1
  * @since 1.0.0
  */
 public class SpruceCyclingOption extends SpruceOption
@@ -59,7 +60,7 @@ public class SpruceCyclingOption extends SpruceOption
     {
         SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.getMessage(), btn -> {
             this.cycle(1);
-            btn.setMessage(this.getMessage());
+            btn.setMessage(this.getMessage().asFormattedString());
         });
         button.setTooltip(this.tooltip);
         return button;
@@ -86,6 +87,6 @@ public class SpruceCyclingOption extends SpruceOption
     public static @NotNull SpruceCyclingOption fromVanilla(@NotNull String key, @NotNull CyclingOption vanilla, @Nullable Text tooltip)
     {
         GameOptions options = MinecraftClient.getInstance().options;
-        return new SpruceCyclingOption(key, amount -> vanilla.cycle(options, amount), option -> vanilla.getMessage(options), tooltip);
+        return new SpruceCyclingOption(key, amount -> vanilla.cycle(options, amount), option -> new LiteralText(vanilla.getMessage(options)), tooltip);
     }
 }

@@ -14,6 +14,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.DoubleOption;
 import net.minecraft.client.options.GameOptions;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.4.1
  * @since 1.0.0
  */
 public class SpruceDoubleOption extends SpruceOption
@@ -135,7 +136,7 @@ public class SpruceDoubleOption extends SpruceOption
         return new SpruceDoubleOption(key, vanilla.getMin(), vanilla.getMax(), step,
                 () -> vanilla.get(options),
                 newValue -> vanilla.set(options, newValue),
-                option -> vanilla.getDisplayString(options),
+                option -> new LiteralText(vanilla.getDisplayString(options)),
                 tooltip);
     }
 }

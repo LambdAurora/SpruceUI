@@ -85,6 +85,6 @@ public class TextHudComponent extends HudComponent
     @Override
     public void render(MatrixStack matrices, float tickDelta)
     {
-        this.drawTextWithShadow(matrices, client.textRenderer, this.text, this.x, this.y, this.color);
+        this.drawString(client.textRenderer, this.text.asFormattedString(), this.x, this.y, this.color);
     }
 }
