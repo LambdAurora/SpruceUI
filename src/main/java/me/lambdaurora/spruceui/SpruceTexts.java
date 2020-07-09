@@ -16,7 +16,7 @@ import net.minecraft.text.TranslatableText;
  * Represents a text utility class.
  *
  * @author LambdAurora
- * @version 1.5.7
+ * @version 1.5.8
  * @since 1.5.7
  */
 public final class SpruceTexts
@@ -55,4 +55,24 @@ public final class SpruceTexts
      * Represents the option value "unbound" as text.
      */
     public static final Text OPTIONS_GENERIC_UNBOUND = new TranslatableText("spruceui.options.generic.unbound");
+
+    /**
+     * Represents the option value "on" as text.
+     */
+    public static final Text OPTIONS_ON = new TranslatableText("options.on");
+
+    /**
+     * Represents the option value "off" as text.
+     */
+    public static final Text OPTIONS_OFF = new TranslatableText("options.off");
+
+    /**
+     * Represents the option value "visible" as text.
+     */
+    public static final Text OPTIONS_VISIBLE = new TranslatableText("options.visible");
+
+    /**
+     * Represents the option value "hidden" as text.
+     */
+    public static final Text OPTIONS_HIDDEN = new TranslatableText("options.hidden");
 }
