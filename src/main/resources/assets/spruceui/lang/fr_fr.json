@@ -2,5 +2,11 @@
   "spruceui.reset": "Réinitialiser",
   "spruceui.narrator.separator": "Séparateur %s",
   "spruceui.options.generic": "%s: %s",
+  "spruceui.options.generic.default": "Par défaut",
+  "spruceui.options.generic.fancy": "Détaillé",
+  "spruceui.options.generic.fast": "Rapide",
+  "spruceui.options.generic.fastest": "Très rapide",
+  "spruceui.options.generic.none": "Aucun",
+  "spruceui.options.generic.simple": "Simple",
   "spruceui.widget.separator": "Séparateur"
 }
