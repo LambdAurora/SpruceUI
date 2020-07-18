@@ -16,11 +16,15 @@ import net.minecraft.text.TranslatableText;
  * Represents a text utility class.
  *
  * @author LambdAurora
- * @version 1.5.8
+ * @version 1.5.9
  * @since 1.5.7
  */
 public final class SpruceTexts
 {
+    public static final Text GUI_DONE = new TranslatableText("gui.done");
+
+    public static final Text MENU_OPTIONS = new TranslatableText("menu.options");
+
     /**
      * Represents the option value "default" as text.
      */
@@ -75,4 +79,9 @@ public final class SpruceTexts
      * Represents the option value "hidden" as text.
      */
     public static final Text OPTIONS_HIDDEN = new TranslatableText("options.hidden");
+
+    /**
+     * Represents the "reset" text.
+     */
+    public static final Text RESET_TEXT = new TranslatableText("spruceui.reset");
 }
