@@ -1,0 +1,13 @@
+{
+  "spruceui.reset": "Resetear",
+  "spruceui.narrator.separator": "%s separador",
+  "spruceui.options.generic": "%s: %s",
+  "spruceui.options.generic.default": "Por defecto",
+  "spruceui.options.generic.fancy": "Detalladas",
+  "spruceui.options.generic.fast": "Rápidas",
+  "spruceui.options.generic.fastest": "Más rápidas",
+  "spruceui.options.generic.none": "Ninguno",
+  "spruceui.options.generic.simple": "Simple",
+  "spruceui.options.generic.unbound": "Reiniciar",
+  "spruceui.widget.separator": "Separador"
+}
