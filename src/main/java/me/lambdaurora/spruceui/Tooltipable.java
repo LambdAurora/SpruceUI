@@ -14,7 +14,7 @@ import me.lambdaurora.spruceui.accessor.DrawableHelperAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.StringRenderable;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Matrix4f;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +27,7 @@ import java.util.Optional;
  * Represents an object which can show a tooltip.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.6.0
  * @since 1.0.0
  */
 public interface Tooltipable
@@ -57,14 +57,14 @@ public interface Tooltipable
      * @param x        The X coordinate of the tooltip.
      * @param y        The Y coordinate of the tooltip.
      */
-    static void render(@NotNull MinecraftClient client, @NotNull MatrixStack matrices, List<? extends StringRenderable> text, int x, int y)
+    static void render(@NotNull MinecraftClient client, @NotNull MatrixStack matrices, List<OrderedText> text, int x, int y)
     {
         if (!text.isEmpty()) {
             RenderSystem.disableRescaleNormal();
             RenderSystem.disableDepthTest();
             int i = 0;
 
-            for (StringRenderable string : text) {
+            for (OrderedText string : text) {
                 int j = client.textRenderer.getWidth(string);
                 if (j > i) {
                     i = j;
@@ -115,7 +115,7 @@ public interface Tooltipable
             matrices.translate(0.0D, 0.0D, 400);
 
             for (int lineIndex = 0; lineIndex < text.size(); ++lineIndex) {
-                StringRenderable line = text.get(lineIndex);
+                OrderedText line = text.get(lineIndex);
                 if (line != null) {
                     client.textRenderer.draw(line, (float) textX, (float) textY, -1, true, matrix4f, immediate, false, 0, 15728880);
                 }

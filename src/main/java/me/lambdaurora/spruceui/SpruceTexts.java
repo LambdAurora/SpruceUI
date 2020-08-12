@@ -11,19 +11,49 @@ package me.lambdaurora.spruceui;
 
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a text utility class.
  *
  * @author LambdAurora
- * @version 1.5.9
+ * @version 1.6.0
  * @since 1.5.7
  */
 public final class SpruceTexts
 {
+    /**
+     * Represents the text usually present in tooltips to indicate that the link can be opened.
+     *
+     * @since 1.6.0
+     */
+    public static final Text CHAT_LINK_OPEN = new TranslatableText("chat.link.open");
+
+    /**
+     * Represents the button text to reset a keybinding.
+     *
+     * @see #getNarratorControlsReset(Text)
+     * @since 1.6.0
+     */
+    public static final Text CONTROLS_RESET = new TranslatableText("controls.reset");
+
+    /**
+     * Represents the text "reset all" which is presents on a button in the controls screen.
+     *
+     * @since 1.6.0
+     */
+    public static final Text CONTROLS_RESET_ALL = new TranslatableText("controls.resetAll");
+
     public static final Text GUI_DONE = new TranslatableText("gui.done");
 
     public static final Text MENU_OPTIONS = new TranslatableText("menu.options");
+
+    /**
+     * Represents the text "not bound".
+     *
+     * @since 1.6.0
+     */
+    public static final Text NOT_BOUND = new TranslatableText("spruceui.not_bound");
 
     /**
      * Represents the option value "default" as text.
@@ -84,4 +114,17 @@ public final class SpruceTexts
      * Represents the "reset" text.
      */
     public static final Text RESET_TEXT = new TranslatableText("spruceui.reset");
+
+    /**
+     * Returns the narrator text to describe the button which resets a keybinding.
+     *
+     * @param bindingName The binding name.
+     * @return The text.
+     * @see #CONTROLS_RESET
+     * @since 1.6.0
+     */
+    public static Text getNarratorControlsReset(@NotNull Text bindingName)
+    {
+        return new TranslatableText("narrator.controls.reset", bindingName);
+    }
 }

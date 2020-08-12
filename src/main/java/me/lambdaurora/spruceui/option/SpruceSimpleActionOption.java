@@ -23,19 +23,18 @@ import java.util.function.Consumer;
  * Represents an option with a simple action.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.6.0
  * @since 1.0.1
  */
 public class SpruceSimpleActionOption extends SpruceOption implements Nameable
 {
     private final Consumer<AbstractButtonWidget> action;
-    private final TranslatableText               tooltip;
 
     public SpruceSimpleActionOption(@NotNull String key, @NotNull Consumer<AbstractButtonWidget> action, @Nullable TranslatableText tooltip)
     {
         super(key);
         this.action = action;
-        this.tooltip = tooltip;
+        this.setTooltip(tooltip);
     }
 
     public SpruceSimpleActionOption(@NotNull String key, @NotNull Consumer<AbstractButtonWidget> action)
@@ -47,7 +46,7 @@ public class SpruceSimpleActionOption extends SpruceOption implements Nameable
     public AbstractButtonWidget createButton(GameOptions options, int x, int y, int width)
     {
         SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, new TranslatableText(this.key), action::accept);
-        button.setTooltip(this.tooltip);
+        this.getOptionTooltip().ifPresent(button::setTooltip);
         return button;
     }
 }

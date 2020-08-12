@@ -9,25 +9,22 @@
 
 package me.lambdaurora.spruceui;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
  * Represents a button widget.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.6.0
  * @since 1.0.0
  */
-public class SpruceButtonWidget extends ButtonWidget implements Tooltipable
+public class SpruceButtonWidget extends ButtonWidget implements SpruceWidget, Tooltipable
 {
     private Text tooltip;
     private int  tooltipTicks;
@@ -55,25 +52,30 @@ public class SpruceButtonWidget extends ButtonWidget implements Tooltipable
     {
         super.render(matrices, mouseX, mouseY, delta);
 
-        if (this.visible && this.tooltip != null) {
-            long currentRender = System.currentTimeMillis();
-            if (this.lastTick != 0) {
-                if (currentRender - this.lastTick >= 20) {
-                    this.tooltipTicks++;
-                    this.lastTick = currentRender;
-                }
-            } else this.lastTick = currentRender;
+        Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
+    }
 
-            if (!this.isFocused() && !this.hovered)
-                this.tooltipTicks = 0;
+    @Override
+    public int getX()
+    {
+        return this.x;
+    }
 
-            if (!this.tooltip.getString().isEmpty() && this.tooltipTicks >= 30) {
-                List<? extends StringRenderable> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(this.tooltip, Math.max(this.width * 2 / 3, 200));
-                if (this.hovered)
-                    new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
-                else if (this.isFocused())
-                    new Tooltip(this.x - 12, this.y + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
-            }
-        }
+    @Override
+    public int getY()
+    {
+        return this.y;
+    }
+
+    @Override
+    public boolean isVisible()
+    {
+        return this.visible;
+    }
+
+    @Override
+    public void setVisible(boolean visible)
+    {
+        this.visible = visible;
     }
 }

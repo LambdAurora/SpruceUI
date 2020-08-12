@@ -29,7 +29,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.5.6
+ * @version 1.6.0
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption
@@ -37,7 +37,6 @@ public class SpruceBooleanOption extends SpruceOption
     private final Supplier<Boolean> getter;
     private final Consumer<Boolean> setter;
     private final boolean           colored;
-    private final Text              tooltip;
 
     public SpruceBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip)
     {
@@ -50,7 +49,7 @@ public class SpruceBooleanOption extends SpruceOption
         this.getter = getter;
         this.setter = setter;
         this.colored = colored;
-        this.tooltip = tooltip;
+        this.setTooltip(tooltip);
     }
 
     public void set(@NotNull String value)
@@ -95,7 +94,7 @@ public class SpruceBooleanOption extends SpruceOption
             this.set();
             btn.setMessage(this.getDisplayText());
         });
-        button.setTooltip(this.tooltip);
+        this.getOptionTooltip().ifPresent(button::setTooltip);
         return button;
     }
 
@@ -108,7 +107,8 @@ public class SpruceBooleanOption extends SpruceOption
     {
         boolean value = this.get();
         Text toggleText = ScreenTexts.getToggleText(value);
-        toggleText = toggleText.copy().setStyle(toggleText.getStyle().withColor(value ? Formatting.GREEN : Formatting.RED));
+        if (this.colored)
+            toggleText = toggleText.copy().setStyle(toggleText.getStyle().withColor(value ? Formatting.GREEN : Formatting.RED));
         return this.getDisplayText(toggleText);
     }
 

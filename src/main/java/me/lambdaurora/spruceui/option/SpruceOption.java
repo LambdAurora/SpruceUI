@@ -15,19 +15,22 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.aperlambda.lambdacommon.utils.Nameable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Represents an option.
  *
  * @author LambdAurora
- * @version 1.5.6
+ * @version 1.6.0
  * @since 1.0.3
  */
 public abstract class SpruceOption extends Option implements Nameable
 {
-    public final String key;
+    public final String         key;
+    private      Optional<Text> tooltip = Optional.empty();
 
     public SpruceOption(@NotNull String key)
     {
@@ -40,6 +43,16 @@ public abstract class SpruceOption extends Option implements Nameable
     public @NotNull String getName()
     {
         return I18n.translate(this.key);
+    }
+
+    public @NotNull Optional<Text> getOptionTooltip()
+    {
+        return this.tooltip;
+    }
+
+    public void setTooltip(@Nullable Text tooltip)
+    {
+        this.tooltip = Optional.ofNullable(tooltip);
     }
 
     /**

@@ -1,6 +1,7 @@
 {
   "spruceui.reset": "Réinitialiser",
   "spruceui.narrator.separator": "Séparateur %s",
+  "spruceui.not_bound": "Non défini",
   "spruceui.options.generic": "%s: %s",
   "spruceui.options.generic.default": "Par défaut",
   "spruceui.options.generic.fancy": "Détaillé",

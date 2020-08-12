@@ -11,6 +11,7 @@ package me.lambdaurora.spruceui.hud.component;
 
 import me.lambdaurora.spruceui.hud.HudComponent;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.aperlambda.lambdacommon.Identifier;
@@ -20,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a text HUD component.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.6.0
  * @since 1.3.5
  */
 public class TextHudComponent extends HudComponent
@@ -85,6 +86,6 @@ public class TextHudComponent extends HudComponent
     @Override
     public void render(MatrixStack matrices, float tickDelta)
     {
-        this.drawTextWithShadow(matrices, client.textRenderer, this.text, this.x, this.y, this.color);
+        DrawableHelper.drawTextWithShadow(matrices, client.textRenderer, this.text, this.x, this.y, this.color);
     }
 }

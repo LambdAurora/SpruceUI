@@ -29,7 +29,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.6.0
  * @since 1.0.0
  */
 public class SpruceDoubleOption extends SpruceOption
@@ -40,7 +40,6 @@ public class SpruceDoubleOption extends SpruceOption
     private final   Supplier<Double>                   getter;
     private final   Consumer<Double>                   setter;
     private final   Function<SpruceDoubleOption, Text> displayStringGetter;
-    private final   Text                               tooltip;
 
     public SpruceDoubleOption(@NotNull String key, double min, double max, float step, @NotNull Supplier<Double> getter, @NotNull Consumer<Double> setter, @NotNull Function<SpruceDoubleOption, Text> displayStringGetter, @Nullable Text tooltip)
     {
@@ -51,14 +50,14 @@ public class SpruceDoubleOption extends SpruceOption
         this.getter = getter;
         this.setter = setter;
         this.displayStringGetter = displayStringGetter;
-        this.tooltip = tooltip;
+        this.setTooltip(tooltip);
     }
 
     @Override
     public @NotNull AbstractButtonWidget createButton(@NotNull GameOptions options, int x, int y, int width)
     {
         SpruceOptionSliderWidget slider = new SpruceOptionSliderWidget(x, y, width, 20, this);
-        slider.setTooltip(this.tooltip);
+        this.getOptionTooltip().ifPresent(slider::setTooltip);
         return slider;
     }
 

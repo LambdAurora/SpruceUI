@@ -18,13 +18,11 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.NarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -32,10 +30,10 @@ import java.util.Optional;
  * Represents a separator element.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.6.0
  * @since 1.0.1
  */
-public class SpruceSeparatorWidget extends DrawableHelper implements Element, Drawable, Tooltipable
+public class SpruceSeparatorWidget extends DrawableHelper implements Element, Drawable, SpruceWidget, Tooltipable
 {
     private final MinecraftClient client        = MinecraftClient.getInstance();
     protected     int             x;
@@ -59,24 +57,40 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
         this.width = width;
     }
 
+    @Override
     public int getX()
     {
         return this.x;
     }
 
+    @Override
     public int getY()
     {
         return this.y;
     }
 
-    /**
-     * Gets the width of this separator widget.
-     *
-     * @return The width of this separator widget.
-     */
+    @Override
+    public boolean isVisible()
+    {
+        return this.visible;
+    }
+
+    @Override
+    public void setVisible(boolean visible)
+    {
+        this.visible = visible;
+    }
+
+    @Override
     public int getWidth()
     {
         return this.width;
+    }
+
+    @Override
+    public boolean isFocused()
+    {
+        return false;
     }
 
     /**
@@ -143,31 +157,12 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
                     fill(matrices, this.x, this.y + 4, titleX - 5, this.y + 6, 0xffe0e0e0);
                     fill(matrices, titleX + titleWidth + 5, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
                 }
-                this.drawTextWithShadow(matrices, this.client.textRenderer, this.title, titleX, this.y, 0xffffff);
+                DrawableHelper.drawTextWithShadow(matrices, this.client.textRenderer, this.title, titleX, this.y, 0xffffff);
             } else {
                 fill(matrices, this.x, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
             }
 
-            if (this.tooltip != null) {
-                long currentRender = System.currentTimeMillis();
-                if (this.lastTick != 0) {
-                    if (currentRender - this.lastTick >= 20) {
-                        this.tooltipTicks++;
-                        this.lastTick = currentRender;
-                    }
-                } else this.lastTick = currentRender;
-
-                if (!this.focused && !this.hovered)
-                    this.tooltipTicks = 0;
-
-                if (!this.tooltip.getString().isEmpty() && this.tooltipTicks >= 30) {
-                    List<? extends StringRenderable> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(this.tooltip, Math.max(this.width * 2 / 3, 200));
-                    if (this.hovered)
-                        new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
-                    else if (this.focused)
-                        new Tooltip(this.x - 12, this.y + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
-                }
-            }
+            Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
 
             this.narrate();
             this.wasHovered = this.isHovered();

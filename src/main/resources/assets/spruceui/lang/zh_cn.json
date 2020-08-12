@@ -1,6 +1,7 @@
 {
   "spruceui.reset": "重置",
   "spruceui.narrator.separator": "%s 分割线",
+  "spruceui.not_bound": "未绑定",
   "spruceui.options.generic": "%s: %s",
   "spruceui.options.generic.default": "默认",
   "spruceui.options.generic.fancy": "华丽",

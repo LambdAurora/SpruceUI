@@ -14,7 +14,7 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.StringRenderable;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,10 +28,10 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 1.5.0
+ * @version 1.6.0
  * @since 1.0.0
  */
-public class SpruceLabelWidget extends DrawableHelper implements Element, Drawable, Tooltipable
+public class SpruceLabelWidget extends DrawableHelper implements Element, Drawable, SpruceWidget, Tooltipable
 {
     public static final Consumer<SpruceLabelWidget> DEFAULT_ACTION = label -> {
     };
@@ -106,11 +106,19 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
         this.tooltip = tooltip;
     }
 
-    /**
-     * Gets the width of this label widget.
-     *
-     * @return The width of this label widget.
-     */
+    @Override
+    public boolean isVisible()
+    {
+        return this.visible;
+    }
+
+    @Override
+    public void setVisible(boolean visible)
+    {
+        this.visible = visible;
+    }
+
+    @Override
     public int getWidth()
     {
         return this.width;
@@ -124,6 +132,18 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     public int getHeight()
     {
         return this.height;
+    }
+
+    @Override
+    public boolean isFocused()
+    {
+        return this.focused;
+    }
+
+    @Override
+    public boolean isHovered()
+    {
+        return this.hovered;
     }
 
     /**
@@ -144,7 +164,7 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
 
             if (this.tooltip != null) {
                 if (!this.tooltip.getString().isEmpty()) {
-                    List<? extends StringRenderable> wrappedTooltipText = this.client.textRenderer.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
+                    List<OrderedText> wrappedTooltipText = this.client.textRenderer.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
                     if (this.hovered)
                         new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
                     else if (this.focused)

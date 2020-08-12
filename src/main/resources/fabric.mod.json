@@ -25,15 +25,14 @@
     "spruceui.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.8.0",
+    "fabricloader": ">=0.9.0",
     "fabric": "*",
-    "minecraft": ">=1.16"
+    "minecraft": ">=1.16.2"
   },
   "suggests": {
     "ltr": "*"
   },
   "custom": {
-    "modmenu:api": true,
-    "modmenu:clientsideOnly": true
+    "modmenu:api": true
   }
 }
