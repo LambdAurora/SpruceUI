@@ -25,7 +25,7 @@ import java.util.function.Consumer;
  * Represents a tooltip.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.6.1
  * @since 1.0.0
  */
 public class Tooltip extends DrawableHelper implements SprucePositioned
@@ -112,12 +112,12 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
                     }
                 } else lastTickSetter.accept(currentRender);
 
-                if (!widget.isFocused() && !widget.isHovered())
+                if (!widget.isFocused() && !widget.isMouseHovered())
                     tooltipTicksSetter.accept(0);
 
                 if (!tooltip.getString().isEmpty() && tooltipTicks >= 30) {
                     List<OrderedText> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(tooltip, Math.max(widget.getWidth() * 2 / 3, 200));
-                    if (widget.isHovered())
+                    if (widget.isMouseHovered())
                         new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
                     else if (widget.isFocused())
                         new Tooltip(widget.getX() - 12, widget.getY() + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();

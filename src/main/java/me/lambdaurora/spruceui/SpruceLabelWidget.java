@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.6.1
  * @since 1.0.0
  */
 public class SpruceLabelWidget extends DrawableHelper implements Element, Drawable, SpruceWidget, Tooltipable
@@ -141,7 +141,7 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     }
 
     @Override
-    public boolean isHovered()
+    public boolean isMouseHovered()
     {
         return this.hovered;
     }

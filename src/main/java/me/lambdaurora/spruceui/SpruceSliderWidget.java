@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  * Represents a slightly modified slider widget.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.6.1
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, Tooltipable
@@ -134,6 +134,18 @@ public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, To
     }
 
     @Override
+    public int getX()
+    {
+        return this.x;
+    }
+
+    @Override
+    public int getY()
+    {
+        return this.y;
+    }
+
+    @Override
     public boolean isVisible()
     {
         return this.visible;
@@ -146,14 +158,20 @@ public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, To
     }
 
     @Override
-    public int getX()
+    public int getWidth()
     {
-        return this.x;
+        return super.getWidth();
     }
 
     @Override
-    public int getY()
+    public boolean isFocused()
     {
-        return this.y;
+        return super.isFocused();
+    }
+
+    @Override
+    public boolean isMouseHovered()
+    {
+        return this.hovered;
     }
 }

@@ -13,7 +13,7 @@ package me.lambdaurora.spruceui;
  * Represents a widget.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.6.1
  * @since 1.6.0
  */
 public interface SpruceWidget extends SprucePositioned
@@ -51,5 +51,5 @@ public interface SpruceWidget extends SprucePositioned
      *
      * @return True if the widget is hovered, else false.
      */
-    boolean isHovered();
+    boolean isMouseHovered();
 }

@@ -30,7 +30,7 @@ import java.util.Optional;
  * Represents a separator element.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.6.1
  * @since 1.0.1
  */
 public class SpruceSeparatorWidget extends DrawableHelper implements Element, Drawable, SpruceWidget, Tooltipable
@@ -90,7 +90,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
     @Override
     public boolean isFocused()
     {
-        return false;
+        return this.focused;
     }
 
     /**
@@ -116,7 +116,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
         this.title = title;
     }
 
-    public boolean isHovered()
+    public boolean isMouseHovered()
     {
         return this.hovered || this.focused;
     }
@@ -140,8 +140,8 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
             this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + 9;
 
             if (this.title != null) {
-                if (this.wasHovered != this.isHovered()) {
-                    if (this.isHovered()) {
+                if (this.wasHovered != this.isMouseHovered()) {
+                    if (this.isMouseHovered()) {
                         if (this.focused)
                             this.queueNarration(200);
                         else
@@ -165,13 +165,13 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
             Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
 
             this.narrate();
-            this.wasHovered = this.isHovered();
+            this.wasHovered = this.isMouseHovered();
         }
     }
 
     protected void narrate()
     {
-        if (this.isHovered() && Util.getMeasuringTimeMs() > this.nextNarration) {
+        if (this.isMouseHovered() && Util.getMeasuringTimeMs() > this.nextNarration) {
             String string = this.getNarrationMessage();
             if (!string.isEmpty()) {
                 NarratorManager.INSTANCE.narrate(string);
@@ -196,7 +196,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
     @Override
     public boolean changeFocus(boolean down)
     {
-        if (this.visible) {
+        if (this.visible && this.tooltip != null) {
             this.focused = !this.focused;
             return this.focused;
         } else {

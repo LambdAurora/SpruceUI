@@ -21,7 +21,7 @@ import java.util.Optional;
  * Represents a button widget.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.6.1
  * @since 1.0.0
  */
 public class SpruceButtonWidget extends ButtonWidget implements SpruceWidget, Tooltipable
@@ -77,5 +77,23 @@ public class SpruceButtonWidget extends ButtonWidget implements SpruceWidget, To
     public void setVisible(boolean visible)
     {
         this.visible = visible;
+    }
+
+    @Override
+    public int getWidth()
+    {
+        return super.getWidth();
+    }
+
+    @Override
+    public boolean isFocused()
+    {
+        return super.isFocused();
+    }
+
+    @Override
+    public boolean isMouseHovered()
+    {
+        return this.hovered;
     }
 }
