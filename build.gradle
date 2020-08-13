@@ -33,7 +33,7 @@ dependencies {
     modImplementation "io.github.prospector:modmenu:${project.modmenu_version}"
 
     libApi "org.jetbrains:annotations:17.0.0"
-    libApi("org.aperlambda:lambdajcommon:1.8.0") {
+    libApi("org.aperlambda:lambdajcommon:1.8.1") {
         exclude group: 'com.google.code.gson'
         exclude group: 'com.google.guava'
     }
