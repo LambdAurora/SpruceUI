@@ -359,7 +359,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
             case GLFW.GLFW_KEY_END:
                 return this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toEnd : this.cursor::toRowEnd);
             case GLFW.GLFW_KEY_HOME:
-                return this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toStart : this.cursor::resetColumn);
+                return this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toStart : this.cursor::toLineStart);
             case GLFW.GLFW_KEY_ENTER:
             case GLFW.GLFW_KEY_KP_ENTER:
                 if (this.isEditable()) {
@@ -642,7 +642,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
             this.main = main;
         }
 
-        public void resetColumn(){
+        public void toLineStart(){
             this.column = 0;
         }
 
@@ -679,7 +679,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
                 this.column = lines.get(this.row).length();
             }
             if (this.column < 0) {
-                if (this.row == 0) this.resetColumn();
+                if (this.row == 0) this.toLineStart();
                 else {
                     this.row -= 1;
                     this.column = lines.get(this.row).length();
@@ -711,7 +711,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         public void toStart()
         {
             this.resetRow();
-            this.resetColumn();
+            this.toLineStart();
             this.adjustFirstLine();
         }
 
