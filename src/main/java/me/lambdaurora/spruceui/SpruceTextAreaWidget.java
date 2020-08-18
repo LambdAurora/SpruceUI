@@ -121,6 +121,15 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     }
 
     /**
+     * Sets whether this text area is editable or not.
+     *
+     * @param editable State of editable.
+     */
+    public void setEditable(boolean editable){
+        this.editable = editable;
+    }
+
+    /**
      * Sets the number of displayed lines.
      *
      * @param lines Number of displayed lines.
@@ -154,16 +163,14 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         this.cursor.toEnd();
     }
 
-    private void insertCharacter(char character, boolean cursor)
+    private void insertCharacter(char character)
     {
         if (this.lines.isEmpty()) {
             this.lines.add(String.valueOf(character));
-            if (cursor)
-                this.cursor.toStart();
+            this.cursor.toStart();
             return;
         } else {
-            if (cursor)
-                this.selection.erase();
+            this.selection.erase();
         }
 
         if (character == '\n') {
@@ -173,8 +180,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
                 if (!line.endsWith("\n"))
                     this.lines.replaceRow(currentRow, s -> s + "\n");
                 this.lines.add(currentRow + 1, "");
-                if (cursor)
-                    this.cursor.moveDown();
+                this.cursor.moveDown();
                 return;
             }
         }
@@ -193,16 +199,14 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         this.lines.clear();
         this.lines.add(newText);
 
-        if (cursor) {
-            if (character == '\n') {
-                this.cursor.moveRight();
-                this.cursor.moveRight();
-                return;
-            }
+        if (character == '\n') {
             this.cursor.moveRight();
-            if (oldSize + 1 == this.lines.size())
-                this.cursor.moveRight(); // Extra move right.
+            this.cursor.moveRight();
+            return;
         }
+        this.cursor.moveRight();
+        if (oldSize + 1 == this.lines.size())
+            this.cursor.moveRight(); // Extra move right.
     }
 
     private void eraseCharacter()
@@ -276,9 +280,8 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
             this.lines.add(text);
             this.cursor.toEnd();
             return;
-        } else {
-            this.selection.erase();
         }
+        this.selection.erase();
 
         int oldSize = this.lines.size();
 
@@ -311,13 +314,11 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     @Override
     public boolean charTyped(char chr, int keyCode)
     {
-        if (!this.isActive())
-            return false;
-        if (!SharedConstants.isValidChar(chr))
+        if (!this.isActive() || !SharedConstants.isValidChar(chr))
             return false;
 
         if (this.isEditable()) {
-            this.insertCharacter(chr, true);
+            this.insertCharacter(chr);
             this.selection.cancel();
         }
         return true;
@@ -348,45 +349,21 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
 
         switch (keyCode) {
             case GLFW.GLFW_KEY_RIGHT:
-                this.selection.tryStartSelection();
-                this.cursor.moveRight();
-                this.selection.moveToCursor();
-                return true;
+                return this.onSelectionUpdate(this.cursor::moveRight);
             case GLFW.GLFW_KEY_LEFT:
-                this.selection.tryStartSelection();
-                this.cursor.moveLeft();
-                this.selection.moveToCursor();
-                return true;
+                return this.onSelectionUpdate(this.cursor::moveLeft);
             case GLFW.GLFW_KEY_UP:
-                this.selection.tryStartSelection();
-                this.cursor.moveUp();
-                this.selection.moveToCursor();
-                return true;
+                return this.onSelectionUpdate(this.cursor::moveUp);
             case GLFW.GLFW_KEY_DOWN:
-                this.selection.tryStartSelection();
-                this.cursor.moveDown();
-                this.selection.moveToCursor();
-                return true;
+                return this.onSelectionUpdate(this.cursor::moveDown);
             case GLFW.GLFW_KEY_END:
-                this.selection.tryStartSelection();
-                if (Screen.hasControlDown())
-                    this.cursor.toEnd();
-                else
-                    this.cursor.toRowEnd();
-                this.selection.moveToCursor();
-                return true;
+                return this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toEnd : this.cursor::toRowEnd);
             case GLFW.GLFW_KEY_HOME:
-                this.selection.tryStartSelection();
-                if (Screen.hasControlDown())
-                    this.cursor.toStart();
-                else
-                    this.cursor.column = 0;
-                this.selection.moveToCursor();
-                return true;
+                return this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toStart : this.cursor::resetColumn);
             case GLFW.GLFW_KEY_ENTER:
             case GLFW.GLFW_KEY_KP_ENTER:
                 if (this.isEditable()) {
-                    this.insertCharacter('\n', true);
+                    this.insertCharacter('\n');
                 }
                 return true;
             case GLFW.GLFW_KEY_BACKSPACE:
@@ -401,11 +378,20 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
                 if (Screen.hasControlDown() && this.isEditable() && !this.lines.isEmpty()) {
                     this.lines.remove(this.cursor.row);
                     this.sanitize();
-                    return true;
                 }
+                return true;
             default:
                 return false;
         }
+    }
+
+    private boolean onSelectionUpdate(Runnable action)
+    {
+
+        this.selection.tryStartSelection();
+        action.run();
+        this.selection.moveToCursor();
+        return true;
     }
 
     @Override
@@ -429,14 +415,11 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
                 return true;
             }
 
-            this.selection.tryStartSelection();
+            this.onSelectionUpdate(() -> {
+                this.cursor.row = row;
 
-            this.cursor.row = row;
-            String line = this.lines.get(row);
-
-            this.cursor.column = this.textRenderer.trimToWidth(line, x).length();
-
-            this.selection.moveToCursor();
+                this.cursor.column = this.textRenderer.trimToWidth(this.lines.get(row), x).length();
+            });
 
             return true;
         }
@@ -520,12 +503,10 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         if (selection.getEnd().row != row) endIndex = line.length();
         else endIndex = selection.getEnd().column;
 
-        if (startIndex >= line.length())
-            return;
         if (endIndex >= line.length())
             endIndex = line.length();
 
-        if (startIndex == endIndex)
+        if (startIndex >= line.length() || startIndex == endIndex)
             return;
 
         int x = this.x + 4 + this.textRenderer.getWidth(line.substring(0, startIndex));
@@ -569,11 +550,10 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         int cursorX = this.x + 4 + this.textRenderer.getWidth(cursorLine.substring(0, this.cursor.column));
         int cursorY = this.y + 4 + actualRow * this.textRenderer.fontHeight;
 
-        if (this.cursor.row < this.lines.size() - 1 || this.cursor.column < cursorLine.length() || this.doesLineOccupyFullSpace(cursorLine)) {
+        if (this.cursor.row < this.lines.size() - 1 || this.cursor.column < cursorLine.length() || this.doesLineOccupyFullSpace(cursorLine))
             fill(matrices, cursorX - 1, cursorY - 1, cursorX, cursorY + 9, 0xffe0e0e0);
-        } else {
+        else
             this.textRenderer.drawWithShadow(matrices, "_", cursorX, cursorY, 0xe0e0e0);
-        }
     }
 
     protected boolean doesLineOccupyFullSpace(@NotNull String cursorLine)
@@ -594,7 +574,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     @Override
     public boolean changeFocus(boolean lookForwards)
     {
-        return this.visible && this.editable ? super.changeFocus(lookForwards) : false;
+        return this.visible && this.editable && super.changeFocus(lookForwards);
     }
 
     @Override
@@ -662,6 +642,14 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
             this.main = main;
         }
 
+        public void resetColumn(){
+            this.column = 0;
+        }
+
+        public void resetRow(){
+            this.row = 0;
+        }
+
         public void moveRight()
         {
             this.moveHorizontal(1);
@@ -691,7 +679,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
                 this.column = lines.get(this.row).length();
             }
             if (this.column < 0) {
-                if (this.row == 0) this.column = 0;
+                if (this.row == 0) this.resetColumn();
                 else {
                     this.row -= 1;
                     this.column = lines.get(this.row).length();
@@ -722,8 +710,8 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
 
         public void toStart()
         {
-            this.row = 0;
-            this.column = 0;
+            this.resetRow();
+            this.resetColumn();
             this.adjustFirstLine();
         }
 
@@ -766,7 +754,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
             if (lines.size() <= this.row)
                 this.row = lines.size() - 1;
             if (this.row < 0)
-                this.row = 0;
+                this.resetRow();
 
             String line = lines.get(this.row);
             if (line.endsWith("\n")) line = line.substring(0, line.length() - 1);
@@ -780,7 +768,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
          * Returns whether this cursor is at the same place as the other cursor.
          *
          * @param other The other cursor.
-         * @return True if this cursir is at the same place as the other cursor, else false.
+         * @return True if this cursor is at the same place as the other cursor, else false.
          */
         public boolean isSame(@NotNull Cursor other)
         {
@@ -795,10 +783,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         public int getPosition()
         {
             int position = 0;
-            for (int i = 0; i < this.row; i++) {
-                String row = lines.get(i);
-                position += row.length();
-            }
+            for (int i = 0; i < this.row; i++) position += lines.get(i).length();
             for (int i = 0; i < this.column; i++) position += 1;
             return position;
         }
@@ -965,14 +950,10 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
             if (start.isSame(end))
                 return "";
 
-            if (start.row == end.row) {
-                String line = lines.get(start.row);
+            if (start.row == end.row)
+                return lines.get(start.row).substring(start.column, end.column);
 
-                return line.substring(start.column, end.column);
-            }
-
-            String text = getText();
-            return text.substring(start.getPosition(), end.getPosition());
+            return getText().substring(start.getPosition(), end.getPosition());
         }
 
         public @NotNull Cursor getStart()
