@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "spruceui_test",
+  "name": "SpruceUI - Test mod",
+  "version": "${version}",
+  "description": "Test mod for SpruceUI.",
+  "authors": [
+    "LambdAurora"
+  ],
+  "contact": {
+    "homepage": "https://github.com/LambdAurora/SpruceUI",
+    "sources": "https://github.com/LambdAurora/SpruceUI.git",
+    "issues": "https://github.com/LambdAurora/SpruceUI/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/spruceui_test/icon.png",
+  "environment": "client",
+  "entrypoints": {
+  },
+  "mixins": [
+    "spruceui.test.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.9.0",
+    "fabric": "*",
+    "minecraft": ">=1.16.2",
+    "spruceui": "*"
+  }
+}

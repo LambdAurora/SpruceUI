@@ -11,3 +11,72 @@ A Fabric Minecraft API mod which adds some GUI utilities.
 ## Build
 
 Just do `./gradlew build` and everything should build just fine!
+
+## Use inside a mod
+
+You can look at the [SpruceUI test mod](https://github.com/LambdAurora/SpruceUI/tree/1.16/src/testmod) for examples of use.
+
+### Import inside a project
+
+Add this to your `build.gradle` in addition of the base Fabric mod `build.gradle`:
+
+```groovy
+// Intellij will mark this as error but it is not.
+import net.fabricmc.loom.task.RemapJarTask
+
+repositories {
+    mavenLocal()
+    maven {
+        name = "AperLambda"
+        url = 'https://aperlambda.github.io/maven'
+    }
+    maven { url = "https://jitpack.io" }
+}
+
+configurations {
+    shadow
+    api.extendsFrom shadow
+}
+
+dependencies {
+    /* Fabric definitions */
+
+    modImplementation "com.github.lambdaurora:spruceui:${project.spruceui_version}"
+    include "com.github.lambdaurora:spruceui:${project.spruceui_version}"
+
+    shadow("org.aperlambda:lambdajcommon:1.8.1") {
+        // Minecraft already has all the google dependencies.
+        exclude group: 'com.google.code.gson'
+        exclude group: 'com.google.guava'
+    }
+}
+
+task shadowJar(type: Jar) {
+    archiveClassifier.set("dev")
+
+    from sourceSets.main.output
+
+    from {
+        configurations.shadow.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+task shadowRemapJar(type: RemapJarTask) {
+    dependsOn shadowJar
+
+    input = file("${project.buildDir}/libs/$archivesBaseName-$version-dev.jar")
+    archiveName = "${archivesBaseName}-${version}.jar"
+    addNestedDependencies = true
+}
+```
+
+And this to your `gradle.properties`:
+
+```properties
+spruceui_version=1.6.4
+```
+
+To compile your mod to use inside a Minecraft installation run `gradle shadowRemapJar`.
+It will shadow the dependencies inside your JAR and JAR-in-JAR SpruceUI.

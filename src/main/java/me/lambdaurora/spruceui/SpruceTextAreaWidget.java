@@ -34,7 +34,7 @@ import java.util.List;
  * Represents a text area widget.
  *
  * @author LambdAurora
- * @version 1.6.3
+ * @version 1.6.4
  * @since 1.6.3
  */
 public class SpruceTextAreaWidget extends AbstractButtonWidget implements SpruceWidget
@@ -124,8 +124,10 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
      * Sets whether this text area is editable or not.
      *
      * @param editable State of editable.
+     * @since 1.6.4
      */
-    public void setEditable(boolean editable){
+    public void setEditable(boolean editable)
+    {
         this.editable = editable;
     }
 
@@ -202,11 +204,11 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         if (character == '\n') {
             this.cursor.moveRight();
             this.cursor.moveRight();
-            return;
+        } else {
+            this.cursor.moveRight();
+            if (oldSize + 1 == this.lines.size())
+                this.cursor.moveRight(); // Extra move right.
         }
-        this.cursor.moveRight();
-        if (oldSize + 1 == this.lines.size())
-            this.cursor.moveRight(); // Extra move right.
     }
 
     private void eraseCharacter()
@@ -362,9 +364,8 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
                 return this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toStart : this.cursor::toLineStart);
             case GLFW.GLFW_KEY_ENTER:
             case GLFW.GLFW_KEY_KP_ENTER:
-                if (this.isEditable()) {
+                if (this.isEditable())
                     this.insertCharacter('\n');
-                }
                 return true;
             case GLFW.GLFW_KEY_BACKSPACE:
                 if (this.isEditable())
@@ -385,9 +386,8 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         }
     }
 
-    private boolean onSelectionUpdate(Runnable action)
+    private boolean onSelectionUpdate(@NotNull Runnable action)
     {
-
         this.selection.tryStartSelection();
         action.run();
         this.selection.moveToCursor();
@@ -538,6 +538,8 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
      */
     protected void drawCursor(@NotNull MatrixStack matrices)
     {
+        if (!this.isActive())
+            return;
         if (this.lines.isEmpty()) {
             drawTextWithShadow(matrices, this.textRenderer, new LiteralText("_"), this.x, this.y + 4, 0xe0e0e0);
             return;
@@ -628,7 +630,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Represents a cursor.
      *
-     * @version 1.6.3
+     * @version 1.6.4
      * @since 1.6.3
      */
     public class Cursor
@@ -642,11 +644,13 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
             this.main = main;
         }
 
-        public void toLineStart(){
+        public void toLineStart()
+        {
             this.column = 0;
         }
 
-        public void resetRow(){
+        public void resetRow()
+        {
             this.row = 0;
         }
 

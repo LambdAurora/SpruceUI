@@ -8,6 +8,13 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+sourceSets {
+    testmod {
+        compileClasspath += main.compileClasspath
+        runtimeClasspath += main.runtimeClasspath
+    }
+}
+
 minecraft {
 }
 
@@ -37,6 +44,8 @@ dependencies {
         exclude group: 'com.google.code.gson'
         exclude group: 'com.google.guava'
     }
+
+    testmodImplementation project(":")
 }
 
 tasks.withType(JavaCompile) {
@@ -65,6 +74,10 @@ java {
 
 jar {
     from "LICENSE"
+}
+
+runClient {
+    classpath(sourceSets.testmod.runtimeClasspath)
 }
 
 // configure the maven publication

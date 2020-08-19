@@ -1,9 +1,9 @@
 {
   "required": true,
-  "package": "me.lambdaurora.spruceui.mixin",
+  "package": "me.lambdaurora.spruceui.test.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "MinecraftClientMixin"
+    "TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
