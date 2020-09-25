@@ -10,6 +10,7 @@
 package me.lambdaurora.spruceui.test.gui;
 
 import me.lambdaurora.spruceui.SpruceButtonWidget;
+import me.lambdaurora.spruceui.SpruceScreen;
 import me.lambdaurora.spruceui.SpruceTexts;
 import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.option.*;
@@ -28,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author LambdAurora
  */
-public class SpruceOptionScreen extends Screen
+public class SpruceOptionScreen extends SpruceScreen
 {
     private final Screen   parent;
     private final Option   booleanOption;

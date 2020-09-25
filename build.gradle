@@ -2,6 +2,7 @@ plugins {
     id 'fabric-loom' version '0.4-SNAPSHOT'
     id 'java-library'
     id 'maven-publish'
+    id 'net.minecrell.licenser' version '0.4.1'
 }
 
 archivesBaseName = project.archives_base_name
@@ -48,6 +49,13 @@ dependencies {
     testmodImplementation project(":")
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    withSourcesJar()
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
@@ -65,19 +73,17 @@ processResources {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-
-    withSourcesJar()
-}
-
 jar {
     from "LICENSE"
 }
 
 runClient {
     classpath(sourceSets.testmod.runtimeClasspath)
+}
+
+license {
+    header file('HEADER')
+    include '**/*.java'
 }
 
 // configure the maven publication

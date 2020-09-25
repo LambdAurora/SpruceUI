@@ -10,6 +10,7 @@
 package me.lambdaurora.spruceui.test.gui;
 
 import me.lambdaurora.spruceui.SpruceButtonWidget;
+import me.lambdaurora.spruceui.SpruceScreen;
 import me.lambdaurora.spruceui.SpruceTexts;
 import me.lambdaurora.spruceui.Tooltip;
 import net.minecraft.client.gui.screen.Screen;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author LambdAurora
  */
-public class SpruceMainMenuScreen extends Screen
+public class SpruceMainMenuScreen extends SpruceScreen
 {
     private final Screen parent;
 
@@ -42,6 +43,8 @@ public class SpruceMainMenuScreen extends Screen
                 btn -> this.client.openScreen(new SpruceOptionScreen(this))));
         this.addButton(new SpruceButtonWidget(this.width / 2 - 100, startY += 25, 200, 20, new LiteralText("Text Area Test"),
                 btn -> this.client.openScreen(new SpruceTextAreaScreen(this))));
+        this.addButton(new SpruceButtonWidget(this.width / 2 - 100, startY += 25, 200, 20, new LiteralText("Tabbed Screen Test"),
+                btn -> this.client.openScreen(new SpruceTabbedTestScreen(this))));
 
         // Add done button.
         this.addButton(new SpruceButtonWidget(this.width / 2 - 155 + 160, this.height - 29, 150, 20, SpruceTexts.GUI_DONE,

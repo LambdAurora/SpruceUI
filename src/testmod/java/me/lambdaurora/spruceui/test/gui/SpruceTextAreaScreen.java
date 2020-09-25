@@ -9,10 +9,7 @@
 
 package me.lambdaurora.spruceui.test.gui;
 
-import me.lambdaurora.spruceui.SpruceButtonWidget;
-import me.lambdaurora.spruceui.SpruceTextAreaWidget;
-import me.lambdaurora.spruceui.SpruceTexts;
-import me.lambdaurora.spruceui.Tooltip;
+import me.lambdaurora.spruceui.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
@@ -25,7 +22,7 @@ import java.util.Arrays;
  *
  * @author LambdAurora
  */
-public class SpruceTextAreaScreen extends Screen
+public class SpruceTextAreaScreen extends SpruceScreen
 {
     private final Screen               parent;
     private       SpruceTextAreaWidget textArea;
