@@ -21,10 +21,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Represents a tabbed screen.
@@ -153,19 +150,33 @@ public class SpruceTabbedScreen extends SpruceScreen
     @Override
     public Optional<Element> hoveredElement(double mouseX, double mouseY)
     {
-        return this.getCurrentScreen().hoveredElement(mouseX, mouseY);
+        Iterator<SpruceButtonWidget> iterator = this.tabButtons.iterator();
+
+        SpruceButtonWidget element;
+        do {
+            if (!iterator.hasNext()) {
+                return this.getCurrentScreen().hoveredElement(mouseX, mouseY);
+            }
+
+            element = iterator.next();
+        } while (!element.isMouseOver(mouseX, mouseY));
+
+        return Optional.of(element);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        return this.getCurrentScreen().mouseClicked(mouseX, mouseY, button);
-    }
-
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button)
-    {
-        return this.getCurrentScreen().mouseReleased(mouseX, mouseY, button);
+        boolean result = false;
+        for (SpruceButtonWidget btn : this.tabButtons) {
+            if (btn.isMouseOver(mouseX, mouseY)) {
+                if (btn.mouseClicked(mouseX, mouseY, button)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result || this.getCurrentScreen().mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
@@ -199,6 +210,7 @@ public class SpruceTabbedScreen extends SpruceScreen
     @Override
     public boolean charTyped(char chr, int keyCode)
     {
-        return false;
+        return super.charTyped(chr, keyCode)
+                || this.getCurrentScreen().charTyped(chr, keyCode);
     }
 }
