@@ -20,18 +20,10 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.6.5
  * @since 1.6.5
  */
-public abstract class SpruceScreen extends Screen
+public abstract class SpruceScreen extends Screen implements NavigationElement
 {
     protected SpruceScreen(@NotNull Text title)
     {
         super(title);
-    }
-
-    public boolean onNavigation(@NotNull NavigationDirection direction)
-    {
-        if (direction.isVertical()) {
-            return this.changeFocus(direction == NavigationDirection.DOWN);
-        }
-        return false;
     }
 }

@@ -12,9 +12,11 @@ package me.lambdaurora.spruceui;
 import com.google.common.collect.Queues;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -25,15 +27,16 @@ import java.util.function.Consumer;
  * Represents a tooltip.
  *
  * @author LambdAurora
- * @version 1.6.1
+ * @version 1.6.5
  * @since 1.0.0
  */
 public class Tooltip extends DrawableHelper implements SprucePositioned
 {
-    private static final Queue<Tooltip>    TOOLTIPS = Queues.newConcurrentLinkedQueue();
-    private final        int               x;
-    private final        int               y;
-    private final        List<OrderedText> tooltip;
+    private static final Queue<Tooltip> TOOLTIPS = Queues.newConcurrentLinkedQueue();
+    private static boolean delayed = false;
+    private final int x;
+    private final int y;
+    private final List<OrderedText> tooltip;
 
     public Tooltip(int x, int y, @NotNull String tooltip, int parentWidth)
     {
@@ -67,7 +70,7 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
     /**
      * Returns whether the tooltip should render or not.
      *
-     * @return True if the tooltip should render, else false.
+     * @return true if the tooltip should render, else false
      */
     public boolean shouldRender()
     {
@@ -76,11 +79,13 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
 
     /**
      * Renders the tooltip.
+     *
+     * @param screen the screen on which the tooltip is rendered
+     * @param matrices the matrices
      */
-    public void render(MatrixStack matrices)
+    public void render(Screen screen, MatrixStack matrices)
     {
-        MinecraftClient client = MinecraftClient.getInstance();
-        Tooltipable.render(client, matrices, this.tooltip, this.x, this.y);
+        screen.renderOrderedTooltip(matrices, this.tooltip, this.x, this.y);
     }
 
     /**
@@ -94,10 +99,10 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
     /**
      * Queues the tooltip of the widget to render.
      *
-     * @param widget The widget.
-     * @param mouseX The mouse X coordinate.
-     * @param mouseY The mouse Y coordinate.
-     * @param <T>    The type of the widget.
+     * @param widget the widget
+     * @param mouseX the mouse X coordinate
+     * @param mouseY the mouse Y coordinate
+     * @param <T> the type of the widget
      * @since 1.6.0
      */
     public static <T extends Tooltipable & SpruceWidget> void queueFor(@NotNull T widget, int mouseX, int mouseY, int tooltipTicks, @NotNull Consumer<Integer> tooltipTicksSetter, long lastTick, @NotNull Consumer<Long> lastTickSetter)
@@ -127,17 +132,46 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
     }
 
     /**
+     * Sets whether tooltip rendering is delayed or not.
+     *
+     * @param delayed true if tooltip rendering is delayed
+     */
+    @ApiStatus.Internal
+    static void setDelayedRender(boolean delayed)
+    {
+        Tooltip.delayed = delayed;
+    }
+
+    /**
      * Renders all the tooltips.
      *
-     * @param matrices The matrices.
+     * @param matrices the matrices
+     * @see #renderAll(Screen, MatrixStack)
      */
+    @Deprecated
     public static void renderAll(MatrixStack matrices)
     {
+        Screen screen = MinecraftClient.getInstance().currentScreen;
+        if (screen != null) {
+            renderAll(screen, matrices);
+        }
+    }
+
+    /**
+     * Renders all the tooltips.
+     *
+     * @param screen the screen on which the tooltips are rendered
+     * @param matrices the matrices
+     */
+    public static void renderAll(Screen screen, MatrixStack matrices)
+    {
+        if (delayed)
+            return;
         synchronized (TOOLTIPS) {
             Tooltip tooltip;
 
             while ((tooltip = TOOLTIPS.poll()) != null)
-                tooltip.render(matrices);
+                tooltip.render(screen, matrices);
         }
     }
 }

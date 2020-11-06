@@ -21,7 +21,6 @@
     ]
   },
   "mixins": [
-    "spruceui.accessors.json",
     "spruceui.mixins.json"
   ],
   "depends": {

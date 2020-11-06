@@ -95,13 +95,15 @@ public class SpruceTabbedScreen extends SpruceScreen
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
+        Tooltip.setDelayedRender(true);
         SpruceScreen currentScreen = this.screens.get(this.currentTab);
         currentScreen.render(matrices, mouseX, mouseY, delta);
+        Tooltip.setDelayedRender(false);
 
         // Render header.
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
-        this.client.getTextureManager().bindTexture(DrawableHelper.BACKGROUND_TEXTURE);
+        this.client.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
         RenderSystem.color4f(1.f, 1.f, 1.f, 1.f);
         RenderSystem.enableDepthTest();
         RenderSystem.depthFunc(519);
@@ -144,7 +146,7 @@ public class SpruceTabbedScreen extends SpruceScreen
             tabButton.render(matrices, mouseX, mouseY, delta);
         }
         // Render all the tooltips.
-        Tooltip.renderAll(matrices);
+        Tooltip.renderAll(this, matrices);
     }
 
     @Override

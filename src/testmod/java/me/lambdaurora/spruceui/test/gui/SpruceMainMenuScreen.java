@@ -59,6 +59,6 @@ public class SpruceMainMenuScreen extends SpruceScreen
         // Draw the title text.
         drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 16777215);
         // Render all the tooltips.
-        Tooltip.renderAll(matrices);
+        Tooltip.renderAll(this, matrices);
     }
 }

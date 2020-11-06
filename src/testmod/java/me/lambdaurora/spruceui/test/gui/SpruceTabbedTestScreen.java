@@ -20,6 +20,6 @@ public class SpruceTabbedTestScreen extends SpruceTabbedScreen
 {
     protected SpruceTabbedTestScreen(@Nullable Screen parent)
     {
-        super(new LiteralText("Tabbed Screen Test"), Arrays.asList(new SpruceTextAreaScreen(parent)));
+        super(new LiteralText("Tabbed Screen Test"), Arrays.asList(new SpruceOptionScreen(parent), new SpruceTextAreaScreen(parent)));
     }
 }
