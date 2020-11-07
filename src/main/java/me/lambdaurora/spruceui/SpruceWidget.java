@@ -9,14 +9,17 @@
 
 package me.lambdaurora.spruceui;
 
+import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.Element;
+
 /**
  * Represents a widget.
  *
  * @author LambdAurora
- * @version 1.6.1
+ * @version 1.6.5
  * @since 1.6.0
  */
-public interface SpruceWidget extends SprucePositioned
+public interface SpruceWidget extends SprucePositioned, Drawable, Element
 {
     /**
      * Returns whether the widget is visible or not.

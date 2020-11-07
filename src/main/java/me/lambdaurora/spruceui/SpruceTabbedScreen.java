@@ -32,12 +32,12 @@ import java.util.*;
  */
 public class SpruceTabbedScreen extends SpruceScreen
 {
-    private final List<SpruceScreen>       screens;
+    private final List<SpruceScreen> screens;
     private final List<SpruceButtonWidget> tabButtons = new ArrayList<>();
-    private       boolean                  footer     = false;
-    private       int                      currentTab = 0;
-    private       int                      top        = 45;
-    private       int                      bottom;
+    private boolean footer = false;
+    private int currentTab = 0;
+    private int top = 45;
+    private int bottom;
 
     protected SpruceTabbedScreen(@NotNull Text title, @NotNull Collection<SpruceScreen> screens)
     {
