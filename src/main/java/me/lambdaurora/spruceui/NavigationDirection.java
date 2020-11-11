@@ -13,8 +13,8 @@ package me.lambdaurora.spruceui;
  * Represents navigation direction.
  *
  * @author LambdAurora
- * @version 1.6.5
- * @since 1.6.5
+ * @version 1.7.0
+ * @since 1.7.0
  */
 public enum NavigationDirection
 {

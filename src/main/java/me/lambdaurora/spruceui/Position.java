@@ -15,7 +15,7 @@ import java.util.Objects;
  * Represents a position.
  *
  * @author LambdAurora
- * @version 1.4.0
+ * @version 1.7.0
  * @since 1.4.0
  */
 public final class Position implements SprucePositioned
@@ -24,9 +24,9 @@ public final class Position implements SprucePositioned
     {
     });
 
-    protected SprucePositioned anchor;
-    protected int              x = 0;
-    protected int              y = 0;
+    private SprucePositioned anchor;
+    private int x = 0;
+    private int y = 0;
 
     protected Position(SprucePositioned anchor)
     {
@@ -35,7 +35,7 @@ public final class Position implements SprucePositioned
 
     public static Position of(SprucePositioned anchor, int x, int y)
     {
-        return new Position(anchor).set(x, y);
+        return new Position(anchor).move(x, y);
     }
 
     public static Position of(int x, int y)
@@ -46,7 +46,7 @@ public final class Position implements SprucePositioned
     /**
      * Returns the anchor.
      *
-     * @return The anchor.
+     * @return the anchor
      */
     public SprucePositioned getAnchor()
     {
@@ -65,7 +65,7 @@ public final class Position implements SprucePositioned
         return this.anchor.getY() + this.y;
     }
 
-    public Position set(int x, int y)
+    public Position move(int x, int y)
     {
         this.setRelativeX(x);
         this.setRelativeY(y);
@@ -75,7 +75,7 @@ public final class Position implements SprucePositioned
     /**
      * Gets the relative X of this position.
      *
-     * @return The relative X.
+     * @return the relative X
      */
     public int getRelativeX()
     {
@@ -85,7 +85,7 @@ public final class Position implements SprucePositioned
     /**
      * Sets the relative X of this position.
      *
-     * @param x The relative X.
+     * @param x the relative X
      */
     public void setRelativeX(int x)
     {
@@ -95,7 +95,7 @@ public final class Position implements SprucePositioned
     /**
      * Gets the relative Y of this position.
      *
-     * @return The relative Y.
+     * @return the relative Y
      */
     public int getRelativeY()
     {
@@ -105,7 +105,7 @@ public final class Position implements SprucePositioned
     /**
      * Sets the relative Y of this position.
      *
-     * @param y The relative Y.
+     * @param y the relative Y
      */
     public void setRelativeY(int y)
     {

@@ -10,9 +10,6 @@
 package me.lambdaurora.spruceui;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -28,59 +25,82 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 1.6.1
+ * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceLabelWidget extends DrawableHelper implements Element, Drawable, SpruceWidget, Tooltipable
+public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipable
 {
     public static final Consumer<SpruceLabelWidget> DEFAULT_ACTION = label -> {
     };
 
-    private final MinecraftClient             client = MinecraftClient.getInstance();
+    private final MinecraftClient client = MinecraftClient.getInstance();
     private final Consumer<SpruceLabelWidget> action;
-    private final int                         x;
-    private final int                         y;
-    private final int                         maxWidth;
+    private final int maxWidth;
     //private final int                         maxHeight;
-    private       Text                        text;
-    private       Text                        tooltip;
-    public        boolean                     visible;
-    private       int                         width;
-    private       int                         height;
-    private       boolean                     centered;
-    protected     boolean                     hovered;
-    protected     boolean                     focused;
+    private Text text;
+    private Text tooltip;
+    private boolean centered;
+    protected boolean hovered;
+    protected boolean focused;
 
-    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered)
+    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered)
     {
-        this.visible = true;
-        this.x = x;
-        this.y = y;
+        super(position);
         this.maxWidth = maxWidth;
         this.action = action;
         this.centered = centered;
         this.setText(text);
     }
 
+    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action)
+    {
+        this(position, text, maxWidth, action, false);
+    }
+
+    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, boolean centered)
+    {
+        this(position, text, maxWidth, DEFAULT_ACTION, centered);
+    }
+
+    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth)
+    {
+        this(position, text, maxWidth, DEFAULT_ACTION);
+    }
+
+    @Deprecated
+    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered)
+    {
+        this(Position.of(x, y), text, maxWidth, action, centered);
+    }
+
+    @Deprecated
     public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action)
     {
-        this(x, y, text, maxWidth, action, false);
+        this(Position.of(x, y), text, maxWidth, action);
     }
 
+    @Deprecated
     public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, boolean centered)
     {
-        this(x, y, text, maxWidth, DEFAULT_ACTION, centered);
+        this(Position.of(x, y), text, maxWidth, centered);
     }
 
+    @Deprecated
     public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth)
     {
-        this(x, y, text, maxWidth, DEFAULT_ACTION);
+        this(Position.of(x, y), text, maxWidth);
+    }
+
+    @Override
+    public @NotNull Position getPosition()
+    {
+        return this.position;
     }
 
     /**
      * Sets the text of this label.
      *
-     * @param text The text to set.
+     * @param text the text to set
      */
     public void setText(@NotNull Text text)
     {
@@ -107,34 +127,6 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     }
 
     @Override
-    public boolean isVisible()
-    {
-        return this.visible;
-    }
-
-    @Override
-    public void setVisible(boolean visible)
-    {
-        this.visible = visible;
-    }
-
-    @Override
-    public int getWidth()
-    {
-        return this.width;
-    }
-
-    /**
-     * Gets the height of this label widget.
-     *
-     * @return The height of this label widget.
-     */
-    public int getHeight()
-    {
-        return this.height;
-    }
-
-    @Override
     public boolean isFocused()
     {
         return this.focused;
@@ -155,21 +147,18 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
+    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
-        if (this.visible) {
-            int x = this.centered ? this.x - this.client.textRenderer.getWidth(this.text) / 2 : this.x;
-            this.hovered = mouseX >= x && mouseY >= this.y && mouseX < x + this.width && mouseY < this.y + this.height;
-            this.client.textRenderer.drawTrimmed(this.text, x, this.y, this.maxWidth, 10526880);
+        int x = this.centered ? this.getX() - this.client.textRenderer.getWidth(this.text) / 2 : this.getX();
+        this.client.textRenderer.drawTrimmed(this.text, x, this.getY(), this.maxWidth, 10526880);
 
-            if (this.tooltip != null) {
-                if (!this.tooltip.getString().isEmpty()) {
-                    List<OrderedText> wrappedTooltipText = this.client.textRenderer.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
-                    if (this.hovered)
-                        new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
-                    else if (this.focused)
-                        new Tooltip(this.x - 12, this.y, wrappedTooltipText).queue();
-                }
+        if (this.tooltip != null) {
+            if (!this.tooltip.getString().isEmpty()) {
+                List<OrderedText> wrappedTooltipText = this.client.textRenderer.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
+                if (this.hovered)
+                    new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
+                else if (this.focused)
+                    new Tooltip(this.getX() - 12, this.getY(), wrappedTooltipText).queue();
             }
         }
     }
@@ -177,7 +166,7 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        if (this.visible && button == GLFW.GLFW_MOUSE_BUTTON_1) {
+        if (this.isVisible() && button == GLFW.GLFW_MOUSE_BUTTON_1) {
             if (this.hovered) {
                 this.onPress();
                 return true;
@@ -187,13 +176,10 @@ public class SpruceLabelWidget extends DrawableHelper implements Element, Drawab
     }
 
     @Override
-    public boolean changeFocus(boolean down)
+    public boolean onNavigation(@NotNull NavigationDirection direction)
     {
-        if (this.visible) {
-            this.focused = !this.focused;
-            return this.focused;
-        } else {
+        if (this.action == DEFAULT_ACTION)
             return false;
-        }
+        return super.onNavigation(direction);
     }
 }

@@ -10,9 +10,7 @@
 package me.lambdaurora.spruceui;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.NarratorManager;
@@ -30,61 +28,32 @@ import java.util.Optional;
  * Represents a separator element.
  *
  * @author LambdAurora
- * @version 1.6.1
+ * @version 1.7.0
  * @since 1.0.1
  */
-public class SpruceSeparatorWidget extends DrawableHelper implements Element, Drawable, SpruceWidget, Tooltipable
+public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Tooltipable
 {
-    private final MinecraftClient client        = MinecraftClient.getInstance();
-    protected     int             x;
-    protected     int             y;
-    protected     int             width;
-    private       Text            title;
-    public        boolean         visible       = true;
-    protected     boolean         hovered;
-    protected     boolean         focused;
-    private       boolean         wasHovered;
-    protected     long            nextNarration = Long.MAX_VALUE;
-    private       Text            tooltip;
-    private       int             tooltipTicks;
-    private       long            lastTick;
+    private final MinecraftClient client = MinecraftClient.getInstance();
+    private Text title;
+    protected boolean focused;
+    private boolean wasHovered;
+    protected long nextNarration = Long.MAX_VALUE;
+    private Text tooltip;
+    private int tooltipTicks;
+    private long lastTick;
 
+    public SpruceSeparatorWidget(Position position, int width, @Nullable Text title)
+    {
+        super(position);
+        this.width = width;
+        this.height = 9;
+        this.title = title;
+    }
+
+    @Deprecated
     public SpruceSeparatorWidget(@Nullable Text title, int x, int y, int width)
     {
-        this.title = title;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-    }
-
-    @Override
-    public int getX()
-    {
-        return this.x;
-    }
-
-    @Override
-    public int getY()
-    {
-        return this.y;
-    }
-
-    @Override
-    public boolean isVisible()
-    {
-        return this.visible;
-    }
-
-    @Override
-    public void setVisible(boolean visible)
-    {
-        this.visible = visible;
-    }
-
-    @Override
-    public int getWidth()
-    {
-        return this.width;
+        this(Position.of(x, y), width, title);
     }
 
     @Override
@@ -96,7 +65,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
     /**
      * Gets the title of this separator widget.
      *
-     * @return The title.
+     * @return the title
      */
     public @NotNull Optional<Text> getTitle()
     {
@@ -106,7 +75,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
     /**
      * Sets the title of this separator widget.
      *
-     * @param title The title.
+     * @param title the title
      */
     public void setTitle(@Nullable Text title)
     {
@@ -134,39 +103,35 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
+    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
-        if (this.visible) {
-            this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + 9;
+        if (this.title != null) {
+            if (this.wasHovered != this.isMouseHovered()) {
+                if (this.isMouseHovered()) {
+                    if (this.focused)
+                        this.queueNarration(200);
+                    else
+                        this.queueNarration(750);
 
-            if (this.title != null) {
-                if (this.wasHovered != this.isMouseHovered()) {
-                    if (this.isMouseHovered()) {
-                        if (this.focused)
-                            this.queueNarration(200);
-                        else
-                            this.queueNarration(750);
-
-                    } else
-                        this.nextNarration = Long.MAX_VALUE;
-                }
-
-                int titleWidth = this.client.textRenderer.getWidth(this.title);
-                int titleX = this.x + (this.width / 2 - titleWidth / 2);
-                if (this.width > titleWidth) {
-                    fill(matrices, this.x, this.y + 4, titleX - 5, this.y + 6, 0xffe0e0e0);
-                    fill(matrices, titleX + titleWidth + 5, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
-                }
-                DrawableHelper.drawTextWithShadow(matrices, this.client.textRenderer, this.title, titleX, this.y, 0xffffff);
-            } else {
-                fill(matrices, this.x, this.y + 4, this.x + this.width, this.y + 6, 0xffe0e0e0);
+                } else
+                    this.nextNarration = Long.MAX_VALUE;
             }
 
-            Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
-
-            this.narrate();
-            this.wasHovered = this.isMouseHovered();
+            int titleWidth = this.client.textRenderer.getWidth(this.title);
+            int titleX = this.getX() + (this.width / 2 - titleWidth / 2);
+            if (this.width > titleWidth) {
+                fill(matrices, this.getX(), this.getY() + 4, titleX - 5, this.getY() + 6, 0xffe0e0e0);
+                fill(matrices, titleX + titleWidth + 5, this.getY() + 4, this.getX() + this.width, this.getY() + 6, 0xffe0e0e0);
+            }
+            DrawableHelper.drawTextWithShadow(matrices, this.client.textRenderer, this.title, titleX, this.getY(), 0xffffff);
+        } else {
+            fill(matrices, this.getX(), this.getY() + 4, this.getX() + this.width, this.getY() + 6, 0xffe0e0e0);
         }
+
+        Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
+
+        this.narrate();
+        this.wasHovered = this.isMouseHovered();
     }
 
     protected void narrate()
@@ -196,7 +161,7 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
     @Override
     public boolean changeFocus(boolean down)
     {
-        if (this.visible && this.tooltip != null) {
+        if (this.isVisible() && this.tooltip != null) {
             this.focused = !this.focused;
             return this.focused;
         } else {
@@ -217,14 +182,14 @@ public class SpruceSeparatorWidget extends DrawableHelper implements Element, Dr
 
         public ButtonWrapper(@NotNull SpruceSeparatorWidget separator, int height)
         {
-            super(separator.x, separator.y, separator.width, height, separator.getTitle().orElse(LiteralText.EMPTY));
+            super(separator.getX(), separator.getY(), separator.width, height, separator.getTitle().orElse(LiteralText.EMPTY));
             this.widget = separator;
         }
 
         @Override
         public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
         {
-            this.widget.y = this.y + this.height / 2 - 9 / 2;
+            this.widget.position.setRelativeY(this.y + this.height / 2 - 9 / 2);
             this.widget.render(matrices, mouseX, mouseY, delta);
         }
 

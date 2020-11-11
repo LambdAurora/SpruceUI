@@ -9,11 +9,15 @@
 
 package me.lambdaurora.spruceui.option;
 
+import me.lambdaurora.spruceui.Position;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.Option;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.aperlambda.lambdacommon.utils.Nameable;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,13 +28,13 @@ import java.util.Optional;
  * Represents an option.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.7.0
  * @since 1.0.3
  */
 public abstract class SpruceOption extends Option implements Nameable
 {
-    public final String         key;
-    private      Optional<Text> tooltip = Optional.empty();
+    public final String key;
+    private Optional<Text> tooltip = Optional.empty();
 
     public SpruceOption(@NotNull String key)
     {
@@ -58,7 +62,7 @@ public abstract class SpruceOption extends Option implements Nameable
     /**
      * Returns the display prefix text.
      *
-     * @return The display prefix.
+     * @return the display prefix
      */
     public @NotNull Text getPrefix()
     {
@@ -68,11 +72,21 @@ public abstract class SpruceOption extends Option implements Nameable
     /**
      * Returns the display text.
      *
-     * @param value The value.
-     * @return The display text.
+     * @param value the value
+     * @return the display text
      */
     public @NotNull Text getDisplayText(@NotNull Text value)
     {
         return new TranslatableText("spruceui.options.generic", this.getPrefix(), value);
+    }
+
+    @ApiStatus.Experimental
+    public abstract @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width);
+
+    @Deprecated
+    @Override
+    public AbstractButtonWidget createButton(GameOptions options, int x, int y, int width)
+    {
+        return this.createButton(Position.of(x, y), width);
     }
 }

@@ -27,8 +27,8 @@ import java.util.*;
  * Represents a tabbed screen.
  *
  * @author LambdAurora
- * @version 1.6.5
- * @since 1.6.5
+ * @version 1.7.0
+ * @since 1.7.0
  */
 public class SpruceTabbedScreen extends SpruceScreen
 {

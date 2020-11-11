@@ -21,7 +21,7 @@ public interface SprucePositioned
     /**
      * Returns the X coordinate.
      *
-     * @return The X coordinate.
+     * @return the X coordinate
      */
     default int getX()
     {
@@ -31,7 +31,7 @@ public interface SprucePositioned
     /**
      * Returns the Y coordinate.
      *
-     * @return The Y coordinate.
+     * @return the Y coordinate
      */
     default int getY()
     {

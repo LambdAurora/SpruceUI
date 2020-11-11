@@ -9,9 +9,9 @@
 
 package me.lambdaurora.spruceui.option;
 
+import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.options.GameOptions;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.aperlambda.lambdacommon.utils.Nameable;
@@ -24,7 +24,7 @@ import java.util.function.Consumer;
  * Represents an option with a simple action.
  *
  * @author LambdAurora
- * @version 1.6.4
+ * @version 1.7.0
  * @since 1.0.1
  */
 public class SpruceSimpleActionOption extends SpruceOption implements Nameable
@@ -44,9 +44,9 @@ public class SpruceSimpleActionOption extends SpruceOption implements Nameable
     }
 
     @Override
-    public AbstractButtonWidget createButton(GameOptions options, int x, int y, int width)
+    public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
     {
-        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, new TranslatableText(this.key), action::accept);
+        SpruceButtonWidget button = new SpruceButtonWidget(position.getX(), position.getY(), width, 20, new TranslatableText(this.key), action::accept);
         this.getOptionTooltip().ifPresent(button::setTooltip);
         return button;
     }

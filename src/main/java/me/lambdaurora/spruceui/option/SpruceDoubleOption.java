@@ -9,6 +9,7 @@
 
 package me.lambdaurora.spruceui.option;
 
+import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceOptionSliderWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
@@ -29,17 +30,17 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.7.0
  * @since 1.0.0
  */
 public class SpruceDoubleOption extends SpruceOption
 {
-    protected final float                              step;
-    protected final double                             min;
-    protected       double                             max;
-    private final   Supplier<Double>                   getter;
-    private final   Consumer<Double>                   setter;
-    private final   Function<SpruceDoubleOption, Text> displayStringGetter;
+    protected final float step;
+    protected final double min;
+    protected double max;
+    private final Supplier<Double> getter;
+    private final Consumer<Double> setter;
+    private final Function<SpruceDoubleOption, Text> displayStringGetter;
 
     public SpruceDoubleOption(@NotNull String key, double min, double max, float step, @NotNull Supplier<Double> getter, @NotNull Consumer<Double> setter, @NotNull Function<SpruceDoubleOption, Text> displayStringGetter, @Nullable Text tooltip)
     {
@@ -54,9 +55,9 @@ public class SpruceDoubleOption extends SpruceOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createButton(@NotNull GameOptions options, int x, int y, int width)
+    public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
     {
-        SpruceOptionSliderWidget slider = new SpruceOptionSliderWidget(x, y, width, 20, this);
+        SpruceOptionSliderWidget slider = new SpruceOptionSliderWidget(position.getX(), position.getY(), width, 20, this);
         this.getOptionTooltip().ifPresent(slider::setTooltip);
         return slider;
     }
@@ -103,7 +104,7 @@ public class SpruceDoubleOption extends SpruceOption
     /**
      * Gets the current value.
      *
-     * @return The current value.
+     * @return the current value
      */
     public double get()
     {
@@ -113,7 +114,7 @@ public class SpruceDoubleOption extends SpruceOption
     /**
      * Gets the display string.
      *
-     * @return The display string.
+     * @return the display string
      */
     public @NotNull Text getDisplayString()
     {
@@ -123,10 +124,10 @@ public class SpruceDoubleOption extends SpruceOption
     /**
      * Returns a new SpruceUI Double Option from the Vanilla one.
      *
-     * @param key     The option's key.
-     * @param vanilla The Vanilla option.
-     * @param tooltip The tooltip.
-     * @return The SpruceUI option.
+     * @param key the option's key
+     * @param vanilla the Vanilla option
+     * @param tooltip the tooltip
+     * @return the SpruceUI option
      */
     public static @NotNull SpruceDoubleOption fromVanilla(@NotNull String key, @NotNull DoubleOption vanilla, float step, @Nullable Text tooltip)
     {

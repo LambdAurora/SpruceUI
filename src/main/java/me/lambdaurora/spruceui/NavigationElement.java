@@ -16,8 +16,8 @@ import org.jetbrains.annotations.NotNull;
  * Represents an element with navigation implementation.
  *
  * @author LambdAurora
- * @version 1.6.5
- * @since 1.6.5
+ * @version 1.7.0
+ * @since 1.7.0
  */
 public interface NavigationElement extends Element
 {

@@ -21,18 +21,26 @@ import java.util.Optional;
  * Represents a button widget.
  *
  * @author LambdAurora
- * @version 1.6.1
+ * @version 1.7.0
  * @since 1.0.0
  */
 public class SpruceButtonWidget extends ButtonWidget implements SpruceWidget, Tooltipable
 {
+    private final Position position;
     private Text tooltip;
-    private int  tooltipTicks;
+    private int tooltipTicks;
     private long lastTick;
 
     public SpruceButtonWidget(int x, int y, int width, int height, Text message, PressAction action)
     {
         super(x, y, width, height, message, action);
+        this.position = Position.of(x, y);
+    }
+
+    @Override
+    public @NotNull Position getPosition()
+    {
+        return this.position;
     }
 
     @Override
@@ -83,6 +91,12 @@ public class SpruceButtonWidget extends ButtonWidget implements SpruceWidget, To
     public int getWidth()
     {
         return super.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return super.getHeight();
     }
 
     @Override

@@ -10,6 +10,7 @@
 package me.lambdaurora.spruceui.test.gui;
 
 import me.lambdaurora.spruceui.*;
+import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
@@ -73,7 +74,7 @@ public class SpruceTextAreaScreen extends SpruceScreen
                     "This widget can be very useful in some cases."));
         // Display as many lines as possible
         this.textArea.setDisplayedLines(this.textArea.getInnerHeight() / this.textRenderer.fontHeight);
-        this.addButton(this.textArea);
+        this.addChild(this.textArea);
 
         // Print to console button, may be useful for debugging.
         this.addButton(new SpruceButtonWidget(this.width / 2 - 155, this.height - 29, 150, 20, new LiteralText("Print to console"),
@@ -91,7 +92,7 @@ public class SpruceTextAreaScreen extends SpruceScreen
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
         this.renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
+        this.children().stream().filter(child -> child instanceof Drawable).forEach(child -> ((Drawable) child).render(matrices, mouseX, mouseY, delta));
         // Draw the title text.
         drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 16777215);
         // Render all the tooltips.

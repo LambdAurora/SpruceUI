@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * Represents a tooltip.
  *
  * @author LambdAurora
- * @version 1.6.5
+ * @version 1.7.0
  * @since 1.0.0
  */
 public class Tooltip extends DrawableHelper implements SprucePositioned

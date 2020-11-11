@@ -17,10 +17,10 @@ import org.jetbrains.annotations.NotNull;
  * Represents a screen.
  *
  * @author LambdAurora
- * @version 1.6.5
- * @since 1.6.5
+ * @version 1.7.0
+ * @since 1.7.0
  */
-public abstract class SpruceScreen extends Screen implements NavigationElement
+public abstract class SpruceScreen extends Screen implements SprucePositioned, NavigationElement
 {
     protected SpruceScreen(@NotNull Text title)
     {

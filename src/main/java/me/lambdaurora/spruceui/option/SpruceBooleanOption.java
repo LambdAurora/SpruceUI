@@ -9,6 +9,7 @@
 
 package me.lambdaurora.spruceui.option;
 
+import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ScreenTexts;
@@ -29,14 +30,14 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.7.0
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption
 {
     private final Supplier<Boolean> getter;
     private final Consumer<Boolean> setter;
-    private final boolean           colored;
+    private final boolean colored;
 
     public SpruceBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip)
     {
@@ -70,7 +71,7 @@ public class SpruceBooleanOption extends SpruceOption
     /**
      * Gets the current value.
      *
-     * @return The current value.
+     * @return the current value
      */
     public boolean get()
     {
@@ -80,7 +81,7 @@ public class SpruceBooleanOption extends SpruceOption
     /**
      * Returns whether the option value is colored or not.
      *
-     * @return True if the option value is colored, else false.
+     * @return true if the option value is colored, else false
      */
     public boolean isColored()
     {
@@ -88,9 +89,9 @@ public class SpruceBooleanOption extends SpruceOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createButton(@NotNull GameOptions options, int x, int y, int width)
+    public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
     {
-        SpruceButtonWidget button = new SpruceButtonWidget(x, y, width, 20, this.getDisplayText(), btn -> {
+        SpruceButtonWidget button = new SpruceButtonWidget(position.getX(), position.getY(), width, 20, this.getDisplayText(), btn -> {
             this.set();
             btn.setMessage(this.getDisplayText());
         });
@@ -101,7 +102,7 @@ public class SpruceBooleanOption extends SpruceOption
     /**
      * Gets the display string.
      *
-     * @return The display string.
+     * @return the display string
      */
     public @NotNull Text getDisplayText()
     {
@@ -115,10 +116,10 @@ public class SpruceBooleanOption extends SpruceOption
     /**
      * Returns a new SpruceUI Boolean Option from the Vanilla one.
      *
-     * @param key     The option's key.
-     * @param vanilla The Vanilla option.
-     * @param tooltip The tooltip.
-     * @return The SpruceUI option.
+     * @param key the option's key
+     * @param vanilla the Vanilla option
+     * @param tooltip the tooltip
+     * @return the SpruceUI option
      */
     public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip)
     {
@@ -128,11 +129,11 @@ public class SpruceBooleanOption extends SpruceOption
     /**
      * Returns a new SpruceUI Boolean Option from the Vanilla one.
      *
-     * @param key     The option's key.
-     * @param vanilla The Vanilla option.
-     * @param tooltip The tooltip.
-     * @param colored True if the option value is colored, else false.
-     * @return The SpruceUI option.
+     * @param key the option's key
+     * @param vanilla the Vanilla option
+     * @param tooltip the tooltip
+     * @param colored true if the option value is colored, else false
+     * @return the SpruceUI option
      */
     public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip, boolean colored)
     {

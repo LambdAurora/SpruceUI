@@ -15,7 +15,6 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
@@ -34,33 +33,40 @@ import java.util.List;
  * Represents a text area widget.
  *
  * @author LambdAurora
- * @version 1.6.4
+ * @version 1.7.0
  * @since 1.6.3
  */
-public class SpruceTextAreaWidget extends AbstractButtonWidget implements SpruceWidget
+public class SpruceTextAreaWidget extends AbstractSpruceWidget
 {
-    private final TextRenderer  textRenderer;
+    private final TextRenderer textRenderer;
     private final MultilineText lines;
-    private final Cursor        cursor          = new Cursor(true);
-    private final Selection     selection       = new Selection();
-    private       int           firstLine       = 0;
-    private       boolean       editable        = true;
-    private       int           editableColor   = 0xe0e0e0;
-    private       int           uneditableColor = 7368816;
-    private       int           displayedLines  = 1;
+    private final Cursor cursor = new Cursor(true);
+    private final Selection selection = new Selection();
+    private int firstLine = 0;
+    private boolean editable = true;
+    private int editableColor = 0xe0e0e0;
+    private int uneditableColor = 7368816;
+    private int displayedLines = 1;
 
-    public SpruceTextAreaWidget(@NotNull TextRenderer textRenderer, int x, int y, int width, int height, Text message)
+    public SpruceTextAreaWidget(@NotNull Position position, @NotNull TextRenderer textRenderer, int width, int height, Text message)
     {
-        super(x, y, width, height, message);
+        super(position);
+        this.width = width;
+        this.height = height;
         this.textRenderer = textRenderer;
         this.lines = new MultilineText(this.getInnerWidth());
         this.cursor.toStart();
     }
 
+    public SpruceTextAreaWidget(@NotNull TextRenderer textRenderer, int x, int y, int width, int height, Text message)
+    {
+        this(Position.of(x, y), textRenderer, width, height, message);
+    }
+
     /**
      * Returns the lines.
      *
-     * @return The lines.
+     * @return the lines
      */
     public @NotNull List<String> getLines()
     {
@@ -70,7 +76,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Sets the lines.
      *
-     * @param lines The lines.
+     * @param lines the lines
      */
     public void setLines(@NotNull List<String> lines)
     {
@@ -82,7 +88,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Returns the text from the text area.
      *
-     * @return The text.
+     * @return the text
      */
     public @NotNull String getText()
     {
@@ -92,7 +98,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Sets the text of the text area.
      *
-     * @param text The text.
+     * @param text the text
      */
     public void setText(@Nullable String text)
     {
@@ -113,7 +119,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Returns whether this text area is editable or not.
      *
-     * @return True if editable, else false.
+     * @return true if editable, else false
      */
     public boolean isEditable()
     {
@@ -123,7 +129,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Sets whether this text area is editable or not.
      *
-     * @param editable State of editable.
+     * @param editable state of editable
      * @since 1.6.4
      */
     public void setEditable(boolean editable)
@@ -134,7 +140,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Sets the number of displayed lines.
      *
-     * @param lines Number of displayed lines.
+     * @param lines number of displayed lines
      */
     public void setDisplayedLines(int lines)
     {
@@ -148,7 +154,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Returns the inner width of the text area.
      *
-     * @return The inner width.
+     * @return the inner width
      */
     public int getInnerWidth()
     {
@@ -271,7 +277,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Writes text where the cursor is.
      *
-     * @param text The text to write.
+     * @param text the text to write
      */
     public void write(@NotNull String text)
     {
@@ -406,8 +412,8 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
             this.setFocused(true);
 
         if (this.isFocused() && mouseOver && button == 0) {
-            int x = MathHelper.floor(mouseX) - this.x - 4;
-            int y = MathHelper.floor(mouseY) - this.y - 4;
+            int x = MathHelper.floor(mouseX) - this.getX() - 4;
+            int y = MathHelper.floor(mouseY) - this.getY() - 4;
 
             int row = this.firstLine + y / 9;
             if (row >= this.lines.size()) {
@@ -443,14 +449,11 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     }
 
     @Override
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta)
+    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
-        if (!this.isVisible())
-            return;
-
         int borderColor = this.isFocused() ? -1 : -6250336;
-        fill(matrices, this.x - 1, this.y - 1, this.x + this.width + 1, this.y + this.height + 1, borderColor);
-        fill(matrices, this.x, this.y, this.x + this.width, this.y + this.height, -16777216);
+        fill(matrices, this.getX() - 1, this.getY() - 1, this.getX() + this.width + 1, this.getY() + this.height + 1, borderColor);
+        fill(matrices, this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, -16777216);
 
         this.drawText(matrices);
         this.drawCursor(matrices);
@@ -459,16 +462,16 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Draws the text of the text area.
      *
-     * @param matrices The matrices.
+     * @param matrices the matrices
      */
     protected void drawText(@NotNull MatrixStack matrices)
     {
         int length = Math.min(this.lines.size(), this.displayedLines);
 
         int textColor = this.editable ? this.editableColor : this.uneditableColor;
-        int textX = this.x + 4;
+        int textX = this.getX() + 4;
 
-        int lineY = this.y + 4;
+        int lineY = this.getY() + 4;
         for (int row = this.firstLine; row < this.firstLine + length; row++) {
             String line = this.lines.get(row);
             if (line == null)
@@ -485,10 +488,10 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Draws the selection over the text.
      *
-     * @param matrices The matrices.
-     * @param line     The current line.
-     * @param lineY    The line Y-coordinates.
-     * @param row      The row number.
+     * @param matrices the matrices
+     * @param line the current line
+     * @param lineY The line Y-coordinates.
+     * @param row the row number
      */
     protected void drawSelection(@NotNull MatrixStack matrices, @NotNull String line, int lineY, int row)
     {
@@ -509,7 +512,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         if (startIndex >= line.length() || startIndex == endIndex)
             return;
 
-        int x = this.x + 4 + this.textRenderer.getWidth(line.substring(0, startIndex));
+        int x = this.getX() + 4 + this.textRenderer.getWidth(line.substring(0, startIndex));
         String selected = line.substring(startIndex, endIndex);
 
         int x2 = x + this.textRenderer.getWidth(selected);
@@ -534,14 +537,14 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     /**
      * Draws the cursor.
      *
-     * @param matrices The matrices.
+     * @param matrices the matrices
      */
     protected void drawCursor(@NotNull MatrixStack matrices)
     {
         if (!this.isActive())
             return;
         if (this.lines.isEmpty()) {
-            drawTextWithShadow(matrices, this.textRenderer, new LiteralText("_"), this.x, this.y + 4, 0xe0e0e0);
+            drawTextWithShadow(matrices, this.textRenderer, new LiteralText("_"), this.getX(), this.getY() + 4, 0xe0e0e0);
             return;
         }
 
@@ -549,8 +552,8 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
 
         int actualRow = this.cursor.row - firstLine;
         String cursorLine = this.lines.get(this.cursor.row);
-        int cursorX = this.x + 4 + this.textRenderer.getWidth(cursorLine.substring(0, this.cursor.column));
-        int cursorY = this.y + 4 + actualRow * this.textRenderer.fontHeight;
+        int cursorX = this.getX() + 4 + this.textRenderer.getWidth(cursorLine.substring(0, this.cursor.column));
+        int cursorY = this.getY() + 4 + actualRow * this.textRenderer.fontHeight;
 
         if (this.cursor.row < this.lines.size() - 1 || this.cursor.column < cursorLine.length() || this.doesLineOccupyFullSpace(cursorLine))
             fill(matrices, cursorX - 1, cursorY - 1, cursorX, cursorY + 9, 0xffe0e0e0);
@@ -576,43 +579,13 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     @Override
     public boolean changeFocus(boolean lookForwards)
     {
-        return this.visible && this.editable && super.changeFocus(lookForwards);
+        return this.isVisible() && this.editable && super.changeFocus(lookForwards);
     }
 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY)
     {
-        return this.visible && mouseX >= (double) this.x && mouseX < (double) (this.x + this.width) && mouseY >= (double) this.y && mouseY < (double) (this.y + this.height);
-    }
-
-    @Override
-    public int getX()
-    {
-        return this.x;
-    }
-
-    @Override
-    public int getY()
-    {
-        return this.y;
-    }
-
-    @Override
-    public boolean isVisible()
-    {
-        return this.visible;
-    }
-
-    @Override
-    public void setVisible(boolean visible)
-    {
-        this.visible = visible;
-    }
-
-    @Override
-    public int getWidth()
-    {
-        return super.getWidth();
+        return this.isVisible() && mouseX >= (double) this.getX() && mouseX < (double) (this.getX() + this.width) && mouseY >= (double) this.getY() && mouseY < (double) (this.getY() + this.height);
     }
 
     @Override
@@ -636,8 +609,8 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
     public class Cursor
     {
         boolean main;
-        int     row    = 0;
-        int     column = 0;
+        int row = 0;
+        int column = 0;
 
         public Cursor(boolean main)
         {
@@ -742,7 +715,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         /**
          * Copies the row and column from another cursor.
          *
-         * @param cursor The other cursor.
+         * @param cursor the other cursor
          */
         public void copy(@NotNull Cursor cursor)
         {
@@ -771,8 +744,8 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         /**
          * Returns whether this cursor is at the same place as the other cursor.
          *
-         * @param other The other cursor.
-         * @return True if this cursor is at the same place as the other cursor, else false.
+         * @param other the other cursor
+         * @return true if this cursor is at the same place as the other cursor, else false
          */
         public boolean isSame(@NotNull Cursor other)
         {
@@ -782,7 +755,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         /**
          * Returns the position of the cursor in the text.
          *
-         * @return The position.
+         * @return the position
          */
         public int getPosition()
         {
@@ -832,9 +805,9 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
      */
     public class Selection
     {
-        private Cursor  anchor   = new Cursor(false);
-        private Cursor  follower = new Cursor(false);
-        private boolean active   = false;
+        private Cursor anchor = new Cursor(false);
+        private Cursor follower = new Cursor(false);
+        private boolean active = false;
 
         /**
          * Selects all.
@@ -891,7 +864,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         /**
          * Erases the selected text.
          *
-         * @return True if the text has been erased, else false.
+         * @return true if the text has been erased, else false
          */
         public boolean erase()
         {
@@ -941,7 +914,7 @@ public class SpruceTextAreaWidget extends AbstractButtonWidget implements Spruce
         /**
          * Returns the selected text.
          *
-         * @return The selected text, if no text is selected the return value is an empty string.
+         * @return the selected text, if no text is selected the return value is an empty string
          */
         public @NotNull String getSelectedText()
         {

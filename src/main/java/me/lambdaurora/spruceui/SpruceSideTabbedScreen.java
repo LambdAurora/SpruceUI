@@ -19,9 +19,9 @@ import org.jetbrains.annotations.NotNull;
  * Uses {@link SpruceSideTabbedWidget} but on the entire screen.
  *
  * @author LambdAurora
- * @version 1.6.5
+ * @version 1.7.0
  * @see SpruceSideTabbedWidget
- * @since 1.6.5
+ * @since 1.7.0
  */
 public class SpruceSideTabbedScreen extends SpruceScreen
 {

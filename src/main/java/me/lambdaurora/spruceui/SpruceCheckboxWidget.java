@@ -21,11 +21,12 @@ import java.util.function.Consumer;
  * Represents a checkbox widget.
  *
  * @author LambdAurora
- * @version 1.6.1
+ * @version 1.7.0
  * @since 1.0.0
  */
 public class SpruceCheckboxWidget extends net.minecraft.client.gui.widget.CheckboxWidget implements SpruceWidget, Tooltipable
 {
+    private final Position position;
     private final Consumer<SpruceCheckboxWidget> action;
     private       Text                           tooltip;
     private       int                            tooltipTicks;
@@ -34,7 +35,14 @@ public class SpruceCheckboxWidget extends net.minecraft.client.gui.widget.Checkb
     public SpruceCheckboxWidget(int x, int y, int width, int height, Text message, boolean checked, Consumer<SpruceCheckboxWidget> action)
     {
         super(x, y, width, height, message, checked);
+        this.position = Position.of(x, y);
         this.action = action;
+    }
+
+    @Override
+    public @NotNull Position getPosition()
+    {
+        return this.position.move(this.x, this.y);
     }
 
     @Override
@@ -92,6 +100,12 @@ public class SpruceCheckboxWidget extends net.minecraft.client.gui.widget.Checkb
     public int getWidth()
     {
         return super.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return super.getHeight();
     }
 
     @Override

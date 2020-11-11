@@ -22,22 +22,24 @@ import java.util.function.Consumer;
  * Represents a slightly modified slider widget.
  *
  * @author LambdAurora
- * @version 1.6.1
+ * @version 1.7.0
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, Tooltipable
 {
-    private       Text                         baseMessage;
+    private final Position position;
+    private Text baseMessage;
     private final Consumer<SpruceSliderWidget> applyConsumer;
-    private       double                       multiplier;
-    private       String                       sign;
-    private       Text                         tooltip;
-    private       int                          tooltipTicks;
-    private       long                         lastTick;
+    private double multiplier;
+    private String sign;
+    private Text tooltip;
+    private int tooltipTicks;
+    private long lastTick;
 
     protected SpruceSliderWidget(int x, int y, int width, int height, @NotNull Text message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign)
     {
         super(x, y, width, height, message, progress);
+        this.position = Position.of(x, y);
         this.baseMessage = message;
         this.applyConsumer = applyConsumer;
         this.multiplier = multiplier;
@@ -50,10 +52,16 @@ public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, To
         this(x, y, width, height, message, progress, applyConsumer, 100.0, "%");
     }
 
+    @Override
+    public @NotNull Position getPosition()
+    {
+        return this.position.move(this.x, this.y);
+    }
+
     /**
      * Gets the value of the slider.
      *
-     * @return The value of the slider.
+     * @return the value of the slider
      */
     public double getValue()
     {
@@ -63,7 +71,7 @@ public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, To
     /**
      * Returns the value of this slider as an integer .
      *
-     * @return The value as an integer.
+     * @return the value as an integer
      */
     public int getIntValue()
     {
@@ -73,7 +81,7 @@ public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, To
     /**
      * Sets the value of this slider.
      *
-     * @param value The new value as an integer.
+     * @param value the new value as an integer
      */
     public void setIntValue(int value)
     {
@@ -84,7 +92,7 @@ public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, To
     /**
      * Gets the base message of the slider.
      *
-     * @return The base message of the slider.
+     * @return the base message of the slider
      */
     public @NotNull Text getBaseMessage()
     {
@@ -94,7 +102,7 @@ public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, To
     /**
      * Sets the base message of the slider.
      *
-     * @param baseMessage The base message of the slider.
+     * @param baseMessage the base message of the slider
      */
     public void setBaseMessage(@NotNull Text baseMessage)
     {
@@ -134,18 +142,6 @@ public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, To
     }
 
     @Override
-    public int getX()
-    {
-        return this.x;
-    }
-
-    @Override
-    public int getY()
-    {
-        return this.y;
-    }
-
-    @Override
     public boolean isVisible()
     {
         return this.visible;
@@ -161,6 +157,12 @@ public class SpruceSliderWidget extends SliderWidget implements SpruceWidget, To
     public int getWidth()
     {
         return super.getWidth();
+    }
+
+    @Override
+    public int getHeight()
+    {
+        return super.getHeight();
     }
 
     @Override
