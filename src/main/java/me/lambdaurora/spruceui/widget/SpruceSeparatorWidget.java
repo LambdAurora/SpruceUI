@@ -7,17 +7,19 @@
  * see the LICENSE file.
  */
 
-package me.lambdaurora.spruceui;
+package me.lambdaurora.spruceui.widget;
 
+import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.Tooltip;
+import me.lambdaurora.spruceui.Tooltipable;
+import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.util.NarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Util;
+import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,9 +37,6 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 {
     private final MinecraftClient client = MinecraftClient.getInstance();
     private Text title;
-    protected boolean focused;
-    private boolean wasHovered;
-    protected long nextNarration = Long.MAX_VALUE;
     private Text tooltip;
     private int tooltipTicks;
     private long lastTick;
@@ -54,12 +53,6 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
     public SpruceSeparatorWidget(@Nullable Text title, int x, int y, int width)
     {
         this(Position.of(x, y), width, title);
-    }
-
-    @Override
-    public boolean isFocused()
-    {
-        return this.focused;
     }
 
     /**
@@ -85,11 +78,6 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
         this.title = title;
     }
 
-    public boolean isMouseHovered()
-    {
-        return this.hovered || this.focused;
-    }
-
     @Override
     public @NotNull Optional<Text> getTooltip()
     {
@@ -106,17 +94,6 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
     public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
         if (this.title != null) {
-            if (this.wasHovered != this.isMouseHovered()) {
-                if (this.isMouseHovered()) {
-                    if (this.focused)
-                        this.queueNarration(200);
-                    else
-                        this.queueNarration(750);
-
-                } else
-                    this.nextNarration = Long.MAX_VALUE;
-            }
-
             int titleWidth = this.client.textRenderer.getWidth(this.title);
             int titleX = this.getX() + (this.width / 2 - titleWidth / 2);
             if (this.width > titleWidth) {
@@ -129,44 +106,22 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
         }
 
         Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
-
-        this.narrate();
-        this.wasHovered = this.isMouseHovered();
-    }
-
-    protected void narrate()
-    {
-        if (this.isMouseHovered() && Util.getMeasuringTimeMs() > this.nextNarration) {
-            String string = this.getNarrationMessage();
-            if (!string.isEmpty()) {
-                NarratorManager.INSTANCE.narrate(string);
-                this.nextNarration = Long.MAX_VALUE;
-            }
-        }
-    }
-
-    protected String getNarrationMessage()
-    {
-        return this.getTitle().map(Text::asString)
-                .filter(title -> !title.isEmpty())
-                .map(title -> I18n.translate("spruceui.narrator.separator", title))
-                .orElse("");
-    }
-
-    public void queueNarration(int ticks)
-    {
-        this.nextNarration = Util.getMeasuringTimeMs() + (long) ticks;
     }
 
     @Override
-    public boolean changeFocus(boolean down)
+    protected @NotNull Optional<Text> getNarrationMessage()
     {
-        if (this.isVisible() && this.tooltip != null) {
-            this.focused = !this.focused;
-            return this.focused;
-        } else {
+        return this.getTitle().map(Text::asString)
+                .filter(title -> !title.isEmpty())
+                .map(title -> new TranslatableText("spruceui.narrator.separator", title));
+    }
+
+    @Override
+    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
+    {
+        if (this.tooltip == null)
             return false;
-        }
+        return super.onNavigation(direction, tab);
     }
 
     /**
@@ -182,21 +137,21 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 
         public ButtonWrapper(@NotNull SpruceSeparatorWidget separator, int height)
         {
-            super(separator.getX(), separator.getY(), separator.width, height, separator.getTitle().orElse(LiteralText.EMPTY));
+            super(separator.getX(), separator.getY(), separator.getWidth(), height, separator.getTitle().orElse(LiteralText.EMPTY));
             this.widget = separator;
         }
 
         @Override
         public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
         {
-            this.widget.position.setRelativeY(this.y + this.height / 2 - 9 / 2);
+            this.widget.getPosition().setRelativeY(this.y + this.height / 2 - 9 / 2);
             this.widget.render(matrices, mouseX, mouseY, delta);
         }
 
         @Override
         public boolean changeFocus(boolean down)
         {
-            return this.widget.changeFocus(down);
+            return this.widget.onNavigation(down ? NavigationDirection.DOWN : NavigationDirection.UP, true);
         }
     }
 }

@@ -10,7 +10,7 @@
 package me.lambdaurora.spruceui.test.gui;
 
 import me.lambdaurora.spruceui.SpruceButtonWidget;
-import me.lambdaurora.spruceui.SpruceScreen;
+import me.lambdaurora.spruceui.screen.SpruceScreen;
 import me.lambdaurora.spruceui.SpruceTexts;
 import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.option.*;
@@ -120,8 +120,8 @@ public class SpruceOptionScreen extends SpruceScreen
 
         this.list.addOptionEntry(this.booleanOption, this.checkboxOption);
         this.list.addSingleOptionEntry(this.separatorOption);
-        this.list.addOptionEntry(this.doubleOption, this.cyclingOption);
-        this.list.addSingleOptionEntry(this.actionOption);
+        this.list.addSingleOptionEntry(this.doubleOption);
+        this.list.addOptionEntry(this.actionOption, this.cyclingOption);
 
         this.addChild(this.list);
 

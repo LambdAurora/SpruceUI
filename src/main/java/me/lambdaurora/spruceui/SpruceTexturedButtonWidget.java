@@ -26,7 +26,7 @@ import java.util.function.BiConsumer;
  */
 public class SpruceTexturedButtonWidget extends TexturedButtonWidget
 {
-    private       boolean                           silent = false;
+    private boolean silent = false;
     private final BiConsumer<ButtonWidget, Boolean> onChangeState;
 
     public SpruceTexturedButtonWidget(int x, int y, int width, int height, int u, int v, int hoveredVOffset, Identifier texture, @NotNull BiConsumer<ButtonWidget, Boolean> onChangedState)
@@ -44,7 +44,7 @@ public class SpruceTexturedButtonWidget extends TexturedButtonWidget
     /**
      * Returns whether the button is silent or not.
      *
-     * @return True if the button is silent, else false.
+     * @return {@code true} if the button is silent, else {@code false}.
      */
     public boolean isSilent()
     {
@@ -54,7 +54,7 @@ public class SpruceTexturedButtonWidget extends TexturedButtonWidget
     /**
      * Sets whether the button is silent or not.
      *
-     * @param silent True if the button is silent, else false.
+     * @param silent {@code true} if the button is silent, else {@code false}.
      */
     public void setSilent(boolean silent)
     {

@@ -9,7 +9,8 @@
 
 package me.lambdaurora.spruceui;
 
-import net.minecraft.client.MinecraftClient;
+import me.lambdaurora.spruceui.navigation.NavigationDirection;
+import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -33,15 +34,12 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     public static final Consumer<SpruceLabelWidget> DEFAULT_ACTION = label -> {
     };
 
-    private final MinecraftClient client = MinecraftClient.getInstance();
     private final Consumer<SpruceLabelWidget> action;
     private final int maxWidth;
     //private final int                         maxHeight;
     private Text text;
     private Text tooltip;
     private boolean centered;
-    protected boolean hovered;
-    protected boolean focused;
 
     public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered)
     {
@@ -91,12 +89,6 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
         this(Position.of(x, y), text, maxWidth);
     }
 
-    @Override
-    public @NotNull Position getPosition()
-    {
-        return this.position;
-    }
-
     /**
      * Sets the text of this label.
      *
@@ -126,18 +118,6 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
         this.tooltip = tooltip;
     }
 
-    @Override
-    public boolean isFocused()
-    {
-        return this.focused;
-    }
-
-    @Override
-    public boolean isMouseHovered()
-    {
-        return this.hovered;
-    }
-
     /**
      * Fires the press event on this label widget.
      */
@@ -156,9 +136,9 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
             if (!this.tooltip.getString().isEmpty()) {
                 List<OrderedText> wrappedTooltipText = this.client.textRenderer.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
                 if (this.hovered)
-                    new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
+                    Tooltip.create(mouseX, mouseY, wrappedTooltipText).queue();
                 else if (this.focused)
-                    new Tooltip(this.getX() - 12, this.getY(), wrappedTooltipText).queue();
+                    Tooltip.create(this.getX() - 12, this.getY(), wrappedTooltipText).queue();
             }
         }
     }
@@ -176,10 +156,10 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     }
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction)
+    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
         if (this.action == DEFAULT_ACTION)
             return false;
-        return super.onNavigation(direction);
+        return super.onNavigation(direction, tab);
     }
 }

@@ -24,7 +24,7 @@ public final class Position implements SprucePositioned
     {
     });
 
-    private SprucePositioned anchor;
+    private final SprucePositioned anchor;
     private int x = 0;
     private int y = 0;
 

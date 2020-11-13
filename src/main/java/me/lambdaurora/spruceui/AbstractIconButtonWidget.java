@@ -37,11 +37,11 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
      * Renders the icon.
      *
      * @param matrices The matrix stack.
-     * @param mouseX   Mouse X.
-     * @param mouseY   Mouse Y.
-     * @param delta    Delta.
-     * @param x        X coordinates of the icon.
-     * @param y        Y coordinates of the icon.
+     * @param mouseX Mouse X.
+     * @param mouseY Mouse Y.
+     * @param delta Delta.
+     * @param x X coordinates of the icon.
+     * @param y Y coordinates of the icon.
      * @return The size of the icon.
      */
     protected abstract int renderIcon(MatrixStack matrices, int mouseX, int mouseY, float delta, int x, int y);

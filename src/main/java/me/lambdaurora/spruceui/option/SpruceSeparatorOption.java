@@ -10,7 +10,7 @@
 package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.Position;
-import me.lambdaurora.spruceui.SpruceSeparatorWidget;
+import me.lambdaurora.spruceui.widget.SpruceSeparatorWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;

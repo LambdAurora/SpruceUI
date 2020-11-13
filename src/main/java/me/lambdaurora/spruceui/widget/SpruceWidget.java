@@ -7,8 +7,10 @@
  * see the LICENSE file.
  */
 
-package me.lambdaurora.spruceui;
+package me.lambdaurora.spruceui.widget;
 
+import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.SprucePositioned;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import org.jetbrains.annotations.NotNull;
@@ -44,14 +46,14 @@ public interface SpruceWidget extends SprucePositioned, NavigationElement, Drawa
     /**
      * Returns whether the widget is visible or not.
      *
-     * @return true if the widget is visible, else false
+     * @return {@code true} if the widget is visible, else {@code false}
      */
     boolean isVisible();
 
     /**
      * Sets whether the widget is visible or not.
      *
-     * @param visible true if the widget is visible, else false
+     * @param visible {@code true} if the widget is visible, else {@code false}
      */
     void setVisible(boolean visible);
 
@@ -70,18 +72,45 @@ public interface SpruceWidget extends SprucePositioned, NavigationElement, Drawa
     int getHeight();
 
     /**
+     * Returns whether this widget is active or not.
+     *
+     * @return {@code true} if the widget is active, else {@code false}
+     */
+    default boolean isActive()
+    {
+        return true;
+    }
+
+    /**
      * Returns whether the widget is focused or not.
      *
-     * @return true if the widget is focused, else false
+     * @return {@code true} if the widget is focused, else {@code false}
      */
     boolean isFocused();
 
     /**
+     * Sets whether the widget is focused or not.
+     *
+     * @param focused {@code true} if the widget is focused, else {@code false}
+     */
+    void setFocused(boolean focused);
+
+    /**
      * Returns whether the widget is hovered or not.
      *
-     * @return true if the widget is hovered, else false
+     * @return {@code true} if the widget is hovered, else {@code false}
      */
     boolean isMouseHovered();
+
+    /**
+     * Returns whether the widget is focused or hovered.
+     *
+     * @return {@code true} if the widget is focused or hovered, else {@code false}
+     */
+    default boolean isFocusedOrHovered()
+    {
+        return this.isMouseHovered() || this.isFocused();
+    }
 
     @Override
     default boolean isMouseOver(double mouseX, double mouseY)

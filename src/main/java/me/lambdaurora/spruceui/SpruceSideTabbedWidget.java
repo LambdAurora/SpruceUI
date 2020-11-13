@@ -9,6 +9,7 @@
 
 package me.lambdaurora.spruceui;
 
+import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;
@@ -39,18 +40,6 @@ public class SpruceSideTabbedWidget extends SpruceContainerWidget
     }
 
     @Override
-    public boolean isDragging()
-    {
-        return false;
-    }
-
-    @Override
-    public void setDragging(boolean dragging)
-    {
-
-    }
-
-    @Override
     public Element getFocused()
     {
         return null;
@@ -63,7 +52,7 @@ public class SpruceSideTabbedWidget extends SpruceContainerWidget
     }
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction)
+    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
         return false;
     }

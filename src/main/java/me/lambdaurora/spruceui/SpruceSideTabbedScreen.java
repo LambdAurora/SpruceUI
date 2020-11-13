@@ -9,6 +9,8 @@
 
 package me.lambdaurora.spruceui;
 
+import me.lambdaurora.spruceui.navigation.NavigationDirection;
+import me.lambdaurora.spruceui.screen.SpruceScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
@@ -48,9 +50,9 @@ public class SpruceSideTabbedScreen extends SpruceScreen
     }
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction)
+    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
-        return this.widget.onNavigation(direction);
+        return this.widget.onNavigation(direction, tab);
     }
 
     public interface SideTabbedWidgetFactory

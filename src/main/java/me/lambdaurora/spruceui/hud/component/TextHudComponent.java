@@ -27,8 +27,8 @@ import org.jetbrains.annotations.NotNull;
 public class TextHudComponent extends HudComponent
 {
     protected MinecraftClient client;
-    protected Text            text;
-    protected int             color;
+    protected Text text;
+    protected int color;
 
     public TextHudComponent(@NotNull Identifier identifier, int x, int y, Text text)
     {

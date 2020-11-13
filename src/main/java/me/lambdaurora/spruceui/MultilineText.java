@@ -28,7 +28,7 @@ import java.util.function.Function;
  */
 public final class MultilineText
 {
-    private final int          width;
+    private final int width;
     private final List<String> rows = new ArrayList<>();
 
     public MultilineText(int width)
@@ -147,7 +147,7 @@ public final class MultilineText
     /**
      * Adds a new line at the specified row.
      *
-     * @param row  The row.
+     * @param row The row.
      * @param line The line to add.
      */
     public void add(int row, String line)
@@ -171,7 +171,7 @@ public final class MultilineText
     /**
      * Replaces the line.
      *
-     * @param row  The row of the line.
+     * @param row The row of the line.
      * @param line The new text.
      */
     public void replaceRow(int row, @NotNull String line)

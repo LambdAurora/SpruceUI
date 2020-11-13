@@ -10,6 +10,7 @@
 package me.lambdaurora.spruceui;
 
 import com.google.common.collect.Queues;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
@@ -55,6 +56,21 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
         this.tooltip = tooltip;
     }
 
+    public static @NotNull Tooltip create(int x, int y, @NotNull String tooltip, int parentWidth)
+    {
+        return new Tooltip(x, y, tooltip, parentWidth);
+    }
+
+    public static @NotNull Tooltip create(int x, int y, @NotNull StringVisitable tooltip, int parentWidth)
+    {
+        return new Tooltip(x, y, tooltip, parentWidth);
+    }
+
+    public static @NotNull Tooltip create(int x, int y, @NotNull List<OrderedText> tooltip)
+    {
+        return new Tooltip(x, y, tooltip);
+    }
+
     @Override
     public int getX()
     {
@@ -70,7 +86,7 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
     /**
      * Returns whether the tooltip should render or not.
      *
-     * @return true if the tooltip should render, else false
+     * @return {@code true} if the tooltip should render, else {@code false}
      */
     public boolean shouldRender()
     {
@@ -123,9 +139,9 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
                 if (!tooltip.getString().isEmpty() && tooltipTicks >= 30) {
                     List<OrderedText> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(tooltip, Math.max(widget.getWidth() * 2 / 3, 200));
                     if (widget.isMouseHovered())
-                        new Tooltip(mouseX, mouseY, wrappedTooltipText).queue();
+                        create(mouseX, mouseY, wrappedTooltipText).queue();
                     else if (widget.isFocused())
-                        new Tooltip(widget.getX() - 12, widget.getY() + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
+                        create(widget.getX() - 12, widget.getY() + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
                 }
             });
         }

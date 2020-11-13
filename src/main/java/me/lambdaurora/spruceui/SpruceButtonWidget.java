@@ -9,6 +9,7 @@
 
 package me.lambdaurora.spruceui;
 
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -103,6 +104,12 @@ public class SpruceButtonWidget extends ButtonWidget implements SpruceWidget, To
     public boolean isFocused()
     {
         return super.isFocused();
+    }
+
+    @Override
+    public void setFocused(boolean focused)
+    {
+        super.setFocused(focused);
     }
 
     @Override

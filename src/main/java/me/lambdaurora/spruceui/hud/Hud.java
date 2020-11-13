@@ -30,10 +30,10 @@ import java.util.List;
  */
 public abstract class Hud extends DrawableHelper implements Identifiable
 {
-    protected final Identifier         identifier;
+    protected final Identifier identifier;
     protected final List<HudComponent> components = new ArrayList<>();
-    private         boolean            enabled    = true;
-    protected       boolean            visible    = true;
+    private boolean enabled = true;
+    protected boolean visible = true;
 
     public Hud(@NotNull Identifier identifier)
     {

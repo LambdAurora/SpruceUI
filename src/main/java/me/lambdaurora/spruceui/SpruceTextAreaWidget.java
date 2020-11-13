@@ -11,6 +11,8 @@ package me.lambdaurora.spruceui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.lambdaurora.spruceui.navigation.NavigationDirection;
+import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -43,7 +45,6 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     private final Cursor cursor = new Cursor(true);
     private final Selection selection = new Selection();
     private int firstLine = 0;
-    private boolean editable = true;
     private int editableColor = 0xe0e0e0;
     private int uneditableColor = 7368816;
     private int displayedLines = 1;
@@ -119,11 +120,11 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     /**
      * Returns whether this text area is editable or not.
      *
-     * @return true if editable, else false
+     * @return {@code true} if editable, else {@code false}
      */
     public boolean isEditable()
     {
-        return this.editable;
+        return this.isActive();
     }
 
     /**
@@ -134,7 +135,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      */
     public void setEditable(boolean editable)
     {
-        this.editable = editable;
+        this.active = editable;
     }
 
     /**
@@ -209,7 +210,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
 
         if (character == '\n') {
             this.cursor.moveRight();
-            this.cursor.moveRight();
+            //this.cursor.moveRight();
         } else {
             this.cursor.moveRight();
             if (oldSize + 1 == this.lines.size())
@@ -314,15 +315,15 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         if (oldSize < this.lines.size()) this.cursor.moveRight();
     }
 
-    public boolean isActive()
+    public boolean isEditorActive()
     {
-        return this.isVisible() && this.isFocused() && this.isEditable();
+        return this.isActive() && this.isFocused();
     }
 
     @Override
     public boolean charTyped(char chr, int keyCode)
     {
-        if (!this.isActive() || !SharedConstants.isValidChar(chr))
+        if (!this.isEditorActive() || !SharedConstants.isValidChar(chr))
             return false;
 
         if (this.isEditable()) {
@@ -333,9 +334,34 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
+    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
-        if (!this.isActive())
+        if (!tab) {
+            boolean result = false;
+            switch (direction) {
+                case RIGHT:
+                    result = this.onSelectionUpdate(this.cursor::moveRight);
+                    break;
+                case LEFT:
+                    result = this.onSelectionUpdate(this.cursor::moveLeft);
+                    break;
+                case UP:
+                    result = this.onSelectionUpdate(this.cursor::moveUp);
+                    break;
+                case DOWN:
+                    result = this.onSelectionUpdate(this.cursor::moveDown);
+                    break;
+            }
+            if (result)
+                return true;
+        }
+        return super.onNavigation(direction, tab);
+    }
+
+    @Override
+    public boolean onKeyPress(int keyCode, int scanCode, int modifiers)
+    {
+        if (!this.isEditorActive())
             return false;
 
         if (Screen.isSelectAll(keyCode)) {
@@ -368,6 +394,10 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
                 return this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toEnd : this.cursor::toRowEnd);
             case GLFW.GLFW_KEY_HOME:
                 return this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toStart : this.cursor::toLineStart);
+            case GLFW.GLFW_KEY_PAGE_UP:
+                return this.onSelectionUpdate(() -> this.cursor.moveVertical(-this.cursor.row));
+            case GLFW.GLFW_KEY_PAGE_DOWN:
+                return this.onSelectionUpdate(() -> this.cursor.moveVertical(this.lines.size() - this.cursor.row));
             case GLFW.GLFW_KEY_ENTER:
             case GLFW.GLFW_KEY_KP_ENTER:
                 if (this.isEditable())
@@ -401,17 +431,9 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    protected boolean onMouseClick(double mouseX, double mouseY, int button)
     {
-        if (!this.isVisible()) {
-            return false;
-        }
-
-        boolean mouseOver = this.isMouseOver(mouseX, mouseY);
-        if (mouseOver && this.editable)
-            this.setFocused(true);
-
-        if (this.isFocused() && mouseOver && button == 0) {
+        if (button == 0) {
             int x = MathHelper.floor(mouseX) - this.getX() - 4;
             int y = MathHelper.floor(mouseY) - this.getY() - 4;
 
@@ -436,7 +458,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double amount)
     {
-        if (!this.isActive()) {
+        if (!this.isEditorActive()) {
             return false;
         }
 
@@ -468,7 +490,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     {
         int length = Math.min(this.lines.size(), this.displayedLines);
 
-        int textColor = this.editable ? this.editableColor : this.uneditableColor;
+        int textColor = this.isEditable() ? this.editableColor : this.uneditableColor;
         int textX = this.getX() + 4;
 
         int lineY = this.getY() + 4;
@@ -495,6 +517,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      */
     protected void drawSelection(@NotNull MatrixStack matrices, @NotNull String line, int lineY, int row)
     {
+        if (!this.isFocused())
+            return;
         if (!this.selection.isRowSelected(row))
             return;
 
@@ -541,7 +565,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      */
     protected void drawCursor(@NotNull MatrixStack matrices)
     {
-        if (!this.isActive())
+        if (!this.isFocused())
             return;
         if (this.lines.isEmpty()) {
             drawTextWithShadow(matrices, this.textRenderer, new LiteralText("_"), this.getX(), this.getY() + 4, 0xe0e0e0);
@@ -574,30 +598,6 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         if (this.lines.isEmpty())
             this.lines.add("");
         this.cursor.sanitize();
-    }
-
-    @Override
-    public boolean changeFocus(boolean lookForwards)
-    {
-        return this.isVisible() && this.editable && super.changeFocus(lookForwards);
-    }
-
-    @Override
-    public boolean isMouseOver(double mouseX, double mouseY)
-    {
-        return this.isVisible() && mouseX >= (double) this.getX() && mouseX < (double) (this.getX() + this.width) && mouseY >= (double) this.getY() && mouseY < (double) (this.getY() + this.height);
-    }
-
-    @Override
-    public boolean isFocused()
-    {
-        return super.isFocused();
-    }
-
-    @Override
-    public boolean isMouseHovered()
-    {
-        return this.hovered;
     }
 
     /**
@@ -745,7 +745,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
          * Returns whether this cursor is at the same place as the other cursor.
          *
          * @param other the other cursor
-         * @return true if this cursor is at the same place as the other cursor, else false
+         * @return {@code true} if this cursor is at the same place as the other cursor, else {@code false}
          */
         public boolean isSame(@NotNull Cursor other)
         {
@@ -864,7 +864,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         /**
          * Erases the selected text.
          *
-         * @return true if the text has been erased, else false
+         * @return {@code true} if the text has been erased, else {@code false}
          */
         public boolean erase()
         {

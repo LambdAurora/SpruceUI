@@ -7,8 +7,9 @@
  * see the LICENSE file.
  */
 
-package me.lambdaurora.spruceui;
+package me.lambdaurora.spruceui.widget;
 
+import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.gui.Element;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,10 +24,12 @@ public interface NavigationElement extends Element
 {
     /**
      * Called when navigating in the menu.
+     *
      * @param direction direction of navigation
-     * @return true if success, else false
+     * @param tab {@code true} if the navigation was triggered by the tab key, else {@code false}
+     * @return {@code true} if success, else {@code false}
      */
-    default boolean onNavigation(@NotNull NavigationDirection direction)
+    default boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
         if (direction.isVertical()) {
             return this.changeFocus(direction == NavigationDirection.DOWN);

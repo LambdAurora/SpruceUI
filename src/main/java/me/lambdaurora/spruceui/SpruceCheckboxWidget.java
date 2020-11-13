@@ -9,6 +9,7 @@
 
 package me.lambdaurora.spruceui;
 
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
@@ -28,9 +29,9 @@ public class SpruceCheckboxWidget extends net.minecraft.client.gui.widget.Checkb
 {
     private final Position position;
     private final Consumer<SpruceCheckboxWidget> action;
-    private       Text                           tooltip;
-    private       int                            tooltipTicks;
-    private       long                           lastTick;
+    private Text tooltip;
+    private int tooltipTicks;
+    private long lastTick;
 
     public SpruceCheckboxWidget(int x, int y, int width, int height, Text message, boolean checked, Consumer<SpruceCheckboxWidget> action)
     {
@@ -112,6 +113,12 @@ public class SpruceCheckboxWidget extends net.minecraft.client.gui.widget.Checkb
     public boolean isFocused()
     {
         return super.isFocused();
+    }
+
+    @Override
+    public void setFocused(boolean focused)
+    {
+        super.setFocused(focused);
     }
 
     @Override

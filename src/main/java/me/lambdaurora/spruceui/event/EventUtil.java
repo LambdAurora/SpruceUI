@@ -38,7 +38,7 @@ public final class EventUtil
     /**
      * Registers a full open screen event.
      *
-     * @param pre  Pre open screen callback.
+     * @param pre Pre open screen callback.
      * @param post Post open screen callback.
      */
     public static void onOpenScreen(OpenScreenCallback pre, OpenScreenCallback post)
