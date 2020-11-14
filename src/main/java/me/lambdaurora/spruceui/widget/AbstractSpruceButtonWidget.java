@@ -13,6 +13,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.Tooltipable;
+import me.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -40,7 +41,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
     private long lastTick;
     protected float alpha = 1.f;
 
-    protected AbstractSpruceButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message)
+    public AbstractSpruceButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message)
     {
         super(position);
         this.width = width;
@@ -87,6 +88,11 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
     public void setTooltip(@Nullable Text tooltip)
     {
         this.tooltip = tooltip;
+    }
+
+    public VanillaButtonWrapper asVanilla()
+    {
+        return new VanillaButtonWrapper(this);
     }
 
     /* Input */
@@ -144,7 +150,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
     {
         if (!this.isActive())
             return 0;
-        return 1;
+        return this.isFocusedOrHovered() ? 2 : 1;
     }
 
     @Override

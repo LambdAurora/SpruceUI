@@ -82,7 +82,7 @@ public class SpruceTabbedScreen extends SpruceScreen
             SpruceScreen screen = this.screens.get(i);
             int buttonWidth = this.textRenderer.getWidth(screen.getTitle()) + 6;
             int tabIndex = i;
-            this.tabButtons.add(new SpruceButtonWidget(x, this.top - 25, buttonWidth, 20, screen.getTitle(),
+            this.tabButtons.add(new SpruceButtonWidget(Position.of(this, x, this.top - 25), buttonWidth, 20, screen.getTitle(),
                     btn -> this.setCurrentTab(tabIndex)));
             x += buttonWidth;
         }

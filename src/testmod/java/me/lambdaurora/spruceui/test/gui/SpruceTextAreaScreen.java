@@ -26,8 +26,8 @@ import java.util.Arrays;
  */
 public class SpruceTextAreaScreen extends SpruceScreen
 {
-    private final Screen               parent;
-    private       SpruceTextAreaWidget textArea;
+    private final Screen parent;
+    private SpruceTextAreaWidget textArea;
 
     public SpruceTextAreaScreen(@Nullable Screen parent)
     {
@@ -78,15 +78,15 @@ public class SpruceTextAreaScreen extends SpruceScreen
         this.addChild(this.textArea);
 
         // Print to console button, may be useful for debugging.
-        this.addButton(new SpruceButtonWidget(this.width / 2 - 155, this.height - 29, 150, 20, new LiteralText("Print to console"),
+        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155, this.height - 29), 150, 20, new LiteralText("Print to console"),
                 btn -> {
                     System.out.println("########################## START TEXT AREA CONTENT ##########################");
                     System.out.println(this.textArea.getText());
                     System.out.println("##########################  END TEXT AREA CONTENT  ##########################");
-                }));
+                }).asVanilla());
         // Add done button.
-        this.addButton(new SpruceButtonWidget(this.width / 2 - 155 + 160, this.height - 29, 150, 20, SpruceTexts.GUI_DONE,
-                btn -> this.client.openScreen(this.parent)));
+        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+                btn -> this.client.openScreen(this.parent)).asVanilla());
     }
 
     @Override

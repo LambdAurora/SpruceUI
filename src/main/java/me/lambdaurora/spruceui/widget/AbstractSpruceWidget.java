@@ -45,7 +45,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     protected long lastDrag = 0L;
     private long nextNarration = 0;
 
-    protected AbstractSpruceWidget(@NotNull Position position)
+    public AbstractSpruceWidget(@NotNull Position position)
     {
         this.position = position;
         this.visible = true;

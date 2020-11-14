@@ -9,6 +9,7 @@
 
 package me.lambdaurora.spruceui.test.gui;
 
+import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
 import me.lambdaurora.spruceui.screen.SpruceScreen;
 import me.lambdaurora.spruceui.SpruceTexts;
@@ -39,16 +40,16 @@ public class SpruceMainMenuScreen extends SpruceScreen
         super.init();
 
         int startY = this.height / 4 + 48;
-        this.addButton(new SpruceButtonWidget(this.width / 2 - 100, startY, 200, 20, new LiteralText("Option Test"),
-                btn -> this.client.openScreen(new SpruceOptionScreen(this))));
-        this.addButton(new SpruceButtonWidget(this.width / 2 - 100, startY += 25, 200, 20, new LiteralText("Text Area Test"),
-                btn -> this.client.openScreen(new SpruceTextAreaScreen(this))));
-        this.addButton(new SpruceButtonWidget(this.width / 2 - 100, startY += 25, 200, 20, new LiteralText("Tabbed Screen Test"),
-                btn -> this.client.openScreen(new SpruceTabbedTestScreen(this))));
+        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, new LiteralText("Option Test"),
+                btn -> this.client.openScreen(new SpruceOptionScreen(this))).asVanilla());
+        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, new LiteralText("Text Area Test"),
+                btn -> this.client.openScreen(new SpruceTextAreaScreen(this))).asVanilla());
+        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, new LiteralText("Tabbed Screen Test"),
+                btn -> this.client.openScreen(new SpruceTabbedTestScreen(this))).asVanilla());
 
         // Add done button.
-        this.addButton(new SpruceButtonWidget(this.width / 2 - 155 + 160, this.height - 29, 150, 20, SpruceTexts.GUI_DONE,
-                btn -> this.client.openScreen(this.parent)));
+        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+                btn -> this.client.openScreen(this.parent)).asVanilla());
     }
 
     @Override

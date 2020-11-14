@@ -10,6 +10,7 @@
 package me.lambdaurora.spruceui;
 
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
+import me.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;

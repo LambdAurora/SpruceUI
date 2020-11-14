@@ -81,7 +81,7 @@ public class SpruceBooleanOption extends SpruceOption
     /**
      * Returns whether the option value is colored or not.
      *
-     * @return true if the option value is colored, else false
+     * @return {@code true} if the option value is colored, else {@code false}
      */
     public boolean isColored()
     {
@@ -91,12 +91,12 @@ public class SpruceBooleanOption extends SpruceOption
     @Override
     public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
     {
-        SpruceButtonWidget button = new SpruceButtonWidget(position.getX(), position.getY(), width, 20, this.getDisplayText(), btn -> {
+        SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getDisplayText(), btn -> {
             this.set();
             btn.setMessage(this.getDisplayText());
         });
         this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button;
+        return button.asVanilla();
     }
 
     /**
@@ -132,7 +132,7 @@ public class SpruceBooleanOption extends SpruceOption
      * @param key the option's key
      * @param vanilla the Vanilla option
      * @param tooltip the tooltip
-     * @param colored true if the option value is colored, else false
+     * @param colored {@code true} if the option value is colored, else {@code false}
      * @return the SpruceUI option
      */
     public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip, boolean colored)

@@ -29,16 +29,16 @@ import java.util.function.Consumer;
  */
 public class SpruceSimpleActionOption extends SpruceOption implements Nameable
 {
-    private final Consumer<AbstractButtonWidget> action;
+    private final Consumer<SpruceButtonWidget> action;
 
-    public SpruceSimpleActionOption(@NotNull String key, @NotNull Consumer<AbstractButtonWidget> action, @Nullable Text tooltip)
+    public SpruceSimpleActionOption(@NotNull String key, @NotNull Consumer<SpruceButtonWidget> action, @Nullable Text tooltip)
     {
         super(key);
         this.action = action;
         this.setTooltip(tooltip);
     }
 
-    public SpruceSimpleActionOption(@NotNull String key, @NotNull Consumer<AbstractButtonWidget> action)
+    public SpruceSimpleActionOption(@NotNull String key, @NotNull Consumer<SpruceButtonWidget> action)
     {
         this(key, action, null);
     }
@@ -46,8 +46,8 @@ public class SpruceSimpleActionOption extends SpruceOption implements Nameable
     @Override
     public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
     {
-        SpruceButtonWidget button = new SpruceButtonWidget(position.getX(), position.getY(), width, 20, new TranslatableText(this.key), action::accept);
+        SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, new TranslatableText(this.key), action::accept);
         this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button;
+        return button.asVanilla();
     }
 }

@@ -7,8 +7,9 @@
  * see the LICENSE file.
  */
 
-package me.lambdaurora.spruceui;
+package me.lambdaurora.spruceui.widget.container;
 
+import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import me.lambdaurora.spruceui.widget.NavigationElement;

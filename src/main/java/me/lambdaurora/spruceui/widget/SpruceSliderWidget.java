@@ -37,7 +37,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     private double multiplier;
     private String sign;
 
-    protected SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double value, @NotNull Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign)
+    public SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double value, @NotNull Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign)
     {
         super(position, width, height, message);
         this.value = value;
@@ -48,7 +48,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
         this.updateMessage();
     }
 
-    protected SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer)
+    public SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer)
     {
         this(position, width, height, message, progress, applyConsumer, 100.0, "%");
     }

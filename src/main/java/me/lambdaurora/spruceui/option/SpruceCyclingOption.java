@@ -57,12 +57,12 @@ public class SpruceCyclingOption extends SpruceOption
     @Override
     public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
     {
-        SpruceButtonWidget button = new SpruceButtonWidget(position.getX(), position.getY(), width, 20, this.getMessage(), btn -> {
+        SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getMessage(), btn -> {
             this.cycle(1);
             btn.setMessage(this.getMessage());
         });
         this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button;
+        return button.asVanilla();
     }
 
     /**

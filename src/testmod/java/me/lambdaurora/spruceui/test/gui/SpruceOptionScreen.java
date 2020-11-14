@@ -9,11 +9,12 @@
 
 package me.lambdaurora.spruceui.test.gui;
 
+import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
-import me.lambdaurora.spruceui.screen.SpruceScreen;
 import me.lambdaurora.spruceui.SpruceTexts;
 import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.option.*;
+import me.lambdaurora.spruceui.screen.SpruceScreen;
 import me.lambdaurora.spruceui.test.TestEnum;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -31,18 +32,18 @@ import org.jetbrains.annotations.Nullable;
  */
 public class SpruceOptionScreen extends SpruceScreen
 {
-    private final Screen   parent;
-    private final Option   booleanOption;
-    private final Option   checkboxOption;
-    private final Option   separatorOption;
-    private final Option   doubleOption;
-    private final Option   cyclingOption;
-    private final Option   actionOption;
-    private final Option   resetOption;
-    private       boolean  aBoolean;
-    private       boolean  checkboxBoolean;
-    private       double   aDouble;
-    private       TestEnum cyclingValue = TestEnum.FIRST;
+    private final Screen parent;
+    private final Option booleanOption;
+    private final Option checkboxOption;
+    private final Option separatorOption;
+    private final Option doubleOption;
+    private final Option cyclingOption;
+    private final Option actionOption;
+    private final Option resetOption;
+    private boolean aBoolean;
+    private boolean checkboxBoolean;
+    private double aDouble;
+    private TestEnum cyclingValue = TestEnum.FIRST;
 
     private ButtonListWidget list;
 
@@ -128,8 +129,8 @@ public class SpruceOptionScreen extends SpruceScreen
         // Add reset button. You can add option buttons outside a button list widget. GameOptions instance is required because of Vanilla limitations.
         this.addButton(this.resetOption.createButton(this.client.options, this.width / 2 - 155, this.height - 29, 150));
         // Add done button.
-        this.addButton(new SpruceButtonWidget(this.width / 2 - 155 + 160, this.height - 29, 150, 20, SpruceTexts.GUI_DONE,
-                btn -> this.client.openScreen(this.parent)));
+        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+                btn -> this.client.openScreen(this.parent)).asVanilla());
     }
 
     @Override

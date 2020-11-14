@@ -23,7 +23,7 @@ import org.lwjgl.glfw.GLFW;
  */
 public abstract class AbstractSprucePressableButtonWidget extends AbstractSpruceButtonWidget
 {
-    protected AbstractSprucePressableButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message)
+    public AbstractSprucePressableButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message)
     {
         super(position, width, height, message);
     }

@@ -9,14 +9,9 @@
 
 package me.lambdaurora.spruceui;
 
-import me.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
+import me.lambdaurora.spruceui.widget.AbstractSprucePressableButtonWidget;
+import me.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 /**
  * Represents a button widget.
@@ -25,96 +20,24 @@ import java.util.Optional;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceButtonWidget extends ButtonWidget implements SpruceWidget, Tooltipable
+public class SpruceButtonWidget extends AbstractSprucePressableButtonWidget implements Tooltipable
 {
-    private final Position position;
-    private Text tooltip;
-    private int tooltipTicks;
-    private long lastTick;
+    private PressAction action;
 
-    public SpruceButtonWidget(int x, int y, int width, int height, Text message, PressAction action)
+    public SpruceButtonWidget(Position position, int width, int height, Text message, PressAction action)
     {
-        super(x, y, width, height, message, action);
-        this.position = Position.of(x, y);
+        super(position, width, height, message);
+        this.action = action;
     }
 
     @Override
-    public @NotNull Position getPosition()
+    public void onPress()
     {
-        return this.position;
+        this.action.onPress(this);
     }
 
-    @Override
-    public @NotNull Optional<Text> getTooltip()
+    public interface PressAction
     {
-        return Optional.ofNullable(this.tooltip);
-    }
-
-    @Override
-    public void setTooltip(@Nullable Text tooltip)
-    {
-        this.tooltip = tooltip;
-    }
-
-    @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
-        super.render(matrices, mouseX, mouseY, delta);
-
-        Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
-    }
-
-    @Override
-    public int getX()
-    {
-        return this.x;
-    }
-
-    @Override
-    public int getY()
-    {
-        return this.y;
-    }
-
-    @Override
-    public boolean isVisible()
-    {
-        return this.visible;
-    }
-
-    @Override
-    public void setVisible(boolean visible)
-    {
-        this.visible = visible;
-    }
-
-    @Override
-    public int getWidth()
-    {
-        return super.getWidth();
-    }
-
-    @Override
-    public int getHeight()
-    {
-        return super.getHeight();
-    }
-
-    @Override
-    public boolean isFocused()
-    {
-        return super.isFocused();
-    }
-
-    @Override
-    public void setFocused(boolean focused)
-    {
-        super.setFocused(focused);
-    }
-
-    @Override
-    public boolean isMouseHovered()
-    {
-        return this.hovered;
+        void onPress(SpruceButtonWidget button);
     }
 }

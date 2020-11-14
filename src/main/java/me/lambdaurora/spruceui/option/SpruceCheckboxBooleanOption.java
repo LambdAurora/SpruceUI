@@ -10,7 +10,7 @@
 package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.Position;
-import me.lambdaurora.spruceui.SpruceCheckboxWidget;
+import me.lambdaurora.spruceui.widget.SpruceCheckboxWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.BooleanOption;
@@ -38,15 +38,21 @@ public class SpruceCheckboxBooleanOption extends SpruceBooleanOption
         super(key, getter, setter, tooltip);
     }
 
+    public SpruceCheckboxBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored)
+    {
+        super(key, getter, setter, tooltip, colored);
+    }
+
     @Override
     public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
     {
-        SpruceCheckboxWidget button = new SpruceCheckboxWidget(position.getX(), position.getY(), width, 20, this.getDisplayText(), this.get(), btn -> {
+        SpruceCheckboxWidget button = new SpruceCheckboxWidget(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
             this.set();
             btn.setMessage(this.getDisplayText());
-        });
+        }, this.get());
+        button.setColored(this.isColored());
         this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button;
+        return button.asVanilla();
     }
 
     @Override
