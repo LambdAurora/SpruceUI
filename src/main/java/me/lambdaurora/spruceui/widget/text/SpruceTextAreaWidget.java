@@ -7,10 +7,12 @@
  * see the LICENSE file.
  */
 
-package me.lambdaurora.spruceui;
+package me.lambdaurora.spruceui.widget.text;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.lambdaurora.spruceui.MultilineText;
+import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import net.minecraft.SharedConstants;

@@ -35,6 +35,7 @@ public class SpruceOptionScreen extends SpruceScreen
     private final Screen parent;
     private final Option booleanOption;
     private final Option checkboxOption;
+    private final Option toggleSwitchOption;
     private final Option separatorOption;
     private final Option doubleOption;
     private final Option cyclingOption;
@@ -42,6 +43,7 @@ public class SpruceOptionScreen extends SpruceScreen
     private final Option resetOption;
     private boolean aBoolean;
     private boolean checkboxBoolean;
+    private boolean toggleBoolean;
     private double aDouble;
     private TestEnum cyclingValue = TestEnum.FIRST;
 
@@ -62,6 +64,12 @@ public class SpruceOptionScreen extends SpruceScreen
                 () -> this.checkboxBoolean,
                 newValue -> this.checkboxBoolean = newValue,
                 new LiteralText("Represents a boolean option as a checkbox, can either be true or false.\n"
+                        + "It's another implementation of `SpruceBooleanOption` internally."),
+                true);
+        this.toggleSwitchOption = new SpruceToggleBooleanOption("spruceui_test.option.toggle_switch",
+                () -> this.toggleBoolean,
+                newValue -> this.toggleBoolean = newValue,
+                new LiteralText("Represents a boolean option as a toggle switch, can either be true or false.\n"
                         + "It's another implementation of `SpruceBooleanOption` internally."));
 
         this.separatorOption = new SpruceSeparatorOption("spruceui_test.option.separator", true, null);
@@ -120,6 +128,7 @@ public class SpruceOptionScreen extends SpruceScreen
         this.list = new ButtonListWidget(this.client, this.width, this.height, 43, this.height - 29 - this.getTextHeight(), 25);
 
         this.list.addOptionEntry(this.booleanOption, this.checkboxOption);
+        this.list.addOptionEntry(this.toggleSwitchOption, null);
         this.list.addSingleOptionEntry(this.separatorOption);
         this.list.addSingleOptionEntry(this.doubleOption);
         this.list.addOptionEntry(this.actionOption, this.cyclingOption);
