@@ -44,7 +44,7 @@ public class SpruceSimpleActionOption extends SpruceOption implements Nameable
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
+    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
     {
         SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, new TranslatableText(this.key), action::accept);
         this.getOptionTooltip().ifPresent(button::setTooltip);

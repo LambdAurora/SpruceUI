@@ -27,7 +27,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 public class SpruceContainerWidget extends AbstractSpruceWidget
-        implements ParentElement, NavigationElement
+        implements ParentElement
 {
     private final List<SpruceWidget> children = new ArrayList<>();
     private @Nullable Element focused;
@@ -51,7 +51,7 @@ public class SpruceContainerWidget extends AbstractSpruceWidget
 
     @Deprecated
     @Override
-    public List<? extends Element> children()
+    public List<? extends SpruceWidget> children()
     {
         return this.children;
     }

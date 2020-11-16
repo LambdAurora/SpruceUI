@@ -40,7 +40,7 @@ public class SpruceToggleBooleanOption extends SpruceBooleanOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
+    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
     {
         SpruceToggleSwitch button = new SpruceToggleSwitch(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
             this.set();

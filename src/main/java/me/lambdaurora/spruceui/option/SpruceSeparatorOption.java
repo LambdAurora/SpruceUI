@@ -36,7 +36,7 @@ public class SpruceSeparatorOption extends SpruceOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
+    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
     {
         SpruceSeparatorWidget separator = new SpruceSeparatorWidget(position, width, this.showTitle ? new TranslatableText(this.key) : null);
         this.getOptionTooltip().ifPresent(separator::setTooltip);

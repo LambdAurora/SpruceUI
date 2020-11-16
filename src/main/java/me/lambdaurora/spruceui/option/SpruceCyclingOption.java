@@ -55,7 +55,7 @@ public class SpruceCyclingOption extends SpruceOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
+    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
     {
         SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getMessage(), btn -> {
             this.cycle(1);

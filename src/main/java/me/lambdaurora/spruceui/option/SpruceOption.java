@@ -81,12 +81,12 @@ public abstract class SpruceOption extends Option implements Nameable
     }
 
     @ApiStatus.Experimental
-    public abstract @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width);
+    public abstract @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width);
 
     @Deprecated
     @Override
     public AbstractButtonWidget createButton(GameOptions options, int x, int y, int width)
     {
-        return this.createButton(Position.of(x, y), width);
+        return this.createWidget(Position.of(x, y), width);
     }
 }

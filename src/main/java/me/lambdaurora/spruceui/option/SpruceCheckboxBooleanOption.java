@@ -45,7 +45,7 @@ public class SpruceCheckboxBooleanOption extends SpruceBooleanOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
+    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
     {
         SpruceCheckboxWidget button = new SpruceCheckboxWidget(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
             this.set();

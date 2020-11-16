@@ -10,6 +10,7 @@
 package me.lambdaurora.spruceui;
 
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import me.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
@@ -35,7 +36,7 @@ public class SpruceSideTabbedWidget extends SpruceContainerWidget
 
 
     @Override
-    public List<? extends Element> children()
+    public List<? extends SpruceWidget> children()
     {
         return null;
     }

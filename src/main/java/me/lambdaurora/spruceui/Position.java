@@ -20,11 +20,7 @@ import java.util.Objects;
  */
 public final class Position implements SprucePositioned
 {
-    public static final Position ORIGIN = new Position(new SprucePositioned()
-    {
-    });
-
-    private final SprucePositioned anchor;
+    private SprucePositioned anchor;
     private int x = 0;
     private int y = 0;
 
@@ -40,7 +36,19 @@ public final class Position implements SprucePositioned
 
     public static Position of(int x, int y)
     {
-        return of(ORIGIN, x, y);
+        return of(origin(), x, y);
+    }
+
+    /**
+     * Returns the origin position.
+     *
+     * @return the origin position
+     */
+    public static Position origin()
+    {
+        return new Position(new SprucePositioned()
+        {
+        });
     }
 
     /**
@@ -51,6 +59,16 @@ public final class Position implements SprucePositioned
     public SprucePositioned getAnchor()
     {
         return this.anchor;
+    }
+
+    /**
+     * Sets the anchor.
+     *
+     * @param anchor the anchor
+     */
+    public void setAnchor(SprucePositioned anchor)
+    {
+        this.anchor = anchor;
     }
 
     @Override

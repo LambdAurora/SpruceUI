@@ -56,7 +56,7 @@ public class SpruceDoubleOption extends SpruceOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createButton(@NotNull Position position, int width)
+    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
     {
         SpruceOptionSliderWidget slider = new SpruceOptionSliderWidget(position, width, 20, this);
         this.getOptionTooltip().ifPresent(slider::setTooltip);
