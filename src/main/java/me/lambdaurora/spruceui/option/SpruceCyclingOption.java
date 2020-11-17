@@ -11,6 +11,7 @@ package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.CyclingOption;
@@ -55,14 +56,14 @@ public class SpruceCyclingOption extends SpruceOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width)
     {
         SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getMessage(), btn -> {
             this.cycle(1);
             btn.setMessage(this.getMessage());
         });
         this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button.asVanilla();
+        return button;
     }
 
     /**

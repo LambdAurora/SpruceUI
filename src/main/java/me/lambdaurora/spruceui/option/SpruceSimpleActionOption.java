@@ -11,6 +11,7 @@ package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -44,10 +45,10 @@ public class SpruceSimpleActionOption extends SpruceOption implements Nameable
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width)
     {
         SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, new TranslatableText(this.key), action::accept);
         this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button.asVanilla();
+        return button;
     }
 }

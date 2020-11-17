@@ -9,14 +9,8 @@
 
 package me.lambdaurora.spruceui;
 
-import me.lambdaurora.spruceui.navigation.NavigationDirection;
-import me.lambdaurora.spruceui.widget.SpruceWidget;
 import me.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * Represents a tabbed container widget with the tab selection on one of the side.
@@ -32,31 +26,6 @@ public class SpruceSideTabbedWidget extends SpruceContainerWidget
     public SpruceSideTabbedWidget(Position position)
     {
         super(position);
-    }
-
-
-    @Override
-    public List<? extends SpruceWidget> children()
-    {
-        return null;
-    }
-
-    @Override
-    public Element getFocused()
-    {
-        return null;
-    }
-
-    @Override
-    public void setFocused(Element focused)
-    {
-
-    }
-
-    @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
-    {
-        return false;
     }
 
     @Override

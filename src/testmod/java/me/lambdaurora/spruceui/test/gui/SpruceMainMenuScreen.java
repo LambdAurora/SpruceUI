@@ -48,7 +48,7 @@ public class SpruceMainMenuScreen extends SpruceScreen
                 btn -> this.client.openScreen(new SpruceTabbedTestScreen(this))).asVanilla());
 
         // Add done button.
-        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
                 btn -> this.client.openScreen(this.parent)).asVanilla());
     }
 

@@ -10,6 +10,8 @@
 package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.Option;
@@ -81,12 +83,12 @@ public abstract class SpruceOption extends Option implements Nameable
     }
 
     @ApiStatus.Experimental
-    public abstract @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width);
+    public abstract @NotNull SpruceWidget createWidget(@NotNull Position position, int width);
 
     @Deprecated
     @Override
     public AbstractButtonWidget createButton(GameOptions options, int x, int y, int width)
     {
-        return this.createWidget(Position.of(x, y), width);
+        return null;
     }
 }

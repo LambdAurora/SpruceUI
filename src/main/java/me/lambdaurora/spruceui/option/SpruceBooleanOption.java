@@ -11,6 +11,7 @@ package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
@@ -89,14 +90,14 @@ public class SpruceBooleanOption extends SpruceOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width)
     {
         SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getDisplayText(), btn -> {
             this.set();
             btn.setMessage(this.getDisplayText());
         });
         this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button.asVanilla();
+        return button;
     }
 
     /**

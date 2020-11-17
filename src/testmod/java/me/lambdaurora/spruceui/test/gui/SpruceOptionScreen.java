@@ -9,6 +9,7 @@
 
 package me.lambdaurora.spruceui.test.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
 import me.lambdaurora.spruceui.SpruceTexts;
@@ -16,9 +17,14 @@ import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.option.*;
 import me.lambdaurora.spruceui.screen.SpruceScreen;
 import me.lambdaurora.spruceui.test.TestEnum;
+import me.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.widget.ButtonListWidget;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
@@ -46,7 +52,8 @@ public class SpruceOptionScreen extends SpruceScreen
     private double aDouble;
     private TestEnum cyclingValue = TestEnum.FIRST;
 
-    private ButtonListWidget list;
+    //private ButtonListWidget list;
+    private SpruceOptionListWidget list;
 
     public SpruceOptionScreen(@Nullable Screen parent)
     {
@@ -124,9 +131,17 @@ public class SpruceOptionScreen extends SpruceScreen
         super.init();
 
         // Button list.
-        this.list = new ButtonListWidget(this.client, this.width, this.height, 43, this.height - 29 - this.getTextHeight(), 25);
+        //this.list = new ButtonListWidget(this.client, this.width, this.height, 43, this.height - 29 - this.getTextHeight(), 25);
+        this.list = new SpruceOptionListWidget(Position.of(0,  22), this.width, this.height - 35 - 22);
 
         this.list.addOptionEntry(this.booleanOption, this.checkboxOption);
+        this.list.addOptionEntry(this.toggleSwitchOption, null);
+        this.list.addOptionEntry(this.toggleSwitchOption, null);
+        this.list.addOptionEntry(this.toggleSwitchOption, null);
+        this.list.addOptionEntry(this.toggleSwitchOption, null);
+        this.list.addOptionEntry(this.toggleSwitchOption, null);
+        this.list.addOptionEntry(this.toggleSwitchOption, null);
+        this.list.addOptionEntry(this.toggleSwitchOption, null);
         this.list.addOptionEntry(this.toggleSwitchOption, null);
         this.list.addSingleOptionEntry(this.separatorOption);
         this.list.addSingleOptionEntry(this.doubleOption);
@@ -135,7 +150,7 @@ public class SpruceOptionScreen extends SpruceScreen
         this.addChild(this.list);
 
         // Add reset button. You can add option buttons outside a button list widget. GameOptions instance is required because of Vanilla limitations.
-        this.addButton(this.resetOption.createButton(this.client.options, this.width / 2 - 155, this.height - 29, 150));
+        //this.addButton(this.resetOption.createButton(this.client.options, this.width / 2 - 155, this.height - 29, 150));
         // Add done button.
         this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
                 btn -> this.client.openScreen(this.parent)).asVanilla());

@@ -76,6 +76,7 @@ public class SpruceTextAreaScreen extends SpruceScreen
                     "This widget can be very useful in some cases."));
         // Display as many lines as possible
         this.textArea.setDisplayedLines(this.textArea.getInnerHeight() / this.textRenderer.fontHeight);
+        this.textArea.setCursorToStart();
         this.addChild(this.textArea);
 
         // Print to console button, may be useful for debugging.

@@ -12,6 +12,7 @@ package me.lambdaurora.spruceui.option;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.SpruceToggleSwitch;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.BooleanOption;
@@ -40,14 +41,14 @@ public class SpruceToggleBooleanOption extends SpruceBooleanOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width)
     {
         SpruceToggleSwitch button = new SpruceToggleSwitch(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
             this.set();
             btn.setMessage(this.getDisplayText());
         }, this.get());
         this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button.asVanilla();
+        return button;
     }
 
     @Override

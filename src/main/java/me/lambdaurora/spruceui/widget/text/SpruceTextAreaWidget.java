@@ -169,6 +169,19 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         return this.height - 8;
     }
 
+    /**
+     * Sets the cursor to the start of the text.
+     *
+     * @since 1.7.0
+     */
+    public void setCursorToStart()
+    {
+        this.cursor.toStart();
+    }
+
+    /**
+     * Sets the cursor to the end of the text.
+     */
     public void setCursorToEnd()
     {
         this.cursor.toEnd();
@@ -323,7 +336,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     }
 
     @Override
-    public boolean charTyped(char chr, int keyCode)
+    protected boolean onCharTyped(char chr, int keyCode)
     {
         if (!this.isEditorActive() || !SharedConstants.isValidChar(chr))
             return false;
@@ -361,7 +374,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     }
 
     @Override
-    public boolean onKeyPress(int keyCode, int scanCode, int modifiers)
+    protected boolean onKeyPress(int keyCode, int scanCode, int modifiers)
     {
         if (!this.isEditorActive())
             return false;
@@ -458,7 +471,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount)
+    protected boolean onMouseScroll(double mouseX, double mouseY, double amount)
     {
         if (!this.isEditorActive()) {
             return false;

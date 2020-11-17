@@ -88,6 +88,12 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     }
 
     @Override
+    public boolean isMouseHovered()
+    {
+        return this.hovered;
+    }
+
+    @Override
     public boolean isFocused()
     {
         return this.focused;
@@ -99,6 +105,8 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
         this.focused = focused;
         this.dragging = false;
     }
+
+    /* Navigation */
 
     @Override
     public boolean changeFocus(boolean lookForwards)
@@ -117,12 +125,6 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
             return this.isFocused();
         }
         return false;
-    }
-
-    @Override
-    public boolean isMouseHovered()
-    {
-        return this.hovered;
     }
 
     /* Input */
@@ -173,6 +175,17 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
         return false;
     }
 
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+        if (this.isActive() && this.isVisible() && this.isMouseOver(mouseX, mouseY)) {
+            return this.onMouseScroll(mouseX, mouseY, amount);
+        }
+        return false;
+    }
+
+    protected boolean onMouseScroll(double mouseX, double mouseY, double amount) {
+        return false;
+    }
+
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
@@ -191,6 +204,55 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
      * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
      */
     protected boolean onKeyPress(int keyCode, int scanCode, int modifiers)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers)
+    {
+        if (this.isActive() && this.isVisible()) {
+            return this.onKeyRelease(keyCode, scanCode, modifiers);
+        }
+        return false;
+    }
+
+    /**
+     * Handles the key release event.
+     * <p>
+     * The key code is identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW} class.
+     *
+     * @param keyCode the named key code of the event as described in the {@link org.lwjgl.glfw.GLFW GLFW} class
+     * @param scanCode the unique/platform-specific scan code of the keyboard input
+     * @param modifiers a GLFW bitfield describing the modifier keys that are held down (see <a href="https://www.glfw.org/docs/3.3/group__mods.html">GLFW Modifier key flags</a>)
+     * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
+     * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
+     * @see org.lwjgl.glfw.GLFWKeyCallbackI#invoke(long, int, int, int, int)
+     */
+    protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean charTyped(char chr, int keyCode)
+    {
+        if (this.isActive() && this.isVisible()) {
+            return this.onCharTyped(chr, keyCode);
+        }
+        return false;
+    }
+
+    /**
+     * Handles a character input event.
+     * <p>
+     * The key code is identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW} class.
+     *
+     * @param chr the captured character
+     * @param keyCode the associated key code
+     * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
+     */
+    protected boolean onCharTyped(char chr, int keyCode)
     {
         return false;
     }

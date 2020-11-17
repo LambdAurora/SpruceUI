@@ -11,6 +11,7 @@ package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.widget.SpruceSeparatorWidget;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -36,10 +37,10 @@ public class SpruceSeparatorOption extends SpruceOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width)
     {
         SpruceSeparatorWidget separator = new SpruceSeparatorWidget(position, width, this.showTitle ? new TranslatableText(this.key) : null);
         this.getOptionTooltip().ifPresent(separator::setTooltip);
-        return new SpruceSeparatorWidget.ButtonWrapper(separator, 20);
+        return separator;
     }
 }

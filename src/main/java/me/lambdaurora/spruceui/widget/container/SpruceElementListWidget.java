@@ -12,10 +12,10 @@ package me.lambdaurora.spruceui.widget.container;
 import me.lambdaurora.spruceui.Position;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class SpruceElementListWidget<E extends SpruceEntryListWidget.Entry<E>> extends SpruceEntryListWidget<E>
+public abstract class SpruceElementListWidget<E extends SpruceEntryListWidget.Entry> extends SpruceEntryListWidget<E>
 {
-    public SpruceElementListWidget(@NotNull Position position, Class<E> entryClass)
+    public SpruceElementListWidget(@NotNull Position position, int width, int height, Class<E> entryClass)
     {
-        super(position, entryClass);
+        super(position, width, height, entryClass);
     }
 }

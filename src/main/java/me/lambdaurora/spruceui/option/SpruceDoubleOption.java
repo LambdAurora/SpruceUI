@@ -10,6 +10,7 @@
 package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import me.lambdaurora.spruceui.widget.option.SpruceOptionSliderWidget;
 import me.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
 import net.minecraft.client.MinecraftClient;
@@ -56,11 +57,11 @@ public class SpruceDoubleOption extends SpruceOption
     }
 
     @Override
-    public @NotNull AbstractButtonWidget createWidget(@NotNull Position position, int width)
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width)
     {
         SpruceOptionSliderWidget slider = new SpruceOptionSliderWidget(position, width, 20, this);
         this.getOptionTooltip().ifPresent(slider::setTooltip);
-        return new VanillaButtonWrapper(slider);
+        return slider;
     }
 
     public double getRatio(double value)
