@@ -11,7 +11,7 @@ package me.lambdaurora.spruceui.screen;
 
 import me.lambdaurora.spruceui.SprucePositioned;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
-import me.lambdaurora.spruceui.widget.NavigationElement;
+import me.lambdaurora.spruceui.widget.SpruceElement;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
@@ -32,7 +32,7 @@ import java.util.function.Supplier;
  * @version 1.7.0
  * @since 1.7.0
  */
-public abstract class SpruceScreen extends Screen implements SprucePositioned, NavigationElement
+public abstract class SpruceScreen extends Screen implements SprucePositioned, SpruceElement
 {
     protected SpruceScreen(@NotNull Text title)
     {
@@ -62,6 +62,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, N
     @Override
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
+        if (this.requiresCursor()) return false;
         Element focused = this.getFocused();
         boolean isNonNull = focused != null;
         if (!isNonNull || !this.tryNavigating(focused, direction, tab)) {
@@ -93,8 +94,8 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, N
 
     private boolean tryNavigating(@NotNull Element element, @NotNull NavigationDirection direction, boolean tab)
     {
-        if (element instanceof NavigationElement) {
-            return ((NavigationElement) element).onNavigation(direction, tab);
+        if (element instanceof SpruceElement) {
+            return ((SpruceElement) element).onNavigation(direction, tab);
         }
         return element.changeFocus(direction.isLookingForward());
     }

@@ -7,10 +7,9 @@
  * see the LICENSE file.
  */
 
-package me.lambdaurora.spruceui;
+package me.lambdaurora.spruceui.widget;
 
-import me.lambdaurora.spruceui.widget.AbstractSprucePressableButtonWidget;
-import me.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
+import me.lambdaurora.spruceui.Position;
 import net.minecraft.text.Text;
 
 /**
@@ -20,7 +19,7 @@ import net.minecraft.text.Text;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceButtonWidget extends AbstractSprucePressableButtonWidget implements Tooltipable
+public class SpruceButtonWidget extends AbstractSprucePressableButtonWidget
 {
     private PressAction action;
 

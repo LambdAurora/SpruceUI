@@ -93,6 +93,7 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
     @Override
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
+        if (this.requiresCursor()) return false;
         boolean result = NavigationUtils.tryNavigate(direction, tab, this.children(), this.focused, this::setFocused, false);
         if (result)
             this.setFocused(true);

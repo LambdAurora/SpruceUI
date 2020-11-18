@@ -9,7 +9,7 @@
 
 package me.lambdaurora.spruceui.option;
 
-import me.lambdaurora.spruceui.SpruceButtonWidget;
+import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

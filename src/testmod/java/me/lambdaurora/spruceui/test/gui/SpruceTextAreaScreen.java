@@ -11,6 +11,7 @@ package me.lambdaurora.spruceui.test.gui;
 
 import me.lambdaurora.spruceui.*;
 import me.lambdaurora.spruceui.screen.SpruceScreen;
+import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.Screen;

@@ -11,7 +11,7 @@ package me.lambdaurora.spruceui.wrapper;
 
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import me.lambdaurora.spruceui.widget.AbstractSpruceButtonWidget;
-import me.lambdaurora.spruceui.widget.NavigationElement;
+import me.lambdaurora.spruceui.widget.SpruceElement;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.7.0
  * @since 1.7.0
  */
-public class VanillaButtonWrapper extends AbstractButtonWidget implements NavigationElement
+public class VanillaButtonWrapper extends AbstractButtonWidget implements SpruceElement
 {
     private final AbstractSpruceButtonWidget widget;
 

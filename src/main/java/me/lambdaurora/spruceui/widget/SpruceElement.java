@@ -14,13 +14,13 @@ import net.minecraft.client.gui.Element;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Represents an element with navigation implementation.
+ * Represents an element with navigation and controller input implementation.
  *
  * @author LambdAurora
  * @version 1.7.0
  * @since 1.7.0
  */
-public interface NavigationElement extends Element
+public interface SpruceElement extends Element
 {
     /**
      * Called when navigating in the menu.
@@ -31,9 +31,20 @@ public interface NavigationElement extends Element
      */
     default boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
+        if (this.requiresCursor()) return false;
         if (direction.isVertical()) {
             return this.changeFocus(direction == NavigationDirection.DOWN);
         }
+        return false;
+    }
+
+    /**
+     * Returns whether this is element requires a cursor to be used.
+     *
+     * @return {@code true} if a cursor is required, else {@code false}
+     */
+    default boolean requiresCursor()
+    {
         return false;
     }
 }

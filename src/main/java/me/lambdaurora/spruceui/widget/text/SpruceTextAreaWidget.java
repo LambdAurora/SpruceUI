@@ -351,6 +351,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     @Override
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
+        if (this.requiresCursor()) return false;
         if (!tab) {
             boolean result = false;
             switch (direction) {

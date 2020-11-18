@@ -231,6 +231,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     @Override
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
+        if (this.requiresCursor()) return false;
         if (direction.isHorizontal() && this.getFocused() != null) {
             this.getFocused().onNavigation(direction, tab);
             return true;

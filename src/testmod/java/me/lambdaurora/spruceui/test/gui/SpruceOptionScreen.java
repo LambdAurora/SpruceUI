@@ -9,9 +9,8 @@
 
 package me.lambdaurora.spruceui.test.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import me.lambdaurora.spruceui.Position;
-import me.lambdaurora.spruceui.SpruceButtonWidget;
+import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.SpruceTexts;
 import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.option.*;
@@ -20,11 +19,6 @@ import me.lambdaurora.spruceui.test.TestEnum;
 import me.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.gui.widget.ButtonListWidget;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;

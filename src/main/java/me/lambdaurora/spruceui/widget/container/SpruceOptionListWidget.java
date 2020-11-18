@@ -204,6 +204,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         @Override
         public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
         {
+            if (this.requiresCursor()) return false;
             if (!tab && direction.isVertical()) {
                 if (this.isFocused()) {
                     this.setFocused(null);

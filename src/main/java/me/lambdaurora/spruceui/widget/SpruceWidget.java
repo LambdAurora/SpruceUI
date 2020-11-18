@@ -12,7 +12,6 @@ package me.lambdaurora.spruceui.widget;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SprucePositioned;
 import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Element;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.7.0
  * @since 1.6.0
  */
-public interface SpruceWidget extends SprucePositioned, NavigationElement, Drawable, Element
+public interface SpruceWidget extends SprucePositioned, SpruceElement, Drawable
 {
     /**
      * Returns the position of the widget.

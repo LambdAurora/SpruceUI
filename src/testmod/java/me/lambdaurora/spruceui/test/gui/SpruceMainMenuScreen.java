@@ -10,7 +10,7 @@
 package me.lambdaurora.spruceui.test.gui;
 
 import me.lambdaurora.spruceui.Position;
-import me.lambdaurora.spruceui.SpruceButtonWidget;
+import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.screen.SpruceScreen;
 import me.lambdaurora.spruceui.SpruceTexts;
 import me.lambdaurora.spruceui.Tooltip;

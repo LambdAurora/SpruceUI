@@ -90,6 +90,16 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
         this.tooltip = tooltip;
     }
 
+    /* Navigation */
+
+    @Override
+    public boolean requiresCursor()
+    {
+        return this.tooltip == null;
+    }
+
+    /* Rendering */
+
     @Override
     public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
@@ -108,20 +118,14 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
         Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
     }
 
+    /* Narration */
+
     @Override
     protected @NotNull Optional<Text> getNarrationMessage()
     {
         return this.getTitle().map(Text::asString)
                 .filter(title -> !title.isEmpty())
                 .map(title -> new TranslatableText("spruceui.narrator.separator", title));
-    }
-
-    @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
-    {
-        if (this.tooltip == null)
-            return false;
-        return super.onNavigation(direction, tab);
     }
 
     /**

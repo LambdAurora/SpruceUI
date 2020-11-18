@@ -7,10 +7,11 @@
  * see the LICENSE file.
  */
 
-package me.lambdaurora.spruceui;
+package me.lambdaurora.spruceui.widget;
 
-import me.lambdaurora.spruceui.navigation.NavigationDirection;
-import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
+import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.Tooltip;
+import me.lambdaurora.spruceui.Tooltipable;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -126,6 +127,30 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
         this.action.accept(this);
     }
 
+    /* Navigation */
+
+    @Override
+    public boolean requiresCursor()
+    {
+        return this.action == DEFAULT_ACTION;
+    }
+
+    /* Input */
+
+    @Override
+    protected boolean onMouseClick(double mouseX, double mouseY, int button)
+    {
+        if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
+            if (this.hovered) {
+                this.onPress();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /* Rendering */
+
     @Override
     public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
@@ -141,25 +166,5 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
                     Tooltip.create(this.getX() - 12, this.getY(), wrappedTooltipText).queue();
             }
         }
-    }
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button)
-    {
-        if (this.isVisible() && button == GLFW.GLFW_MOUSE_BUTTON_1) {
-            if (this.hovered) {
-                this.onPress();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
-    {
-        if (this.action == DEFAULT_ACTION)
-            return false;
-        return super.onNavigation(direction, tab);
     }
 }

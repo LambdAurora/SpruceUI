@@ -10,9 +10,8 @@
 package me.lambdaurora.spruceui.test.mixin;
 
 import me.lambdaurora.spruceui.Position;
-import me.lambdaurora.spruceui.SpruceButtonWidget;
+import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.test.gui.SpruceMainMenuScreen;
-import me.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.text.LiteralText;

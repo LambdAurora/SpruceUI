@@ -117,6 +117,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     @Override
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
+        if (this.requiresCursor()) return false;
         if (this.isVisible() && this.isActive()) {
             this.setFocused(!this.isFocused());
             if (this.isFocused()) {
