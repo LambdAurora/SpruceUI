@@ -58,12 +58,12 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
-        drawTexture(matrices, this.getX() + (this.getValue() ? 16 : 0), this.getY(), this.getValue() ? 56.f : 36.f, this.isFocusedOrHovered() ? 20.f : 0.f,
-                20, 20, 76, 40);
+        drawTexture(matrices, this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9), this.getValue() ? 50.f : 32.f, this.isFocusedOrHovered() ? 18.f : 0.f,
+                18, 18, 68, 36);
 
         if (this.showMessage) {
             OrderedText message = Language.getInstance().reorder(this.client.textRenderer.trimToWidth(this.getMessage(), this.getWidth() - 40));
-            this.client.textRenderer.drawWithShadow(matrices, message, this.getX() + 40, this.getY() + (this.getHeight() - 8) / 2.f,
+            this.client.textRenderer.drawWithShadow(matrices, message, this.getX() + 36, this.getY() + (this.getHeight() - 8) / 2.f,
                     14737632 | MathHelper.ceil(this.alpha * 255.0F) << 24);
         }
     }
@@ -77,6 +77,6 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
-        drawTexture(matrices, this.getX(), this.getY(), 0.f, this.isFocusedOrHovered() ? 20.f : 0.f, 36, 20, 76, 40);
+        drawTexture(matrices, this.getX(), this.getY() + (this.getHeight() / 2 - 9), 0.f, this.isFocusedOrHovered() ? 18.f : 0.f, 32, 18, 68, 36);
     }
 }

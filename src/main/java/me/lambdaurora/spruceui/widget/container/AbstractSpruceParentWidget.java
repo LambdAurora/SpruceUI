@@ -20,10 +20,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Represents a parent widget, contains children which are other widgets.
+ *
+ * @param <E> the type of children widgets
+ * @author LambdAurora
+ * @version 1.7.0
+ * @since 1.7.0
+ */
 public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends AbstractSpruceWidget implements ParentElement
 {
     private final Class<E> childClass;
@@ -86,7 +93,10 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
     @Override
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
     {
-        return NavigationUtils.tryNavigate(direction, tab, this.children(), this.focused, this::setFocused, false);
+        boolean result = NavigationUtils.tryNavigate(direction, tab, this.children(), this.focused, this::setFocused, false);
+        if (result)
+            this.setFocused(true);
+        return result;
     }
 
     /* Input */
@@ -125,5 +135,23 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
     {
         return this.getFocused() != null && this.isDragging() && button == GLFW.GLFW_MOUSE_BUTTON_1
                 && this.getFocused().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+    }
+
+    @Override
+    protected boolean onKeyPress(int keyCode, int scanCode, int modifiers)
+    {
+        return this.getFocused() != null && this.getFocused().keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers)
+    {
+        return this.getFocused() != null && this.getFocused().keyReleased(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    protected boolean onCharTyped(char chr, int keyCode)
+    {
+        return this.getFocused() != null && this.getFocused().charTyped(chr, keyCode);
     }
 }

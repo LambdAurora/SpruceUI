@@ -24,21 +24,46 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-public class SpruceOptionListWidget extends SpruceElementListWidget<SpruceOptionListWidget.OptionEntry>
+/**
+ * Represents a list widget holding {@link SpruceOption} entries.
+ * <p>
+ * A {@link SpruceOption} allows to have an easy control over the widgets present in the list.
+ *
+ * @author LambdAurora
+ * @version 1.7.0
+ * @since 1.7.0
+ */
+public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionListWidget.OptionEntry>
 {
+    private int lastIndex = 0;
+
     public SpruceOptionListWidget(@NotNull Position position, int width, int height)
     {
         super(position, width, height, OptionEntry.class);
     }
 
+    /**
+     * Adds a single option entry. The option will use all the width available.
+     *
+     * @param option the option
+     * @return the index of the added entry
+     */
     public int addSingleOptionEntry(SpruceOption option)
     {
-        return this.addEntry(OptionEntry.create(this.width, option));
+        return this.addEntry(OptionEntry.create(this, option));
     }
 
+    /**
+     * Adds two option as one entry of the list. The second option can be {@code null}.
+     * <p>
+     * If no second option is specified, the first option will not use the full width.
+     *
+     * @param firstOption the first option
+     * @param secondOption the second option
+     */
     public void addOptionEntry(SpruceOption firstOption, @Nullable SpruceOption secondOption)
     {
-        this.addEntry(OptionEntry.create(this.width, firstOption, secondOption));
+        this.addEntry(OptionEntry.create(this, firstOption, secondOption));
     }
 
     public void addAll(SpruceOption[] options)
@@ -50,28 +75,30 @@ public class SpruceOptionListWidget extends SpruceElementListWidget<SpruceOption
 
     public static class OptionEntry extends SpruceEntryListWidget.Entry
     {
-        private final List<SpruceWidget> widgets = new ArrayList<>();
+        private final List<SpruceWidget> children = new ArrayList<>();
+        private final SpruceOptionListWidget parent;
         private @Nullable SpruceWidget focused;
         private boolean dragging;
 
-        private OptionEntry(int width)
+        private OptionEntry(SpruceOptionListWidget parent)
         {
-            this.width = width;
+            this.parent = parent;
+            this.width = parent.getWidth();
         }
 
-        public static OptionEntry create(int width, SpruceOption option)
+        public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption option)
         {
-            OptionEntry entry = new OptionEntry(width);
-            entry.widgets.add(option.createWidget(Position.of(entry, width / 2 - 155, 0), 310));
+            OptionEntry entry = new OptionEntry(parent);
+            entry.children.add(option.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 0), 310));
             return entry;
         }
 
-        public static OptionEntry create(int width, SpruceOption firstOption, @Nullable SpruceOption secondOption)
+        public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption firstOption, @Nullable SpruceOption secondOption)
         {
-            OptionEntry entry = new OptionEntry(width);
-            entry.widgets.add(firstOption.createWidget(Position.of(entry, width / 2 - 155, 0), 150));
+            OptionEntry entry = new OptionEntry(parent);
+            entry.children.add(firstOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 0), 150));
             if (secondOption != null) {
-                entry.widgets.add(secondOption.createWidget(Position.of(entry, width / 2 - 155 + 160, 0), 150));
+                entry.children.add(secondOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155 + 160, 0), 150));
             }
             return entry;
         }
@@ -79,12 +106,12 @@ public class SpruceOptionListWidget extends SpruceElementListWidget<SpruceOption
         @Override
         public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
         {
-            this.widgets.forEach(widget -> widget.render(matrices, mouseX, mouseY, delta));
+            this.children.forEach(widget -> widget.render(matrices, mouseX, mouseY, delta));
         }
 
         public List<SpruceWidget> children()
         {
-            return this.widgets;
+            return this.children;
         }
 
         public @Nullable SpruceWidget getFocused()
@@ -105,7 +132,7 @@ public class SpruceOptionListWidget extends SpruceElementListWidget<SpruceOption
         @Override
         public int getHeight()
         {
-            return this.widgets.stream().mapToInt(SpruceWidget::getHeight).reduce(Integer::max).orElse(0);
+            return this.children.stream().mapToInt(SpruceWidget::getHeight).reduce(Integer::max).orElse(0);
         }
 
         public Optional<SpruceWidget> hoveredElement(double mouseX, double mouseY)
@@ -182,13 +209,23 @@ public class SpruceOptionListWidget extends SpruceElementListWidget<SpruceOption
                     this.setFocused(null);
                     return false;
                 }
-                if (!this.widgets.get(0).onNavigation(direction, tab))
+                int lastIndex = this.parent.lastIndex;
+                if (lastIndex >= this.children.size())
+                    lastIndex = this.children.size() - 1;
+                if (!this.children.get(lastIndex).onNavigation(direction, tab))
                     return false;
-                this.setFocused(this.widgets.get(0));
+                this.setFocused(this.children.get(lastIndex));
                 return true;
             }
 
-            return NavigationUtils.tryNavigate(direction, tab, this.widgets, this.focused, this::setFocused, true);
+            boolean result = NavigationUtils.tryNavigate(direction, tab, this.children, this.focused, this::setFocused, true);
+            if (result) {
+                this.setFocused(true);
+                if (direction.isHorizontal() && this.getFocused() != null) {
+                    this.parent.lastIndex = this.children.indexOf(this.getFocused());
+                }
+            }
+            return result;
         }
     }
 }

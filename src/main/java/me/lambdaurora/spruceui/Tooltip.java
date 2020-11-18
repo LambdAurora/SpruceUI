@@ -136,7 +136,7 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
                 if (!widget.isFocused() && !widget.isMouseHovered())
                     tooltipTicksSetter.accept(0);
 
-                if (!tooltip.getString().isEmpty() && tooltipTicks >= 30) {
+                if (!tooltip.getString().isEmpty() && tooltipTicks >= 45) {
                     List<OrderedText> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(tooltip, Math.max(widget.getWidth() * 2 / 3, 200));
                     if (widget.isMouseHovered())
                         create(mouseX, mouseY, wrappedTooltipText).queue();

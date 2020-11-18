@@ -461,7 +461,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
             this.onSelectionUpdate(() -> {
                 this.cursor.row = row;
 
-                this.cursor.column = this.textRenderer.trimToWidth(this.lines.get(row), x).length();
+                this.cursor.lastColumn = this.cursor.column = this.textRenderer.trimToWidth(this.lines.get(row), x).length();
             });
 
             return true;
@@ -626,6 +626,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         boolean main;
         int row = 0;
         int column = 0;
+        private int lastColumn = 0;
 
         public Cursor(boolean main)
         {
@@ -634,7 +635,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
 
         public void toLineStart()
         {
-            this.column = 0;
+            this.lastColumn = this.column = 0;
         }
 
         public void resetRow()
@@ -689,12 +690,15 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
                     this.column = line.length();
             }
 
+            this.lastColumn = this.column;
+
             this.adjustFirstLine();
         }
 
         public void moveVertical(int amount)
         {
             this.row += amount;
+            this.column = this.lastColumn;
             this.sanitize();
 
             this.adjustFirstLine();
@@ -712,9 +716,9 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
             this.row = lines.size() - 1;
             String line = lines.get(this.row);
             if (line.endsWith("\n"))
-                this.column = line.length() - 1;
+                this.lastColumn = this.column = line.length() - 1;
             else
-                this.column = line.length();
+                this.lastColumn = this.column = line.length();
             this.adjustFirstLine();
         }
 
@@ -722,9 +726,9 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         {
             String line = lines.get(this.row);
             if (line.endsWith("\n"))
-                this.column = line.length() - 1;
+                this.lastColumn = this.column = line.length() - 1;
             else
-                this.column = line.length();
+                this.lastColumn = this.column = line.length();
         }
 
         /**
@@ -735,7 +739,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         public void copy(@NotNull Cursor cursor)
         {
             this.row = cursor.row;
-            this.column = cursor.column;
+            this.lastColumn = this.column = cursor.column;
         }
 
         /**
@@ -808,6 +812,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
             return "SpruceTextAreaWidget$Cursor{main=" + this.main
                     + ", row=" + this.row
                     + ", column=" + this.column
+                    + ", lastColumn=" + this.lastColumn
                     + "}";
         }
     }

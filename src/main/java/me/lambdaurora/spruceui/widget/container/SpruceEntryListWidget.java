@@ -19,13 +19,13 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.ParentElement;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.util.AbstractList;
@@ -45,8 +45,9 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     protected final Position anchor = Position.of(this, 0, 4);
     private final List<E> entries = new Entries();
     private double scrollAmount;
-    private final boolean renderBackground = true;
-    private final boolean renderTransition = true;
+    private boolean renderBackground = true;
+    private boolean renderTransition = true;
+    private boolean scrolling = false;
 
     public SpruceEntryListWidget(@NotNull Position position, int width, int height, Class<E> entryClass)
     {
@@ -55,10 +56,50 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         this.height = height;
     }
 
-    public int getMaxPosition()
+    /**
+     * Returns whether or not the background should be rendered.
+     *
+     * @return {@code true} if the background should be rendered, else {@code false}
+     */
+    public boolean shouldRenderBackground()
+    {
+        return this.renderBackground;
+    }
+
+    /**
+     * Sets whether or not the background should be rendered.
+     *
+     * @param render {@code true} if the background should be rendered, else {@code false}
+     */
+    public void setRenderBackground(boolean render)
+    {
+        this.renderBackground = render;
+    }
+
+    /**
+     * Returns whether or not the transition borders are rendered.
+     *
+     * @return {@code true} if the transition should be rendered, else {@code false}
+     */
+    public boolean shouldRenderTransition()
+    {
+        return this.renderTransition;
+    }
+
+    /**
+     * Sets whether or not the transition borders are rendered.
+     *
+     * @param render {@code true} if the transition should be rendered, else {@code false}
+     */
+    public void setRenderTransition(boolean render)
+    {
+        this.renderTransition = render;
+    }
+
+    protected int getLengthUntil(int index)
     {
         int max = 0;
-        for (int i = 0; i < this.entries.size(); i++) {
+        for (int i = 0; i <= index; i++) {
             max += this.entries.get(i).getHeight();
             if (i != this.entries.size() - 1)
                 max += 4;
@@ -66,16 +107,33 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         return max;
     }
 
+    public int getMaxPosition()
+    {
+        return this.getLengthUntil(this.getEntriesCount() - 1);
+    }
+
     private void scroll(int amount)
     {
         this.setScrollAmount(this.getScrollAmount() + (double) amount);
     }
 
+    /**
+     * Gets the scroll amount of this list. The amount is clamped between 0 and the maximum scroll ({@link #getMaxScroll()}).
+     *
+     * @return the scroll amount
+     */
     public double getScrollAmount()
     {
         return this.scrollAmount;
     }
 
+    /**
+     * Sets the scroll amount of this list. The amount is clamped between 0 and the maximum scroll ({@link #getMaxScroll()}).
+     * <p>
+     * It also recompute the visibility of each entries.
+     *
+     * @param amount the scroll amount
+     */
     public void setScrollAmount(double amount)
     {
         this.scrollAmount = MathHelper.clamp(amount, 0, this.getMaxScroll());
@@ -86,6 +144,11 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         }
     }
 
+    /**
+     * Returns the max scroll. The scroll amount can't go past this maximum.
+     *
+     * @return the max scroll
+     */
     public int getMaxScroll()
     {
         return Math.max(0, this.getMaxPosition() - this.getHeight() + 8);
@@ -129,6 +192,34 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         return this.children().size();
     }
 
+    /**
+     * Ensures that the specified entry is visible.
+     *
+     * @param entry the entry which needs to be visible
+     */
+    protected void ensureVisible(E entry)
+    {
+        int index = this.children().indexOf(entry);
+        int rowTop = this.getRowTop(index);
+        int j = rowTop - this.getY() - entry.getHeight() - 8;
+        if (j < 0) {
+            this.scroll(j);
+        }
+
+        int nextHeight = 0;
+        if (index < this.getEntriesCount() - 1)
+            nextHeight = this.children().get(index + 1).getHeight();
+        int k = this.getY() + this.getHeight() - rowTop - entry.getHeight() + nextHeight;
+        if (k < 0) {
+            this.scroll(-k);
+        }
+    }
+
+    protected int getRowTop(int index)
+    {
+        return this.getY() + 4 - (int) this.getScrollAmount() + this.getLengthUntil(index);
+    }
+
     private void setOwnerShip(E entry)
     {
         entry.getPosition().setAnchor(this.anchor);
@@ -144,13 +235,43 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
             this.getFocused().onNavigation(direction, tab);
             return true;
         }
-        return super.onNavigation(direction, tab);
+        boolean result = super.onNavigation(direction, tab);
+        if (result) this.ensureVisible(this.getFocused());
+        return result;
     }
 
     /* Input */
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount)
+    protected boolean onMouseClick(double mouseX, double mouseY, int button)
+    {
+        this.scrolling = button == GLFW.GLFW_MOUSE_BUTTON_1 && mouseX >= this.getScrollbarPositionX() && mouseX < (this.getScrollbarPositionX() + 6);
+        return super.onMouseClick(mouseX, mouseY, button) || this.scrolling;
+    }
+
+    @Override
+    protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY)
+    {
+        if (super.onMouseDrag(mouseX, mouseY, button, deltaX, deltaY)) return true;
+        else if (button == GLFW.GLFW_MOUSE_BUTTON_1 && this.scrolling) {
+            if (mouseY < this.getY()) {
+                this.setScrollAmount(0);
+            } else if (mouseY > (this.getY() + this.getHeight())) {
+                this.setScrollAmount(this.getMaxScroll());
+            } else {
+                double d = Math.max(1, this.getMaxScroll());
+                int height = this.height;
+                int j = MathHelper.clamp((int) ((float) (height * height) / (float) this.getMaxPosition()), 32, height - 8);
+                double e = Math.max(1, d / (double) (height - j));
+                this.setScrollAmount(this.getScrollAmount() + deltaY * e);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected boolean onMouseScroll(double mouseX, double mouseY, double amount)
     {
         this.setScrollAmount(this.getScrollAmount() - amount * ((double) this.getMaxPosition() / this.getEntriesCount()) / 2);
         return true;
@@ -161,7 +282,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     @Override
     protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY)
     {
-        if (!this.renderBackground)
+        if (!this.shouldRenderBackground())
             return;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
@@ -201,7 +322,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
         // Render the transition thingy.
-        if (this.renderTransition) {
+        if (this.shouldRenderTransition()) {
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE);
             RenderSystem.disableAlphaTest();
