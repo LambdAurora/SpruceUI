@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.4-SNAPSHOT'
+    id 'fabric-loom' version '0.5-SNAPSHOT'
     id 'java-library'
     id 'maven-publish'
     id 'net.minecrell.licenser' version '0.4.1'
@@ -36,9 +36,14 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    modImplementation(fabricApi.module('fabric-api-base', project.fabric_api_version))
+    modImplementation(fabricApi.module('fabric-lifecycle-events-v1', project.fabric_api_version))
+    modImplementation(fabricApi.module('fabric-rendering-v1', project.fabric_api_version))
+    modImplementation(fabricApi.module('fabric-resource-loader-v0', project.fabric_api_version))
 
-    modImplementation "io.github.prospector:modmenu:${project.modmenu_version}"
+    modImplementation("io.github.prospector:modmenu:${project.modmenu_version}") {
+        transitive = false
+    }
 
     libApi "org.jetbrains:annotations:20.1.0"
     libApi("org.aperlambda:lambdajcommon:1.8.1") {

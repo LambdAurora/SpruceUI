@@ -7,7 +7,7 @@
  * see the LICENSE file.
  */
 
-package me.lambdaurora.spruceui;
+package me.lambdaurora.spruceui.util;
 
 import net.minecraft.client.MinecraftClient;
 import org.jetbrains.annotations.NotNull;

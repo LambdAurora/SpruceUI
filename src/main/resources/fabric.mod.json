@@ -25,7 +25,10 @@
   ],
   "depends": {
     "fabricloader": ">=0.9.0",
-    "fabric": "*",
+    "fabric-api-base": "*",
+    "fabric-lifecycle-events-v1": "*",
+    "fabric-rendering-v1": "*",
+    "fabric-resource-loader-v0": "*",
     "minecraft": ">=1.16.2"
   },
   "suggests": {

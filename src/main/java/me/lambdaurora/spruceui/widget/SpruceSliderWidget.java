@@ -12,6 +12,7 @@ package me.lambdaurora.spruceui.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.Tooltipable;
+import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -128,6 +129,19 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     protected void applyValue()
     {
         this.applyConsumer.accept(this);
+    }
+
+    /* Navigation */
+
+    @Override
+    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+        if (direction.isHorizontal()) {
+            if (direction.isLookingForward() && this.value < 1 || this.value > 0) {
+                this.setValue(this.getValue() + (direction.isLookingForward() ? (1 / this.multiplier) : -(1 / this.multiplier)));
+                return true;
+            }
+        }
+        return super.onNavigation(direction, tab);
     }
 
     /* Input */
