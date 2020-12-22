@@ -33,16 +33,14 @@ import java.util.Optional;
  * @version 1.7.0
  * @since 1.0.1
  */
-public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Tooltipable
-{
+public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Tooltipable {
     private final MinecraftClient client = MinecraftClient.getInstance();
     private Text title;
     private Text tooltip;
     private int tooltipTicks;
     private long lastTick;
 
-    public SpruceSeparatorWidget(Position position, int width, @Nullable Text title)
-    {
+    public SpruceSeparatorWidget(Position position, int width, @Nullable Text title) {
         super(position);
         this.width = width;
         this.height = 9;
@@ -50,8 +48,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
     }
 
     @Deprecated
-    public SpruceSeparatorWidget(@Nullable Text title, int x, int y, int width)
-    {
+    public SpruceSeparatorWidget(@Nullable Text title, int x, int y, int width) {
         this(Position.of(x, y), width, title);
     }
 
@@ -60,8 +57,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
      *
      * @return the title
      */
-    public @NotNull Optional<Text> getTitle()
-    {
+    public @NotNull Optional<Text> getTitle() {
         return Optional.ofNullable(this.title);
     }
 
@@ -70,8 +66,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
      *
      * @param title the title
      */
-    public void setTitle(@Nullable Text title)
-    {
+    public void setTitle(@Nullable Text title) {
         if (!Objects.equals(title, this.title)) {
             this.queueNarration(250);
         }
@@ -79,30 +74,26 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
     }
 
     @Override
-    public @NotNull Optional<Text> getTooltip()
-    {
+    public @NotNull Optional<Text> getTooltip() {
         return Optional.ofNullable(this.tooltip);
     }
 
     @Override
-    public void setTooltip(@Nullable Text tooltip)
-    {
+    public void setTooltip(@Nullable Text tooltip) {
         this.tooltip = tooltip;
     }
 
     /* Navigation */
 
     @Override
-    public boolean requiresCursor()
-    {
+    public boolean requiresCursor() {
         return this.tooltip == null;
     }
 
     /* Rendering */
 
     @Override
-    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (this.title != null) {
             int titleWidth = this.client.textRenderer.getWidth(this.title);
             int titleX = this.getX() + (this.width / 2 - titleWidth / 2);
@@ -121,8 +112,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
     /* Narration */
 
     @Override
-    protected @NotNull Optional<Text> getNarrationMessage()
-    {
+    protected @NotNull Optional<Text> getNarrationMessage() {
         return this.getTitle().map(Text::asString)
                 .filter(title -> !title.isEmpty())
                 .map(title -> new TranslatableText("spruceui.narrator.separator", title));
@@ -135,26 +125,22 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
      * @version 1.5.0
      * @since 1.0.1
      */
-    public static class ButtonWrapper extends AbstractButtonWidget
-    {
+    public static class ButtonWrapper extends AbstractButtonWidget {
         private final SpruceSeparatorWidget widget;
 
-        public ButtonWrapper(@NotNull SpruceSeparatorWidget separator, int height)
-        {
+        public ButtonWrapper(@NotNull SpruceSeparatorWidget separator, int height) {
             super(separator.getX(), separator.getY(), separator.getWidth(), height, separator.getTitle().orElse(LiteralText.EMPTY));
             this.widget = separator;
         }
 
         @Override
-        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
-        {
+        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             this.widget.getPosition().setRelativeY(this.y + this.height / 2 - 9 / 2);
             this.widget.render(matrices, mouseX, mouseY, delta);
         }
 
         @Override
-        public boolean changeFocus(boolean down)
-        {
+        public boolean changeFocus(boolean down) {
             return this.widget.onNavigation(down ? NavigationDirection.DOWN : NavigationDirection.UP, true);
         }
     }

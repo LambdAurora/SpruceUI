@@ -28,20 +28,17 @@ import java.util.List;
  * @version 1.5.0
  * @since 1.2.0
  */
-public abstract class Hud extends DrawableHelper implements Identifiable
-{
+public abstract class Hud extends DrawableHelper implements Identifiable {
     protected final Identifier identifier;
     protected final List<HudComponent> components = new ArrayList<>();
     private boolean enabled = true;
     protected boolean visible = true;
 
-    public Hud(@NotNull Identifier identifier)
-    {
+    public Hud(@NotNull Identifier identifier) {
         this.identifier = identifier;
     }
 
-    public Hud(@NotNull net.minecraft.util.Identifier identifier)
-    {
+    public Hud(@NotNull net.minecraft.util.Identifier identifier) {
         this(new Identifier(identifier.toString()));
     }
 
@@ -50,8 +47,7 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      *
      * @return The translation key.
      */
-    public String getTranslationKey()
-    {
+    public String getTranslationKey() {
         return this.identifier.getNamespace() + ".hud." + this.identifier.getName();
     }
 
@@ -60,8 +56,7 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      *
      * @return True if the HUD is enabled, else false.
      */
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return this.enabled;
     }
 
@@ -70,8 +65,7 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      *
      * @param enabled True if the HUD is enabled, else false.
      */
-    public void setEnabled(boolean enabled)
-    {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
         if (enabled) {
             MinecraftClient client = MinecraftClient.getInstance();
@@ -84,8 +78,7 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      *
      * @return True if the HUD is visible, else false.
      */
-    public boolean isVisible()
-    {
+    public boolean isVisible() {
         return this.visible;
     }
 
@@ -94,13 +87,11 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      *
      * @param visible True if the HUD is visible, else false.
      */
-    public void setVisible(boolean visible)
-    {
+    public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
-    public void init(@NotNull MinecraftClient client, int screenWidth, int screenHeight)
-    {
+    public void init(@NotNull MinecraftClient client, int screenWidth, int screenHeight) {
         this.components.clear();
     }
 
@@ -110,8 +101,7 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      * @param tickDelta Progress for linearly interpolating between the previous and current game state.
      * @see #isEnabled()
      */
-    public void render(MatrixStack matrices, float tickDelta)
-    {
+    public void render(MatrixStack matrices, float tickDelta) {
         this.components.stream().filter(HudComponent::isEnabled).forEach(component -> component.render(matrices, tickDelta));
     }
 
@@ -121,8 +111,7 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      * @see #isEnabled()
      * @see #hasTicks()
      */
-    public void tick()
-    {
+    public void tick() {
         this.components.stream().filter(Predicates.and(HudComponent::hasTicks, HudComponent::isEnabled)).forEach(HudComponent::tick);
     }
 
@@ -132,8 +121,7 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      * @return True if this HUD has tick updates, else false.
      * @see #tick()
      */
-    public boolean hasTicks()
-    {
+    public boolean hasTicks() {
         return false;
     }
 
@@ -142,14 +130,12 @@ public abstract class Hud extends DrawableHelper implements Identifiable
      *
      * @return The HUD's components.
      */
-    public @NotNull List<HudComponent> getComponents()
-    {
+    public @NotNull List<HudComponent> getComponents() {
         return ImmutableList.copyOf(this.components);
     }
 
     @Override
-    public @NotNull Identifier getIdentifier()
-    {
+    public @NotNull Identifier getIdentifier() {
         return this.identifier;
     }
 }

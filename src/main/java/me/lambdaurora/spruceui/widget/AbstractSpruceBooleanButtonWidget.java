@@ -20,8 +20,7 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.7.0
  * @since 1.7.0
  */
-public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePressableButtonWidget
-{
+public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePressableButtonWidget {
     private static final PressAction DEFAULT_ACTION = (button, newValue) -> {
     };
 
@@ -29,25 +28,21 @@ public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePr
     private boolean value;
     protected boolean showMessage;
 
-    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message, boolean value)
-    {
+    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message, boolean value) {
         this(position, width, height, message, value, true);
     }
 
     public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message,
-                                             boolean value, boolean showMessage)
-    {
+                                             boolean value, boolean showMessage) {
         this(position, width, height, message, DEFAULT_ACTION, value, showMessage);
     }
 
-    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value)
-    {
+    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value) {
         this(position, width, height, message, action, value, true);
     }
 
     public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action,
-                                             boolean value, boolean showMessage)
-    {
+                                             boolean value, boolean showMessage) {
         super(position, width, height, message);
         this.value = value;
         this.showMessage = showMessage;
@@ -58,14 +53,12 @@ public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePr
      *
      * @return {@code true} or {@code false}.
      */
-    public boolean getValue()
-    {
+    public boolean getValue() {
         return this.value;
     }
 
     @Override
-    public void onPress()
-    {
+    public void onPress() {
         this.value = !this.value;
         this.action.onPress(this, this.value);
     }
@@ -76,8 +69,7 @@ public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePr
      * @version 1.7.0
      * @since 1.7.0
      */
-    public interface PressAction
-    {
+    public interface PressAction {
         void onPress(AbstractSpruceBooleanButtonWidget button, boolean newValue);
     }
 }

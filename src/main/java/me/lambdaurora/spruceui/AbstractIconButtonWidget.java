@@ -24,12 +24,10 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.5.1
  * @since 1.0.0
  */
-public abstract class AbstractIconButtonWidget extends ButtonWidget
-{
+public abstract class AbstractIconButtonWidget extends ButtonWidget {
     private int iconSize = 0;
 
-    public AbstractIconButtonWidget(int x, int y, int width, int height, @NotNull Text message, @NotNull PressAction action)
-    {
+    public AbstractIconButtonWidget(int x, int y, int width, int height, @NotNull Text message, @NotNull PressAction action) {
         super(x, y, width, height, message, action);
     }
 
@@ -47,8 +45,7 @@ public abstract class AbstractIconButtonWidget extends ButtonWidget
     protected abstract int renderIcon(MatrixStack matrices, int mouseX, int mouseY, float delta, int x, int y);
 
     @Override
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         MinecraftClient client = MinecraftClient.getInstance();
         client.getTextureManager().bindTexture(WIDGETS_LOCATION);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);

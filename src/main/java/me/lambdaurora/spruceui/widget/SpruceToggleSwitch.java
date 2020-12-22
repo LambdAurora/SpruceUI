@@ -27,33 +27,27 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget
-{
+public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
     private static final Identifier TEXTURE = new Identifier("spruceui", "textures/gui/toggle_switch.png");
 
-    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, boolean value)
-    {
+    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, boolean value) {
         super(position, width, height, message, value);
     }
 
-    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, boolean value, boolean showMessage)
-    {
+    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, boolean value, boolean showMessage) {
         super(position, width, height, message, value, showMessage);
     }
 
-    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value)
-    {
+    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value) {
         super(position, width, height, message, action, value);
     }
 
-    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value, boolean showMessage)
-    {
+    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value, boolean showMessage) {
         super(position, width, height, message, action, value, showMessage);
     }
 
     @Override
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         RenderSystem.enableDepthTest();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -69,8 +63,7 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget
     }
 
     @Override
-    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY)
-    {
+    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY) {
         this.client.getTextureManager().bindTexture(TEXTURE);
         RenderSystem.enableDepthTest();
         RenderSystem.color4f(1.f, 1.f, 1.f, this.alpha);

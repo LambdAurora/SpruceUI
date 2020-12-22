@@ -30,8 +30,7 @@ import java.util.Optional;
  * @version 1.7.0
  * @since 1.7.0
  */
-public abstract class AbstractSpruceWidget extends DrawableHelper implements SpruceWidget
-{
+public abstract class AbstractSpruceWidget extends DrawableHelper implements SpruceWidget {
     protected final MinecraftClient client = MinecraftClient.getInstance();
     protected final Position position;
     private boolean visible;
@@ -45,63 +44,53 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     protected long lastDrag = 0L;
     private long nextNarration = 0;
 
-    public AbstractSpruceWidget(@NotNull Position position)
-    {
+    public AbstractSpruceWidget(@NotNull Position position) {
         this.position = position;
         this.visible = true;
     }
 
     @Override
-    public @NotNull Position getPosition()
-    {
+    public @NotNull Position getPosition() {
         return this.position;
     }
 
     @Override
-    public boolean isVisible()
-    {
+    public boolean isVisible() {
         return this.visible;
     }
 
     @Override
-    public void setVisible(boolean visible)
-    {
+    public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
     @Override
-    public int getWidth()
-    {
+    public int getWidth() {
         return this.width;
     }
 
     @Override
-    public int getHeight()
-    {
+    public int getHeight() {
         return this.height;
     }
 
     @Override
-    public boolean isActive()
-    {
+    public boolean isActive() {
         return this.active;
     }
 
     @Override
-    public boolean isMouseHovered()
-    {
+    public boolean isMouseHovered() {
         return this.hovered;
     }
 
     @Override
-    public boolean isFocused()
-    {
+    public boolean isFocused() {
         return this.focused;
     }
 
     @Override
-    public void setFocused(boolean focused)
-    {
+    public void setFocused(boolean focused) {
         this.focused = focused;
         this.dragging = false;
     }
@@ -109,14 +98,12 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     /* Navigation */
 
     @Override
-    public boolean changeFocus(boolean lookForwards)
-    {
+    public boolean changeFocus(boolean lookForwards) {
         return this.onNavigation(lookForwards ? NavigationDirection.DOWN : NavigationDirection.UP, true);
     }
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
-    {
+    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         if (this.isVisible() && this.isActive()) {
             this.setFocused(!this.isFocused());
@@ -131,35 +118,30 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     /* Input */
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button)
-    {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (!this.isActive() || !this.isVisible() || !this.isMouseOver(mouseX, mouseY))
             return false;
 
         return this.onMouseClick(mouseX, mouseY, button);
     }
 
-    protected boolean onMouseClick(double mouseX, double mouseY, int button)
-    {
+    protected boolean onMouseClick(double mouseX, double mouseY, int button) {
         return false;
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button)
-    {
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
         boolean result = this.onMouseRelease(mouseX, mouseY, button);
         if (result) this.dragging = false;
         return result;
     }
 
-    protected boolean onMouseRelease(double mouseX, double mouseY, int button)
-    {
+    protected boolean onMouseRelease(double mouseX, double mouseY, int button) {
         return false;
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
-    {
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         if (!this.isActive() || !this.isVisible())
             return false;
 
@@ -171,8 +153,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
         return result;
     }
 
-    protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY)
-    {
+    protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         return false;
     }
 
@@ -188,8 +169,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
-    {
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (this.isActive() && this.isVisible()) {
             return this.onKeyPress(keyCode, scanCode, modifiers);
         }
@@ -204,14 +184,12 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
      * @param modifiers a GLFW bitfield describing the modifier keys that are held down (see <a href="https://www.glfw.org/docs/3.3/group__mods.html">GLFW Modifier key flags</a>})
      * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
      */
-    protected boolean onKeyPress(int keyCode, int scanCode, int modifiers)
-    {
+    protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
         return false;
     }
 
     @Override
-    public boolean keyReleased(int keyCode, int scanCode, int modifiers)
-    {
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         if (this.isActive() && this.isVisible()) {
             return this.onKeyRelease(keyCode, scanCode, modifiers);
         }
@@ -230,14 +208,12 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
      * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
      * @see org.lwjgl.glfw.GLFWKeyCallbackI#invoke(long, int, int, int, int)
      */
-    protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers)
-    {
+    protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers) {
         return false;
     }
 
     @Override
-    public boolean charTyped(char chr, int keyCode)
-    {
+    public boolean charTyped(char chr, int keyCode) {
         if (this.isActive() && this.isVisible()) {
             return this.onCharTyped(chr, keyCode);
         }
@@ -253,16 +229,14 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
      * @param keyCode the associated key code
      * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
      */
-    protected boolean onCharTyped(char chr, int keyCode)
-    {
+    protected boolean onCharTyped(char chr, int keyCode) {
         return false;
     }
 
     /* Rendering */
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (this.isVisible()) {
             this.hovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.getWidth() && mouseY < this.getY() + this.getHeight();
 
@@ -294,21 +268,18 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
 
     public abstract void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta);
 
-    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY)
-    {
+    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY) {
     }
 
     /* Sound */
 
-    public void playDownSound()
-    {
+    public void playDownSound() {
         this.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
     /* Narration */
 
-    protected void narrate()
-    {
+    protected void narrate() {
         if (this.isActive() && this.isFocusedOrHovered() && Util.getMeasuringTimeMs() > this.nextNarration && this.nextNarration != 0) {
             this.getNarrationMessage().map(Text::getString).ifPresent(message -> {
                 if (!message.isEmpty()) {
@@ -319,8 +290,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
         }
     }
 
-    protected @NotNull Optional<Text> getNarrationMessage()
-    {
+    protected @NotNull Optional<Text> getNarrationMessage() {
         return Optional.empty();
     }
 
@@ -329,8 +299,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
      *
      * @param delay the delay in milliseconds to wait for the next narration
      */
-    public void queueNarration(int delay)
-    {
+    public void queueNarration(int delay) {
         this.nextNarration = Util.getMeasuringTimeMs() + (long) delay;
     }
 }

@@ -31,55 +31,46 @@ import java.util.function.Consumer;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class Tooltip extends DrawableHelper implements SprucePositioned
-{
+public class Tooltip extends DrawableHelper implements SprucePositioned {
     private static final Queue<Tooltip> TOOLTIPS = Queues.newConcurrentLinkedQueue();
     private static boolean delayed = false;
     private final int x;
     private final int y;
     private final List<OrderedText> tooltip;
 
-    public Tooltip(int x, int y, @NotNull String tooltip, int parentWidth)
-    {
+    public Tooltip(int x, int y, @NotNull String tooltip, int parentWidth) {
         this(x, y, StringVisitable.plain(tooltip), parentWidth);
     }
 
-    public Tooltip(int x, int y, @NotNull StringVisitable tooltip, int parentWidth)
-    {
+    public Tooltip(int x, int y, @NotNull StringVisitable tooltip, int parentWidth) {
         this(x, y, MinecraftClient.getInstance().textRenderer.wrapLines(tooltip, Math.max(parentWidth * 2 / 3, 200)));
     }
 
-    public Tooltip(int x, int y, @NotNull List<OrderedText> tooltip)
-    {
+    public Tooltip(int x, int y, @NotNull List<OrderedText> tooltip) {
         this.x = x;
         this.y = y;
         this.tooltip = tooltip;
     }
 
-    public static @NotNull Tooltip create(int x, int y, @NotNull String tooltip, int parentWidth)
-    {
+    public static @NotNull Tooltip create(int x, int y, @NotNull String tooltip, int parentWidth) {
         return new Tooltip(x, y, tooltip, parentWidth);
     }
 
-    public static @NotNull Tooltip create(int x, int y, @NotNull StringVisitable tooltip, int parentWidth)
-    {
+    public static @NotNull Tooltip create(int x, int y, @NotNull StringVisitable tooltip, int parentWidth) {
         return new Tooltip(x, y, tooltip, parentWidth);
     }
 
-    public static @NotNull Tooltip create(int x, int y, @NotNull List<OrderedText> tooltip)
-    {
+    public static @NotNull Tooltip create(int x, int y, @NotNull List<OrderedText> tooltip) {
         return new Tooltip(x, y, tooltip);
     }
 
     @Override
-    public int getX()
-    {
+    public int getX() {
         return this.x;
     }
 
     @Override
-    public int getY()
-    {
+    public int getY() {
         return this.y;
     }
 
@@ -88,8 +79,7 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
      *
      * @return {@code true} if the tooltip should render, else {@code false}
      */
-    public boolean shouldRender()
-    {
+    public boolean shouldRender() {
         return !this.tooltip.isEmpty();
     }
 
@@ -99,16 +89,14 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
      * @param screen the screen on which the tooltip is rendered
      * @param matrices the matrices
      */
-    public void render(Screen screen, MatrixStack matrices)
-    {
+    public void render(Screen screen, MatrixStack matrices) {
         screen.renderOrderedTooltip(matrices, this.tooltip, this.x, this.y);
     }
 
     /**
      * Queues the tooltip to render.
      */
-    public void queue()
-    {
+    public void queue() {
         TOOLTIPS.add(this);
     }
 
@@ -121,8 +109,7 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
      * @param <T> the type of the widget
      * @since 1.6.0
      */
-    public static <T extends Tooltipable & SpruceWidget> void queueFor(@NotNull T widget, int mouseX, int mouseY, int tooltipTicks, @NotNull Consumer<Integer> tooltipTicksSetter, long lastTick, @NotNull Consumer<Long> lastTickSetter)
-    {
+    public static <T extends Tooltipable & SpruceWidget> void queueFor(@NotNull T widget, int mouseX, int mouseY, int tooltipTicks, @NotNull Consumer<Integer> tooltipTicksSetter, long lastTick, @NotNull Consumer<Long> lastTickSetter) {
         if (widget.isVisible()) {
             widget.getTooltip().ifPresent(tooltip -> {
                 long currentRender = System.currentTimeMillis();
@@ -153,8 +140,7 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
      * @param delayed true if tooltip rendering is delayed
      */
     @ApiStatus.Internal
-    static void setDelayedRender(boolean delayed)
-    {
+    static void setDelayedRender(boolean delayed) {
         Tooltip.delayed = delayed;
     }
 
@@ -165,8 +151,7 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
      * @see #renderAll(Screen, MatrixStack)
      */
     @Deprecated
-    public static void renderAll(MatrixStack matrices)
-    {
+    public static void renderAll(MatrixStack matrices) {
         Screen screen = MinecraftClient.getInstance().currentScreen;
         if (screen != null) {
             renderAll(screen, matrices);
@@ -179,8 +164,7 @@ public class Tooltip extends DrawableHelper implements SprucePositioned
      * @param screen the screen on which the tooltips are rendered
      * @param matrices the matrices
      */
-    public static void renderAll(Screen screen, MatrixStack matrices)
-    {
+    public static void renderAll(Screen screen, MatrixStack matrices) {
         if (delayed)
             return;
         synchronized (TOOLTIPS) {

@@ -30,8 +30,7 @@ import java.util.function.Consumer;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipable
-{
+public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipable {
     public static final Consumer<SpruceLabelWidget> DEFAULT_ACTION = label -> {
     };
 
@@ -42,8 +41,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     private Text tooltip;
     private boolean centered;
 
-    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered)
-    {
+    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered) {
         super(position);
         this.maxWidth = maxWidth;
         this.action = action;
@@ -51,42 +49,35 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
         this.setText(text);
     }
 
-    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action)
-    {
+    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action) {
         this(position, text, maxWidth, action, false);
     }
 
-    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, boolean centered)
-    {
+    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, boolean centered) {
         this(position, text, maxWidth, DEFAULT_ACTION, centered);
     }
 
-    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth)
-    {
+    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth) {
         this(position, text, maxWidth, DEFAULT_ACTION);
     }
 
     @Deprecated
-    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered)
-    {
+    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered) {
         this(Position.of(x, y), text, maxWidth, action, centered);
     }
 
     @Deprecated
-    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action)
-    {
+    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action) {
         this(Position.of(x, y), text, maxWidth, action);
     }
 
     @Deprecated
-    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, boolean centered)
-    {
+    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, boolean centered) {
         this(Position.of(x, y), text, maxWidth, centered);
     }
 
     @Deprecated
-    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth)
-    {
+    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth) {
         this(Position.of(x, y), text, maxWidth);
     }
 
@@ -95,8 +86,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
      *
      * @param text the text to set
      */
-    public void setText(@NotNull Text text)
-    {
+    public void setText(@NotNull Text text) {
         int width = this.client.textRenderer.getWidth(text);
         if (width > this.maxWidth) {
             width = this.maxWidth;
@@ -108,38 +98,33 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     }
 
     @Override
-    public @NotNull Optional<Text> getTooltip()
-    {
+    public @NotNull Optional<Text> getTooltip() {
         return Optional.ofNullable(this.tooltip);
     }
 
     @Override
-    public void setTooltip(@Nullable Text tooltip)
-    {
+    public void setTooltip(@Nullable Text tooltip) {
         this.tooltip = tooltip;
     }
 
     /**
      * Fires the press event on this label widget.
      */
-    public void onPress()
-    {
+    public void onPress() {
         this.action.accept(this);
     }
 
     /* Navigation */
 
     @Override
-    public boolean requiresCursor()
-    {
+    public boolean requiresCursor() {
         return this.action == DEFAULT_ACTION;
     }
 
     /* Input */
 
     @Override
-    protected boolean onMouseClick(double mouseX, double mouseY, int button)
-    {
+    protected boolean onMouseClick(double mouseX, double mouseY, int button) {
         if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
             if (this.hovered) {
                 this.onPress();
@@ -152,8 +137,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     /* Rendering */
 
     @Override
-    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         int x = this.centered ? this.getX() - this.client.textRenderer.getWidth(this.text) / 2 : this.getX();
         this.client.textRenderer.drawTrimmed(this.text, x, this.getY(), this.maxWidth, 10526880);
 

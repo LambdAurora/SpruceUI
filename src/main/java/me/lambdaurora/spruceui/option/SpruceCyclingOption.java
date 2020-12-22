@@ -31,13 +31,11 @@ import java.util.function.Function;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceCyclingOption extends SpruceOption
-{
+public class SpruceCyclingOption extends SpruceOption {
     private final Consumer<Integer> setter;
     private final Function<SpruceCyclingOption, Text> messageProvider;
 
-    public SpruceCyclingOption(@NotNull String key, @NotNull Consumer<Integer> setter, @NotNull Function<SpruceCyclingOption, Text> messageProvider, @Nullable Text tooltip)
-    {
+    public SpruceCyclingOption(@NotNull String key, @NotNull Consumer<Integer> setter, @NotNull Function<SpruceCyclingOption, Text> messageProvider, @Nullable Text tooltip) {
         super(key);
         this.setter = setter;
         this.messageProvider = messageProvider;
@@ -49,14 +47,12 @@ public class SpruceCyclingOption extends SpruceOption
      *
      * @param amount The amount to cycle.
      */
-    public void cycle(int amount)
-    {
+    public void cycle(int amount) {
         this.setter.accept(amount);
     }
 
     @Override
-    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width)
-    {
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width) {
         SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getMessage(), btn -> {
             this.cycle(1);
             btn.setMessage(this.getMessage());
@@ -70,8 +66,7 @@ public class SpruceCyclingOption extends SpruceOption
      *
      * @return The option message.
      */
-    public @NotNull Text getMessage()
-    {
+    public @NotNull Text getMessage() {
         return this.messageProvider.apply(this);
     }
 
@@ -83,8 +78,7 @@ public class SpruceCyclingOption extends SpruceOption
      * @param tooltip The tooltip.
      * @return The SpruceUI option.
      */
-    public static @NotNull SpruceCyclingOption fromVanilla(@NotNull String key, @NotNull CyclingOption vanilla, @Nullable Text tooltip)
-    {
+    public static @NotNull SpruceCyclingOption fromVanilla(@NotNull String key, @NotNull CyclingOption vanilla, @Nullable Text tooltip) {
         GameOptions options = MinecraftClient.getInstance().options;
         return new SpruceCyclingOption(key, amount -> vanilla.cycle(options, amount), option -> vanilla.getMessage(options), tooltip);
     }

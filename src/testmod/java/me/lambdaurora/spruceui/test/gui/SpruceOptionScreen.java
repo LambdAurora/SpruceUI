@@ -10,12 +10,12 @@
 package me.lambdaurora.spruceui.test.gui;
 
 import me.lambdaurora.spruceui.Position;
-import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.SpruceTexts;
 import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.option.*;
 import me.lambdaurora.spruceui.screen.SpruceScreen;
 import me.lambdaurora.spruceui.test.TestEnum;
+import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -29,8 +29,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author LambdAurora
  */
-public class SpruceOptionScreen extends SpruceScreen
-{
+public class SpruceOptionScreen extends SpruceScreen {
     private final Screen parent;
     private final SpruceOption booleanOption;
     private final SpruceOption checkboxOption;
@@ -49,8 +48,7 @@ public class SpruceOptionScreen extends SpruceScreen
     //private ButtonListWidget list;
     private SpruceOptionListWidget list;
 
-    public SpruceOptionScreen(@Nullable Screen parent)
-    {
+    public SpruceOptionScreen(@Nullable Screen parent) {
         super(new LiteralText("SpruceUI Test Option Menu"));
         this.parent = parent;
 
@@ -114,19 +112,17 @@ public class SpruceOptionScreen extends SpruceScreen
                 + "You have to manage screen re-initialization and reset logic yourself."));
     }
 
-    private int getTextHeight()
-    {
+    private int getTextHeight() {
         return (5 + this.textRenderer.fontHeight) * 3 + 5;
     }
 
     @Override
-    protected void init()
-    {
+    protected void init() {
         super.init();
 
         // Button list.
         //this.list = new ButtonListWidget(this.client, this.width, this.height, 43, this.height - 29 - this.getTextHeight(), 25);
-        this.list = new SpruceOptionListWidget(Position.of(0,  22), this.width, this.height - 35 - 22);
+        this.list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 35 - 22);
 
         this.list.addOptionEntry(this.booleanOption, this.checkboxOption);
         this.list.addOptionEntry(this.toggleSwitchOption, null);
@@ -151,8 +147,7 @@ public class SpruceOptionScreen extends SpruceScreen
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         this.list.render(matrices, mouseX, mouseY, delta);
         super.render(matrices, mouseX, mouseY, delta);

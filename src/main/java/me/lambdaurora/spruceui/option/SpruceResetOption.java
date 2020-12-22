@@ -23,15 +23,12 @@ import java.util.function.Consumer;
  * @version 1.7.0
  * @since 1.0.1
  */
-public final class SpruceResetOption extends SpruceSimpleActionOption
-{
-    public SpruceResetOption(@NotNull Consumer<SpruceButtonWidget> action, @Nullable Text tooltip)
-    {
+public final class SpruceResetOption extends SpruceSimpleActionOption {
+    public SpruceResetOption(@NotNull Consumer<SpruceButtonWidget> action, @Nullable Text tooltip) {
         super("spruceui.reset", action, tooltip);
     }
 
-    public SpruceResetOption(@NotNull Consumer<SpruceButtonWidget> action)
-    {
+    public SpruceResetOption(@NotNull Consumer<SpruceButtonWidget> action) {
         this(action, null);
     }
 }

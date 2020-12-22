@@ -10,10 +10,10 @@
 package me.lambdaurora.spruceui.test.gui;
 
 import me.lambdaurora.spruceui.Position;
-import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
-import me.lambdaurora.spruceui.screen.SpruceScreen;
 import me.lambdaurora.spruceui.SpruceTexts;
 import me.lambdaurora.spruceui.Tooltip;
+import me.lambdaurora.spruceui.screen.SpruceScreen;
+import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
@@ -24,19 +24,16 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author LambdAurora
  */
-public class SpruceMainMenuScreen extends SpruceScreen
-{
+public class SpruceMainMenuScreen extends SpruceScreen {
     private final Screen parent;
 
-    public SpruceMainMenuScreen(@Nullable Screen parent)
-    {
+    public SpruceMainMenuScreen(@Nullable Screen parent) {
         super(new LiteralText("SpruceUI Test Main Menu"));
         this.parent = parent;
     }
 
     @Override
-    protected void init()
-    {
+    protected void init() {
         super.init();
 
         int startY = this.height / 4 + 48;
@@ -53,8 +50,7 @@ public class SpruceMainMenuScreen extends SpruceScreen
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, delta);
         // Draw the title text.

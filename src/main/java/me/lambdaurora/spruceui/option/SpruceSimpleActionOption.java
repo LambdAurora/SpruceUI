@@ -27,25 +27,21 @@ import java.util.function.Consumer;
  * @version 1.7.0
  * @since 1.0.1
  */
-public class SpruceSimpleActionOption extends SpruceOption implements Nameable
-{
+public class SpruceSimpleActionOption extends SpruceOption implements Nameable {
     private final Consumer<SpruceButtonWidget> action;
 
-    public SpruceSimpleActionOption(@NotNull String key, @NotNull Consumer<SpruceButtonWidget> action, @Nullable Text tooltip)
-    {
+    public SpruceSimpleActionOption(@NotNull String key, @NotNull Consumer<SpruceButtonWidget> action, @Nullable Text tooltip) {
         super(key);
         this.action = action;
         this.setTooltip(tooltip);
     }
 
-    public SpruceSimpleActionOption(@NotNull String key, @NotNull Consumer<SpruceButtonWidget> action)
-    {
+    public SpruceSimpleActionOption(@NotNull String key, @NotNull Consumer<SpruceButtonWidget> action) {
         this(key, action, null);
     }
 
     @Override
-    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width)
-    {
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width) {
         SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, new TranslatableText(this.key), action::accept);
         this.getOptionTooltip().ifPresent(button::setTooltip);
         return button;

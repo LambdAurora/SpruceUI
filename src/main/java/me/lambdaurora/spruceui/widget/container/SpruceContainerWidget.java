@@ -19,29 +19,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidget>
-        implements ParentElement
-{
+        implements ParentElement {
     private final List<SpruceWidget> children = new ArrayList<>();
 
-    public SpruceContainerWidget(Position position)
-    {
+    public SpruceContainerWidget(Position position) {
         super(position, SpruceWidget.class);
     }
 
     @Override
-    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.children.forEach(child -> child.render(matrices, mouseX, mouseY, delta));
     }
 
-    public void addChild(@NotNull SpruceWidget child)
-    {
+    public void addChild(@NotNull SpruceWidget child) {
         this.children.add(child);
     }
 
     @Override
-    public List<SpruceWidget> children()
-    {
+    public List<SpruceWidget> children() {
         return this.children;
     }
 }

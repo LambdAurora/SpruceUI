@@ -22,20 +22,17 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceOptionSliderWidget extends SpruceSliderWidget
-{
+public class SpruceOptionSliderWidget extends SpruceSliderWidget {
     private final SpruceDoubleOption option;
 
-    public SpruceOptionSliderWidget(Position position, int width, int height, @NotNull SpruceDoubleOption option)
-    {
+    public SpruceOptionSliderWidget(Position position, int width, int height, @NotNull SpruceDoubleOption option) {
         super(position, width, height, LiteralText.EMPTY, option.getRatio(option.get()), slider -> option.set(option.getValue(slider.getValue())));
         this.option = option;
         this.updateMessage();
     }
 
     @Override
-    protected void updateMessage()
-    {
+    protected void updateMessage() {
         if (this.option != null)
             this.setMessage(this.option.getDisplayString());
     }

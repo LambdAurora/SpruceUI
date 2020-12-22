@@ -20,8 +20,7 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.6.0
  * @since 1.5.7
  */
-public final class SpruceTexts
-{
+public final class SpruceTexts {
     /**
      * Represents the text usually present in tooltips to indicate that the link can be opened.
      *
@@ -123,8 +122,7 @@ public final class SpruceTexts
      * @see #CONTROLS_RESET
      * @since 1.6.0
      */
-    public static Text getNarratorControlsReset(@NotNull Text bindingName)
-    {
+    public static Text getNarratorControlsReset(@NotNull Text bindingName) {
         return new TranslatableText("narrator.controls.reset", bindingName);
     }
 }

@@ -32,8 +32,7 @@ import java.util.*;
  * @version 1.7.0
  * @since 1.7.0
  */
-public class SpruceTabbedScreen extends SpruceScreen
-{
+public class SpruceTabbedScreen extends SpruceScreen {
     private final List<SpruceScreen> screens;
     private final List<SpruceButtonWidget> tabButtons = new ArrayList<>();
     private boolean footer = false;
@@ -41,8 +40,7 @@ public class SpruceTabbedScreen extends SpruceScreen
     private int top = 45;
     private int bottom;
 
-    protected SpruceTabbedScreen(@NotNull Text title, @NotNull Collection<SpruceScreen> screens)
-    {
+    protected SpruceTabbedScreen(@NotNull Text title, @NotNull Collection<SpruceScreen> screens) {
         super(title);
         this.screens = new ArrayList<>(screens);
         if (this.screens.size() == 0) {
@@ -50,22 +48,19 @@ public class SpruceTabbedScreen extends SpruceScreen
         }
     }
 
-    public void setCurrentTab(int tab)
-    {
+    public void setCurrentTab(int tab) {
         if (tab >= this.screens.size())
             tab = this.screens.size() - 1;
         this.currentTab = tab;
         this.screens.get(this.currentTab).init(this.client, this.width, this.height);
     }
 
-    public @NotNull SpruceScreen getCurrentScreen()
-    {
+    public @NotNull SpruceScreen getCurrentScreen() {
         return this.screens.get(this.currentTab);
     }
 
     @Override
-    public void init(MinecraftClient client, int width, int height)
-    {
+    public void init(MinecraftClient client, int width, int height) {
         this.client = client;
         this.itemRenderer = client.getItemRenderer();
         this.textRenderer = client.textRenderer;
@@ -95,8 +90,7 @@ public class SpruceTabbedScreen extends SpruceScreen
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         Tooltip.setDelayedRender(true);
         SpruceScreen currentScreen = this.screens.get(this.currentTab);
         currentScreen.render(matrices, mouseX, mouseY, delta);
@@ -152,8 +146,7 @@ public class SpruceTabbedScreen extends SpruceScreen
     }
 
     @Override
-    public Optional<Element> hoveredElement(double mouseX, double mouseY)
-    {
+    public Optional<Element> hoveredElement(double mouseX, double mouseY) {
         Iterator<SpruceButtonWidget> iterator = this.tabButtons.iterator();
 
         SpruceButtonWidget element;
@@ -169,8 +162,7 @@ public class SpruceTabbedScreen extends SpruceScreen
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button)
-    {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
         boolean result = false;
         for (SpruceButtonWidget btn : this.tabButtons) {
             if (btn.isMouseOver(mouseX, mouseY)) {
@@ -184,36 +176,31 @@ public class SpruceTabbedScreen extends SpruceScreen
     }
 
     @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY)
-    {
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
                 || this.getCurrentScreen().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount)
-    {
+    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         return super.mouseScrolled(mouseX, mouseY, amount)
                 || this.getCurrentScreen().mouseScrolled(mouseX, mouseY, amount);
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
-    {
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         return super.keyPressed(keyCode, scanCode, modifiers)
                 || this.getCurrentScreen().keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
-    public boolean keyReleased(int keyCode, int scanCode, int modifiers)
-    {
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         return super.keyReleased(keyCode, scanCode, modifiers)
                 || this.getCurrentScreen().keyReleased(keyCode, scanCode, modifiers);
     }
 
     @Override
-    public boolean charTyped(char chr, int keyCode)
-    {
+    public boolean charTyped(char chr, int keyCode) {
         return super.charTyped(chr, keyCode)
                 || this.getCurrentScreen().charTyped(chr, keyCode);
     }

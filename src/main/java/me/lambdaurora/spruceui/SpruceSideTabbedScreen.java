@@ -25,38 +25,32 @@ import org.jetbrains.annotations.NotNull;
  * @see SpruceSideTabbedWidget
  * @since 1.7.0
  */
-public class SpruceSideTabbedScreen extends SpruceScreen
-{
+public class SpruceSideTabbedScreen extends SpruceScreen {
     private final SideTabbedWidgetFactory factory;
     private SpruceSideTabbedWidget widget;
 
-    protected SpruceSideTabbedScreen(@NotNull Text title, SideTabbedWidgetFactory factory)
-    {
+    protected SpruceSideTabbedScreen(@NotNull Text title, SideTabbedWidgetFactory factory) {
         super(title);
         this.factory = factory;
     }
 
     @Override
-    protected void init()
-    {
+    protected void init() {
         super.init();
         this.widget = this.factory.create(0, 0, this.width, this.height);
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.widget.render(matrices, mouseX, mouseY, delta);
     }
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
-    {
+    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
         return this.widget.onNavigation(direction, tab);
     }
 
-    public interface SideTabbedWidgetFactory
-    {
+    public interface SideTabbedWidgetFactory {
         SpruceSideTabbedWidget create(int x, int y, int width, int height);
     }
 }

@@ -19,8 +19,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author LambdAurora
  */
-public enum TestEnum implements Nameable
-{
+public enum TestEnum implements Nameable {
     FIRST,
     SECOND,
     THIRD,
@@ -28,8 +27,7 @@ public enum TestEnum implements Nameable
 
     private final Text text;
 
-    TestEnum()
-    {
+    TestEnum() {
         this.text = new LiteralText(this.getName());
     }
 
@@ -38,8 +36,7 @@ public enum TestEnum implements Nameable
      *
      * @return The next available enum value.
      */
-    public @NotNull TestEnum next()
-    {
+    public @NotNull TestEnum next() {
         TestEnum[] v = values();
         if (v.length == this.ordinal() + 1)
             return v[0];
@@ -51,14 +48,12 @@ public enum TestEnum implements Nameable
      *
      * @return The text of this enum value.
      */
-    public @NotNull Text getText()
-    {
+    public @NotNull Text getText() {
         return this.text;
     }
 
     @Override
-    public @NotNull String getName()
-    {
+    public @NotNull String getName() {
         return this.name().toLowerCase();
     }
 

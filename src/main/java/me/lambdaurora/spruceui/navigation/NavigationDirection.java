@@ -20,8 +20,7 @@ import java.util.Optional;
  * @version 1.7.0
  * @since 1.7.0
  */
-public enum NavigationDirection
-{
+public enum NavigationDirection {
     LEFT,
     RIGHT,
     UP,
@@ -32,8 +31,7 @@ public enum NavigationDirection
      *
      * @return true if this direction is horizontal, else false
      */
-    public boolean isHorizontal()
-    {
+    public boolean isHorizontal() {
         return this == LEFT || this == RIGHT;
     }
 
@@ -42,13 +40,11 @@ public enum NavigationDirection
      *
      * @return true if this direction is vertical, else false
      */
-    public boolean isVertical()
-    {
+    public boolean isVertical() {
         return this == UP || this == DOWN;
     }
 
-    public boolean isLookingForward()
-    {
+    public boolean isLookingForward() {
         return this == DOWN || this == RIGHT;
     }
 
@@ -59,8 +55,7 @@ public enum NavigationDirection
      * @param shift true if the shift key is pressed, else false
      * @return the direction if associated to the specified key, else empty
      */
-    public static Optional<NavigationDirection> fromKey(int keyCode, boolean shift)
-    {
+    public static Optional<NavigationDirection> fromKey(int keyCode, boolean shift) {
         if (shift && keyCode != GLFW.GLFW_KEY_TAB)
             return Optional.empty();
         switch (keyCode) {

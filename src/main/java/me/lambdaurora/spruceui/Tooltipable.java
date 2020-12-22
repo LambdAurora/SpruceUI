@@ -22,8 +22,7 @@ import java.util.Optional;
  * @version 1.7.0
  * @since 1.0.0
  */
-public interface Tooltipable
-{
+public interface Tooltipable {
     /**
      * Gets the tooltip.
      *

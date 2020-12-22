@@ -33,19 +33,16 @@ import java.util.function.Supplier;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceBooleanOption extends SpruceOption
-{
+public class SpruceBooleanOption extends SpruceOption {
     private final Supplier<Boolean> getter;
     private final Consumer<Boolean> setter;
     private final boolean colored;
 
-    public SpruceBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip)
-    {
+    public SpruceBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip) {
         this(key, getter, setter, tooltip, false);
     }
 
-    public SpruceBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored)
-    {
+    public SpruceBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored) {
         super(key);
         this.getter = getter;
         this.setter = setter;
@@ -53,18 +50,15 @@ public class SpruceBooleanOption extends SpruceOption
         this.setTooltip(tooltip);
     }
 
-    public void set(@NotNull String value)
-    {
+    public void set(@NotNull String value) {
         this.set("true".equals(value));
     }
 
-    public void set()
-    {
+    public void set() {
         this.set(!this.get());
     }
 
-    private void set(boolean value)
-    {
+    private void set(boolean value) {
         this.setter.accept(value);
     }
 
@@ -73,8 +67,7 @@ public class SpruceBooleanOption extends SpruceOption
      *
      * @return the current value
      */
-    public boolean get()
-    {
+    public boolean get() {
         return this.getter.get();
     }
 
@@ -83,14 +76,12 @@ public class SpruceBooleanOption extends SpruceOption
      *
      * @return {@code true} if the option value is colored, else {@code false}
      */
-    public boolean isColored()
-    {
+    public boolean isColored() {
         return this.colored;
     }
 
     @Override
-    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width)
-    {
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width) {
         SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getDisplayText(), btn -> {
             this.set();
             btn.setMessage(this.getDisplayText());
@@ -104,8 +95,7 @@ public class SpruceBooleanOption extends SpruceOption
      *
      * @return the display string
      */
-    public @NotNull Text getDisplayText()
-    {
+    public @NotNull Text getDisplayText() {
         boolean value = this.get();
         Text toggleText = ScreenTexts.getToggleText(value);
         if (this.colored)
@@ -121,8 +111,7 @@ public class SpruceBooleanOption extends SpruceOption
      * @param tooltip the tooltip
      * @return the SpruceUI option
      */
-    public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip)
-    {
+    public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip) {
         return fromVanilla(key, vanilla, tooltip, false);
     }
 
@@ -135,8 +124,7 @@ public class SpruceBooleanOption extends SpruceOption
      * @param colored {@code true} if the option value is colored, else {@code false}
      * @return the SpruceUI option
      */
-    public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip, boolean colored)
-    {
+    public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip, boolean colored) {
         GameOptions options = MinecraftClient.getInstance().options;
         return new SpruceBooleanOption(key, () -> vanilla.get(options), newValue -> vanilla.set(options, String.valueOf(newValue)), tooltip, colored);
     }

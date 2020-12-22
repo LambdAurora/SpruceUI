@@ -26,37 +26,31 @@ import java.util.function.Function;
  * @version 1.6.3
  * @since 1.6.3
  */
-public final class MultilineText
-{
+public final class MultilineText {
     private final int width;
     private final List<String> rows = new ArrayList<>();
 
-    public MultilineText(int width)
-    {
+    public MultilineText(int width) {
         this.width = width;
     }
 
-    public MultilineText(int width, @Nullable String text)
-    {
+    public MultilineText(int width, @Nullable String text) {
         this(width);
         if (text == null)
             return;
         this.rows.addAll(wrap(text, width));
     }
 
-    public MultilineText(int width, @NotNull Collection<? extends String> lines)
-    {
+    public MultilineText(int width, @NotNull Collection<? extends String> lines) {
         this(width);
         this.rows.addAll(wrap(lines, width));
     }
 
-    public @NotNull List<String> getRows()
-    {
+    public @NotNull List<String> getRows() {
         return this.rows;
     }
 
-    public @NotNull List<String> getLines()
-    {
+    public @NotNull List<String> getLines() {
         List<String> lines = new ArrayList<>();
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -71,8 +65,7 @@ public final class MultilineText
         return lines;
     }
 
-    public void setLines(Collection<? extends String> lines)
-    {
+    public void setLines(Collection<? extends String> lines) {
         this.clear();
         this.addAll(wrap(lines, this.width));
     }
@@ -82,8 +75,7 @@ public final class MultilineText
      *
      * @return The text.
      */
-    public @NotNull String getText()
-    {
+    public @NotNull String getText() {
         StringBuilder builder = new StringBuilder();
         for (String row : this.rows)
             builder.append(row);
@@ -95,8 +87,7 @@ public final class MultilineText
      *
      * @param text The text.
      */
-    public void setText(@NotNull String text)
-    {
+    public void setText(@NotNull String text) {
         this.clear();
         this.add(text);
     }
@@ -104,30 +95,25 @@ public final class MultilineText
     /**
      * Recomputes the lines wrapping.
      */
-    public void recompute()
-    {
+    public void recompute() {
         String text = this.getText();
         this.clear();
         this.add(text);
     }
 
-    public boolean isEmpty()
-    {
+    public boolean isEmpty() {
         return this.rows.isEmpty();
     }
 
-    public int size()
-    {
+    public int size() {
         return this.rows.size();
     }
 
-    public @Nullable String get(int row)
-    {
+    public @Nullable String get(int row) {
         return this.rows.get(row);
     }
 
-    public void addAll(Collection<? extends String> lines)
-    {
+    public void addAll(Collection<? extends String> lines) {
         this.rows.addAll(lines);
     }
 
@@ -136,8 +122,7 @@ public final class MultilineText
      *
      * @param line The line to add.
      */
-    public void add(String line)
-    {
+    public void add(String line) {
         if (line.length() > 1)
             this.rows.addAll(wrap(line, this.width));
         else
@@ -150,8 +135,7 @@ public final class MultilineText
      * @param row The row.
      * @param line The line to add.
      */
-    public void add(int row, String line)
-    {
+    public void add(int row, String line) {
         this.rows.add(row, line);
     }
 
@@ -161,8 +145,7 @@ public final class MultilineText
      * @param row The row to remove.
      * @return The removed line content.
      */
-    public @Nullable String remove(int row)
-    {
+    public @Nullable String remove(int row) {
         if (row < 0 || row >= this.rows.size())
             return null;
         return this.rows.remove(row);
@@ -174,16 +157,14 @@ public final class MultilineText
      * @param row The row of the line.
      * @param line The new text.
      */
-    public void replaceRow(int row, @NotNull String line)
-    {
+    public void replaceRow(int row, @NotNull String line) {
         if (row < 0 || row >= this.rows.size())
             return;
         this.remove(row);
         this.rows.add(row, line);
     }
 
-    public void replaceRow(int row, @NotNull Function<String, String> replacer)
-    {
+    public void replaceRow(int row, @NotNull Function<String, String> replacer) {
         if (row < 0 || row >= this.rows.size())
             return;
         String line = this.get(row);
@@ -193,18 +174,15 @@ public final class MultilineText
     /**
      * Clears the text.
      */
-    public void clear()
-    {
+    public void clear() {
         this.rows.clear();
     }
 
-    public static @NotNull Collection<? extends String> wrap(@NotNull String text, int width)
-    {
+    public static @NotNull Collection<? extends String> wrap(@NotNull String text, int width) {
         return wrap(Arrays.asList(text.split("\n")), width);
     }
 
-    public static @NotNull Collection<? extends String> wrap(@NotNull Collection<? extends String> text, int width)
-    {
+    public static @NotNull Collection<? extends String> wrap(@NotNull Collection<? extends String> text, int width) {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client == null)
             return text;

@@ -24,15 +24,12 @@ import java.util.function.Supplier;
  * @version 1.7.0
  * @since 1.7.0
  */
-public final class NavigationUtils
-{
-    private NavigationUtils()
-    {
+public final class NavigationUtils {
+    private NavigationUtils() {
         throw new UnsupportedOperationException("NavigationUtils only contains static definitions.");
     }
 
-    public static <E extends SpruceWidget> boolean tryNavigate(NavigationDirection direction, boolean tab, List<E> children, E focused, Consumer<E> setFocused, boolean alwaysFocus)
-    {
+    public static <E extends SpruceWidget> boolean tryNavigate(NavigationDirection direction, boolean tab, List<E> children, E focused, Consumer<E> setFocused, boolean alwaysFocus) {
         if (children.isEmpty())
             return false;
         if (!tab && alwaysFocus && focused != null) {

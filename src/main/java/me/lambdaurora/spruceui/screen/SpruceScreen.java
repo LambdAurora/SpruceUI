@@ -32,16 +32,13 @@ import java.util.function.Supplier;
  * @version 1.7.0
  * @since 1.7.0
  */
-public abstract class SpruceScreen extends Screen implements SprucePositioned, SpruceElement
-{
-    protected SpruceScreen(@NotNull Text title)
-    {
+public abstract class SpruceScreen extends Screen implements SprucePositioned, SpruceElement {
+    protected SpruceScreen(@NotNull Text title) {
         super(title);
     }
 
     @Override
-    public void setFocused(Element focused)
-    {
+    public void setFocused(Element focused) {
         Element old = this.getFocused();
         if (old == focused) return;
         if (old instanceof SpruceWidget)
@@ -52,16 +49,14 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers)
-    {
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         Optional<NavigationDirection> direction = NavigationDirection.fromKey(keyCode, Screen.hasShiftDown());
         return direction.map(dir -> this.onNavigation(dir, keyCode == GLFW.GLFW_KEY_TAB))
                 .orElseGet(() -> super.keyPressed(keyCode, scanCode, modifiers));
     }
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
-    {
+    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         Element focused = this.getFocused();
         boolean isNonNull = focused != null;
@@ -92,8 +87,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
         return true;
     }
 
-    private boolean tryNavigating(@NotNull Element element, @NotNull NavigationDirection direction, boolean tab)
-    {
+    private boolean tryNavigating(@NotNull Element element, @NotNull NavigationDirection direction, boolean tab) {
         if (element instanceof SpruceElement) {
             return ((SpruceElement) element).onNavigation(direction, tab);
         }

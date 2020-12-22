@@ -19,18 +19,15 @@ import net.minecraft.client.util.math.MatrixStack;
  * @version 1.7.0
  * @since 1.7.0
  */
-public class SpruceSideTabbedWidget extends SpruceContainerWidget
-{
+public class SpruceSideTabbedWidget extends SpruceContainerWidget {
     private boolean collapsible;
 
-    public SpruceSideTabbedWidget(Position position)
-    {
+    public SpruceSideTabbedWidget(Position position) {
         super(position);
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 
     }
 }

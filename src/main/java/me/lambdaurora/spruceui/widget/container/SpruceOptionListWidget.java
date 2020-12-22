@@ -33,12 +33,10 @@ import java.util.Optional;
  * @version 1.7.0
  * @since 1.7.0
  */
-public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionListWidget.OptionEntry>
-{
+public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionListWidget.OptionEntry> {
     private int lastIndex = 0;
 
-    public SpruceOptionListWidget(@NotNull Position position, int width, int height)
-    {
+    public SpruceOptionListWidget(@NotNull Position position, int width, int height) {
         super(position, width, height, OptionEntry.class);
     }
 
@@ -48,8 +46,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
      * @param option the option
      * @return the index of the added entry
      */
-    public int addSingleOptionEntry(SpruceOption option)
-    {
+    public int addSingleOptionEntry(SpruceOption option) {
         return this.addEntry(OptionEntry.create(this, option));
     }
 
@@ -61,40 +58,34 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
      * @param firstOption the first option
      * @param secondOption the second option
      */
-    public void addOptionEntry(SpruceOption firstOption, @Nullable SpruceOption secondOption)
-    {
+    public void addOptionEntry(SpruceOption firstOption, @Nullable SpruceOption secondOption) {
         this.addEntry(OptionEntry.create(this, firstOption, secondOption));
     }
 
-    public void addAll(SpruceOption[] options)
-    {
+    public void addAll(SpruceOption[] options) {
         for (int i = 0; i < options.length; i += 2) {
             this.addOptionEntry(options[i], i < options.length - 1 ? options[i + 1] : null);
         }
     }
 
-    public static class OptionEntry extends SpruceEntryListWidget.Entry
-    {
+    public static class OptionEntry extends SpruceEntryListWidget.Entry {
         private final List<SpruceWidget> children = new ArrayList<>();
         private final SpruceOptionListWidget parent;
         private @Nullable SpruceWidget focused;
         private boolean dragging;
 
-        private OptionEntry(SpruceOptionListWidget parent)
-        {
+        private OptionEntry(SpruceOptionListWidget parent) {
             this.parent = parent;
             this.width = parent.getWidth();
         }
 
-        public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption option)
-        {
+        public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption option) {
             OptionEntry entry = new OptionEntry(parent);
             entry.children.add(option.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 0), 310));
             return entry;
         }
 
-        public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption firstOption, @Nullable SpruceOption secondOption)
-        {
+        public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption firstOption, @Nullable SpruceOption secondOption) {
             OptionEntry entry = new OptionEntry(parent);
             entry.children.add(firstOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 0), 150));
             if (secondOption != null) {
@@ -104,24 +95,20 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
 
         @Override
-        public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
-        {
+        public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             this.children.forEach(widget -> widget.render(matrices, mouseX, mouseY, delta));
         }
 
-        public List<SpruceWidget> children()
-        {
+        public List<SpruceWidget> children() {
             return this.children;
         }
 
-        public @Nullable SpruceWidget getFocused()
-        {
+        public @Nullable SpruceWidget getFocused() {
             return this.focused;
         }
 
         @SuppressWarnings("unchecked")
-        public void setFocused(@Nullable SpruceWidget focused)
-        {
+        public void setFocused(@Nullable SpruceWidget focused) {
             if (this.focused == focused)
                 return;
             if (this.focused != null)
@@ -130,13 +117,11 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
 
         @Override
-        public int getHeight()
-        {
+        public int getHeight() {
             return this.children.stream().mapToInt(SpruceWidget::getHeight).reduce(Integer::max).orElse(0);
         }
 
-        public Optional<SpruceWidget> hoveredElement(double mouseX, double mouseY)
-        {
+        public Optional<SpruceWidget> hoveredElement(double mouseX, double mouseY) {
             Iterator<SpruceWidget> it = this.children().iterator();
 
             SpruceWidget element;
@@ -152,8 +137,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
 
         @Override
-        protected boolean onMouseClick(double mouseX, double mouseY, int button)
-        {
+        protected boolean onMouseClick(double mouseX, double mouseY, int button) {
             Iterator<SpruceWidget> it = this.children().iterator();
 
             SpruceWidget element;
@@ -173,28 +157,24 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
 
         @Override
-        protected boolean onMouseRelease(double mouseX, double mouseY, int button)
-        {
+        protected boolean onMouseRelease(double mouseX, double mouseY, int button) {
             this.dragging = false;
             return this.hoveredElement(mouseX, mouseY).filter(element -> element.mouseReleased(mouseX, mouseY, button)).isPresent();
         }
 
         @Override
-        protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY)
-        {
+        protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
             return this.getFocused() != null && this.dragging && button == GLFW.GLFW_MOUSE_BUTTON_1
                     && this.getFocused().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
         }
 
         @Override
-        protected boolean onKeyPress(int keyCode, int scanCode, int modifiers)
-        {
+        protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
             return this.focused != null && this.focused.keyPressed(keyCode, scanCode, modifiers);
         }
 
         @Override
-        public void setFocused(boolean focused)
-        {
+        public void setFocused(boolean focused) {
             super.setFocused(focused);
             if (!focused) {
                 this.setFocused(null);
@@ -202,8 +182,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
 
         @Override
-        public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
-        {
+        public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
             if (this.requiresCursor()) return false;
             if (!tab && direction.isVertical()) {
                 if (this.isFocused()) {

@@ -9,7 +9,9 @@
 
 package me.lambdaurora.spruceui.test.gui;
 
-import me.lambdaurora.spruceui.*;
+import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.SpruceTexts;
+import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.screen.SpruceScreen;
 import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
@@ -26,20 +28,17 @@ import java.util.Arrays;
  *
  * @author LambdAurora
  */
-public class SpruceTextAreaScreen extends SpruceScreen
-{
+public class SpruceTextAreaScreen extends SpruceScreen {
     private final Screen parent;
     private SpruceTextAreaWidget textArea;
 
-    public SpruceTextAreaScreen(@Nullable Screen parent)
-    {
+    public SpruceTextAreaScreen(@Nullable Screen parent) {
         super(new LiteralText("SpruceUI Test TextArea Menu"));
         this.parent = parent;
     }
 
     @Override
-    protected void init()
-    {
+    protected void init() {
         super.init();
 
         int textFieldWidth = (int) (this.width * (3.0 / 4.0));
@@ -93,8 +92,7 @@ public class SpruceTextAreaScreen extends SpruceScreen
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         this.children().stream().filter(child -> child instanceof Drawable).forEach(child -> ((Drawable) child).render(matrices, mouseX, mouseY, delta));
         // Draw the title text.

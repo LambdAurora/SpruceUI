@@ -23,8 +23,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 1.2.0
  */
 @FunctionalInterface
-public interface OpenScreenCallback
-{
+public interface OpenScreenCallback {
     Event<OpenScreenCallback> PRE = EventUtil.makeOpenScreenEvent();
     Event<OpenScreenCallback> EVENT = EventUtil.makeOpenScreenEvent();
 

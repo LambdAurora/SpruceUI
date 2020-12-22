@@ -19,24 +19,20 @@ import net.minecraft.text.Text;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceButtonWidget extends AbstractSprucePressableButtonWidget
-{
+public class SpruceButtonWidget extends AbstractSprucePressableButtonWidget {
     private PressAction action;
 
-    public SpruceButtonWidget(Position position, int width, int height, Text message, PressAction action)
-    {
+    public SpruceButtonWidget(Position position, int width, int height, Text message, PressAction action) {
         super(position, width, height, message);
         this.action = action;
     }
 
     @Override
-    public void onPress()
-    {
+    public void onPress() {
         this.action.onPress(this);
     }
 
-    public interface PressAction
-    {
+    public interface PressAction {
         void onPress(SpruceButtonWidget button);
     }
 }

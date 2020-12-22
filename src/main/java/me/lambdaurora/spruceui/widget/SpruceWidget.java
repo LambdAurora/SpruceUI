@@ -21,8 +21,7 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.7.0
  * @since 1.6.0
  */
-public interface SpruceWidget extends SprucePositioned, SpruceElement, Drawable
-{
+public interface SpruceWidget extends SprucePositioned, SpruceElement, Drawable {
     /**
      * Returns the position of the widget.
      *
@@ -31,14 +30,12 @@ public interface SpruceWidget extends SprucePositioned, SpruceElement, Drawable
     @NotNull Position getPosition();
 
     @Override
-    default int getX()
-    {
+    default int getX() {
         return this.getPosition().getX();
     }
 
     @Override
-    default int getY()
-    {
+    default int getY() {
         return this.getPosition().getY();
     }
 
@@ -75,8 +72,7 @@ public interface SpruceWidget extends SprucePositioned, SpruceElement, Drawable
      *
      * @return {@code true} if the widget is active, else {@code false}
      */
-    default boolean isActive()
-    {
+    default boolean isActive() {
         return true;
     }
 
@@ -106,14 +102,12 @@ public interface SpruceWidget extends SprucePositioned, SpruceElement, Drawable
      *
      * @return {@code true} if the widget is focused or hovered, else {@code false}
      */
-    default boolean isFocusedOrHovered()
-    {
+    default boolean isFocusedOrHovered() {
         return this.isMouseHovered() || this.isFocused();
     }
 
     @Override
-    default boolean isMouseOver(double mouseX, double mouseY)
-    {
+    default boolean isMouseOver(double mouseX, double mouseY) {
         return this.isVisible() && mouseX >= (double) this.getX() && mouseX < (double) (this.getX() + this.getWidth()) && mouseY >= (double) this.getY() && mouseY < (double) (this.getY() + this.getHeight());
     }
 }

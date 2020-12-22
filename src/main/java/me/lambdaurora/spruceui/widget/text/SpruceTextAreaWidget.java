@@ -11,9 +11,9 @@ package me.lambdaurora.spruceui.widget.text;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.lambdaurora.spruceui.util.MultilineText;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
+import me.lambdaurora.spruceui.util.MultilineText;
 import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
@@ -40,8 +40,7 @@ import java.util.List;
  * @version 1.7.0
  * @since 1.6.3
  */
-public class SpruceTextAreaWidget extends AbstractSpruceWidget
-{
+public class SpruceTextAreaWidget extends AbstractSpruceWidget {
     private final TextRenderer textRenderer;
     private final MultilineText lines;
     private final Cursor cursor = new Cursor(true);
@@ -51,8 +50,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     private int uneditableColor = 7368816;
     private int displayedLines = 1;
 
-    public SpruceTextAreaWidget(@NotNull Position position, @NotNull TextRenderer textRenderer, int width, int height, Text message)
-    {
+    public SpruceTextAreaWidget(@NotNull Position position, @NotNull TextRenderer textRenderer, int width, int height, Text message) {
         super(position);
         this.width = width;
         this.height = height;
@@ -61,8 +59,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         this.cursor.toStart();
     }
 
-    public SpruceTextAreaWidget(@NotNull TextRenderer textRenderer, int x, int y, int width, int height, Text message)
-    {
+    public SpruceTextAreaWidget(@NotNull TextRenderer textRenderer, int x, int y, int width, int height, Text message) {
         this(Position.of(x, y), textRenderer, width, height, message);
     }
 
@@ -71,8 +68,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @return the lines
      */
-    public @NotNull List<String> getLines()
-    {
+    public @NotNull List<String> getLines() {
         return this.lines.getLines();
     }
 
@@ -81,8 +77,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @param lines the lines
      */
-    public void setLines(@NotNull List<String> lines)
-    {
+    public void setLines(@NotNull List<String> lines) {
         this.lines.setLines(lines);
         this.selection.active = false;
         this.setCursorToEnd();
@@ -93,8 +88,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @return the text
      */
-    public @NotNull String getText()
-    {
+    public @NotNull String getText() {
         return this.lines.getText();
     }
 
@@ -103,8 +97,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @param text the text
      */
-    public void setText(@Nullable String text)
-    {
+    public void setText(@Nullable String text) {
         this.lines.clear();
         if (text != null)
             this.lines.setText(text);
@@ -113,8 +106,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     /**
      * Clears the text area.
      */
-    public void clear()
-    {
+    public void clear() {
         this.lines.clear();
         this.sanitize();
     }
@@ -124,8 +116,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @return {@code true} if editable, else {@code false}
      */
-    public boolean isEditable()
-    {
+    public boolean isEditable() {
         return this.isActive();
     }
 
@@ -135,8 +126,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      * @param editable state of editable
      * @since 1.6.4
      */
-    public void setEditable(boolean editable)
-    {
+    public void setEditable(boolean editable) {
         this.active = editable;
     }
 
@@ -145,8 +135,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @param lines number of displayed lines
      */
-    public void setDisplayedLines(int lines)
-    {
+    public void setDisplayedLines(int lines) {
         if (lines <= 0)
             lines = 1;
         this.displayedLines = lines;
@@ -159,13 +148,11 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @return the inner width
      */
-    public int getInnerWidth()
-    {
+    public int getInnerWidth() {
         return this.width - 8;
     }
 
-    public int getInnerHeight()
-    {
+    public int getInnerHeight() {
         return this.height - 8;
     }
 
@@ -174,21 +161,18 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @since 1.7.0
      */
-    public void setCursorToStart()
-    {
+    public void setCursorToStart() {
         this.cursor.toStart();
     }
 
     /**
      * Sets the cursor to the end of the text.
      */
-    public void setCursorToEnd()
-    {
+    public void setCursorToEnd() {
         this.cursor.toEnd();
     }
 
-    private void insertCharacter(char character)
-    {
+    private void insertCharacter(char character) {
         if (this.lines.isEmpty()) {
             this.lines.add(String.valueOf(character));
             this.cursor.toStart();
@@ -233,8 +217,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         }
     }
 
-    private void eraseCharacter()
-    {
+    private void eraseCharacter() {
         if (this.selection.erase()) {
             this.sanitize();
             return;
@@ -260,8 +243,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         this.sanitize();
     }
 
-    private void removeCharacterForward()
-    {
+    private void removeCharacterForward() {
         if (this.selection.erase()) {
             this.sanitize();
             return;
@@ -295,8 +277,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @param text the text to write
      */
-    public void write(@NotNull String text)
-    {
+    public void write(@NotNull String text) {
         if (text.isEmpty())
             return;
 
@@ -330,14 +311,12 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         if (oldSize < this.lines.size()) this.cursor.moveRight();
     }
 
-    public boolean isEditorActive()
-    {
+    public boolean isEditorActive() {
         return this.isActive() && this.isFocused();
     }
 
     @Override
-    protected boolean onCharTyped(char chr, int keyCode)
-    {
+    protected boolean onCharTyped(char chr, int keyCode) {
         if (!this.isEditorActive() || !SharedConstants.isValidChar(chr))
             return false;
 
@@ -349,8 +328,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     }
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab)
-    {
+    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         if (!tab) {
             boolean result = false;
@@ -375,8 +353,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     }
 
     @Override
-    protected boolean onKeyPress(int keyCode, int scanCode, int modifiers)
-    {
+    protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
         if (!this.isEditorActive())
             return false;
 
@@ -438,8 +415,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         }
     }
 
-    private boolean onSelectionUpdate(@NotNull Runnable action)
-    {
+    private boolean onSelectionUpdate(@NotNull Runnable action) {
         this.selection.tryStartSelection();
         action.run();
         this.selection.moveToCursor();
@@ -447,8 +423,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     }
 
     @Override
-    protected boolean onMouseClick(double mouseX, double mouseY, int button)
-    {
+    protected boolean onMouseClick(double mouseX, double mouseY, int button) {
         if (button == 0) {
             int x = MathHelper.floor(mouseX) - this.getX() - 4;
             int y = MathHelper.floor(mouseY) - this.getY() - 4;
@@ -472,8 +447,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     }
 
     @Override
-    protected boolean onMouseScroll(double mouseX, double mouseY, double amount)
-    {
+    protected boolean onMouseScroll(double mouseX, double mouseY, double amount) {
         if (!this.isEditorActive()) {
             return false;
         }
@@ -487,8 +461,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
     }
 
     @Override
-    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         int borderColor = this.isFocused() ? -1 : -6250336;
         fill(matrices, this.getX() - 1, this.getY() - 1, this.getX() + this.width + 1, this.getY() + this.height + 1, borderColor);
         fill(matrices, this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, -16777216);
@@ -502,8 +475,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @param matrices the matrices
      */
-    protected void drawText(@NotNull MatrixStack matrices)
-    {
+    protected void drawText(@NotNull MatrixStack matrices) {
         int length = Math.min(this.lines.size(), this.displayedLines);
 
         int textColor = this.isEditable() ? this.editableColor : this.uneditableColor;
@@ -531,8 +503,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      * @param lineY The line Y-coordinates.
      * @param row the row number
      */
-    protected void drawSelection(@NotNull MatrixStack matrices, @NotNull String line, int lineY, int row)
-    {
+    protected void drawSelection(@NotNull MatrixStack matrices, @NotNull String line, int lineY, int row) {
         if (!this.isFocused())
             return;
         if (!this.selection.isRowSelected(row))
@@ -579,8 +550,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      *
      * @param matrices the matrices
      */
-    protected void drawCursor(@NotNull MatrixStack matrices)
-    {
+    protected void drawCursor(@NotNull MatrixStack matrices) {
         if (!this.isFocused())
             return;
         if (this.lines.isEmpty()) {
@@ -601,16 +571,14 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
             this.textRenderer.drawWithShadow(matrices, "_", cursorX, cursorY, 0xe0e0e0);
     }
 
-    protected boolean doesLineOccupyFullSpace(@NotNull String cursorLine)
-    {
+    protected boolean doesLineOccupyFullSpace(@NotNull String cursorLine) {
         return this.textRenderer.getWidth(cursorLine) >= this.getInnerWidth();
     }
 
     /**
      * Sanitizes the text area.
      */
-    protected void sanitize()
-    {
+    protected void sanitize() {
         if (this.lines.isEmpty())
             this.lines.add("");
         this.cursor.sanitize();
@@ -622,50 +590,41 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      * @version 1.6.4
      * @since 1.6.3
      */
-    public class Cursor
-    {
+    public class Cursor {
         boolean main;
         int row = 0;
         int column = 0;
         private int lastColumn = 0;
 
-        public Cursor(boolean main)
-        {
+        public Cursor(boolean main) {
             this.main = main;
         }
 
-        public void toLineStart()
-        {
+        public void toLineStart() {
             this.lastColumn = this.column = 0;
         }
 
-        public void resetRow()
-        {
+        public void resetRow() {
             this.row = 0;
         }
 
-        public void moveRight()
-        {
+        public void moveRight() {
             this.moveHorizontal(1);
         }
 
-        public void moveLeft()
-        {
+        public void moveLeft() {
             this.moveHorizontal(-1);
         }
 
-        public void moveUp()
-        {
+        public void moveUp() {
             this.moveVertical(-1);
         }
 
-        public void moveDown()
-        {
+        public void moveDown() {
             this.moveVertical(1);
         }
 
-        public void moveHorizontal(int amount)
-        {
+        public void moveHorizontal(int amount) {
             this.column += amount;
 
             if (this.row >= lines.size()) {
@@ -696,8 +655,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
             this.adjustFirstLine();
         }
 
-        public void moveVertical(int amount)
-        {
+        public void moveVertical(int amount) {
             this.row += amount;
             this.column = this.lastColumn;
             this.sanitize();
@@ -705,15 +663,13 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
             this.adjustFirstLine();
         }
 
-        public void toStart()
-        {
+        public void toStart() {
             this.resetRow();
             this.toLineStart();
             this.adjustFirstLine();
         }
 
-        public void toEnd()
-        {
+        public void toEnd() {
             this.row = lines.size() - 1;
             String line = lines.get(this.row);
             if (line.endsWith("\n"))
@@ -723,8 +679,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
             this.adjustFirstLine();
         }
 
-        public void toRowEnd()
-        {
+        public void toRowEnd() {
             String line = lines.get(this.row);
             if (line.endsWith("\n"))
                 this.lastColumn = this.column = line.length() - 1;
@@ -737,8 +692,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
          *
          * @param cursor the other cursor
          */
-        public void copy(@NotNull Cursor cursor)
-        {
+        public void copy(@NotNull Cursor cursor) {
             this.row = cursor.row;
             this.lastColumn = this.column = cursor.column;
         }
@@ -746,8 +700,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         /**
          * Sanitizes the cursor.
          */
-        public void sanitize()
-        {
+        public void sanitize() {
             if (lines.size() <= this.row)
                 this.row = lines.size() - 1;
             if (this.row < 0)
@@ -767,8 +720,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
          * @param other the other cursor
          * @return {@code true} if this cursor is at the same place as the other cursor, else {@code false}
          */
-        public boolean isSame(@NotNull Cursor other)
-        {
+        public boolean isSame(@NotNull Cursor other) {
             return this.row == other.row && this.column == other.column;
         }
 
@@ -777,16 +729,14 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
          *
          * @return the position
          */
-        public int getPosition()
-        {
+        public int getPosition() {
             int position = 0;
             for (int i = 0; i < this.row; i++) position += lines.get(i).length();
             for (int i = 0; i < this.column; i++) position += 1;
             return position;
         }
 
-        private void adjustFirstLine()
-        {
+        private void adjustFirstLine() {
             if (!this.main)
                 return;
 
@@ -808,8 +758,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         }
 
         @Override
-        public String toString()
-        {
+        public String toString() {
             return "SpruceTextAreaWidget$Cursor{main=" + this.main
                     + ", row=" + this.row
                     + ", column=" + this.column
@@ -824,8 +773,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
      * @version 1.6.3
      * @since 1.6.3
      */
-    public class Selection
-    {
+    public class Selection {
         private Cursor anchor = new Cursor(false);
         private Cursor follower = new Cursor(false);
         private boolean active = false;
@@ -833,8 +781,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         /**
          * Selects all.
          */
-        public void selectAll()
-        {
+        public void selectAll() {
             this.anchor.toStart();
             cursor.toEnd();
             this.follower.copy(cursor);
@@ -844,34 +791,29 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
         /**
          * Cancels the selection.
          */
-        public void cancel()
-        {
+        public void cancel() {
             this.anchor.toStart();
             this.follower.toStart();
             this.active = false;
         }
 
-        public void tryStartSelection()
-        {
+        public void tryStartSelection() {
             if (!this.active && Screen.hasShiftDown()) {
                 this.startSelection();
             }
         }
 
-        public void startSelection()
-        {
+        public void startSelection() {
             this.anchor.copy(cursor);
             this.follower.copy(cursor);
             this.active = true;
         }
 
-        public boolean isRowSelected(int row)
-        {
+        public boolean isRowSelected(int row) {
             return this.active && (this.getStart().row <= row && row <= this.getEnd().row);
         }
 
-        public void moveToCursor()
-        {
+        public void moveToCursor() {
             if (!this.active)
                 return;
 
@@ -887,8 +829,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
          *
          * @return {@code true} if the text has been erased, else {@code false}
          */
-        public boolean erase()
-        {
+        public boolean erase() {
             if (!this.active)
                 return false;
 
@@ -937,8 +878,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
          *
          * @return the selected text, if no text is selected the return value is an empty string
          */
-        public @NotNull String getSelectedText()
-        {
+        public @NotNull String getSelectedText() {
             if (!this.active)
                 return "";
 
@@ -954,18 +894,15 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget
             return getText().substring(start.getPosition(), end.getPosition());
         }
 
-        public @NotNull Cursor getStart()
-        {
+        public @NotNull Cursor getStart() {
             return this.isInverted() ? this.follower : this.anchor;
         }
 
-        public @NotNull Cursor getEnd()
-        {
+        public @NotNull Cursor getEnd() {
             return this.isInverted() ? this.anchor : this.follower;
         }
 
-        private boolean isInverted()
-        {
+        private boolean isInverted() {
             return this.anchor.row > this.follower.row || (this.anchor.row == this.follower.row && this.anchor.column > this.follower.column);
         }
     }

@@ -30,16 +30,14 @@ import java.util.function.Consumer;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements Tooltipable
-{
+public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements Tooltipable {
     private Text baseMessage;
     protected double value;
     private final Consumer<SpruceSliderWidget> applyConsumer;
     private double multiplier;
     private String sign;
 
-    public SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double value, @NotNull Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign)
-    {
+    public SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double value, @NotNull Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
         super(position, width, height, message);
         this.value = value;
         this.baseMessage = message;
@@ -49,8 +47,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
         this.updateMessage();
     }
 
-    public SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer)
-    {
+    public SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer) {
         this(position, width, height, message, progress, applyConsumer, 100.0, "%");
     }
 
@@ -59,8 +56,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
      *
      * @return the value of the slider
      */
-    public double getValue()
-    {
+    public double getValue() {
         return this.value;
     }
 
@@ -69,8 +65,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
      *
      * @param value the value of the slider
      */
-    private void setValue(double value)
-    {
+    private void setValue(double value) {
         double oldValue = this.value;
         this.value = MathHelper.clamp(value, 0.0D, 1.0D);
         if (oldValue != this.value) {
@@ -86,8 +81,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
      *
      * @return the value as an integer
      */
-    public int getIntValue()
-    {
+    public int getIntValue() {
         return (int) (this.value * this.multiplier);
     }
 
@@ -96,8 +90,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
      *
      * @param value the new value as an integer
      */
-    public void setIntValue(int value)
-    {
+    public void setIntValue(int value) {
         this.setValue(value / this.multiplier);
     }
 
@@ -106,8 +99,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
      *
      * @return the base message of the slider
      */
-    public @NotNull Text getBaseMessage()
-    {
+    public @NotNull Text getBaseMessage() {
         return this.baseMessage;
     }
 
@@ -116,18 +108,15 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
      *
      * @param baseMessage the base message of the slider
      */
-    public void setBaseMessage(@NotNull Text baseMessage)
-    {
+    public void setBaseMessage(@NotNull Text baseMessage) {
         this.baseMessage = baseMessage;
     }
 
-    protected void updateMessage()
-    {
+    protected void updateMessage() {
         this.setMessage(this.baseMessage.copy().append(": " + this.getIntValue() + sign));
     }
 
-    protected void applyValue()
-    {
+    protected void applyValue() {
         this.applyConsumer.accept(this);
     }
 
@@ -147,39 +136,33 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     /* Input */
 
     @Override
-    protected void onClick(double mouseX, double mouseY)
-    {
+    protected void onClick(double mouseX, double mouseY) {
         this.setValueFromMouse(mouseX);
     }
 
     @Override
-    protected void onRelease(double mouseX, double mouseY)
-    {
+    protected void onRelease(double mouseX, double mouseY) {
         this.playDownSound();
     }
 
     @Override
-    protected void onDrag(double mouseX, double mouseY, double deltaX, double deltaY)
-    {
+    protected void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
         this.setValueFromMouse(mouseX);
     }
 
-    private void setValueFromMouse(double mouseX)
-    {
+    private void setValueFromMouse(double mouseX) {
         this.setValue((mouseX - (double) (this.getX() + 4)) / (double) (this.getWidth() - 8));
     }
 
     /* Rendering */
 
     @Override
-    protected int getVOffset()
-    {
+    protected int getVOffset() {
         return 0;
     }
 
     @Override
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.client.getTextureManager().bindTexture(AbstractButtonWidget.WIDGETS_LOCATION);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         int vOffset = (this.isFocusedOrHovered() ? 2 : 1) * 20;
@@ -192,8 +175,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     /* Narration */
 
     @Override
-    protected @NotNull Optional<Text> getNarrationMessage()
-    {
+    protected @NotNull Optional<Text> getNarrationMessage() {
         return Optional.of(new TranslatableText("gui.narrate.slider", this.getMessage()));
     }
 }

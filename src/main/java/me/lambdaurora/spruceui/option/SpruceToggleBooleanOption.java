@@ -31,16 +31,13 @@ import java.util.function.Supplier;
  * @version 1.7.0
  * @since 1.7.0
  */
-public class SpruceToggleBooleanOption extends SpruceBooleanOption
-{
-    public SpruceToggleBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip)
-    {
+public class SpruceToggleBooleanOption extends SpruceBooleanOption {
+    public SpruceToggleBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip) {
         super(key, getter, setter, tooltip, false);
     }
 
     @Override
-    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width)
-    {
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width) {
         SpruceToggleSwitch button = new SpruceToggleSwitch(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
             this.set();
             btn.setMessage(this.getDisplayText());
@@ -50,14 +47,12 @@ public class SpruceToggleBooleanOption extends SpruceBooleanOption
     }
 
     @Override
-    public @NotNull Text getDisplayText()
-    {
+    public @NotNull Text getDisplayText() {
         return this.getPrefix();
     }
 
     @Override
-    public @NotNull Text getDisplayText(@NotNull Text value)
-    {
+    public @NotNull Text getDisplayText(@NotNull Text value) {
         return this.getPrefix();
     }
 
@@ -69,8 +64,7 @@ public class SpruceToggleBooleanOption extends SpruceBooleanOption
      * @param tooltip the tooltip
      * @return the SpruceUI option
      */
-    public static @NotNull SpruceToggleBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip)
-    {
+    public static @NotNull SpruceToggleBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip) {
         GameOptions options = MinecraftClient.getInstance().options;
         return new SpruceToggleBooleanOption(key, () -> vanilla.get(options), newValue -> vanilla.set(options, String.valueOf(newValue)), tooltip);
     }

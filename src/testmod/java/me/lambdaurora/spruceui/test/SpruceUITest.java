@@ -16,11 +16,9 @@ import net.fabricmc.api.ClientModInitializer;
  *
  * @author LambdAurora
  */
-public class SpruceUITest implements ClientModInitializer
-{
+public class SpruceUITest implements ClientModInitializer {
     @Override
-    public void onInitializeClient()
-    {
+    public void onInitializeClient() {
 
     }
 }

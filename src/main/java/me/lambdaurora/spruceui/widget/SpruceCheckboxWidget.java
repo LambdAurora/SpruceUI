@@ -27,29 +27,24 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget
-{
+public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
     private static final Identifier TEXTURE = new Identifier("spruceui", "textures/gui/checkbox.png");
     private boolean showCross = false;
     private boolean colored = false;
 
-    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, boolean value)
-    {
+    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, boolean value) {
         super(position, width, height, message, value);
     }
 
-    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, boolean value, boolean showMessage)
-    {
+    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, boolean value, boolean showMessage) {
         super(position, width, height, message, value, showMessage);
     }
 
-    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value)
-    {
+    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value) {
         super(position, width, height, message, action, value);
     }
 
-    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value, boolean showMessage)
-    {
+    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value, boolean showMessage) {
         super(position, width, height, message, action, value, showMessage);
     }
 
@@ -58,8 +53,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget
      *
      * @return {@code true} if this checkbox can show a cross, else {@code false}
      */
-    public boolean showCross()
-    {
+    public boolean showCross() {
         return this.showCross;
     }
 
@@ -68,8 +62,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget
      *
      * @param showCross {@code true} if this checkbox can show a cross, else {@code false}
      */
-    public void setShowCross(boolean showCross)
-    {
+    public void setShowCross(boolean showCross) {
         this.showCross = showCross;
     }
 
@@ -78,8 +71,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget
      *
      * @return {@code true} if colored, else {@code false}
      */
-    public boolean isColored()
-    {
+    public boolean isColored() {
         return this.colored;
     }
 
@@ -88,14 +80,12 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget
      *
      * @param colored {@code true} if colored, else {@code false}
      */
-    public void setColored(boolean colored)
-    {
+    public void setColored(boolean colored) {
         this.colored = colored;
     }
 
     @Override
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta)
-    {
+    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         RenderSystem.enableDepthTest();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -118,8 +108,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget
     }
 
     @Override
-    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY)
-    {
+    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY) {
         this.client.getTextureManager().bindTexture(TEXTURE);
         RenderSystem.enableDepthTest();
         RenderSystem.color4f(1.f, 1.f, 1.f, this.alpha);

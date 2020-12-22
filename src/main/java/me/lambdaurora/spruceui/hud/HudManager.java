@@ -28,12 +28,10 @@ import java.util.Optional;
  * @version 1.5.0
  * @since 1.2.0
  */
-public class HudManager
-{
+public class HudManager {
     private static final HashMap<Identifier, Hud> HUDS = new HashMap<>();
 
-    public void initialize()
-    {
+    public void initialize() {
         HudRenderCallback.EVENT.register((matrices, tickDelta) -> HUDS.forEach((id, hud) -> {
             if (hud.isEnabled() && hud.isVisible())
                 hud.render(matrices, tickDelta);
@@ -50,8 +48,7 @@ public class HudManager
         ResolutionChangeCallback.EVENT.register(client -> initAll(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
     }
 
-    protected static void initAll(@NotNull MinecraftClient client, int screenWidth, int screenHeight)
-    {
+    protected static void initAll(@NotNull MinecraftClient client, int screenWidth, int screenHeight) {
         if (!canRenderHuds(client))
             return;
         HUDS.forEach((id, hud) -> {
@@ -65,8 +62,7 @@ public class HudManager
      *
      * @param hud The HUD to register.
      */
-    public static void register(@NotNull Hud hud)
-    {
+    public static void register(@NotNull Hud hud) {
         if (HUDS.containsKey(hud.getIdentifier()))
             throw new IllegalArgumentException("Cannot register the same HUD twice!");
         HUDS.put(hud.getIdentifier(), hud);
@@ -77,8 +73,7 @@ public class HudManager
      *
      * @param identifier The HUD to unregister
      */
-    public static void unregister(@NotNull Identifier identifier)
-    {
+    public static void unregister(@NotNull Identifier identifier) {
         HUDS.remove(identifier);
     }
 
@@ -87,8 +82,7 @@ public class HudManager
      *
      * @param hud The HUD to unregister.
      */
-    public static void unregister(@NotNull Hud hud)
-    {
+    public static void unregister(@NotNull Hud hud) {
         unregister(hud.getIdentifier());
     }
 
@@ -98,8 +92,7 @@ public class HudManager
      * @param client The client instance.
      * @return True if the HUDs can be rendered, else false.
      */
-    public static boolean canRenderHuds(@NotNull MinecraftClient client)
-    {
+    public static boolean canRenderHuds(@NotNull MinecraftClient client) {
         return client.world != null && (!client.options.hudHidden || client.currentScreen != null);
     }
 
@@ -109,8 +102,7 @@ public class HudManager
      * @param identifier The identifier of the HUD.
      * @return The optional HUD.
      */
-    public static Optional<Hud> getHud(@NotNull Identifier identifier)
-    {
+    public static Optional<Hud> getHud(@NotNull Identifier identifier) {
         return Optional.ofNullable(HUDS.get(identifier));
     }
 
@@ -119,8 +111,7 @@ public class HudManager
      *
      * @return The registered HUDs.
      */
-    public static Collection<Hud> getHuds()
-    {
+    public static Collection<Hud> getHuds() {
         return HUDS.values();
     }
 }
