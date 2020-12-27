@@ -34,6 +34,13 @@ public final class Position implements SprucePositioned {
     public static Position of(int x, int y) {
         return of(origin(), x, y);
     }
+    /**
+     * Get a central point.
+     * @depracated
+    **/
+    public static Position center(int y) {
+       // Center stuff here. 
+    }
 
     /**
      * Returns the origin position.
