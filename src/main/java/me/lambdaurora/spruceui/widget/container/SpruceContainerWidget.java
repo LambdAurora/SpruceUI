@@ -17,13 +17,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidget>
         implements ParentElement {
     private final List<SpruceWidget> children = new ArrayList<>();
 
-    public SpruceContainerWidget(Position position) {
+    public SpruceContainerWidget(Position position, int width, int height) {
         super(position, SpruceWidget.class);
+        this.width = width;
+        this.height = height;
     }
 
     @Override
@@ -32,11 +36,20 @@ public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidg
     }
 
     public void addChild(@NotNull SpruceWidget child) {
+        this.setOwnerShip(child);
         this.children.add(child);
+    }
+
+    public void addChildren(@NotNull ChildrenFactory childrenFactory) {
+        childrenFactory.build(this.width, this.height, this::addChild);
     }
 
     @Override
     public List<SpruceWidget> children() {
         return this.children;
+    }
+
+    public interface ChildrenFactory {
+        void build(int containerWidth, int containerHeight, Consumer<SpruceWidget> widgetAdder);
     }
 }

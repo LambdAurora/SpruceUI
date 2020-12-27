@@ -440,6 +440,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget {
                 this.cursor.lastColumn = this.cursor.column = this.textRenderer.trimToWidth(this.lines.get(row), x).length();
             });
 
+            this.setFocused(true);
+
             return true;
         }
 
@@ -463,8 +465,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget {
     @Override
     public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         int borderColor = this.isFocused() ? -1 : -6250336;
-        fill(matrices, this.getX() - 1, this.getY() - 1, this.getX() + this.width + 1, this.getY() + this.height + 1, borderColor);
-        fill(matrices, this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, -16777216);
+        fill(matrices, this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, borderColor);
+        fill(matrices, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1, -16777216);
 
         this.drawText(matrices);
         this.drawCursor(matrices);

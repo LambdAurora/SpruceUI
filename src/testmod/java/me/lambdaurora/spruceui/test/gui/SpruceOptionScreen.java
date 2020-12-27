@@ -14,6 +14,7 @@ import me.lambdaurora.spruceui.SpruceTexts;
 import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.option.*;
 import me.lambdaurora.spruceui.screen.SpruceScreen;
+import me.lambdaurora.spruceui.test.SpruceUITest;
 import me.lambdaurora.spruceui.test.TestEnum;
 import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
@@ -31,19 +32,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class SpruceOptionScreen extends SpruceScreen {
     private final Screen parent;
-    private final SpruceOption booleanOption;
-    private final SpruceOption checkboxOption;
-    private final SpruceOption toggleSwitchOption;
-    private final SpruceOption separatorOption;
-    private final SpruceOption doubleOption;
-    private final SpruceOption cyclingOption;
-    private final SpruceOption actionOption;
-    private final SpruceOption resetOption;
-    private boolean aBoolean;
-    private boolean checkboxBoolean;
-    private boolean toggleBoolean;
-    private double aDouble;
-    private TestEnum cyclingValue = TestEnum.FIRST;
 
     //private ButtonListWidget list;
     private SpruceOptionListWidget list;
@@ -51,65 +39,6 @@ public class SpruceOptionScreen extends SpruceScreen {
     public SpruceOptionScreen(@Nullable Screen parent) {
         super(new LiteralText("SpruceUI Test Option Menu"));
         this.parent = parent;
-
-        this.booleanOption = new SpruceBooleanOption("spruceui_test.option.boolean",
-                () -> this.aBoolean,
-                newValue -> this.aBoolean = newValue,
-                new LiteralText("Represents a boolean option, can either be true or false.\n" +
-                        "The option value can be colored."),
-                true);
-        this.checkboxOption = new SpruceCheckboxBooleanOption("spruceui_test.option.checkbox",
-                () -> this.checkboxBoolean,
-                newValue -> this.checkboxBoolean = newValue,
-                new LiteralText("Represents a boolean option as a checkbox, can either be true or false.\n"
-                        + "It's another implementation of `SpruceBooleanOption` internally."),
-                true);
-        this.toggleSwitchOption = new SpruceToggleBooleanOption("spruceui_test.option.toggle_switch",
-                () -> this.toggleBoolean,
-                newValue -> this.toggleBoolean = newValue,
-                new LiteralText("Represents a boolean option as a toggle switch, can either be true or false.\n"
-                        + "It's another implementation of `SpruceBooleanOption` internally."));
-
-        this.separatorOption = new SpruceSeparatorOption("spruceui_test.option.separator", true, null);
-
-        this.doubleOption = new SpruceDoubleOption("spruceui_test.option.double",
-                0.0, 50.0, 1.f,
-                () -> this.aDouble,
-                newValue -> this.aDouble = newValue,
-                option -> option.getDisplayText(new LiteralText(String.valueOf(this.aDouble))),
-                new LiteralText("Represents an option with a floating point value.\n"
-                        + "There is a minimum, a maximum and a step.\n"
-                        + "There is also a lambda for the display text as you can integrate a suffix/prefix like \"%\" or anything else."));
-
-        this.cyclingOption = new SpruceCyclingOption("spruceui_test.option.cycling",
-                amount -> this.cyclingValue = this.cyclingValue.next(),
-                option -> option.getDisplayText(this.cyclingValue.getText()),
-                new LiteralText("Represents a cycling option.\n"
-                        + "Each press will cycle the value between some pre-defined values."));
-
-        // Choose whatever action this option should do.
-        this.actionOption = new SpruceSimpleActionOption("spruceui_test.option.action",
-                btn -> {
-                    SystemToast toast = SystemToast.create(this.client, SystemToast.Type.TUTORIAL_HINT,
-                            new LiteralText("Action button pressed!"), new LiteralText("I'm a result of the action"));
-                    this.client.getToastManager().add(toast);
-                },
-                new LiteralText("Represents an option with a simple action.\n"
-                        + "It's used like a normal button and a press callback."));
-
-        // Reset option to reset values.
-        this.resetOption = new SpruceResetOption(btn -> {
-            this.aBoolean = false;
-            this.checkboxBoolean = false;
-            this.aDouble = 0.0;
-            this.cyclingValue = TestEnum.FIRST;
-
-            // Re-initialize the screen to update all the values.
-            MinecraftClient client = MinecraftClient.getInstance();
-            this.init(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
-        }, new LiteralText("Represents a reset option.\n"
-                + "The option title is already defined and translated in several languages.\n"
-                + "You have to manage screen re-initialization and reset logic yourself."));
     }
 
     private int getTextHeight() {
@@ -122,20 +51,11 @@ public class SpruceOptionScreen extends SpruceScreen {
 
         // Button list.
         //this.list = new ButtonListWidget(this.client, this.width, this.height, 43, this.height - 29 - this.getTextHeight(), 25);
-        this.list = new SpruceOptionListWidget(Position.of(0, 22), this.width, this.height - 35 - 22);
-
-        this.list.addOptionEntry(this.booleanOption, this.checkboxOption);
-        this.list.addOptionEntry(this.toggleSwitchOption, null);
-        this.list.addOptionEntry(this.toggleSwitchOption, null);
-        this.list.addOptionEntry(this.toggleSwitchOption, null);
-        this.list.addOptionEntry(this.toggleSwitchOption, null);
-        this.list.addOptionEntry(this.toggleSwitchOption, null);
-        this.list.addOptionEntry(this.toggleSwitchOption, null);
-        this.list.addOptionEntry(this.toggleSwitchOption, null);
-        this.list.addOptionEntry(this.toggleSwitchOption, null);
-        this.list.addSingleOptionEntry(this.separatorOption);
-        this.list.addSingleOptionEntry(this.doubleOption);
-        this.list.addOptionEntry(this.actionOption, this.cyclingOption);
+        this.list = SpruceUITest.get().buildOptionList(Position.of(0, 22), this.width, this.height - 35 - 22);
+        SpruceUITest.get().resetConsumer = btn -> {
+            // Re-initialize the screen to update all the values.
+            this.init(this.client, this.client.getWindow().getScaledWidth(), this.client.getWindow().getScaledHeight());
+        };
 
         this.addChild(this.list);
 

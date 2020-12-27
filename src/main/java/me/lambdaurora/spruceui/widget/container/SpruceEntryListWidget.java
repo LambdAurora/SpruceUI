@@ -13,12 +13,12 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.RenderUtil;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import me.lambdaurora.spruceui.util.ScissorManager;
 import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -41,17 +41,35 @@ import java.util.List;
  * @since 1.7.0
  */
 public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E> implements ParentElement {
-    protected final Position anchor = Position.of(this, 0, 4);
+    protected final Position anchor = Position.of(this, 0, 0);
     private final List<E> entries = new Entries();
+    private final int anchorYOffset;
     private double scrollAmount;
     private boolean renderBackground = true;
     private boolean renderTransition = true;
     private boolean scrolling = false;
+    private boolean border = false;
 
-    public SpruceEntryListWidget(@NotNull Position position, int width, int height, Class<E> entryClass) {
+    public SpruceEntryListWidget(@NotNull Position position, int width, int height, int anchorYOffset, Class<E> entryClass) {
         super(position, entryClass);
         this.width = width;
         this.height = height;
+        this.anchorYOffset = anchorYOffset;
+        this.anchor.setRelativeY(anchorYOffset);
+    }
+
+    /**
+     * Returns the inner width of the list.
+     *
+     * @return the inner width
+     */
+    public int getInnerWidth() {
+        int width = this.getWidth();
+        if (this.getMaxScroll() > 0)
+            width -= 6;
+        if (this.border)
+            width -= 2;
+        return width;
     }
 
     /**
@@ -90,6 +108,17 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         this.renderTransition = render;
     }
 
+    public boolean hasBorder() {
+        return this.border;
+    }
+
+    public void setBorder(boolean border) {
+        this.border = border;
+        this.anchor.setRelativeX(border ? 1 : 0);
+        if (this.anchor.getRelativeY() == this.anchorYOffset && border)
+            this.anchor.setRelativeY(this.anchorYOffset + 1);
+    }
+
     protected int getLengthUntil(int index) {
         int max = 0;
         for (int i = 0; i <= index; i++) {
@@ -126,7 +155,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
      */
     public void setScrollAmount(double amount) {
         this.scrollAmount = MathHelper.clamp(amount, 0, this.getMaxScroll());
-        this.anchor.setRelativeY((int) (4 - this.scrollAmount));
+        this.anchor.setRelativeY((int) (this.anchorYOffset + (this.border ? 1 : 0) - this.scrollAmount));
 
         for (E entry : this.entries) {
             entry.setVisibleInList(!(entry.getY() + entry.getHeight() < this.getY() || entry.getY() > this.getY() + this.getHeight()));
@@ -143,7 +172,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     }
 
     protected int getScrollbarPositionX() {
-        return this.getWidth() - 6;
+        return this.getX() + this.getWidth() - 6 - (this.border ? 1 : 0);
     }
 
     @Override
@@ -199,7 +228,8 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         return this.getY() + 4 - (int) this.getScrollAmount() + this.getLengthUntil(index);
     }
 
-    private void setOwnerShip(E entry) {
+    @Override
+    protected void setOwnerShip(E entry) {
         entry.getPosition().setAnchor(this.anchor);
         entry.setVisibleInList(!(entry.getY() + entry.getHeight() < this.getY() || entry.getY() > this.getY() + this.getHeight()));
     }
@@ -258,20 +288,8 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY) {
         if (!this.shouldRenderBackground())
             return;
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
-        this.client.getTextureManager().bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
-        RenderSystem.color4f(1.f, 1.f, 1.f, 1.f);
-        int left = this.getX();
-        int right = left + this.getWidth();
-        int top = this.getY();
-        int bottom = top + this.getHeight();
-        buffer.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
-        buffer.vertex(left, bottom, 0).texture((float) left / 32.f, (float) (bottom + (int) this.getScrollAmount()) / 32.f).color(32, 32, 32, 255).next();
-        buffer.vertex(right, bottom, 0).texture((float) right / 32.f, (float) (bottom + (int) this.getScrollAmount()) / 32.f).color(32, 32, 32, 255).next();
-        buffer.vertex(right, top, 0).texture((float) right / 32.f, (float) (top + (int) this.getScrollAmount()) / 32.f).color(32, 32, 32, 255).next();
-        buffer.vertex(left, top, 0).texture((float) left / 32.f, (float) (top + (int) this.getScrollAmount()) / 32.f).color(32, 32, 32, 255).next();
-        tessellator.draw();
+        RenderUtil.renderBackgroundTexture(this.client, this.getX(), this.getY(), this.getWidth(), this.getHeight(),
+                (float) (this.getScrollAmount() / 32.f), 32, 32, 32, 255);
     }
 
     @Override
@@ -285,7 +303,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 
         {
             double scaleFactor = this.client.getWindow().getScaleFactor();
-            ScissorManager.push(this.getX(), (int) (scaleFactor * (this.client.getWindow().getScaledHeight() - this.getY() - this.getHeight())),
+            ScissorManager.push((int) (scaleFactor * this.getX()), (int) (scaleFactor * (this.client.getWindow().getScaledHeight() - this.getY() - this.getHeight())),
                     (int) (scaleFactor * this.getWidth()), (int) (scaleFactor * this.getHeight()));
         }
         this.entries.forEach(e -> e.render(matrices, mouseX, mouseY, delta));
@@ -316,7 +334,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
             buffer.vertex(right, bottom, 0).texture(1.f, 1.f).color(0, 0, 0, 255).next();
             buffer.vertex(right, bottom - 4, 0).texture(1.f, 0.f).color(0, 0, 0, 0).next();
             buffer.vertex(left, bottom - 4, 0).texture(0.f, 0.f).color(0, 0, 0, 0).next();
-            // RIGHT
+            // LEFT
             buffer.vertex(left, bottom, 0).texture(0.f, 1.f).color(0, 0, 0, 255).next();
             buffer.vertex(left + 4, bottom, 0).texture(1.f, 1.f).color(0, 0, 0, 0).next();
             buffer.vertex(left + 4, top, 0).texture(1.f, 0.f).color(0, 0, 0, 0).next();
@@ -328,26 +346,40 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         int maxScroll = this.getMaxScroll();
         if (maxScroll > 0) {
             RenderSystem.disableTexture();
-            int p = (int) ((float) ((this.getHeight()) * (this.getHeight())) / (float) this.getMaxPosition());
-            p = MathHelper.clamp(p, 32, this.getHeight() - 8);
-            int q = (int) this.getScrollAmount() * (this.getHeight() - p) / maxScroll + this.getY();
-            if (q < this.getY()) {
-                q = this.getY();
+            int scrollbarHeight = (int) ((float) ((this.getHeight()) * (this.getHeight())) / (float) this.getMaxPosition());
+            scrollbarHeight = MathHelper.clamp(scrollbarHeight, 32, this.getHeight() - 8);
+            int scrollbarY = (int) this.getScrollAmount() * (this.getHeight() - scrollbarHeight) / maxScroll + this.getY();
+            if (scrollbarY < this.getY()) {
+                scrollbarY = this.getY();
             }
 
-            buffer.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
-            buffer.vertex(scrollbarPositionX, this.getY() + this.getHeight(), 0.0).texture(0.f, 1.f).color(0, 0, 0, 255).next();
-            buffer.vertex(scrollBarEnd, this.getY() + this.getHeight(), 0.0).texture(1.f, 1.f).color(0, 0, 0, 255).next();
-            buffer.vertex(scrollBarEnd, this.getY(), 0.0).texture(1.f, 0.f).color(0, 0, 0, 255).next();
-            buffer.vertex(scrollbarPositionX, this.getY(), 0.0).texture(0.f, 0.f).color(0, 0, 0, 255).next();
-            buffer.vertex(scrollbarPositionX, q + p, 0.0).texture(0.f, 1.f).color(128, 128, 128, 255).next();
-            buffer.vertex(scrollBarEnd, q + p, 0.0).texture(1.f, 1.f).color(128, 128, 128, 255).next();
-            buffer.vertex(scrollBarEnd, q, 0.0).texture(1.f, 0.f).color(128, 128, 128, 255).next();
-            buffer.vertex(scrollbarPositionX, q, 0.0).texture(0.f, 0.f).color(128, 128, 128, 255).next();
-            buffer.vertex(scrollbarPositionX, q + p - 1, 0.0).texture(0.f, 1.f).color(192, 192, 192, 255).next();
-            buffer.vertex(scrollBarEnd - 1, q + p - 1, 0.0).texture(1.f, 1.f).color(192, 192, 192, 255).next();
-            buffer.vertex(scrollBarEnd - 1, q, 0.0).texture(1.f, 0.f).color(192, 192, 192, 255).next();
-            buffer.vertex(scrollbarPositionX, q, 0.0).texture(0.f, 0.f).color(192, 192, 192, 255).next();
+            this.renderScrollbar(tessellator, buffer, scrollbarPositionX, scrollBarEnd, scrollbarY, scrollbarHeight);
+        }
+
+        if (this.hasBorder()) {
+            RenderSystem.disableTexture();
+            buffer.begin(7, VertexFormats.POSITION_COLOR);
+            int color = 192;
+            // Top border
+            buffer.vertex(left, top + 1, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(right, top + 1, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(right, top, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(left, top, 0.0).color(color, color, color, 255).next();
+            // Right border
+            buffer.vertex(right - 1, bottom, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(right, bottom, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(right, top, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(right - 1, top, 0.0).color(color, color, color, 255).next();
+            // Bottom
+            buffer.vertex(left, bottom, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(right, bottom, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(right, bottom - 1, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(left, bottom - 1, 0.0).color(color, color, color, 255).next();
+            // Left border
+            buffer.vertex(left, bottom, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(left + 1, bottom, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(left + 1, top, 0.0).color(color, color, color, 255).next();
+            buffer.vertex(left, top, 0.0).color(color, color, color, 255).next();
             tessellator.draw();
         }
 
@@ -355,6 +387,23 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         RenderSystem.shadeModel(7424);
         RenderSystem.enableAlphaTest();
         RenderSystem.disableBlend();
+    }
+
+    protected void renderScrollbar(Tessellator tessellator, BufferBuilder buffer, int scrollbarX, int scrollbarEndX, int scrollbarY, int scrollbarHeight) {
+        buffer.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+        buffer.vertex(scrollbarX, this.getY() + this.getHeight(), 0.0).texture(0.f, 1.f).color(0, 0, 0, 255).next();
+        buffer.vertex(scrollbarEndX, this.getY() + this.getHeight(), 0.0).texture(1.f, 1.f).color(0, 0, 0, 255).next();
+        buffer.vertex(scrollbarEndX, this.getY(), 0.0).texture(1.f, 0.f).color(0, 0, 0, 255).next();
+        buffer.vertex(scrollbarX, this.getY(), 0.0).texture(0.f, 0.f).color(0, 0, 0, 255).next();
+        buffer.vertex(scrollbarX, scrollbarY + scrollbarHeight, 0.0).texture(0.f, 1.f).color(128, 128, 128, 255).next();
+        buffer.vertex(scrollbarEndX, scrollbarY + scrollbarHeight, 0.0).texture(1.f, 1.f).color(128, 128, 128, 255).next();
+        buffer.vertex(scrollbarEndX, scrollbarY, 0.0).texture(1.f, 0.f).color(128, 128, 128, 255).next();
+        buffer.vertex(scrollbarX, scrollbarY, 0.0).texture(0.f, 0.f).color(128, 128, 128, 255).next();
+        buffer.vertex(scrollbarX, scrollbarY + scrollbarHeight - 1, 0.0).texture(0.f, 1.f).color(192, 192, 192, 255).next();
+        buffer.vertex(scrollbarEndX - 1, scrollbarY + scrollbarHeight - 1, 0.0).texture(1.f, 1.f).color(192, 192, 192, 255).next();
+        buffer.vertex(scrollbarEndX - 1, scrollbarY, 0.0).texture(1.f, 0.f).color(192, 192, 192, 255).next();
+        buffer.vertex(scrollbarX, scrollbarY, 0.0).texture(0.f, 0.f).color(192, 192, 192, 255).next();
+        tessellator.draw();
     }
 
     @Environment(EnvType.CLIENT)
@@ -396,7 +445,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
             int y = 0;
             for (E entry : this.entries) {
                 entry.getPosition().setRelativeY(y);
-                y += entry.getHeight() + 4;
+                y += entry.getHeight();
             }
         }
     }
@@ -408,7 +457,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
             super(Position.origin());
         }
 
-        public void setVisibleInList(boolean visible) {
+        protected void setVisibleInList(boolean visible) {
             this.visibleInList = visible;
         }
 

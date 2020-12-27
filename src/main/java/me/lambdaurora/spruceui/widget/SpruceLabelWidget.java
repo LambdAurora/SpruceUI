@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -38,6 +39,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     private final int maxWidth;
     //private final int                         maxHeight;
     private Text text;
+    private List<OrderedText> lines;
     private Text tooltip;
     private boolean centered;
 
@@ -82,19 +84,30 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     }
 
     /**
+     * Gets the text of the label.
+     *
+     * @return the text
+     */
+    public Text getText() {
+        return this.text;
+    }
+
+    /**
      * Sets the text of this label.
      *
      * @param text the text to set
      */
     public void setText(@NotNull Text text) {
-        int width = this.client.textRenderer.getWidth(text);
+        this.text = text;
+        this.lines = this.client.textRenderer.wrapLines(text, this.maxWidth);
+
+        int width = this.lines.stream().mapToInt(this.client.textRenderer::getWidth).max().orElse(this.maxWidth);
         if (width > this.maxWidth) {
             width = this.maxWidth;
         }
 
-        this.text = text;
         this.width = width;
-        this.height = this.client.textRenderer.fontHeight;
+        this.height = this.lines.size() * this.client.textRenderer.fontHeight;
     }
 
     @Override
@@ -138,8 +151,12 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 
     @Override
     public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        int x = this.centered ? this.getX() - this.client.textRenderer.getWidth(this.text) / 2 : this.getX();
-        this.client.textRenderer.drawTrimmed(this.text, x, this.getY(), this.maxWidth, 10526880);
+        int y = this.getY();
+        for (Iterator<OrderedText> it = this.lines.iterator(); it.hasNext(); y += 9) {
+            OrderedText line = it.next();
+            int x = this.centered ? this.getX() - this.client.textRenderer.getWidth(line) / 2 : this.getX();
+            this.client.textRenderer.draw(matrices, line, x, y, 10526880);
+        }
 
         if (this.tooltip != null) {
             if (!this.tooltip.getString().isEmpty()) {

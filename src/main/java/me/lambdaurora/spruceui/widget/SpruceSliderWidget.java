@@ -124,7 +124,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 
     @Override
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
-        if (direction.isHorizontal()) {
+        if (direction.isHorizontal() && !tab) {
             if (direction.isLookingForward() && this.value < 1 || this.value > 0) {
                 this.setValue(this.getValue() + (direction.isLookingForward() ? (1 / this.multiplier) : -(1 / this.multiplier)));
                 return true;

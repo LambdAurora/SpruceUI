@@ -274,7 +274,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     /* Sound */
 
     public void playDownSound() {
-        this.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        this.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.f));
     }
 
     /* Narration */

@@ -81,6 +81,10 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
         }
     }
 
+    protected void setOwnerShip(E child) {
+        child.getPosition().setAnchor(this);
+    }
+
     /* Navigation */
 
     @Override
@@ -125,6 +129,11 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
     protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
         return this.getFocused() != null && this.isDragging() && button == GLFW.GLFW_MOUSE_BUTTON_1
                 && this.getFocused().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+    }
+
+    @Override
+    protected boolean onMouseScroll(double mouseX, double mouseY, double amount) {
+        return this.hoveredElement(mouseX, mouseY).filter(element -> element.mouseScrolled(mouseX, mouseY, amount)).isPresent();
     }
 
     @Override

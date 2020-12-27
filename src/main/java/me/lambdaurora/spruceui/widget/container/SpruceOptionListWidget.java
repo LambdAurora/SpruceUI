@@ -37,7 +37,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
     private int lastIndex = 0;
 
     public SpruceOptionListWidget(@NotNull Position position, int width, int height) {
-        super(position, width, height, OptionEntry.class);
+        super(position, width, height, 4, OptionEntry.class);
     }
 
     /**
@@ -76,20 +76,19 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 
         private OptionEntry(SpruceOptionListWidget parent) {
             this.parent = parent;
-            this.width = parent.getWidth();
         }
 
         public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption option) {
             OptionEntry entry = new OptionEntry(parent);
-            entry.children.add(option.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 0), 310));
+            entry.children.add(option.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 2), 310));
             return entry;
         }
 
         public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption firstOption, @Nullable SpruceOption secondOption) {
             OptionEntry entry = new OptionEntry(parent);
-            entry.children.add(firstOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 0), 150));
+            entry.children.add(firstOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 2), 150));
             if (secondOption != null) {
-                entry.children.add(secondOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155 + 160, 0), 150));
+                entry.children.add(secondOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155 + 160, 2), 150));
             }
             return entry;
         }
@@ -117,8 +116,13 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
 
         @Override
+        public int getWidth() {
+            return this.parent.getWidth() - (this.parent.hasBorder() ? 2 : 0);
+        }
+
+        @Override
         public int getHeight() {
-            return this.children.stream().mapToInt(SpruceWidget::getHeight).reduce(Integer::max).orElse(0);
+            return this.children.stream().mapToInt(SpruceWidget::getHeight).reduce(Integer::max).orElse(0) + 4;
         }
 
         public Optional<SpruceWidget> hoveredElement(double mouseX, double mouseY) {

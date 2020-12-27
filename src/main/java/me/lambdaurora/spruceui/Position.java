@@ -9,6 +9,8 @@
 
 package me.lambdaurora.spruceui;
 
+import me.lambdaurora.spruceui.widget.SpruceWidget;
+
 import java.util.Objects;
 
 /**
@@ -33,6 +35,18 @@ public final class Position implements SprucePositioned {
 
     public static Position of(int x, int y) {
         return of(origin(), x, y);
+    }
+
+    public static Position center(SpruceWidget parent, int y) {
+        return center(parent, parent.getWidth(), y);
+    }
+
+    public static Position center(SprucePositioned anchor, int width, int y) {
+        return of(anchor, width / 2, y);
+    }
+
+    public static Position center(int width, int y) {
+        return of(width / 2, y);
     }
 
     /**
