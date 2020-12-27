@@ -32,6 +32,24 @@ public class SpruceButtonWidget extends AbstractSprucePressableButtonWidget {
         this.action.onPress(this);
     }
 
+    @Override
+    public String toString() {
+        return "SpruceButtonWidget{" +
+                "position=" + this.getPosition() +
+                ", width=" + this.getWidth() +
+                ", height=" + this.getHeight() +
+                ", visible=" + this.isVisible() +
+                ", active=" + this.isActive() +
+                ", message=" + this.getMessage() +
+                ", focused=" + this.isFocused() +
+                ", hovered=" + this.isMouseHovered() +
+                ", wasHovered=" + this.wasHovered +
+                ", dragging=" + this.dragging +
+                ", lastDrag=" + this.lastDrag +
+                ", alpha=" + this.alpha +
+                '}';
+    }
+
     public interface PressAction {
         void onPress(SpruceButtonWidget button);
     }

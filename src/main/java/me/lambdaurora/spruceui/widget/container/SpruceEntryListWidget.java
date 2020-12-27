@@ -14,6 +14,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.RenderUtil;
+import me.lambdaurora.spruceui.border.Border;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import me.lambdaurora.spruceui.util.ScissorManager;
 import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
@@ -26,6 +27,7 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.AbstractList;
@@ -48,7 +50,8 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     private boolean renderBackground = true;
     private boolean renderTransition = true;
     private boolean scrolling = false;
-    private boolean border = false;
+    private @Nullable Border border;
+    private boolean allowOutsideHorizontalNavigation = false;
 
     public SpruceEntryListWidget(@NotNull Position position, int width, int height, int anchorYOffset, Class<E> entryClass) {
         super(position, entryClass);
@@ -67,8 +70,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         int width = this.getWidth();
         if (this.getMaxScroll() > 0)
             width -= 6;
-        if (this.border)
-            width -= 2;
+        width -= this.getBorderThickness() * 2;
         return width;
     }
 
@@ -109,22 +111,36 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     }
 
     public boolean hasBorder() {
+        return this.border != null;
+    }
+
+    public @Nullable Border getBorder() {
         return this.border;
     }
 
-    public void setBorder(boolean border) {
+    public void setBorder(Border border) {
         this.border = border;
-        this.anchor.setRelativeX(border ? 1 : 0);
-        if (this.anchor.getRelativeY() == this.anchorYOffset && border)
+        this.anchor.setRelativeX(this.hasBorder() ? 1 : 0);
+        if (this.anchor.getRelativeY() == this.anchorYOffset && this.hasBorder())
             this.anchor.setRelativeY(this.anchorYOffset + 1);
+    }
+
+    protected int getBorderThickness() {
+        return this.border != null ? this.border.getThickness() : 0;
+    }
+
+    public boolean doesAllowOutsideHorizontalNavigation() {
+        return this.allowOutsideHorizontalNavigation;
+    }
+
+    public void setAllowOutsideHorizontalNavigation(boolean allowOutsideHorizontalNavigation) {
+        this.allowOutsideHorizontalNavigation = allowOutsideHorizontalNavigation;
     }
 
     protected int getLengthUntil(int index) {
         int max = 0;
         for (int i = 0; i <= index; i++) {
             max += this.entries.get(i).getHeight();
-            if (i != this.entries.size() - 1)
-                max += 4;
         }
         return max;
     }
@@ -155,7 +171,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
      */
     public void setScrollAmount(double amount) {
         this.scrollAmount = MathHelper.clamp(amount, 0, this.getMaxScroll());
-        this.anchor.setRelativeY((int) (this.anchorYOffset + (this.border ? 1 : 0) - this.scrollAmount));
+        this.anchor.setRelativeY((int) (this.anchorYOffset + this.getBorderThickness() - this.scrollAmount));
 
         for (E entry : this.entries) {
             entry.setVisibleInList(!(entry.getY() + entry.getHeight() < this.getY() || entry.getY() > this.getY() + this.getHeight()));
@@ -172,7 +188,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     }
 
     protected int getScrollbarPositionX() {
-        return this.getX() + this.getWidth() - 6 - (this.border ? 1 : 0);
+        return this.getX() + this.getWidth() - 6 - this.getBorderThickness();
     }
 
     @Override
@@ -240,8 +256,8 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         if (direction.isHorizontal() && this.getFocused() != null) {
-            this.getFocused().onNavigation(direction, tab);
-            return true;
+            boolean result = this.getFocused().onNavigation(direction, tab);
+            return !this.allowOutsideHorizontalNavigation || result;
         }
         boolean result = super.onNavigation(direction, tab);
         if (result) this.ensureVisible(this.getFocused());
@@ -356,32 +372,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
             this.renderScrollbar(tessellator, buffer, scrollbarPositionX, scrollBarEnd, scrollbarY, scrollbarHeight);
         }
 
-        if (this.hasBorder()) {
-            RenderSystem.disableTexture();
-            buffer.begin(7, VertexFormats.POSITION_COLOR);
-            int color = 192;
-            // Top border
-            buffer.vertex(left, top + 1, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(right, top + 1, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(right, top, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(left, top, 0.0).color(color, color, color, 255).next();
-            // Right border
-            buffer.vertex(right - 1, bottom, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(right, bottom, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(right, top, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(right - 1, top, 0.0).color(color, color, color, 255).next();
-            // Bottom
-            buffer.vertex(left, bottom, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(right, bottom, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(right, bottom - 1, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(left, bottom - 1, 0.0).color(color, color, color, 255).next();
-            // Left border
-            buffer.vertex(left, bottom, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(left + 1, bottom, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(left + 1, top, 0.0).color(color, color, color, 255).next();
-            buffer.vertex(left, top, 0.0).color(color, color, color, 255).next();
-            tessellator.draw();
-        }
+        if (this.border != null) this.border.render(client, this, this.getWidth(), this.getHeight());
 
         RenderSystem.enableTexture();
         RenderSystem.shadeModel(7424);

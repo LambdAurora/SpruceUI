@@ -47,7 +47,17 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
      * @return the index of the added entry
      */
     public int addSingleOptionEntry(SpruceOption option) {
-        return this.addEntry(OptionEntry.create(this, option));
+        return this.addEntry(OptionEntry.create(this, option, false));
+    }
+
+    /**
+     * Adds a single option entry. The option will center the element and will not use the full width.
+     *
+     * @param option the option
+     * @return the index of the added entry
+     */
+    public int addSmallSingleOptionEntry(SpruceOption option) {
+        return this.addEntry(OptionEntry.create(this, option, true));
     }
 
     /**
@@ -78,9 +88,9 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
             this.parent = parent;
         }
 
-        public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption option) {
+        public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption option, boolean small) {
             OptionEntry entry = new OptionEntry(parent);
-            entry.children.add(option.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 2), 310));
+            entry.children.add(option.createWidget(Position.of(entry, entry.getWidth() / 2 - (small ? 75 : 155), 2), small ? 150 : 310));
             return entry;
         }
 
@@ -106,7 +116,6 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
             return this.focused;
         }
 
-        @SuppressWarnings("unchecked")
         public void setFocused(@Nullable SpruceWidget focused) {
             if (this.focused == focused)
                 return;

@@ -331,6 +331,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget {
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         if (!tab) {
+            this.setFocused(true);
             boolean result = false;
             switch (direction) {
                 case RIGHT:

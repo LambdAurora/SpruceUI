@@ -139,6 +139,15 @@ public final class Position implements SprucePositioned {
 
     @Override
     public int hashCode() {
-        return Objects.hash(anchor, x, y);
+        return Objects.hash(this.anchor, this.x, this.y);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "anchor=" + this.anchor +
+                ", x=" + this.x +
+                ", y=" + this.y +
+                '}';
     }
 }
