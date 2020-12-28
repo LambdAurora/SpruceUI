@@ -126,7 +126,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 
         @Override
         public int getWidth() {
-            return this.parent.getWidth() - (this.parent.hasBorder() ? 2 : 0);
+            return this.parent.getWidth() - (this.parent.getBorder().getThickness() * 2);
         }
 
         @Override

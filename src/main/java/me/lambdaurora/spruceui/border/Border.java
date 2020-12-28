@@ -26,5 +26,10 @@ public interface Border {
 
     void render(MinecraftClient client, int x, int y, int width, int height);
 
+    /**
+     * Returns the thickness of the border.
+     *
+     * @return the thickness
+     */
     int getThickness();
 }

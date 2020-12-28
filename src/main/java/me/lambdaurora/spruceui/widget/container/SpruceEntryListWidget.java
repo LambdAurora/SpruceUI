@@ -15,6 +15,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.RenderUtil;
 import me.lambdaurora.spruceui.border.Border;
+import me.lambdaurora.spruceui.border.EmptyBorder;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import me.lambdaurora.spruceui.util.ScissorManager;
 import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
@@ -27,7 +28,6 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.AbstractList;
@@ -50,7 +50,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     private boolean renderBackground = true;
     private boolean renderTransition = true;
     private boolean scrolling = false;
-    private @Nullable Border border;
+    private Border border = EmptyBorder.EMPTY_BORDER;
     private boolean allowOutsideHorizontalNavigation = false;
 
     public SpruceEntryListWidget(@NotNull Position position, int width, int height, int anchorYOffset, Class<E> entryClass) {
@@ -70,7 +70,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         int width = this.getWidth();
         if (this.getMaxScroll() > 0)
             width -= 6;
-        width -= this.getBorderThickness() * 2;
+        width -= this.getBorder().getThickness() * 2;
         return width;
     }
 
@@ -111,22 +111,28 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     }
 
     public boolean hasBorder() {
-        return this.border != null;
+        return this.getBorder().getThickness() != 0;
     }
 
-    public @Nullable Border getBorder() {
+    /**
+     * Gets the border of this widget.
+     *
+     * @return the border
+     */
+    public @NotNull Border getBorder() {
         return this.border;
     }
 
-    public void setBorder(Border border) {
+    /**
+     * Sets the border of this widget.
+     *
+     * @param border the border
+     */
+    public void setBorder(@NotNull Border border) {
         this.border = border;
-        this.anchor.setRelativeX(this.hasBorder() ? 1 : 0);
+        this.anchor.setRelativeX(border.getThickness());
         if (this.anchor.getRelativeY() == this.anchorYOffset && this.hasBorder())
-            this.anchor.setRelativeY(this.anchorYOffset + 1);
-    }
-
-    protected int getBorderThickness() {
-        return this.border != null ? this.border.getThickness() : 0;
+            this.anchor.setRelativeY(this.anchorYOffset + border.getThickness());
     }
 
     public boolean doesAllowOutsideHorizontalNavigation() {
@@ -171,7 +177,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
      */
     public void setScrollAmount(double amount) {
         this.scrollAmount = MathHelper.clamp(amount, 0, this.getMaxScroll());
-        this.anchor.setRelativeY((int) (this.anchorYOffset + this.getBorderThickness() - this.scrollAmount));
+        this.anchor.setRelativeY((int) (this.anchorYOffset + this.getBorder().getThickness() - this.scrollAmount));
 
         for (E entry : this.entries) {
             entry.setVisibleInList(!(entry.getY() + entry.getHeight() < this.getY() || entry.getY() > this.getY() + this.getHeight()));
@@ -188,7 +194,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     }
 
     protected int getScrollbarPositionX() {
-        return this.getX() + this.getWidth() - 6 - this.getBorderThickness();
+        return this.getX() + this.getWidth() - 6 - this.getBorder().getThickness();
     }
 
     @Override
@@ -372,7 +378,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
             this.renderScrollbar(tessellator, buffer, scrollbarPositionX, scrollBarEnd, scrollbarY, scrollbarHeight);
         }
 
-        if (this.border != null) this.border.render(client, this, this.getWidth(), this.getHeight());
+        this.getBorder().render(client, this, this.getWidth(), this.getHeight());
 
         RenderSystem.enableTexture();
         RenderSystem.shadeModel(7424);

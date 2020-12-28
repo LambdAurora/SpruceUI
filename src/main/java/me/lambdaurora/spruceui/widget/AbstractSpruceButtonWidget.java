@@ -69,6 +69,10 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
         this.message = message;
     }
 
+    public float getAlpha() {
+        return this.alpha;
+    }
+
     public void setAlpha(float value) {
         this.alpha = value;
     }
@@ -144,7 +148,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
             Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
     }
 
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         int color = this.active ? 16777215 : 10526880;
         drawCenteredText(matrices, this.client.textRenderer, this.getMessage(), this.getX() + this.getWidth() / 2, this.getY() + (this.getHeight() - 8) / 2,
                 color | MathHelper.ceil(this.alpha * 255.0F) << 24);
@@ -153,7 +157,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
     @Override
     protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY) {
         this.client.getTextureManager().bindTexture(AbstractButtonWidget.WIDGETS_LOCATION);
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
+        RenderSystem.color4f(1.f, 1.f, 1.f, this.getAlpha());
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();

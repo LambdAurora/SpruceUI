@@ -10,7 +10,6 @@
 package me.lambdaurora.spruceui.widget.container.tabbed;
 
 import me.lambdaurora.spruceui.Position;
-import me.lambdaurora.spruceui.border.SimpleBorder;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
 import me.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
@@ -205,9 +204,13 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         @Override
         public String toString() {
             return "SpruceTabbedWidget$Entry{" +
-                    "title=" + title +
-                    ", container=" + container +
-                    ", selected=" + selected +
+                    "title=" + this.title +
+                    ", description=" + this.description +
+                    ", position=" + this.getPosition() +
+                    ", width=" + this.getWidth() +
+                    ", height=" + this.getHeight() +
+                    ", container=" + this.container +
+                    ", selected=" + this.selected +
                     '}';
         }
     }

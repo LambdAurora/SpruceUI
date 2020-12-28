@@ -46,7 +46,7 @@ public class SpruceButtonWidget extends AbstractSprucePressableButtonWidget {
                 ", wasHovered=" + this.wasHovered +
                 ", dragging=" + this.dragging +
                 ", lastDrag=" + this.lastDrag +
-                ", alpha=" + this.alpha +
+                ", alpha=" + this.getAlpha() +
                 '}';
     }
 
