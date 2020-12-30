@@ -142,7 +142,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
     }
 
     @Override
-    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderButton(matrices, mouseX, mouseY, delta);
         if (!this.dragging)
             Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
@@ -155,7 +155,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
     }
 
     @Override
-    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY) {
+    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.client.getTextureManager().bindTexture(AbstractButtonWidget.WIDGETS_LOCATION);
         RenderSystem.color4f(1.f, 1.f, 1.f, this.getAlpha());
         RenderSystem.enableBlend();

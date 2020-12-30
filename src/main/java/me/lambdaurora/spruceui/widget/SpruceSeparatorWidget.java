@@ -93,7 +93,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
     /* Rendering */
 
     @Override
-    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (this.title != null) {
             int titleWidth = this.client.textRenderer.getWidth(this.title);
             int titleX = this.getX() + (this.width / 2 - titleWidth / 2);

@@ -23,12 +23,12 @@ import java.util.function.Function;
  * Represents a multiline text.
  *
  * @author LambdAurora
- * @version 1.6.3
+ * @version 1.7.0
  * @since 1.6.3
  */
 public final class MultilineText {
-    private final int width;
     private final List<String> rows = new ArrayList<>();
+    private int width;
 
     public MultilineText(int width) {
         this.width = width;
@@ -44,6 +44,27 @@ public final class MultilineText {
     public MultilineText(int width, @NotNull Collection<? extends String> lines) {
         this(width);
         this.rows.addAll(wrap(lines, width));
+    }
+
+    /**
+     * Returns the maximum width of the multiline text.
+     *
+     * @return the width
+     */
+    public int getWidth() {
+        return this.width;
+    }
+
+    /**
+     * Sets the maximum width of the multiline text.
+     *
+     * @param width the width
+     */
+    public void setWidth(int width) {
+        if (this.width != width) {
+            this.width = width;
+            this.recompute();
+        }
     }
 
     public @NotNull List<String> getRows() {

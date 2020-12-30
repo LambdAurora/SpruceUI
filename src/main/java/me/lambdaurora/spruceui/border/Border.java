@@ -9,8 +9,9 @@
 
 package me.lambdaurora.spruceui.border;
 
-import me.lambdaurora.spruceui.SprucePositioned;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 
 /**
  * Represents a border to draw around a widget.
@@ -19,17 +20,15 @@ import net.minecraft.client.MinecraftClient;
  * @version 1.7.0
  * @since 1.7.0
  */
-public interface Border {
-    default void render(MinecraftClient client, SprucePositioned positioned, int width, int height) {
-        this.render(client, positioned.getX(), positioned.getY(), width, height);
-    }
+public abstract class Border {
+    private final MinecraftClient client = MinecraftClient.getInstance();
 
-    void render(MinecraftClient client, int x, int y, int width, int height);
+    public abstract void render(MatrixStack matrices, SpruceWidget widget, int mouseX, int mouseY, float delta);
 
     /**
      * Returns the thickness of the border.
      *
      * @return the thickness
      */
-    int getThickness();
+    public abstract int getThickness();
 }

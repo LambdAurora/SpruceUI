@@ -104,7 +104,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
 
         @Override
-        public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             this.children.forEach(widget -> widget.render(matrices, mouseX, mouseY, delta));
         }
 

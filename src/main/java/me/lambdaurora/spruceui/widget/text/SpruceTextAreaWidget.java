@@ -12,9 +12,15 @@ package me.lambdaurora.spruceui.widget.text;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.background.Background;
+import me.lambdaurora.spruceui.background.SimpleColorBackground;
+import me.lambdaurora.spruceui.border.Border;
+import me.lambdaurora.spruceui.border.SimpleBorder;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import me.lambdaurora.spruceui.util.MultilineText;
 import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
+import me.lambdaurora.spruceui.widget.WithBackground;
+import me.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -40,11 +46,13 @@ import java.util.List;
  * @version 1.7.0
  * @since 1.6.3
  */
-public class SpruceTextAreaWidget extends AbstractSpruceWidget {
+public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
     private final TextRenderer textRenderer;
     private final MultilineText lines;
     private final Cursor cursor = new Cursor(true);
     private final Selection selection = new Selection();
+    private Background background = new SimpleColorBackground(0xff000000);
+    private Border border = new SimpleBorder(1, -6250336, 0xffffffff);
     private int firstLine = 0;
     private int editableColor = 0xe0e0e0;
     private int uneditableColor = 7368816;
@@ -143,17 +151,39 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget {
         this.cursor.adjustFirstLine();
     }
 
+    @Override
+    public @NotNull Background getBackground() {
+        return this.background;
+    }
+
+    @Override
+    public void setBackground(@NotNull Background background) {
+        this.background = background;
+    }
+
+    @Override
+    public @NotNull Border getBorder() {
+        return this.border;
+    }
+
+    @Override
+    public void setBorder(@NotNull Border border) {
+        this.border = border;
+        this.lines.setWidth(this.getInnerWidth());
+        this.sanitize();
+    }
+
     /**
      * Returns the inner width of the text area.
      *
      * @return the inner width
      */
     public int getInnerWidth() {
-        return this.width - 8;
+        return this.getWidth() - 6 - this.getBorder().getThickness() * 2;
     }
 
     public int getInnerHeight() {
-        return this.height - 8;
+        return this.getHeight() - 6 - this.getBorder().getThickness() * 2;
     }
 
     /**
@@ -315,17 +345,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget {
         return this.isActive() && this.isFocused();
     }
 
-    @Override
-    protected boolean onCharTyped(char chr, int keyCode) {
-        if (!this.isEditorActive() || !SharedConstants.isValidChar(chr))
-            return false;
-
-        if (this.isEditable()) {
-            this.insertCharacter(chr);
-            this.selection.cancel();
-        }
-        return true;
-    }
+    /* Navigation */
 
     @Override
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
@@ -351,6 +371,20 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget {
                 return true;
         }
         return super.onNavigation(direction, tab);
+    }
+
+    /* Input */
+
+    @Override
+    protected boolean onCharTyped(char chr, int keyCode) {
+        if (!this.isEditorActive() || !SharedConstants.isValidChar(chr))
+            return false;
+
+        if (this.isEditable()) {
+            this.insertCharacter(chr);
+            this.selection.cancel();
+        }
+        return true;
     }
 
     @Override
@@ -463,14 +497,19 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget {
         return true;
     }
 
+    /* Rendering */
+
     @Override
-    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        int borderColor = this.isFocused() ? -1 : -6250336;
-        fill(matrices, this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, borderColor);
-        fill(matrices, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1, -16777216);
+    protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        this.getBorder().render(matrices, this, mouseX, mouseY, delta);
 
         this.drawText(matrices);
         this.drawCursor(matrices);
+    }
+
+    @Override
+    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        this.getBackground().render(matrices, this, 0, mouseX, mouseY, delta);
     }
 
     /**

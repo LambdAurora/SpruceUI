@@ -12,6 +12,8 @@ package me.lambdaurora.spruceui.widget;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.Tooltipable;
+import me.lambdaurora.spruceui.border.Border;
+import me.lambdaurora.spruceui.border.EmptyBorder;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -31,7 +33,7 @@ import java.util.function.Consumer;
  * @version 1.7.0
  * @since 1.0.0
  */
-public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipable {
+public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipable, WithBorder {
     public static final Consumer<SpruceLabelWidget> DEFAULT_ACTION = label -> {
     };
 
@@ -42,6 +44,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     private List<OrderedText> lines;
     private Text tooltip;
     private boolean centered;
+    private Border border = EmptyBorder.EMPTY_BORDER;
 
     public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered) {
         super(position);
@@ -61,26 +64,6 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 
     public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth) {
         this(position, text, maxWidth, DEFAULT_ACTION);
-    }
-
-    @Deprecated
-    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered) {
-        this(Position.of(x, y), text, maxWidth, action, centered);
-    }
-
-    @Deprecated
-    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action) {
-        this(Position.of(x, y), text, maxWidth, action);
-    }
-
-    @Deprecated
-    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth, boolean centered) {
-        this(Position.of(x, y), text, maxWidth, centered);
-    }
-
-    @Deprecated
-    public SpruceLabelWidget(int x, int y, @NotNull Text text, int maxWidth) {
-        this(Position.of(x, y), text, maxWidth);
     }
 
     /**
@@ -110,6 +93,24 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
         this.height = this.lines.size() * this.client.textRenderer.fontHeight;
     }
 
+    /**
+     * Returns whether this label is centered or not.
+     *
+     * @return {@code true} if this label is centered, else {@code false}
+     */
+    public boolean isCentered() {
+        return this.centered;
+    }
+
+    /**
+     * Sets whether this label is centered or not.
+     *
+     * @param centered {@code true} if this label is centered, else {@code false}
+     */
+    public void setCentered(boolean centered) {
+        this.centered = centered;
+    }
+
     @Override
     public @NotNull Optional<Text> getTooltip() {
         return Optional.ofNullable(this.tooltip);
@@ -118,6 +119,16 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     @Override
     public void setTooltip(@Nullable Text tooltip) {
         this.tooltip = tooltip;
+    }
+
+    @Override
+    public @NotNull Border getBorder() {
+        return this.border;
+    }
+
+    @Override
+    public void setBorder(@NotNull Border border) {
+        this.border = border;
     }
 
     /**
@@ -150,13 +161,15 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     /* Rendering */
 
     @Override
-    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         int y = this.getY();
         for (Iterator<OrderedText> it = this.lines.iterator(); it.hasNext(); y += 9) {
             OrderedText line = it.next();
             int x = this.centered ? this.getX() - this.client.textRenderer.getWidth(line) / 2 : this.getX();
             this.client.textRenderer.draw(matrices, line, x, y, 10526880);
         }
+
+        this.getBorder().render(matrices, this, mouseX, mouseY, delta);
 
         if (this.tooltip != null) {
             if (!this.tooltip.getString().isEmpty()) {
@@ -167,5 +180,12 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
                     Tooltip.create(this.getX() - 12, this.getY(), wrappedTooltipText).queue();
             }
         }
+    }
+
+    /* Narration */
+
+    @Override
+    protected @NotNull Optional<Text> getNarrationMessage() {
+        return Optional.ofNullable(this.getText());
     }
 }

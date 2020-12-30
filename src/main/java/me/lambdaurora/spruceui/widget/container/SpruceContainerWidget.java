@@ -10,9 +10,13 @@
 package me.lambdaurora.spruceui.widget.container;
 
 import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.background.Background;
+import me.lambdaurora.spruceui.background.EmptyBackground;
 import me.lambdaurora.spruceui.border.Border;
 import me.lambdaurora.spruceui.border.EmptyBorder;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
+import me.lambdaurora.spruceui.widget.WithBackground;
+import me.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;
@@ -28,8 +32,9 @@ import java.util.function.Consumer;
  * @version 1.7.0
  * @since 1.7.0
  */
-public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidget> implements ParentElement {
+public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidget> implements ParentElement, WithBackground, WithBorder {
     private final List<SpruceWidget> children = new ArrayList<>();
+    private Background background = EmptyBackground.EMPTY_BACKGROUND;
     private Border border = EmptyBorder.EMPTY_BORDER;
 
     public SpruceContainerWidget(Position position, int width, int height) {
@@ -38,20 +43,22 @@ public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidg
         this.height = height;
     }
 
-    /**
-     * Gets the border of this widget.
-     *
-     * @return the border
-     */
+    @Override
+    public @NotNull Background getBackground() {
+        return this.background;
+    }
+
+    @Override
+    public void setBackground(@NotNull Background background) {
+        this.background = background;
+    }
+
+    @Override
     public @NotNull Border getBorder() {
         return this.border;
     }
 
-    /**
-     * Sets the border of this widget.
-     *
-     * @param border the border
-     */
+    @Override
     public void setBorder(@NotNull Border border) {
         this.border = border;
     }
@@ -73,9 +80,14 @@ public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidg
     /* Rendering */
 
     @Override
-    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.children.forEach(child -> child.render(matrices, mouseX, mouseY, delta));
-        this.getBorder().render(this.client, this, this.getWidth(), this.getHeight());
+        this.getBorder().render(matrices, this, mouseX, mouseY, delta);
+    }
+
+    @Override
+    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        this.getBackground().render(matrices, this, 0, mouseX, mouseY, delta);
     }
 
     public interface ChildrenFactory {

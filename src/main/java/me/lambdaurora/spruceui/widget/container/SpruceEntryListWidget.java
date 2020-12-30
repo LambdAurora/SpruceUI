@@ -13,12 +13,15 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.lambdaurora.spruceui.Position;
-import me.lambdaurora.spruceui.RenderUtil;
+import me.lambdaurora.spruceui.background.Background;
+import me.lambdaurora.spruceui.background.DirtTexturedBackground;
 import me.lambdaurora.spruceui.border.Border;
 import me.lambdaurora.spruceui.border.EmptyBorder;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import me.lambdaurora.spruceui.util.ScissorManager;
 import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
+import me.lambdaurora.spruceui.widget.WithBackground;
+import me.lambdaurora.spruceui.widget.WithBorder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.ParentElement;
@@ -42,15 +45,15 @@ import java.util.List;
  * @version 1.7.0
  * @since 1.7.0
  */
-public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E> implements ParentElement {
+public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E> implements ParentElement, WithBackground, WithBorder {
     protected final Position anchor = Position.of(this, 0, 0);
     private final List<E> entries = new Entries();
     private final int anchorYOffset;
     private double scrollAmount;
-    private boolean renderBackground = true;
+    private Background background = DirtTexturedBackground.DARKENED;
     private boolean renderTransition = true;
-    private boolean scrolling = false;
     private Border border = EmptyBorder.EMPTY_BORDER;
+    private boolean scrolling = false;
     private boolean allowOutsideHorizontalNavigation = false;
 
     public SpruceEntryListWidget(@NotNull Position position, int width, int height, int anchorYOffset, Class<E> entryClass) {
@@ -74,22 +77,14 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         return width;
     }
 
-    /**
-     * Returns whether or not the background should be rendered.
-     *
-     * @return {@code true} if the background should be rendered, else {@code false}
-     */
-    public boolean shouldRenderBackground() {
-        return this.renderBackground;
+    @Override
+    public @NotNull Background getBackground() {
+        return this.background;
     }
 
-    /**
-     * Sets whether or not the background should be rendered.
-     *
-     * @param render {@code true} if the background should be rendered, else {@code false}
-     */
-    public void setRenderBackground(boolean render) {
-        this.renderBackground = render;
+    @Override
+    public void setBackground(@NotNull Background background) {
+        this.background = background;
     }
 
     /**
@@ -110,24 +105,12 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         this.renderTransition = render;
     }
 
-    public boolean hasBorder() {
-        return this.getBorder().getThickness() != 0;
-    }
-
-    /**
-     * Gets the border of this widget.
-     *
-     * @return the border
-     */
+    @Override
     public @NotNull Border getBorder() {
         return this.border;
     }
 
-    /**
-     * Sets the border of this widget.
-     *
-     * @param border the border
-     */
+    @Override
     public void setBorder(@NotNull Border border) {
         this.border = border;
         this.anchor.setRelativeX(border.getThickness());
@@ -307,15 +290,12 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     /* Render */
 
     @Override
-    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY) {
-        if (!this.shouldRenderBackground())
-            return;
-        RenderUtil.renderBackgroundTexture(this.client, this.getX(), this.getY(), this.getWidth(), this.getHeight(),
-                (float) (this.getScrollAmount() / 32.f), 32, 32, 32, 255);
+    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        this.getBackground().render(matrices, this, 0, mouseX, mouseY, delta);
     }
 
     @Override
-    public void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         int scrollbarPositionX = this.getScrollbarPositionX();
         int scrollBarEnd = scrollbarPositionX + 6;
         int left = this.getX();
@@ -378,7 +358,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
             this.renderScrollbar(tessellator, buffer, scrollbarPositionX, scrollBarEnd, scrollbarY, scrollbarHeight);
         }
 
-        this.getBorder().render(client, this, this.getWidth(), this.getHeight());
+        this.getBorder().render(matrices, this, mouseX, mouseY, delta);
 
         RenderSystem.enableTexture();
         RenderSystem.shadeModel(7424);

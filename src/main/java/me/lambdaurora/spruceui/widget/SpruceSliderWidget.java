@@ -162,7 +162,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     }
 
     @Override
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.client.getTextureManager().bindTexture(AbstractButtonWidget.WIDGETS_LOCATION);
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         int vOffset = (this.isFocusedOrHovered() ? 2 : 1) * 20;

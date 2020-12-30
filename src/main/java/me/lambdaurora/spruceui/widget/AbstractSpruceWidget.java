@@ -256,7 +256,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
                 }
             }
 
-            this.renderBackground(matrices, mouseX, mouseY);
+            this.renderBackground(matrices, mouseX, mouseY, delta);
             this.renderWidget(matrices, mouseX, mouseY, delta);
 
             this.narrate();
@@ -266,9 +266,25 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
         }
     }
 
-    public abstract void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta);
+    /**
+     * Renders the widget.
+     *
+     * @param matrices the matrix stack
+     * @param mouseX the mouse X-coordinate
+     * @param mouseY the mouse Y-coordinate
+     * @param delta the tick delta
+     */
+    protected abstract void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta);
 
-    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY) {
+    /**
+     * Renders the background of the widget.
+     *
+     * @param matrices the matrix stack
+     * @param mouseX the mouse X-coordinate
+     * @param mouseY the mouse Y-coordinate
+     * @param delta the tick delta
+     */
+    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
     }
 
     /* Sound */
@@ -279,6 +295,9 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
 
     /* Narration */
 
+    /**
+     * Narrates the narration message if queued and the delay is passed.
+     */
     protected void narrate() {
         if (this.isActive() && this.isFocusedOrHovered() && Util.getMeasuringTimeMs() > this.nextNarration && this.nextNarration != 0) {
             this.getNarrationMessage().map(Text::getString).ifPresent(message -> {
@@ -290,6 +309,11 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
         }
     }
 
+    /**
+     * Returns the narration message.
+     *
+     * @return the narration message if present
+     */
     protected @NotNull Optional<Text> getNarrationMessage() {
         return Optional.empty();
     }

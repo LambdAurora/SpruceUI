@@ -34,7 +34,7 @@ public class SpruceButtonWidget extends AbstractSprucePressableButtonWidget {
 
     @Override
     public String toString() {
-        return "SpruceButtonWidget{" +
+        return this.getClass().getSimpleName() + '{' +
                 "position=" + this.getPosition() +
                 ", width=" + this.getWidth() +
                 ", height=" + this.getHeight() +

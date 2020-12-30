@@ -7,30 +7,26 @@
  * see the LICENSE file.
  */
 
-package me.lambdaurora.spruceui.border;
+package me.lambdaurora.spruceui.background;
 
 import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.util.math.MatrixStack;
 
 /**
- * Represents an empty border.
+ * Represents an empty background.
  *
  * @author LambdAurora
  * @version 1.7.0
  * @since 1.7.0
  */
-public final class EmptyBorder extends Border {
-    public static final EmptyBorder EMPTY_BORDER = new EmptyBorder();
+public final class EmptyBackground implements Background {
+    public static final EmptyBackground EMPTY_BACKGROUND = new EmptyBackground();
 
-    private EmptyBorder() {
+    private EmptyBackground() {
+
     }
 
     @Override
-    public void render(MatrixStack matrices, SpruceWidget widget, int mouseX, int mouseY, float delta) {
-    }
-
-    @Override
-    public int getThickness() {
-        return 0;
+    public void render(MatrixStack matrices, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
     }
 }

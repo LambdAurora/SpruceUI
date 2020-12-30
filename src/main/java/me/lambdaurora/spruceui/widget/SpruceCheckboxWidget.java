@@ -85,7 +85,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
     }
 
     @Override
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         RenderSystem.enableDepthTest();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -108,7 +108,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
     }
 
     @Override
-    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY) {
+    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.client.getTextureManager().bindTexture(TEXTURE);
         RenderSystem.enableDepthTest();
         RenderSystem.color4f(1.f, 1.f, 1.f, this.alpha);

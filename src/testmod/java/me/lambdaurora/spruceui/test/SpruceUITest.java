@@ -11,6 +11,7 @@ package me.lambdaurora.spruceui.test;
 
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceTexts;
+import me.lambdaurora.spruceui.background.SimpleColorBackground;
 import me.lambdaurora.spruceui.option.*;
 import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
@@ -87,7 +88,7 @@ public class SpruceUITest implements ClientModInitializer {
                         + "Each press will cycle the value between some pre-defined values."));
 
         // Choose whatever action this option should do.
-        this.actionOption = new SpruceSimpleActionOption("spruceui_test.option.action",
+        this.actionOption = SpruceSimpleActionOption.of("spruceui_test.option.action",
                 btn -> {
                     MinecraftClient client = MinecraftClient.getInstance();
                     SystemToast toast = SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT,
@@ -98,7 +99,7 @@ public class SpruceUITest implements ClientModInitializer {
                         + "It's used like a normal button and a press callback."));
 
         // Reset option to reset values.
-        this.resetOption = new SpruceResetOption(btn -> {
+        this.resetOption = SpruceSimpleActionOption.reset(btn -> {
             this.aBoolean = false;
             this.checkboxBoolean = false;
             this.aDouble = 0.0;
@@ -181,8 +182,8 @@ public class SpruceUITest implements ClientModInitializer {
                 }));
         // Add done button.
         if (doneButtonAction != null)
-        container.addChild(new SpruceButtonWidget(Position.of(width / 2 - 155 + 160, height - 29), 150, 20, SpruceTexts.GUI_DONE,
-                doneButtonAction));
+            container.addChild(new SpruceButtonWidget(Position.of(width / 2 - 155 + 160, height - 29), 150, 20, SpruceTexts.GUI_DONE,
+                    doneButtonAction));
 
         return container;
     }
