@@ -33,4 +33,11 @@ public class SimpleColorBackground extends DrawableHelper implements Background 
         int y = widget.getY();
         fill(matrices, x, y, x + widget.getWidth(), y + widget.getHeight(), this.color);
     }
+
+    @Override
+    public String toString() {
+        return "SimpleColorBackground{" +
+                ", color=" + this.color +
+                '}';
+    }
 }

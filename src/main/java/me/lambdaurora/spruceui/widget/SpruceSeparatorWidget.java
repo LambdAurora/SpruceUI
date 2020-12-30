@@ -96,14 +96,14 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
     protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (this.title != null) {
             int titleWidth = this.client.textRenderer.getWidth(this.title);
-            int titleX = this.getX() + (this.width / 2 - titleWidth / 2);
+            int titleX = this.getX() + (this.getWidth() / 2 - titleWidth / 2);
             if (this.width > titleWidth) {
                 fill(matrices, this.getX(), this.getY() + 4, titleX - 5, this.getY() + 6, 0xffe0e0e0);
-                fill(matrices, titleX + titleWidth + 5, this.getY() + 4, this.getX() + this.width, this.getY() + 6, 0xffe0e0e0);
+                fill(matrices, titleX + titleWidth + 5, this.getY() + 4, this.getX() + this.getWidth(), this.getY() + 6, 0xffe0e0e0);
             }
             DrawableHelper.drawTextWithShadow(matrices, this.client.textRenderer, this.title, titleX, this.getY(), 0xffffff);
         } else {
-            fill(matrices, this.getX(), this.getY() + 4, this.getX() + this.width, this.getY() + 6, 0xffe0e0e0);
+            fill(matrices, this.getX(), this.getY() + 4, this.getX() + this.getWidth(), this.getY() + 6, 0xffe0e0e0);
         }
 
         Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);

@@ -17,6 +17,8 @@ import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 
+import java.util.Arrays;
+
 /**
  * Represents a simple solid border to draw around a widget.
  *
@@ -96,5 +98,14 @@ public final class SimpleBorder extends Border {
     @Override
     public int getThickness() {
         return this.thickness;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleBorder{" +
+                "thickness=" + this.thickness +
+                ", color=" + Arrays.toString(this.color) +
+                ", focusedColor=" + Arrays.toString(this.focusedColor) +
+                '}';
     }
 }

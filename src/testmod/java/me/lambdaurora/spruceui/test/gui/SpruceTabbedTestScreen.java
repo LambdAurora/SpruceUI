@@ -36,8 +36,8 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
 
     @Override
     protected void init() {
-        this.tabbedWidget = new SpruceTabbedWidget(Position.of(this, 0, 22), this.width, this.height - 35 - 22);
-        this.tabbedWidget.addEntry(new LiteralText("Hello World"), null, (width, height) -> {
+        this.tabbedWidget = new SpruceTabbedWidget(Position.of(this, 0, 4), this.width, this.height - 35 - 4, this.title);
+        this.tabbedWidget.addTabEntry(new LiteralText("Hello World"), null, (width, height) -> {
             SpruceContainerWidget container = new SpruceContainerWidget(Position.origin(), width, height);
             container.addChildren((containerWidth, containerHeight, widgetAdder) -> {
                 widgetAdder.accept(new SpruceLabelWidget(Position.center(containerWidth, 16), new LiteralText("Hello World!").formatted(Formatting.WHITE), containerWidth, true));
@@ -48,9 +48,10 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
             });
             return container;
         });
-        this.tabbedWidget.addEntry(new LiteralText("Option Test"), new LiteralText("useful for config stuff.").formatted(Formatting.GRAY),
+        this.tabbedWidget.addSeparatorEntry(new LiteralText("Separator"));
+        this.tabbedWidget.addTabEntry(new LiteralText("Option Test"), new LiteralText("useful for config stuff.").formatted(Formatting.GRAY),
                 (width, height) -> SpruceUITest.get().buildOptionList(Position.origin(), width, height));
-        this.tabbedWidget.addEntry(new LiteralText("Text Area"), new LiteralText("to edit stuff on multiple lines.").formatted(Formatting.GRAY),
+        this.tabbedWidget.addTabEntry(new LiteralText("Text Area"), new LiteralText("to edit stuff on multiple lines.").formatted(Formatting.GRAY),
                 (width, height) -> SpruceUITest.buildTextAreaContainer(Position.origin(), width, height,
                         textArea -> {
                         }, null));
@@ -67,7 +68,7 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
         this.tabbedWidget.render(matrices, mouseX, mouseY, delta);
         super.render(matrices, mouseX, mouseY, delta);
         // Draw the title text.
-        drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 16777215);
+        //drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 16777215);
         // Render all the tooltips.
         Tooltip.renderAll(this, matrices);
     }

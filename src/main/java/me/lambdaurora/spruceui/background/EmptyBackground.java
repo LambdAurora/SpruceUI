@@ -29,4 +29,9 @@ public final class EmptyBackground implements Background {
     @Override
     public void render(MatrixStack matrices, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
     }
+
+    @Override
+    public String toString() {
+        return "EmptyBackground{}";
+    }
 }

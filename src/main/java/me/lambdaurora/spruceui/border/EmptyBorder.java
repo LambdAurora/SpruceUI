@@ -33,4 +33,9 @@ public final class EmptyBorder extends Border {
     public int getThickness() {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "EmptyBorder{}";
+    }
 }

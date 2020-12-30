@@ -14,7 +14,7 @@ import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class DirtTexturedBackground implements Background {
+public final class DirtTexturedBackground implements Background {
     public static final Background NORMAL = new DirtTexturedBackground(64, 64, 64, 255);
     public static final Background DARKENED = new DirtTexturedBackground(32, 32, 32, 255);
 
@@ -35,5 +35,15 @@ public class DirtTexturedBackground implements Background {
     public void render(MatrixStack matrices, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
         RenderUtil.renderBackgroundTexture(this.client, widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight(),
                 vOffset / 32.f, this.red, this.green, this.blue, this.alpha);
+    }
+
+    @Override
+    public String toString() {
+        return "DirtTexturedBackground{" +
+                "red=" + this.red +
+                ", green=" + this.green +
+                ", blue=" + this.blue +
+                ", alpha=" + this.alpha +
+                '}';
     }
 }
