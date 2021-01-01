@@ -24,7 +24,7 @@ public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePr
     private static final PressAction DEFAULT_ACTION = (button, newValue) -> {
     };
 
-    private PressAction action = DEFAULT_ACTION;
+    private final PressAction action;
     private boolean value;
     protected boolean showMessage;
 
@@ -44,6 +44,7 @@ public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePr
     public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action,
                                              boolean value, boolean showMessage) {
         super(position, width, height, message);
+        this.action = action;
         this.value = value;
         this.showMessage = showMessage;
     }
