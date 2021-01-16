@@ -49,7 +49,7 @@ dependencies {
     modImplementation(fabricApi.module('fabric-rendering-v1', project.fabric_api_version))
     modImplementation(fabricApi.module('fabric-resource-loader-v0', project.fabric_api_version))
 
-    modImplementation("io.github.prospector:modmenu:${project.modmenu_version}") {
+    modRuntime("io.github.prospector:modmenu:${project.modmenu_version}") {
         transitive = false
     }
 
