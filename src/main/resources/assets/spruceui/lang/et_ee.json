@@ -1,0 +1,12 @@
+{
+  "spruceui.reset": "Lähtesta",
+  "spruceui.narrator.separator": "%s eraldaja",
+  "spruceui.not_bound": "Määramata",
+  "spruceui.options.generic": "%s: %s",
+  "spruceui.options.generic.fancy": "Uhke",
+  "spruceui.options.generic.fast": "Kiire",
+  "spruceui.options.generic.fastest": "Kiireim",
+  "spruceui.options.generic.simple": "Lihtne",
+  "spruceui.options.generic.unbound": "Vabasta",
+  "spruceui.widget.separator": "Eraldaja"
+}

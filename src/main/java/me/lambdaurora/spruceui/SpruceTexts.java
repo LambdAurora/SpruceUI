@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a text utility class.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.6.5
  * @since 1.5.7
  */
 public final class SpruceTexts
@@ -46,6 +46,11 @@ public final class SpruceTexts
 
     public static final Text GUI_DONE = new TranslatableText("gui.done");
 
+    /**
+     * @since 1.6.5
+     */
+    public static final Text GUI_NONE = new TranslatableText("gui.none");
+
     public static final Text MENU_OPTIONS = new TranslatableText("menu.options");
 
     /**
@@ -58,7 +63,7 @@ public final class SpruceTexts
     /**
      * Represents the option value "default" as text.
      */
-    public static final Text OPTIONS_GENERIC_DEFAULT = new TranslatableText("spruceui.options.generic.default");
+    public static final Text OPTIONS_GENERIC_DEFAULT = new TranslatableText("generator.default");
 
     /**
      * Represents the option value "fancy" as text.
@@ -78,7 +83,8 @@ public final class SpruceTexts
     /**
      * Represents the option value "none" as text.
      */
-    public static final Text OPTIONS_GENERIC_NONE = new TranslatableText("spruceui.options.generic.none");
+    @Deprecated
+    public static final Text OPTIONS_GENERIC_NONE = GUI_NONE;
 
     /**
      * Represents the option value "simple" as text.
