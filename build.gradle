@@ -6,8 +6,16 @@ plugins {
 }
 
 archivesBaseName = project.archives_base_name
-version = "${project.mod_version}+${project.minecraft_version}"
+version = "${project.mod_version}+${getMCVersionString()}"
 group = project.maven_group
+
+def getMCVersionString() {
+    if (project.minecraft_version.matches("\\d\\dw\\d\\d[a-z]")) {
+        return project.minecraft_version
+    }
+    int lastDot = project.minecraft_version.lastIndexOf('.')
+    return project.minecraft_version.substring(0, lastDot);
+}
 
 sourceSets {
     testmod {
