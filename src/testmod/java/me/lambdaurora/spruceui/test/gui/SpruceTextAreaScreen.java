@@ -53,12 +53,7 @@ public class SpruceTextAreaScreen extends SpruceScreen {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.renderBackground(matrices);
-        this.children().stream().filter(child -> child instanceof Drawable).forEach(child -> ((Drawable) child).render(matrices, mouseX, mouseY, delta));
-        // Draw the title text.
+    public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 16777215);
-        // Render all the tooltips.
-        Tooltip.renderAll(this, matrices);
     }
 }

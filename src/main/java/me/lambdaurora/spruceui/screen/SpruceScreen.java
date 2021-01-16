@@ -10,11 +10,15 @@
 package me.lambdaurora.spruceui.screen;
 
 import me.lambdaurora.spruceui.SprucePositioned;
+import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
+import me.lambdaurora.spruceui.util.ScissorManager;
 import me.lambdaurora.spruceui.widget.SpruceElement;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
+import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
@@ -33,6 +37,8 @@ import java.util.function.Supplier;
  * @since 1.7.0
  */
 public abstract class SpruceScreen extends Screen implements SprucePositioned, SpruceElement {
+    protected double scaleFactor;
+
     protected SpruceScreen(@NotNull Text title) {
         super(title);
     }
@@ -49,11 +55,20 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
     }
 
     @Override
+    protected void init() {
+        this.scaleFactor = this.client.getWindow().getScaleFactor();
+    }
+
+    /* Input */
+
+    @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         Optional<NavigationDirection> direction = NavigationDirection.fromKey(keyCode, Screen.hasShiftDown());
         return direction.map(dir -> this.onNavigation(dir, keyCode == GLFW.GLFW_KEY_TAB))
                 .orElseGet(() -> super.keyPressed(keyCode, scanCode, modifiers));
     }
+
+    /* Navigation */
 
     @Override
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
@@ -92,5 +107,26 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
             return ((SpruceElement) element).onNavigation(direction, tab);
         }
         return element.changeFocus(direction.isLookingForward());
+    }
+
+    /* Render */
+
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        ScissorManager.pushScaleFactor(this.scaleFactor);
+        this.renderBackground(matrices);
+        this.renderWidgets(matrices, mouseX, mouseY, delta);
+        this.renderTitle(matrices, mouseX, mouseY, delta);
+        Tooltip.renderAll(this, matrices);
+        ScissorManager.popScaleFactor();
+    }
+
+    public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {}
+
+    public void renderWidgets(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        for (Element element : this.children()) {
+            if (element instanceof Drawable)
+                ((Drawable) element).render(matrices, mouseX, mouseY, delta);
+        }
     }
 }

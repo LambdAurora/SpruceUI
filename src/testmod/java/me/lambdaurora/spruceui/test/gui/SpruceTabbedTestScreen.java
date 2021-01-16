@@ -36,6 +36,7 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
 
     @Override
     protected void init() {
+        super.init();
         this.tabbedWidget = new SpruceTabbedWidget(Position.of(this, 0, 4), this.width, this.height - 35 - 4, this.title);
         this.tabbedWidget.addTabEntry(new LiteralText("Hello World"), null, (width, height) -> {
             SpruceContainerWidget container = new SpruceContainerWidget(Position.origin(), width, height);
@@ -60,16 +61,5 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
         // Add done button.
         this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
                 btn -> this.client.openScreen(this.parent)).asVanilla());
-    }
-
-    @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.renderBackground(matrices);
-        this.tabbedWidget.render(matrices, mouseX, mouseY, delta);
-        super.render(matrices, mouseX, mouseY, delta);
-        // Draw the title text.
-        //drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 16777215);
-        // Render all the tooltips.
-        Tooltip.renderAll(this, matrices);
     }
 }

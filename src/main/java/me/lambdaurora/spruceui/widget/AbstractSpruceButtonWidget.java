@@ -161,15 +161,45 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
-        int vOffset = this.getVOffset();
-        this.drawTexture(matrices,
-                this.getX(), this.getY(),
-                0, 46 + vOffset * 20,
-                this.getWidth() / 2, this.getHeight());
-        this.drawTexture(matrices,
-                this.getX() + this.getWidth() / 2, this.getY(),
-                200 - this.getWidth() / 2, 46 + vOffset * 20,
-                this.getWidth() / 2, this.getHeight());
+        int v = 46 + this.getVOffset() * 20;
+        if (this.getWidth() / 2 < 200) {
+            this.drawTexture(matrices,
+                    this.getX(), this.getY(),
+                    0, v,
+                    this.getWidth() / 2, this.getHeight());
+            this.drawTexture(matrices,
+                    this.getX() + this.getWidth() / 2, this.getY(),
+                    200 - this.getWidth() / 2, v,
+                    this.getWidth() / 2, this.getHeight());
+        } else {
+            int middleWidth = this.getWidth() - 100;
+            this.drawTexture(matrices,
+                    this.getX(), this.getY(),
+                    0, v,
+                    50, this.getHeight());
+
+            int x;
+            for (x = 50; x < middleWidth; x += 100) {
+                this.drawTexture(matrices,
+                        this.getX() + x, this.getY(),
+                        50, v,
+                        100, this.getHeight());
+            }
+
+            if (this instanceof SpruceSliderWidget)
+            System.out.println(middleWidth - x);
+            if (x - middleWidth> 0) {
+                this.drawTexture(matrices,
+                        this.getX() + x, this.getY(),
+                        50, v,
+                        x - middleWidth, this.getHeight());
+            }
+
+            this.drawTexture(matrices,
+                    this.getX() + this.getWidth() - 50, this.getY(),
+                    150, v,
+                    50, this.getHeight());
+        }
     }
 
     /* Narration */

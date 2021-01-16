@@ -56,15 +56,17 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
     private int firstLine = 0;
     private int editableColor = 0xe0e0e0;
     private int uneditableColor = 7368816;
-    private int displayedLines = 1;
+    private int displayedLines;
 
     public SpruceTextAreaWidget(@NotNull Position position, @NotNull TextRenderer textRenderer, int width, int height, Text message) {
         super(position);
         this.width = width;
         this.height = height;
         this.textRenderer = textRenderer;
+        this.displayedLines = this.getInnerHeight() / this.textRenderer.fontHeight;
         this.lines = new MultilineText(this.getInnerWidth());
         this.cursor.toStart();
+        this.sanitize();
     }
 
     public SpruceTextAreaWidget(@NotNull TextRenderer textRenderer, int x, int y, int width, int height, Text message) {
@@ -463,9 +465,14 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
             int x = MathHelper.floor(mouseX) - this.getX() - 4;
             int y = MathHelper.floor(mouseY) - this.getY() - 4;
 
+            this.setFocused(true);
+
             int row = this.firstLine + y / 9;
             if (row >= this.lines.size()) {
                 this.cursor.toEnd();
+                return true;
+            } else if (row < 0) {
+                this.cursor.toStart();
                 return true;
             }
 
@@ -474,8 +481,6 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
 
                 this.cursor.lastColumn = this.cursor.column = this.textRenderer.trimToWidth(this.lines.get(row), x).length();
             });
-
-            this.setFocused(true);
 
             return true;
         }
@@ -712,9 +717,11 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
         }
 
         public void toEnd() {
-            this.row = lines.size() - 1;
-            String line = lines.get(this.row);
-            if (line.endsWith("\n"))
+            this.row = Math.max(0, lines.size() - 1);
+            String line = SpruceTextAreaWidget.this.lines.get(this.row);
+            if (line == null)
+                this.lastColumn = this.column = 0;
+            else if (line.endsWith("\n"))
                 this.lastColumn = this.column = line.length() - 1;
             else
                 this.lastColumn = this.column = line.length();
@@ -723,7 +730,9 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
 
         public void toRowEnd() {
             String line = lines.get(this.row);
-            if (line.endsWith("\n"))
+            if (line == null)
+                this.lastColumn = this.column = 0;
+            else if (line.endsWith("\n"))
                 this.lastColumn = this.column = line.length() - 1;
             else
                 this.lastColumn = this.column = line.length();

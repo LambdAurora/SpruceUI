@@ -13,10 +13,12 @@ import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.background.Background;
 import me.lambdaurora.spruceui.background.EmptyBackground;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
+import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import me.lambdaurora.spruceui.widget.SpruceSeparatorWidget;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
 import me.lambdaurora.spruceui.widget.WithBackground;
 import me.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
+import me.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import me.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
@@ -70,7 +72,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         this.addTabEntry(title, description, factory.build(this.getWidth() - this.list.getWidth(), this.getHeight()));
     }
 
-    public void addTabEntry(Text title, @Nullable Text description, SpruceWidget container) {
+    public void addTabEntry(Text title, @Nullable Text description, AbstractSpruceWidget container) {
         TabEntry entry = this.list.addTabEntry(title, description, container);
         entry.container.getPosition().setAnchor(this.anchor);
     }
@@ -185,10 +187,10 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
     public static class TabEntry extends Entry {
         private final List<OrderedText> description;
-        private final SpruceWidget container;
+        private final AbstractSpruceWidget container;
         private boolean selected;
 
-        protected TabEntry(SideTabList parent, Text title, @Nullable Text description, SpruceWidget container) {
+        protected TabEntry(SideTabList parent, Text title, @Nullable Text description, AbstractSpruceWidget container) {
             super(parent, title);
             if (description == null) this.description = null;
             else this.description = this.client.textRenderer.wrapLines(description, this.parent.getWidth() - 18);
@@ -339,7 +341,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
             this.currentTab = tab;
         }
 
-        public TabEntry addTabEntry(Text title, @Nullable Text description, SpruceWidget container) {
+        public TabEntry addTabEntry(Text title, @Nullable Text description, AbstractSpruceWidget container) {
             TabEntry entry = new TabEntry(this, title, description, container);
             this.addEntry(entry);
             if (this.getCurrentTab() == null)
@@ -369,6 +371,6 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
     }
 
     public interface ContainerFactory {
-        SpruceWidget build(int width, int height);
+        AbstractSpruceWidget build(int width, int height);
     }
 }

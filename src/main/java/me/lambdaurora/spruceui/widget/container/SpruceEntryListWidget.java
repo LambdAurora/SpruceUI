@@ -303,11 +303,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         int top = this.getY();
         int bottom = top + this.getHeight();
 
-        {
-            double scaleFactor = this.client.getWindow().getScaleFactor();
-            ScissorManager.push((int) (scaleFactor * this.getX()), (int) (scaleFactor * (this.client.getWindow().getScaledHeight() - this.getY() - this.getHeight())),
-                    (int) (scaleFactor * this.getWidth()), (int) (scaleFactor * this.getHeight()));
-        }
+        ScissorManager.push(this.getX(), this.getY(), this.getWidth(), this.getHeight());
         this.entries.forEach(e -> e.render(matrices, mouseX, mouseY, delta));
         ScissorManager.pop();
 

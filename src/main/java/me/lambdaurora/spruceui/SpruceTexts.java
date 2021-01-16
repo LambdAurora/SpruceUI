@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a text utility class.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 1.7.0
  * @since 1.5.7
  */
 public final class SpruceTexts {
@@ -45,6 +45,13 @@ public final class SpruceTexts {
 
     public static final Text GUI_DONE = new TranslatableText("gui.done");
 
+    /**
+     * Represents "none" as text.
+     *
+     * @since 1.7.0
+     */
+    public static final Text GUI_NONE = new TranslatableText("gui.none");
+
     public static final Text MENU_OPTIONS = new TranslatableText("menu.options");
 
     /**
@@ -52,12 +59,12 @@ public final class SpruceTexts {
      *
      * @since 1.6.0
      */
-    public static final Text NOT_BOUND = new TranslatableText("spruceui.not_bound");
+    public static final Text NOT_BOUND = new TranslatableText("key.keyboard.unknown");
 
     /**
      * Represents the option value "default" as text.
      */
-    public static final Text OPTIONS_GENERIC_DEFAULT = new TranslatableText("spruceui.options.generic.default");
+    public static final Text OPTIONS_GENERIC_DEFAULT = new TranslatableText("generator.default");
 
     /**
      * Represents the option value "fancy" as text.
@@ -73,11 +80,6 @@ public final class SpruceTexts {
      * Represents the option value "fastest" as text.
      */
     public static final Text OPTIONS_GENERIC_FASTEST = new TranslatableText("spruceui.options.generic.fastest");
-
-    /**
-     * Represents the option value "none" as text.
-     */
-    public static final Text OPTIONS_GENERIC_NONE = new TranslatableText("spruceui.options.generic.none");
 
     /**
      * Represents the option value "simple" as text.
@@ -117,8 +119,8 @@ public final class SpruceTexts {
     /**
      * Returns the narrator text to describe the button which resets a keybinding.
      *
-     * @param bindingName The binding name.
-     * @return The text.
+     * @param bindingName the binding name
+     * @return the text
      * @see #CONTROLS_RESET
      * @since 1.6.0
      */

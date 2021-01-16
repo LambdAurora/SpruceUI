@@ -167,7 +167,6 @@ public class SpruceUITest implements ClientModInitializer {
                 "This widget can be very useful in some cases."));
         textAreaConsumer.accept(textArea);
         // Display as many lines as possible
-        textArea.setDisplayedLines(textArea.getInnerHeight() / textRenderer.fontHeight);
         textArea.setCursorToStart();
         SpruceContainerWidget container = new SpruceContainerWidget(position, width, height);
         container.addChild(textArea);
