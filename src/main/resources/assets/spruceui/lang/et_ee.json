@@ -3,12 +3,10 @@
   "spruceui.narrator.separator": "%s eraldaja",
   "spruceui.not_bound": "Määramata",
   "spruceui.options.generic": "%s: %s",
-  "spruceui.options.generic.default": "Vaikimisi",
   "spruceui.options.generic.fancy": "Uhke",
   "spruceui.options.generic.fast": "Kiire",
   "spruceui.options.generic.fastest": "Kiireim",
-  "spruceui.options.generic.none": "Puudub",
   "spruceui.options.generic.simple": "Lihtne",
-  "spruceui.options.generic.unbound": "Määramata",
+  "spruceui.options.generic.unbound": "Vabasta",
   "spruceui.widget.separator": "Eraldaja"
 }
