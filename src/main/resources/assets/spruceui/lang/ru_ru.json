@@ -1,11 +1,11 @@
 {
   "spruceui.reset": "Сброс",
+  "spruceui.gui.unbind": "Несвязанный",
   "spruceui.narrator.separator": "%s разделитель",
   "spruceui.options.generic": "%s: %s",
   "spruceui.options.generic.fancy": "Детальный",
   "spruceui.options.generic.fast": "Быстрый",
   "spruceui.options.generic.fastest": "Быстрейший",
   "spruceui.options.generic.simple": "Простой",
-  "spruceui.options.generic.unbound": "Несвязанный",
   "spruceui.widget.separator": "Разделитель"
 }

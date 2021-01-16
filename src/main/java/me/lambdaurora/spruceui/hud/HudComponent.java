@@ -22,15 +22,13 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.5.0
  * @since 1.2.0
  */
-public abstract class HudComponent extends DrawableHelper implements Identifiable
-{
+public abstract class HudComponent extends DrawableHelper implements Identifiable {
     protected final Identifier identifier;
-    protected       boolean    enabled = true;
-    protected       int        x;
-    protected       int        y;
+    protected boolean enabled = true;
+    protected int x;
+    protected int y;
 
-    protected HudComponent(@NotNull Identifier identifier, int x, int y)
-    {
+    protected HudComponent(@NotNull Identifier identifier, int x, int y) {
         this.identifier = identifier;
         this.x = x;
         this.y = y;
@@ -41,8 +39,7 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
      *
      * @return This component's translation key.
      */
-    public String getTranslationKey()
-    {
+    public String getTranslationKey() {
         return this.identifier.getNamespace() + ".hud.component." + this.identifier.getName();
     }
 
@@ -51,8 +48,7 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
      *
      * @return True if the HUD component is enabled, else false.
      */
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return this.enabled;
     }
 
@@ -61,8 +57,7 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
      *
      * @param enabled True if the HUD component is enabled, else false.
      */
-    public void setEnabled(boolean enabled)
-    {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -80,8 +75,7 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
      * @see #isEnabled()
      * @see #hasTicks()
      */
-    public void tick()
-    {
+    public void tick() {
     }
 
     /**
@@ -90,14 +84,12 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
      * @return True if this HUD has tick updates, else false.
      * @see #tick()
      */
-    public boolean hasTicks()
-    {
+    public boolean hasTicks() {
         return false;
     }
 
     @Override
-    public @NotNull Identifier getIdentifier()
-    {
+    public @NotNull Identifier getIdentifier() {
         return this.identifier;
     }
 }

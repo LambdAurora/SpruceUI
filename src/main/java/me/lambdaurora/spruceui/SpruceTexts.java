@@ -17,11 +17,10 @@ import org.jetbrains.annotations.NotNull;
  * Represents a text utility class.
  *
  * @author LambdAurora
- * @version 1.6.5
+ * @version 2.0.0
  * @since 1.5.7
  */
-public final class SpruceTexts
-{
+public final class SpruceTexts {
     /**
      * Represents the text usually present in tooltips to indicate that the link can be opened.
      *
@@ -47,9 +46,18 @@ public final class SpruceTexts
     public static final Text GUI_DONE = new TranslatableText("gui.done");
 
     /**
-     * @since 1.6.5
+     * Represents "none" as text.
+     *
+     * @since 2.0.0
      */
     public static final Text GUI_NONE = new TranslatableText("gui.none");
+
+    /**
+     * Represents the unbind action as text.
+     *
+     * @since 2.0.0
+     */
+    public static final Text GUI_UNBIND = new TranslatableText("spruceui.gui.unbind");
 
     public static final Text MENU_OPTIONS = new TranslatableText("menu.options");
 
@@ -58,7 +66,7 @@ public final class SpruceTexts
      *
      * @since 1.6.0
      */
-    public static final Text NOT_BOUND = new TranslatableText("spruceui.not_bound");
+    public static final Text NOT_BOUND = new TranslatableText("key.keyboard.unknown");
 
     /**
      * Represents the option value "default" as text.
@@ -81,20 +89,9 @@ public final class SpruceTexts
     public static final Text OPTIONS_GENERIC_FASTEST = new TranslatableText("spruceui.options.generic.fastest");
 
     /**
-     * Represents the option value "none" as text.
-     */
-    @Deprecated
-    public static final Text OPTIONS_GENERIC_NONE = GUI_NONE;
-
-    /**
      * Represents the option value "simple" as text.
      */
     public static final Text OPTIONS_GENERIC_SIMPLE = new TranslatableText("spruceui.options.generic.simple");
-
-    /**
-     * Represents the option value "unbound" as text.
-     */
-    public static final Text OPTIONS_GENERIC_UNBOUND = new TranslatableText("spruceui.options.generic.unbound");
 
     /**
      * Represents the option value "on" as text.
@@ -124,13 +121,12 @@ public final class SpruceTexts
     /**
      * Returns the narrator text to describe the button which resets a keybinding.
      *
-     * @param bindingName The binding name.
-     * @return The text.
+     * @param bindingName the binding name
+     * @return the text
      * @see #CONTROLS_RESET
      * @since 1.6.0
      */
-    public static Text getNarratorControlsReset(@NotNull Text bindingName)
-    {
+    public static Text getNarratorControlsReset(@NotNull Text bindingName) {
         return new TranslatableText("narrator.controls.reset", bindingName);
     }
 }

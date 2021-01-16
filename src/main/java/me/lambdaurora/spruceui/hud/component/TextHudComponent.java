@@ -24,19 +24,16 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.6.0
  * @since 1.3.5
  */
-public class TextHudComponent extends HudComponent
-{
+public class TextHudComponent extends HudComponent {
     protected MinecraftClient client;
-    protected Text            text;
-    protected int             color;
+    protected Text text;
+    protected int color;
 
-    public TextHudComponent(@NotNull Identifier identifier, int x, int y, Text text)
-    {
+    public TextHudComponent(@NotNull Identifier identifier, int x, int y, Text text) {
         this(identifier, x, y, text, 0xffffffff);
     }
 
-    public TextHudComponent(@NotNull Identifier identifier, int x, int y, Text text, int color)
-    {
+    public TextHudComponent(@NotNull Identifier identifier, int x, int y, Text text, int color) {
         super(identifier, x, y);
         this.client = MinecraftClient.getInstance();
         this.text = text;
@@ -48,8 +45,7 @@ public class TextHudComponent extends HudComponent
      *
      * @return The component's text.
      */
-    public Text getText()
-    {
+    public Text getText() {
         return this.text;
     }
 
@@ -58,8 +54,7 @@ public class TextHudComponent extends HudComponent
      *
      * @param text The text.
      */
-    public void setText(Text text)
-    {
+    public void setText(Text text) {
         this.text = text;
     }
 
@@ -68,8 +63,7 @@ public class TextHudComponent extends HudComponent
      *
      * @return The text color.
      */
-    public int getColor()
-    {
+    public int getColor() {
         return this.color;
     }
 
@@ -78,14 +72,12 @@ public class TextHudComponent extends HudComponent
      *
      * @param color The text color.
      */
-    public void setColor(int color)
-    {
+    public void setColor(int color) {
         this.color = color;
     }
 
     @Override
-    public void render(MatrixStack matrices, float tickDelta)
-    {
+    public void render(MatrixStack matrices, float tickDelta) {
         DrawableHelper.drawTextWithShadow(matrices, client.textRenderer, this.text, this.x, this.y, this.color);
     }
 }

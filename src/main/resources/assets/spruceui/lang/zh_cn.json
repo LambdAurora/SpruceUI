@@ -1,12 +1,11 @@
 {
   "spruceui.reset": "重置",
+  "spruceui.gui.unbind": "未绑定",
   "spruceui.narrator.separator": "%s 分割线",
-  "spruceui.not_bound": "未绑定",
   "spruceui.options.generic": "%s: %s",
   "spruceui.options.generic.fancy": "华丽",
   "spruceui.options.generic.fast": "快速",
   "spruceui.options.generic.fastest": "最快",
   "spruceui.options.generic.simple": "简约",
-  "spruceui.options.generic.unbound": "未绑定",
   "spruceui.widget.separator": "分割线"
 }

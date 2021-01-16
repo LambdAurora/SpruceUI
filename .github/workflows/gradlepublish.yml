@@ -20,6 +20,11 @@ jobs:
       - name: Build with Gradle
         run: gradle build
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Artifacts
+          path: ./build/libs/
+
       # The USERNAME and PASSWORD need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle
       - name: Publish to GitHub Packages

@@ -9,11 +9,16 @@
 
 package me.lambdaurora.spruceui.option;
 
+import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
+import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.Option;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.aperlambda.lambdacommon.utils.Nameable;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,55 +29,57 @@ import java.util.Optional;
  * Represents an option.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 2.0.0
  * @since 1.0.3
  */
-public abstract class SpruceOption extends Option implements Nameable
-{
-    public final String         key;
-    private      Optional<Text> tooltip = Optional.empty();
+public abstract class SpruceOption extends Option implements Nameable {
+    public final String key;
+    private Optional<Text> tooltip = Optional.empty();
 
-    public SpruceOption(@NotNull String key)
-    {
+    public SpruceOption(@NotNull String key) {
         super(key);
         Objects.requireNonNull(key, "Cannot create an option without a key.");
         this.key = key;
     }
 
     @Override
-    public @NotNull String getName()
-    {
+    public @NotNull String getName() {
         return I18n.translate(this.key);
     }
 
-    public @NotNull Optional<Text> getOptionTooltip()
-    {
+    public @NotNull Optional<Text> getOptionTooltip() {
         return this.tooltip;
     }
 
-    public void setTooltip(@Nullable Text tooltip)
-    {
+    public void setTooltip(@Nullable Text tooltip) {
         this.tooltip = Optional.ofNullable(tooltip);
     }
 
     /**
      * Returns the display prefix text.
      *
-     * @return The display prefix.
+     * @return the display prefix
      */
-    public @NotNull Text getPrefix()
-    {
+    public @NotNull Text getPrefix() {
         return new TranslatableText(this.key);
     }
 
     /**
      * Returns the display text.
      *
-     * @param value The value.
-     * @return The display text.
+     * @param value the value
+     * @return the display text
      */
-    public @NotNull Text getDisplayText(@NotNull Text value)
-    {
+    public @NotNull Text getDisplayText(@NotNull Text value) {
         return new TranslatableText("spruceui.options.generic", this.getPrefix(), value);
+    }
+
+    @ApiStatus.Experimental
+    public abstract @NotNull SpruceWidget createWidget(@NotNull Position position, int width);
+
+    @Deprecated
+    @Override
+    public AbstractButtonWidget createButton(GameOptions options, int x, int y, int width) {
+        return null;
     }
 }

@@ -16,14 +16,16 @@
   "icon": "assets/spruceui_test/icon.png",
   "environment": "client",
   "entrypoints": {
+    "client": [
+      "me.lambdaurora.spruceui.test.SpruceUITest"
+    ]
   },
   "mixins": [
     "spruceui.test.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.9.0",
-    "fabric": "*",
-    "minecraft": ">=1.16.2",
+    "fabricloader": "*",
+    "minecraft": "*",
     "spruceui": "*"
   }
 }

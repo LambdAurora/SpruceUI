@@ -1,7 +1,7 @@
 {
   "spruceui.reset": "Réinitialiser",
+  "spruceui.gui.unbind": "Délier",
   "spruceui.narrator.separator": "Séparateur %s",
-  "spruceui.not_bound": "Non défini",
   "spruceui.options.generic": "%s: %s",
   "spruceui.options.generic.fancy": "Détaillé",
   "spruceui.options.generic.fast": "Rapide",

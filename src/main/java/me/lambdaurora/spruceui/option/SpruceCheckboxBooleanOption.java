@@ -9,9 +9,10 @@
 
 package me.lambdaurora.spruceui.option;
 
-import me.lambdaurora.spruceui.SpruceCheckboxWidget;
+import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.widget.SpruceCheckboxWidget;
+import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.options.BooleanOption;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.text.Text;
@@ -27,49 +28,48 @@ import java.util.function.Supplier;
  * Works the as {@link SpruceBooleanOption} but uses a checkbox instead.
  *
  * @author LambdAurora
- * @version 1.6.0
+ * @version 2.0.0
  * @since 1.6.0
  */
-public class SpruceCheckboxBooleanOption extends SpruceBooleanOption
-{
-    public SpruceCheckboxBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip)
-    {
+public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
+    public SpruceCheckboxBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip) {
         super(key, getter, setter, tooltip);
     }
 
+    public SpruceCheckboxBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored) {
+        super(key, getter, setter, tooltip, colored);
+    }
+
     @Override
-    public @NotNull AbstractButtonWidget createButton(@NotNull GameOptions options, int x, int y, int width)
-    {
-        SpruceCheckboxWidget button = new SpruceCheckboxWidget(x, y, width, 20, this.getDisplayText(), this.get(), btn -> {
+    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width) {
+        SpruceCheckboxWidget button = new SpruceCheckboxWidget(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
             this.set();
             btn.setMessage(this.getDisplayText());
-        });
+        }, this.get());
+        button.setColored(this.isColored());
         this.getOptionTooltip().ifPresent(button::setTooltip);
         return button;
     }
 
     @Override
-    public @NotNull Text getDisplayText()
-    {
+    public @NotNull Text getDisplayText() {
         return this.getPrefix();
     }
 
     @Override
-    public @NotNull Text getDisplayText(@NotNull Text value)
-    {
+    public @NotNull Text getDisplayText(@NotNull Text value) {
         return this.getPrefix();
     }
 
     /**
      * Returns a new SpruceUI Boolean Option from the Vanilla one.
      *
-     * @param key     The option's key.
-     * @param vanilla The Vanilla option.
-     * @param tooltip The tooltip.
-     * @return The SpruceUI option.
+     * @param key the option's key
+     * @param vanilla the Vanilla option
+     * @param tooltip the tooltip
+     * @return the SpruceUI option
      */
-    public static @NotNull SpruceCheckboxBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip)
-    {
+    public static @NotNull SpruceCheckboxBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip) {
         GameOptions options = MinecraftClient.getInstance().options;
         return new SpruceCheckboxBooleanOption(key, () -> vanilla.get(options), newValue -> vanilla.set(options, String.valueOf(newValue)), tooltip);
     }

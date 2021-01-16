@@ -9,64 +9,85 @@
 
 package me.lambdaurora.spruceui;
 
+import me.lambdaurora.spruceui.widget.SpruceWidget;
+
 import java.util.Objects;
 
 /**
  * Represents a position.
  *
  * @author LambdAurora
- * @version 1.4.0
+ * @version 2.0.0
  * @since 1.4.0
  */
-public final class Position implements SprucePositioned
-{
-    public static final Position ORIGIN = new Position(new SprucePositioned()
-    {
-    });
+public final class Position implements SprucePositioned {
+    private SprucePositioned anchor;
+    private int x = 0;
+    private int y = 0;
 
-    protected SprucePositioned anchor;
-    protected int              x = 0;
-    protected int              y = 0;
-
-    protected Position(SprucePositioned anchor)
-    {
+    protected Position(SprucePositioned anchor) {
         this.anchor = anchor;
     }
 
-    public static Position of(SprucePositioned anchor, int x, int y)
-    {
-        return new Position(anchor).set(x, y);
+    public static Position of(SprucePositioned anchor, int x, int y) {
+        return new Position(anchor).move(x, y);
     }
 
-    public static Position of(int x, int y)
-    {
-        return of(ORIGIN, x, y);
+    public static Position of(int x, int y) {
+        return of(origin(), x, y);
+    }
+
+    public static Position center(SpruceWidget parent, int y) {
+        return center(parent, parent.getWidth(), y);
+    }
+
+    public static Position center(SprucePositioned anchor, int width, int y) {
+        return of(anchor, width / 2, y);
+    }
+
+    public static Position center(int width, int y) {
+        return of(width / 2, y);
+    }
+
+    /**
+     * Returns the origin position.
+     *
+     * @return the origin position
+     */
+    public static Position origin() {
+        return new Position(new SprucePositioned() {
+        });
     }
 
     /**
      * Returns the anchor.
      *
-     * @return The anchor.
+     * @return the anchor
      */
-    public SprucePositioned getAnchor()
-    {
+    public SprucePositioned getAnchor() {
         return this.anchor;
     }
 
+    /**
+     * Sets the anchor.
+     *
+     * @param anchor the anchor
+     */
+    public void setAnchor(SprucePositioned anchor) {
+        this.anchor = anchor;
+    }
+
     @Override
-    public int getX()
-    {
+    public int getX() {
         return this.anchor.getX() + this.x;
     }
 
     @Override
-    public int getY()
-    {
+    public int getY() {
         return this.anchor.getY() + this.y;
     }
 
-    public Position set(int x, int y)
-    {
+    public Position move(int x, int y) {
         this.setRelativeX(x);
         this.setRelativeY(y);
         return this;
@@ -75,46 +96,41 @@ public final class Position implements SprucePositioned
     /**
      * Gets the relative X of this position.
      *
-     * @return The relative X.
+     * @return the relative X
      */
-    public int getRelativeX()
-    {
+    public int getRelativeX() {
         return this.x;
     }
 
     /**
      * Sets the relative X of this position.
      *
-     * @param x The relative X.
+     * @param x the relative X
      */
-    public void setRelativeX(int x)
-    {
+    public void setRelativeX(int x) {
         this.x = x;
     }
 
     /**
      * Gets the relative Y of this position.
      *
-     * @return The relative Y.
+     * @return the relative Y
      */
-    public int getRelativeY()
-    {
+    public int getRelativeY() {
         return this.y;
     }
 
     /**
      * Sets the relative Y of this position.
      *
-     * @param y The relative Y.
+     * @param y the relative Y
      */
-    public void setRelativeY(int y)
-    {
+    public void setRelativeY(int y) {
         this.y = y;
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Position position = (Position) o;
@@ -122,8 +138,16 @@ public final class Position implements SprucePositioned
     }
 
     @Override
-    public int hashCode()
-    {
-        return Objects.hash(anchor, x, y);
+    public int hashCode() {
+        return Objects.hash(this.anchor, this.x, this.y);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "anchor=" + this.anchor +
+                ", x=" + this.x +
+                ", y=" + this.y +
+                '}';
     }
 }
