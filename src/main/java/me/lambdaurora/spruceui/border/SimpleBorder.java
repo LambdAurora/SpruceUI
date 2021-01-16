@@ -14,6 +14,7 @@ import me.lambdaurora.spruceui.util.ColorUtil;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -59,7 +60,7 @@ public final class SimpleBorder extends Border {
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder buffer = tessellator.getBuffer();
-        buffer.begin(7, VertexFormats.POSITION_COLOR);
+        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
         int x = widget.getX();
         int y = widget.getY();
         int right = x + widget.getWidth();

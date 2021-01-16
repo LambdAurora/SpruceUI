@@ -27,6 +27,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
@@ -316,7 +317,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
             RenderSystem.disableAlphaTest();
             RenderSystem.shadeModel(7425);
             RenderSystem.disableTexture();
-            buffer.begin(7, VertexFormats.POSITION_COLOR);
+            buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
             // TOP
             buffer.vertex(left, top + 4, 0).texture(0.f, 1.f).color(0, 0, 0, 0).next();
             buffer.vertex(right, top + 4, 0).texture(1.f, 1.f).color(0, 0, 0, 0).next();
@@ -363,7 +364,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     }
 
     protected void renderScrollbar(Tessellator tessellator, BufferBuilder buffer, int scrollbarX, int scrollbarEndX, int scrollbarY, int scrollbarHeight) {
-        buffer.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
         buffer.vertex(scrollbarX, this.getY() + this.getHeight(), 0.0).texture(0.f, 1.f).color(0, 0, 0, 255).next();
         buffer.vertex(scrollbarEndX, this.getY() + this.getHeight(), 0.0).texture(1.f, 1.f).color(0, 0, 0, 255).next();
         buffer.vertex(scrollbarEndX, this.getY(), 0.0).texture(1.f, 0.f).color(0, 0, 0, 255).next();

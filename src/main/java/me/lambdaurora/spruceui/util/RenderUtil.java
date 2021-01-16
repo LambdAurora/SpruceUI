@@ -14,6 +14,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 
 public final class RenderUtil {
@@ -60,7 +61,7 @@ public final class RenderUtil {
         int right = x + width;
         int bottom = y + height;
 
-        bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE_COLOR);
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
         bufferBuilder.vertex(x, bottom, 0)
                 .texture(0, bottom / 32.f + vOffset)
                 .color(red, green, blue, alpha).next();
@@ -97,14 +98,14 @@ public final class RenderUtil {
         int right = x + width;
 
         RenderSystem.color4f(red / 255.f, green / 255.f, blue / 255.f, alpha / 255.f);
-        bufferBuilder.begin(7, VertexFormats.POSITION);
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
         bufferBuilder.vertex(x, top, 0).next();
         bufferBuilder.vertex(right, top, 0).next();
         bufferBuilder.vertex(right, y, 0).next();
         bufferBuilder.vertex(x, y, 0).next();
         tessellator.draw();
         RenderSystem.color4f(0, 0, 0, 1.f);
-        bufferBuilder.begin(7, VertexFormats.POSITION);
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
         bufferBuilder.vertex(x + 1, top - 1, 0).next();
         bufferBuilder.vertex(right - 1, top - 1, 0).next();
         bufferBuilder.vertex(right - 1, y + 1, 0).next();
