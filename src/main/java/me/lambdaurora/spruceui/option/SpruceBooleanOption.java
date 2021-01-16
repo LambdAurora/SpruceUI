@@ -10,12 +10,9 @@
 package me.lambdaurora.spruceui.option;
 
 import me.lambdaurora.spruceui.Position;
+import me.lambdaurora.spruceui.SpruceTexts;
 import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ScreenTexts;
-import net.minecraft.client.options.BooleanOption;
-import net.minecraft.client.options.GameOptions;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +27,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption {
@@ -97,35 +94,9 @@ public class SpruceBooleanOption extends SpruceOption {
      */
     public @NotNull Text getDisplayText() {
         boolean value = this.get();
-        Text toggleText = ScreenTexts.getToggleText(value);
+        Text toggleText = SpruceTexts.getToggleText(value);
         if (this.colored)
             toggleText = toggleText.copy().setStyle(toggleText.getStyle().withColor(value ? Formatting.GREEN : Formatting.RED));
         return this.getDisplayText(toggleText);
-    }
-
-    /**
-     * Returns a new SpruceUI Boolean Option from the Vanilla one.
-     *
-     * @param key the option's key
-     * @param vanilla the Vanilla option
-     * @param tooltip the tooltip
-     * @return the SpruceUI option
-     */
-    public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip) {
-        return fromVanilla(key, vanilla, tooltip, false);
-    }
-
-    /**
-     * Returns a new SpruceUI Boolean Option from the Vanilla one.
-     *
-     * @param key the option's key
-     * @param vanilla the Vanilla option
-     * @param tooltip the tooltip
-     * @param colored {@code true} if the option value is colored, else {@code false}
-     * @return the SpruceUI option
-     */
-    public static @NotNull SpruceBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip, boolean colored) {
-        GameOptions options = MinecraftClient.getInstance().options;
-        return new SpruceBooleanOption(key, () -> vanilla.get(options), newValue -> vanilla.set(options, String.valueOf(newValue)), tooltip, colored);
     }
 }

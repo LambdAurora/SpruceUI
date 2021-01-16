@@ -104,6 +104,16 @@ public final class SpruceTexts {
     public static final Text OPTIONS_OFF = new TranslatableText("options.off");
 
     /**
+     * Returns the option value whether if the option is ON or OFF.
+     *
+     * @param value {@code true} if the option is ON, else {@code false}
+     * @return the option value text
+     */
+    public static Text getToggleText(boolean value) {
+        return value ? OPTIONS_ON : OPTIONS_OFF;
+    }
+
+    /**
      * Represents the option value "visible" as text.
      */
     public static final Text OPTIONS_VISIBLE = new TranslatableText("options.visible");

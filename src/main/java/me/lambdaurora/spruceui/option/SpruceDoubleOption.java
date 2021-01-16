@@ -12,9 +12,6 @@ package me.lambdaurora.spruceui.option;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
 import me.lambdaurora.spruceui.widget.option.SpruceOptionSliderWidget;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.DoubleOption;
-import net.minecraft.client.options.GameOptions;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
@@ -30,7 +27,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.0.0
  */
 public class SpruceDoubleOption extends SpruceOption {
@@ -107,22 +104,5 @@ public class SpruceDoubleOption extends SpruceOption {
      */
     public @NotNull Text getDisplayString() {
         return this.displayStringGetter.apply(this);
-    }
-
-    /**
-     * Returns a new SpruceUI Double Option from the Vanilla one.
-     *
-     * @param key the option's key
-     * @param vanilla the Vanilla option
-     * @param tooltip the tooltip
-     * @return the SpruceUI option
-     */
-    public static @NotNull SpruceDoubleOption fromVanilla(@NotNull String key, @NotNull DoubleOption vanilla, float step, @Nullable Text tooltip) {
-        GameOptions options = MinecraftClient.getInstance().options;
-        return new SpruceDoubleOption(key, vanilla.getMin(), vanilla.getMax(), step,
-                () -> vanilla.get(options),
-                newValue -> vanilla.set(options, newValue),
-                option -> vanilla.getDisplayString(options),
-                tooltip);
     }
 }

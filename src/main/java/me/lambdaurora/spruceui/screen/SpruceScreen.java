@@ -121,7 +121,8 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
         ScissorManager.popScaleFactor();
     }
 
-    public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {}
+    public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    }
 
     public void renderWidgets(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         for (Element element : this.children()) {

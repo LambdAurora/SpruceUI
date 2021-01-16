@@ -12,9 +12,6 @@ package me.lambdaurora.spruceui.option;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.widget.SpruceCheckboxWidget;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.BooleanOption;
-import net.minecraft.client.options.GameOptions;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +25,7 @@ import java.util.function.Supplier;
  * Works the as {@link SpruceBooleanOption} but uses a checkbox instead.
  *
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.1
  * @since 1.6.0
  */
 public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
@@ -59,18 +56,5 @@ public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
     @Override
     public @NotNull Text getDisplayText(@NotNull Text value) {
         return this.getPrefix();
-    }
-
-    /**
-     * Returns a new SpruceUI Boolean Option from the Vanilla one.
-     *
-     * @param key the option's key
-     * @param vanilla the Vanilla option
-     * @param tooltip the tooltip
-     * @return the SpruceUI option
-     */
-    public static @NotNull SpruceCheckboxBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip) {
-        GameOptions options = MinecraftClient.getInstance().options;
-        return new SpruceCheckboxBooleanOption(key, () -> vanilla.get(options), newValue -> vanilla.set(options, String.valueOf(newValue)), tooltip);
     }
 }

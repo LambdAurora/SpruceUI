@@ -12,9 +12,6 @@ package me.lambdaurora.spruceui.option;
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.widget.SpruceToggleSwitch;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.BooleanOption;
-import net.minecraft.client.options.GameOptions;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +25,7 @@ import java.util.function.Supplier;
  * Works the as {@link SpruceBooleanOption} but uses a toggle switch instead.
  *
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.1
  * @since 2.0.0
  */
 public class SpruceToggleBooleanOption extends SpruceBooleanOption {
@@ -54,18 +51,5 @@ public class SpruceToggleBooleanOption extends SpruceBooleanOption {
     @Override
     public @NotNull Text getDisplayText(@NotNull Text value) {
         return this.getPrefix();
-    }
-
-    /**
-     * Returns a new SpruceUI Boolean Option from the Vanilla one.
-     *
-     * @param key the option's key
-     * @param vanilla the Vanilla option
-     * @param tooltip the tooltip
-     * @return the SpruceUI option
-     */
-    public static @NotNull SpruceToggleBooleanOption fromVanilla(@NotNull String key, @NotNull BooleanOption vanilla, @Nullable Text tooltip) {
-        GameOptions options = MinecraftClient.getInstance().options;
-        return new SpruceToggleBooleanOption(key, () -> vanilla.get(options), newValue -> vanilla.set(options, String.valueOf(newValue)), tooltip);
     }
 }

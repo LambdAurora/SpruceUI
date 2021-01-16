@@ -186,9 +186,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
                         100, this.getHeight());
             }
 
-            if (this instanceof SpruceSliderWidget)
-            System.out.println(middleWidth - x);
-            if (x - middleWidth> 0) {
+            if (x - middleWidth > 0) {
                 this.drawTexture(matrices,
                         this.getX() + x, this.getY(),
                         50, v,
