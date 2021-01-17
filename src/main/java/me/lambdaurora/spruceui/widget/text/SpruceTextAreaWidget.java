@@ -137,7 +137,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
      * @since 1.6.4
      */
     public void setEditable(boolean editable) {
-        this.active = editable;
+        this.setActive(editable);
     }
 
     /**

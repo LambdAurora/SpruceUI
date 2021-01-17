@@ -72,9 +72,14 @@ public interface SpruceWidget extends SprucePositioned, SpruceElement, Drawable 
      *
      * @return {@code true} if the widget is active, else {@code false}
      */
-    default boolean isActive() {
-        return true;
-    }
+    boolean isActive();
+
+    /**
+     * Sets whether this widget is active or not.
+     *
+     * @param active {@code true} if the widget is active, else {@code false}
+     */
+    void setActive(boolean active);
 
     /**
      * Returns whether the widget is focused or not.

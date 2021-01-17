@@ -80,6 +80,11 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     }
 
     @Override
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @Override
     public boolean isMouseHovered() {
         return this.hovered;
     }
