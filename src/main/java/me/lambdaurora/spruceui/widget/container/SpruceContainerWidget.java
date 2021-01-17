@@ -29,10 +29,10 @@ import java.util.function.Consumer;
  * Represents a container widget.
  *
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.4
  * @since 2.0.0
  */
-public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidget> implements ParentElement, WithBackground, WithBorder {
+public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidget> implements WithBackground, WithBorder {
     private final List<SpruceWidget> children = new ArrayList<>();
     private Background background = EmptyBackground.EMPTY_BACKGROUND;
     private Border border = EmptyBorder.EMPTY_BORDER;

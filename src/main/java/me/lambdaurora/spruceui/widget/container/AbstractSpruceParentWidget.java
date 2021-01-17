@@ -28,31 +28,17 @@ import java.util.List;
  *
  * @param <E> the type of children widgets
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.4
  * @since 2.0.0
  */
-public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends AbstractSpruceWidget implements ParentElement {
+public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends AbstractSpruceWidget implements SpruceParentWidget<E> {
     private final Class<E> childClass;
     private @Nullable E focused;
-    private boolean dragging;
 
     public AbstractSpruceParentWidget(@NotNull Position position, Class<E> childClass) {
         super(position);
         this.childClass = childClass;
     }
-
-    @Override
-    public boolean isDragging() {
-        return this.dragging;
-    }
-
-    @Override
-    public void setDragging(boolean dragging) {
-        this.dragging = dragging;
-    }
-
-    @Override
-    public abstract List<E> children();
 
     @Override
     public void setFocused(boolean focused) {
@@ -68,8 +54,7 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public void setFocused(@Nullable Element focused) {
+    public void setFocused(@Nullable E focused) {
         if (this.focused == focused)
             return;
         if (this.focused != null)
@@ -77,7 +62,8 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
         if (focused == null)
             this.focused = null;
         else if (this.childClass.isInstance(focused)) {
-            this.focused = (E) focused;
+            this.focused = focused;
+            this.focused.setFocused(true);
         }
     }
 

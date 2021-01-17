@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a widget.
  *
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.4
  * @since 1.6.0
  */
 public interface SpruceWidget extends SprucePositioned, SpruceElement, Drawable {
@@ -115,4 +115,8 @@ public interface SpruceWidget extends SprucePositioned, SpruceElement, Drawable 
     default boolean isMouseOver(double mouseX, double mouseY) {
         return this.isVisible() && mouseX >= (double) this.getX() && mouseX < (double) (this.getX() + this.getWidth()) && mouseY >= (double) this.getY() && mouseY < (double) (this.getY() + this.getHeight());
     }
+
+    boolean isDragging();
+
+    void setDragging(boolean dragging);
 }

@@ -42,10 +42,10 @@ import java.util.List;
  *
  * @param <E> the type of entry
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.4
  * @since 2.0.0
  */
-public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E> implements ParentElement, WithBackground, WithBorder {
+public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E> implements WithBackground, WithBorder {
     protected final Position anchor = Position.of(this, 0, 0);
     private final List<E> entries = new Entries();
     private final int anchorYOffset;
