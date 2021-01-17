@@ -20,7 +20,6 @@ import me.lambdaurora.spruceui.widget.WithBackground;
 import me.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
 import me.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -36,7 +35,7 @@ import java.util.List;
  * Represents a container widget with tabs.
  *
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.4
  * @since 2.0.0
  */
 public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget> {
@@ -81,7 +80,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
     }
 
     @Override
-    public void setFocused(@Nullable Element focused) {
+    public void setFocused(@Nullable SpruceWidget focused) {
         super.setFocused(focused);
     }
 
@@ -108,7 +107,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
             if (direction == NavigationDirection.RIGHT) {
                 if (this.list.getCurrentTab().container.onNavigation(direction, tab))
                     this.setFocused(this.list.getCurrentTab().container);
-            } else {
+            } else if (this.getFocused() != this.list) {
                 boolean result = this.list.getCurrentTab().container.onNavigation(direction, tab);
                 if (!result)
                     this.setFocused(this.list);
@@ -246,7 +245,9 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         @Override
         protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             super.renderBackground(matrices, mouseX, mouseY, delta);
-            if (this.selected || this.isMouseHovered())
+            if (this.isFocused() && this.parent.isFocused())
+                fill(matrices, this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight() - 4, 0x2fffffff);
+            else if (this.selected || this.isMouseHovered())
                 fill(matrices, this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight() - 4, 0x1affffff);
         }
 
@@ -270,7 +271,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
         protected SeparatorEntry(SideTabList parent, Text title) {
             super(parent, title);
-            this.separatorWidget = new SpruceSeparatorWidget(Position.of(this, 0, 0), this.getWidth(), title) {
+            this.separatorWidget = new SpruceSeparatorWidget(Position.of(this, 0, 2), this.getWidth(), title) {
                 @Override
                 public int getWidth() {
                     return SeparatorEntry.this.getWidth();
@@ -284,7 +285,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
         @Override
         public int getHeight() {
-            return this.separatorWidget.getHeight() + 4;
+            return this.separatorWidget.getHeight() + 6;
         }
 
         /* Navigation */

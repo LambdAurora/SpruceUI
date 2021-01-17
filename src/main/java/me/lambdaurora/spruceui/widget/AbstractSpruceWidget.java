@@ -27,7 +27,7 @@ import java.util.Optional;
  * Represents a widget.
  *
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.4
  * @since 2.0.0
  */
 public abstract class AbstractSpruceWidget extends DrawableHelper implements SpruceWidget {
@@ -98,6 +98,16 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     public void setFocused(boolean focused) {
         this.focused = focused;
         this.dragging = false;
+    }
+
+    @Override
+    public boolean isDragging() {
+        return this.dragging;
+    }
+
+    @Override
+    public void setDragging(boolean dragging) {
+        this.dragging = dragging;
     }
 
     /* Navigation */

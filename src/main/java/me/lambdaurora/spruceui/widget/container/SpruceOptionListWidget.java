@@ -30,7 +30,7 @@ import java.util.Optional;
  * A {@link SpruceOption} allows to have an easy control over the widgets present in the list.
  *
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.0.4
  * @since 2.0.0
  */
 public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionListWidget.OptionEntry> {
@@ -78,7 +78,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
     }
 
-    public static class OptionEntry extends SpruceEntryListWidget.Entry {
+    public static class OptionEntry extends SpruceEntryListWidget.Entry implements SpruceParentWidget<SpruceWidget> {
         private final List<SpruceWidget> children = new ArrayList<>();
         private final SpruceOptionListWidget parent;
         private @Nullable SpruceWidget focused;
@@ -104,27 +104,6 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
 
         @Override
-        protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-            this.children.forEach(widget -> widget.render(matrices, mouseX, mouseY, delta));
-        }
-
-        public List<SpruceWidget> children() {
-            return this.children;
-        }
-
-        public @Nullable SpruceWidget getFocused() {
-            return this.focused;
-        }
-
-        public void setFocused(@Nullable SpruceWidget focused) {
-            if (this.focused == focused)
-                return;
-            if (this.focused != null)
-                this.focused.setFocused(false);
-            this.focused = focused;
-        }
-
-        @Override
         public int getWidth() {
             return this.parent.getWidth() - (this.parent.getBorder().getThickness() * 2);
         }
@@ -134,20 +113,34 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
             return this.children.stream().mapToInt(SpruceWidget::getHeight).reduce(Integer::max).orElse(0) + 4;
         }
 
-        public Optional<SpruceWidget> hoveredElement(double mouseX, double mouseY) {
-            Iterator<SpruceWidget> it = this.children().iterator();
-
-            SpruceWidget element;
-            do {
-                if (!it.hasNext()) {
-                    return Optional.empty();
-                }
-
-                element = it.next();
-            } while (!element.isMouseOver(mouseX, mouseY));
-
-            return Optional.of(element);
+        @Override
+        public List<SpruceWidget> children() {
+            return this.children;
         }
+
+        @Override
+        public @Nullable SpruceWidget getFocused() {
+            return this.focused;
+        }
+
+        @Override
+        public void setFocused(@Nullable SpruceWidget focused) {
+            if (this.focused == focused)
+                return;
+            if (this.focused != null)
+                this.focused.setFocused(false);
+            this.focused = focused;
+        }
+
+        @Override
+        public void setFocused(boolean focused) {
+            super.setFocused(focused);
+            if (!focused) {
+                this.setFocused(null);
+            }
+        }
+
+        /* Input */
 
         @Override
         protected boolean onMouseClick(double mouseX, double mouseY, int button) {
@@ -186,13 +179,14 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
             return this.focused != null && this.focused.keyPressed(keyCode, scanCode, modifiers);
         }
 
+        /* Rendering */
+
         @Override
-        public void setFocused(boolean focused) {
-            super.setFocused(focused);
-            if (!focused) {
-                this.setFocused(null);
-            }
+        protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+            this.children.forEach(widget -> widget.render(matrices, mouseX, mouseY, delta));
         }
+
+        /* Navigation */
 
         @Override
         public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
