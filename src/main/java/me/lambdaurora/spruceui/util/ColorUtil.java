@@ -16,8 +16,8 @@ import org.jetbrains.annotations.Range;
  * Utilities for color manipulation.
  *
  * @author LambdAurora
- * @version 2.1.0
- * @since 2.1.0
+ * @version 2.1.1
+ * @since 2.0.0
  */
 public final class ColorUtil {
     private ColorUtil() {
@@ -29,12 +29,24 @@ public final class ColorUtil {
     public static final int TEXT_COLOR = 0xffe0e0e0;
     public static final int UNEDITABLE_COLOR = 0xff707070;
 
+    /**
+     * Returns a color value between {@code 0.0} and {@code 1.0} using the integer value.
+     *
+     * @param colorComponent the color value as int
+     * @return the color value as float
+     */
     public static float floatColor(@Range(from = 0, to = 255) int colorComponent) {
         return colorComponent / 255.f;
     }
 
+    /**
+     * Returns a color value between {@code 0} and {@code 255} using the float value.
+     *
+     * @param colorComponent the color value as float
+     * @return the color value as integer
+     */
     public static @Range(from = 0, to = 255) int intColor(float colorComponent) {
-        return (int) (colorComponent * 255.f) & 255;
+        return MathHelper.clamp((int) (colorComponent * 255.f), 0, 255);
     }
 
     /**
