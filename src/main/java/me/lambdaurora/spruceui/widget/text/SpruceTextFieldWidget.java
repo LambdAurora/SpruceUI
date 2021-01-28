@@ -21,6 +21,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
@@ -476,7 +477,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         RenderSystem.disableTexture();
         RenderSystem.enableColorLogicOp();
         RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
-        buffer.begin(7, VertexFormats.POSITION);
+        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
         buffer.vertex(x, y2, 0.d).next();
         buffer.vertex(x2, y2, 0.d).next();
         buffer.vertex(x2, lineY, 0.d).next();
