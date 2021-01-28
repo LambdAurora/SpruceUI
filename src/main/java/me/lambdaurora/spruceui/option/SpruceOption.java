@@ -25,14 +25,14 @@ import java.util.Optional;
  * Represents an option.
  *
  * @author LambdAurora
- * @version 2.0.1
+ * @version 2.1.0
  * @since 1.0.3
  */
 public abstract class SpruceOption implements Nameable {
     public final String key;
     private Optional<Text> tooltip = Optional.empty();
 
-    public SpruceOption(@NotNull String key) {
+    public SpruceOption(String key) {
         Objects.requireNonNull(key, "Cannot create an option without a key.");
         this.key = key;
     }
@@ -42,7 +42,7 @@ public abstract class SpruceOption implements Nameable {
         return I18n.translate(this.key);
     }
 
-    public @NotNull Optional<Text> getOptionTooltip() {
+    public Optional<Text> getOptionTooltip() {
         return this.tooltip;
     }
 
@@ -55,7 +55,7 @@ public abstract class SpruceOption implements Nameable {
      *
      * @return the display prefix
      */
-    public @NotNull Text getPrefix() {
+    public Text getPrefix() {
         return new TranslatableText(this.key);
     }
 
@@ -65,9 +65,9 @@ public abstract class SpruceOption implements Nameable {
      * @param value the value
      * @return the display text
      */
-    public @NotNull Text getDisplayText(@NotNull Text value) {
+    public Text getDisplayText(Text value) {
         return new TranslatableText("spruceui.options.generic", this.getPrefix(), value);
     }
 
-    public abstract @NotNull SpruceWidget createWidget(@NotNull Position position, int width);
+    public abstract SpruceWidget createWidget(Position position, int width);
 }

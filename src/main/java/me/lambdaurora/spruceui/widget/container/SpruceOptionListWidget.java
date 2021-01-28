@@ -22,7 +22,6 @@ import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Represents a list widget holding {@link SpruceOption} entries.
@@ -30,7 +29,7 @@ import java.util.Optional;
  * A {@link SpruceOption} allows to have an easy control over the widgets present in the list.
  *
  * @author LambdAurora
- * @version 2.0.4
+ * @version 2.1.0
  * @since 2.0.0
  */
 public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionListWidget.OptionEntry> {
@@ -177,6 +176,16 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         @Override
         protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
             return this.focused != null && this.focused.keyPressed(keyCode, scanCode, modifiers);
+        }
+
+        @Override
+        protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers) {
+            return this.focused != null && this.focused.keyReleased(keyCode, scanCode, modifiers);
+        }
+
+        @Override
+        protected boolean onCharTyped(char chr, int keyCode) {
+            return this.focused != null && this.focused.charTyped(chr, keyCode);
         }
 
         /* Rendering */

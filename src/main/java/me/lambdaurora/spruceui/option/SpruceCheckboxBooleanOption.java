@@ -25,20 +25,20 @@ import java.util.function.Supplier;
  * Works the as {@link SpruceBooleanOption} but uses a checkbox instead.
  *
  * @author LambdAurora
- * @version 2.0.1
+ * @version 2.1.0
  * @since 1.6.0
  */
 public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
-    public SpruceCheckboxBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip) {
+    public SpruceCheckboxBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip) {
         super(key, getter, setter, tooltip);
     }
 
-    public SpruceCheckboxBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored) {
+    public SpruceCheckboxBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored) {
         super(key, getter, setter, tooltip, colored);
     }
 
     @Override
-    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width) {
+    public SpruceWidget createWidget(Position position, int width) {
         SpruceCheckboxWidget button = new SpruceCheckboxWidget(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
             this.set();
             btn.setMessage(this.getDisplayText());
@@ -49,12 +49,12 @@ public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
     }
 
     @Override
-    public @NotNull Text getDisplayText() {
+    public Text getDisplayText() {
         return this.getPrefix();
     }
 
     @Override
-    public @NotNull Text getDisplayText(@NotNull Text value) {
+    public Text getDisplayText(@NotNull Text value) {
         return this.getPrefix();
     }
 }

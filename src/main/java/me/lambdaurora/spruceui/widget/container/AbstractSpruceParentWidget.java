@@ -14,14 +14,11 @@ import me.lambdaurora.spruceui.navigation.NavigationDirection;
 import me.lambdaurora.spruceui.navigation.NavigationUtils;
 import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.ParentElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Represents a parent widget, contains children which are other widgets.

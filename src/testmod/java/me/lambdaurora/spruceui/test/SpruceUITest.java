@@ -11,7 +11,6 @@ package me.lambdaurora.spruceui.test;
 
 import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.SpruceTexts;
-import me.lambdaurora.spruceui.background.SimpleColorBackground;
 import me.lambdaurora.spruceui.option.*;
 import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
@@ -19,7 +18,6 @@ import me.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import me.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.LiteralText;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +39,9 @@ public class SpruceUITest implements ClientModInitializer {
     private final SpruceOption separatorOption;
     private final SpruceOption doubleOption;
     private final SpruceOption cyclingOption;
+    private final SpruceOption intInputOption;
+    private final SpruceOption floatInputOption;
+    private final SpruceOption doubleInputOption;
     private final SpruceOption actionOption;
     private final SpruceOption resetOption;
     private boolean aBoolean;
@@ -48,6 +49,9 @@ public class SpruceUITest implements ClientModInitializer {
     private boolean toggleBoolean;
     private double aDouble;
     private TestEnum cyclingValue = TestEnum.FIRST;
+    private int anInt;
+    private float aFloat;
+    private double anInputDouble;
 
     public Consumer<SpruceButtonWidget> resetConsumer;
 
@@ -86,6 +90,19 @@ public class SpruceUITest implements ClientModInitializer {
                 option -> option.getDisplayText(this.cyclingValue.getText()),
                 new LiteralText("Represents a cycling option.\n"
                         + "Each press will cycle the value between some pre-defined values."));
+
+        this.intInputOption = new SpruceIntegerInputOption("spruceui_test.option.int_input",
+                () -> this.anInt,
+                value -> this.anInt = value,
+                new LiteralText("Represents an option with an integer value as text."));
+        this.floatInputOption = new SpruceFloatInputOption("spruceui_test.option.float_input",
+                () -> this.aFloat,
+                value -> this.aFloat = value,
+                new LiteralText("Represents an option with a float value as text."));
+        this.doubleInputOption = new SpruceDoubleInputOption("spruceui_test.option.double_input",
+                () -> this.anInputDouble,
+                value -> this.anInputDouble = value,
+                new LiteralText("Represents an option with a double value as text."));
 
         // Choose whatever action this option should do.
         this.actionOption = SpruceSimpleActionOption.of("spruceui_test.option.action",
@@ -127,11 +144,11 @@ public class SpruceUITest implements ClientModInitializer {
         list.addOptionEntry(this.toggleSwitchOption, null);
         list.addOptionEntry(this.toggleSwitchOption, null);
         list.addOptionEntry(this.toggleSwitchOption, null);
-        list.addOptionEntry(this.toggleSwitchOption, null);
-        list.addOptionEntry(this.toggleSwitchOption, null);
-        list.addOptionEntry(this.toggleSwitchOption, null);
         list.addSingleOptionEntry(this.separatorOption);
         list.addSingleOptionEntry(this.doubleOption);
+        list.addSingleOptionEntry(this.intInputOption);
+        list.addSingleOptionEntry(this.floatInputOption);
+        list.addSingleOptionEntry(this.doubleInputOption);
         list.addOptionEntry(this.actionOption, this.cyclingOption);
 
         return list;
@@ -140,9 +157,8 @@ public class SpruceUITest implements ClientModInitializer {
     public static SpruceContainerWidget buildTextAreaContainer(Position position, int width, int height,
                                                                Consumer<SpruceTextAreaWidget> textAreaConsumer,
                                                                @Nullable SpruceButtonWidget.PressAction doneButtonAction) {
-        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
         int textFieldWidth = (int) (width * (3.0 / 4.0));
-        SpruceTextAreaWidget textArea = new SpruceTextAreaWidget(Position.of(width / 2 - textFieldWidth / 2, 0), textRenderer, textFieldWidth, height - 50,
+        SpruceTextAreaWidget textArea = new SpruceTextAreaWidget(Position.of(width / 2 - textFieldWidth / 2, 0), textFieldWidth, height - 50,
                 new LiteralText("Text Area"));
         textArea.setLines(Arrays.asList(
                 "Hello world,",

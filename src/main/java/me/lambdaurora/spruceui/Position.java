@@ -129,6 +129,15 @@ public final class Position implements SprucePositioned {
         this.y = y;
     }
 
+    /**
+     * Copies the position into a new position.
+     *
+     * @return the copied position
+     */
+    public Position copy() {
+        return of(this.anchor, this.x, this.y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
