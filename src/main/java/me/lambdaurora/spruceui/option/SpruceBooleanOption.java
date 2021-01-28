@@ -27,7 +27,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 2.0.1
+ * @version 2.1.0
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption {
@@ -35,11 +35,11 @@ public class SpruceBooleanOption extends SpruceOption {
     private final Consumer<Boolean> setter;
     private final boolean colored;
 
-    public SpruceBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip) {
+    public SpruceBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip) {
         this(key, getter, setter, tooltip, false);
     }
 
-    public SpruceBooleanOption(@NotNull String key, @NotNull Supplier<Boolean> getter, @NotNull Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored) {
+    public SpruceBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored) {
         super(key);
         this.getter = getter;
         this.setter = setter;
@@ -78,7 +78,7 @@ public class SpruceBooleanOption extends SpruceOption {
     }
 
     @Override
-    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width) {
+    public SpruceWidget createWidget(Position position, int width) {
         SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getDisplayText(), btn -> {
             this.set();
             btn.setMessage(this.getDisplayText());
@@ -92,7 +92,7 @@ public class SpruceBooleanOption extends SpruceOption {
      *
      * @return the display string
      */
-    public @NotNull Text getDisplayText() {
+    public Text getDisplayText() {
         boolean value = this.get();
         Text toggleText = SpruceTexts.getToggleText(value);
         if (this.colored)

@@ -12,15 +12,10 @@ package me.lambdaurora.spruceui.widget.text;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.lambdaurora.spruceui.Position;
-import me.lambdaurora.spruceui.background.Background;
-import me.lambdaurora.spruceui.background.SimpleColorBackground;
 import me.lambdaurora.spruceui.border.Border;
-import me.lambdaurora.spruceui.border.SimpleBorder;
 import me.lambdaurora.spruceui.navigation.NavigationDirection;
+import me.lambdaurora.spruceui.util.ColorUtil;
 import me.lambdaurora.spruceui.util.MultilineText;
-import me.lambdaurora.spruceui.widget.AbstractSpruceWidget;
-import me.lambdaurora.spruceui.widget.WithBackground;
-import me.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -43,34 +38,24 @@ import java.util.List;
  * Represents a text area widget.
  *
  * @author LambdAurora
- * @version 2.0.0
+ * @version 2.1.0
  * @since 1.6.3
  */
-public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
+public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
     private final TextRenderer textRenderer;
     private final MultilineText lines;
     private final Cursor cursor = new Cursor(true);
     private final Selection selection = new Selection();
-    private Background background = new SimpleColorBackground(0xff000000);
-    private Border border = new SimpleBorder(1, -6250336, 0xffffffff);
     private int firstLine = 0;
-    private int editableColor = 0xe0e0e0;
-    private int uneditableColor = 7368816;
     private int displayedLines;
 
-    public SpruceTextAreaWidget(@NotNull Position position, @NotNull TextRenderer textRenderer, int width, int height, Text message) {
-        super(position);
-        this.width = width;
-        this.height = height;
-        this.textRenderer = textRenderer;
+    public SpruceTextAreaWidget(@NotNull Position position, int width, int height, Text title) {
+        super(position, width, height, title);
+        this.textRenderer = this.client.textRenderer;
         this.displayedLines = this.getInnerHeight() / this.textRenderer.fontHeight;
         this.lines = new MultilineText(this.getInnerWidth());
         this.cursor.toStart();
         this.sanitize();
-    }
-
-    public SpruceTextAreaWidget(@NotNull TextRenderer textRenderer, int x, int y, int width, int height, Text message) {
-        this(Position.of(x, y), textRenderer, width, height, message);
     }
 
     /**
@@ -93,20 +78,12 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
         this.setCursorToEnd();
     }
 
-    /**
-     * Returns the text from the text area.
-     *
-     * @return the text
-     */
+    @Override
     public @NotNull String getText() {
         return this.lines.getText();
     }
 
-    /**
-     * Sets the text of the text area.
-     *
-     * @param text the text
-     */
+    @Override
     public void setText(@Nullable String text) {
         this.lines.clear();
         if (text != null)
@@ -154,52 +131,18 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
     }
 
     @Override
-    public @NotNull Background getBackground() {
-        return this.background;
-    }
-
-    @Override
-    public void setBackground(@NotNull Background background) {
-        this.background = background;
-    }
-
-    @Override
-    public @NotNull Border getBorder() {
-        return this.border;
-    }
-
-    @Override
     public void setBorder(@NotNull Border border) {
-        this.border = border;
+        super.setBorder(border);
         this.lines.setWidth(this.getInnerWidth());
         this.sanitize();
     }
 
-    /**
-     * Returns the inner width of the text area.
-     *
-     * @return the inner width
-     */
-    public int getInnerWidth() {
-        return this.getWidth() - 6 - this.getBorder().getThickness() * 2;
-    }
-
-    public int getInnerHeight() {
-        return this.getHeight() - 6 - this.getBorder().getThickness() * 2;
-    }
-
-    /**
-     * Sets the cursor to the start of the text.
-     *
-     * @since 2.0.0
-     */
+    @Override
     public void setCursorToStart() {
         this.cursor.toStart();
     }
 
-    /**
-     * Sets the cursor to the end of the text.
-     */
+    @Override
     public void setCursorToEnd() {
         this.cursor.toEnd();
     }
@@ -207,7 +150,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
     private void insertCharacter(char character) {
         if (this.lines.isEmpty()) {
             this.lines.add(String.valueOf(character));
-            this.cursor.toStart();
+            this.setCursorToStart();
             return;
         } else {
             this.selection.erase();
@@ -343,8 +286,15 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
         if (oldSize < this.lines.size()) this.cursor.moveRight();
     }
 
-    public boolean isEditorActive() {
-        return this.isActive() && this.isFocused();
+    protected boolean doesLineOccupyFullSpace(@NotNull String cursorLine) {
+        return this.textRenderer.getWidth(cursorLine) >= this.getInnerWidth();
+    }
+
+    @Override
+    protected void sanitize() {
+        if (this.lines.isEmpty())
+            this.lines.add("");
+        this.cursor.sanitize();
     }
 
     /* Navigation */
@@ -506,15 +456,10 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
 
     @Override
     protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.getBorder().render(matrices, this, mouseX, mouseY, delta);
+        super.renderWidget(matrices, mouseX, mouseY, delta);
 
         this.drawText(matrices);
         this.drawCursor(matrices);
-    }
-
-    @Override
-    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.getBackground().render(matrices, this, 0, mouseX, mouseY, delta);
     }
 
     /**
@@ -525,7 +470,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
     protected void drawText(@NotNull MatrixStack matrices) {
         int length = Math.min(this.lines.size(), this.displayedLines);
 
-        int textColor = this.isEditable() ? this.editableColor : this.uneditableColor;
+        int textColor = this.getTextColor();
         int textX = this.getX() + 4;
 
         int lineY = this.getY() + 4;
@@ -547,7 +492,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
      *
      * @param matrices the matrices
      * @param line the current line
-     * @param lineY The line Y-coordinates.
+     * @param lineY the line Y-coordinates
      * @param row the row number
      */
     protected void drawSelection(@NotNull MatrixStack matrices, @NotNull String line, int lineY, int row) {
@@ -601,7 +546,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
         if (!this.isFocused())
             return;
         if (this.lines.isEmpty()) {
-            drawTextWithShadow(matrices, this.textRenderer, new LiteralText("_"), this.getX(), this.getY() + 4, 0xe0e0e0);
+            drawTextWithShadow(matrices, this.textRenderer, new LiteralText("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
             return;
         }
 
@@ -613,22 +558,9 @@ public class SpruceTextAreaWidget extends AbstractSpruceWidget implements WithBa
         int cursorY = this.getY() + 4 + actualRow * this.textRenderer.fontHeight;
 
         if (this.cursor.row < this.lines.size() - 1 || this.cursor.column < cursorLine.length() || this.doesLineOccupyFullSpace(cursorLine))
-            fill(matrices, cursorX - 1, cursorY - 1, cursorX, cursorY + 9, 0xffe0e0e0);
+            fill(matrices, cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
         else
-            this.textRenderer.drawWithShadow(matrices, "_", cursorX, cursorY, 0xe0e0e0);
-    }
-
-    protected boolean doesLineOccupyFullSpace(@NotNull String cursorLine) {
-        return this.textRenderer.getWidth(cursorLine) >= this.getInnerWidth();
-    }
-
-    /**
-     * Sanitizes the text area.
-     */
-    protected void sanitize() {
-        if (this.lines.isEmpty())
-            this.lines.add("");
-        this.cursor.sanitize();
+            this.textRenderer.drawWithShadow(matrices, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
     }
 
     /**

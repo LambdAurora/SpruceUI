@@ -3,7 +3,10 @@
   "spruceui_test.option.boolean": "Boolean Option",
   "spruceui_test.option.checkbox": "Checkbox Option",
   "spruceui_test.option.cycling": "Cycling Option",
+  "spruceui_test.option.double": "Double Option",
+  "spruceui_test.option.double_input": "Double Input Option",
+  "spruceui_test.option.float_input": "Float Input Option",
+  "spruceui_test.option.int_input": "Integer Input Option",
   "spruceui_test.option.separator": "Separator",
-  "spruceui_test.option.toggle_switch": "Toggle Switch Option",
-  "spruceui_test.option.double": "Double Option"
+  "spruceui_test.option.toggle_switch": "Toggle Switch Option"
 }

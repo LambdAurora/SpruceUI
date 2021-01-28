@@ -14,7 +14,6 @@ import me.lambdaurora.spruceui.widget.SpruceWidget;
 import me.lambdaurora.spruceui.widget.option.SpruceOptionSliderWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -27,7 +26,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 2.0.1
+ * @version 2.1.0
  * @since 1.0.0
  */
 public class SpruceDoubleOption extends SpruceOption {
@@ -38,7 +37,7 @@ public class SpruceDoubleOption extends SpruceOption {
     private final Consumer<Double> setter;
     private final Function<SpruceDoubleOption, Text> displayStringGetter;
 
-    public SpruceDoubleOption(@NotNull String key, double min, double max, float step, @NotNull Supplier<Double> getter, @NotNull Consumer<Double> setter, @NotNull Function<SpruceDoubleOption, Text> displayStringGetter, @Nullable Text tooltip) {
+    public SpruceDoubleOption(String key, double min, double max, float step, Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Text> displayStringGetter, @Nullable Text tooltip) {
         super(key);
         this.min = min;
         this.max = max;
@@ -50,7 +49,7 @@ public class SpruceDoubleOption extends SpruceOption {
     }
 
     @Override
-    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width) {
+    public SpruceWidget createWidget(Position position, int width) {
         SpruceOptionSliderWidget slider = new SpruceOptionSliderWidget(position, width, 20, this);
         this.getOptionTooltip().ifPresent(slider::setTooltip);
         return slider;
@@ -102,7 +101,7 @@ public class SpruceDoubleOption extends SpruceOption {
      *
      * @return the display string
      */
-    public @NotNull Text getDisplayString() {
+    public Text getDisplayString() {
         return this.displayStringGetter.apply(this);
     }
 }

@@ -13,7 +13,6 @@ import me.lambdaurora.spruceui.Position;
 import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -25,14 +24,14 @@ import java.util.function.Function;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 2.0.1
+ * @version 2.1.0
  * @since 1.0.0
  */
 public class SpruceCyclingOption extends SpruceOption {
     private final Consumer<Integer> setter;
     private final Function<SpruceCyclingOption, Text> messageProvider;
 
-    public SpruceCyclingOption(@NotNull String key, @NotNull Consumer<Integer> setter, @NotNull Function<SpruceCyclingOption, Text> messageProvider, @Nullable Text tooltip) {
+    public SpruceCyclingOption(String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Text> messageProvider, @Nullable Text tooltip) {
         super(key);
         this.setter = setter;
         this.messageProvider = messageProvider;
@@ -49,7 +48,7 @@ public class SpruceCyclingOption extends SpruceOption {
     }
 
     @Override
-    public @NotNull SpruceWidget createWidget(@NotNull Position position, int width) {
+    public SpruceWidget createWidget(Position position, int width) {
         SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getMessage(), btn -> {
             this.cycle(1);
             btn.setMessage(this.getMessage());
@@ -63,7 +62,7 @@ public class SpruceCyclingOption extends SpruceOption {
      *
      * @return The option message.
      */
-    public @NotNull Text getMessage() {
+    public Text getMessage() {
         return this.messageProvider.apply(this);
     }
 }

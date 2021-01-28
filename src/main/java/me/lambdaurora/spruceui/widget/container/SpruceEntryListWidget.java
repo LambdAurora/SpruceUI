@@ -24,7 +24,6 @@ import me.lambdaurora.spruceui.widget.WithBackground;
 import me.lambdaurora.spruceui.widget.WithBorder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;

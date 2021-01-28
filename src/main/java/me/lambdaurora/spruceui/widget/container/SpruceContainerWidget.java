@@ -17,7 +17,6 @@ import me.lambdaurora.spruceui.border.EmptyBorder;
 import me.lambdaurora.spruceui.widget.SpruceWidget;
 import me.lambdaurora.spruceui.widget.WithBackground;
 import me.lambdaurora.spruceui.widget.WithBorder;
-import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;
 
