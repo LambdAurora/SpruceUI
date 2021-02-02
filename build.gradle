@@ -8,6 +8,13 @@ plugins {
 archivesBaseName = project.archives_base_name
 version = "${project.mod_version}+${getMCVersionString()}"
 group = project.maven_group
+Set<String> modules = [
+        'fabric-api-base',
+        'fabric-lifecycle-events-v1',
+        'fabric-rendering-v1',
+        'fabric-resource-loader-v0',
+        'fabric-screen-api-v1'
+]
 
 def getMCVersionString() {
     if (project.minecraft_version.matches("\\d\\dw\\d\\d[a-z]")) {
@@ -30,7 +37,7 @@ minecraft {
 repositories {
     mavenLocal()
     maven {
-        name = "AperLambda"
+        name = 'AperLambda'
         url = 'https://aperlambda.github.io/maven'
     }
 }
@@ -44,10 +51,9 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modImplementation(fabricApi.module('fabric-api-base', project.fabric_api_version))
-    modImplementation(fabricApi.module('fabric-lifecycle-events-v1', project.fabric_api_version))
-    modImplementation(fabricApi.module('fabric-rendering-v1', project.fabric_api_version))
-    modImplementation(fabricApi.module('fabric-resource-loader-v0', project.fabric_api_version))
+    modules.stream().map { fabricApi.module(it, project.fabric_api_version) }.forEach {
+        modImplementation it
+    }
 
     modRuntime("io.github.prospector:modmenu:${project.modmenu_version}") {
         transitive = false

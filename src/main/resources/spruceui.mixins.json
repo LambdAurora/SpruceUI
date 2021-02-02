@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "me.lambdaurora.spruceui.mixin",
+  "package": "dev.lambdaurora.spruceui.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
     "MinecraftClientMixin"

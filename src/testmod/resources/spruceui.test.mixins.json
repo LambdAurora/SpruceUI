@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "me.lambdaurora.spruceui.test.mixin",
+  "package": "dev.lambdaurora.spruceui.test.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
     "TitleScreenMixin"
