@@ -9,10 +9,10 @@
 
 package dev.lambdaurora.spruceui.option;
 
-import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
-import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
+import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
+import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
