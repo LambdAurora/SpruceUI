@@ -39,11 +39,14 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
         this.tabbedWidget.addTabEntry(new LiteralText("Hello World"), null, (width, height) -> {
             SpruceContainerWidget container = new SpruceContainerWidget(Position.origin(), width, height);
             container.addChildren((containerWidth, containerHeight, widgetAdder) -> {
-                widgetAdder.accept(new SpruceLabelWidget(Position.center(containerWidth, 16), new LiteralText("Hello World!").formatted(Formatting.WHITE), containerWidth, true));
-                widgetAdder.accept(new SpruceLabelWidget(Position.center(containerWidth, 48),
+                widgetAdder.accept(new SpruceLabelWidget(Position.of(0, 16),
+                        new LiteralText("Hello World!").formatted(Formatting.WHITE),
+                        containerWidth, true));
+                widgetAdder.accept(new SpruceLabelWidget(Position.of(0, 48),
                         new LiteralText("This is a tabbed widget. You can switch tabs by using the list on the left.\n" +
                                 "It also allows quite a good controller support and arrow key navigation.")
-                                .formatted(Formatting.WHITE), containerWidth, true));
+                                .formatted(Formatting.WHITE),
+                        containerWidth, true));
             });
             return container;
         });

@@ -30,7 +30,7 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.0.1
  * @since 1.0.0
  */
 public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipable, WithBorder {
@@ -165,7 +165,8 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
         int y = this.getY();
         for (Iterator<OrderedText> it = this.lines.iterator(); it.hasNext(); y += 9) {
             OrderedText line = it.next();
-            int x = this.centered ? this.getX() - this.client.textRenderer.getWidth(line) / 2 : this.getX();
+            int x = this.centered ? (this.getX() + this.maxWidth / 2) - this.client.textRenderer.getWidth(line) / 2
+                    : this.getX();
             this.client.textRenderer.draw(matrices, line, x, y, 10526880);
         }
 
