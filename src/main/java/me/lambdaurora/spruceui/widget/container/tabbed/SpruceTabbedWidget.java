@@ -19,7 +19,6 @@ import me.lambdaurora.spruceui.widget.SpruceWidget;
 import me.lambdaurora.spruceui.widget.WithBackground;
 import me.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
 import me.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
