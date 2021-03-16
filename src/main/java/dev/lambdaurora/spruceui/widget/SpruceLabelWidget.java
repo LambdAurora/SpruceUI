@@ -30,7 +30,7 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 3.0.1
+ * @version 3.0.2
  * @since 1.0.0
  */
 public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipable, WithBorder {
@@ -39,6 +39,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 
     private final Consumer<SpruceLabelWidget> action;
     private final int maxWidth;
+    private int baseX;
     //private final int                         maxHeight;
     private Text text;
     private List<OrderedText> lines;
@@ -49,6 +50,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered) {
         super(position);
         this.maxWidth = maxWidth;
+        this.baseX = position.getRelativeX();
         this.action = action;
         this.centered = centered;
         this.setText(text);
@@ -64,6 +66,10 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 
     public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth) {
         this(position, text, maxWidth, DEFAULT_ACTION);
+    }
+
+    private int getInnerX() {
+        return this.getPosition().getAnchor().getX() + this.baseX;
     }
 
     /**
@@ -89,8 +95,13 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
             width = this.maxWidth;
         }
 
+        if (this.isCentered()) {
+            this.position.setRelativeX(this.baseX + this.maxWidth / 2 - width / 2);
+        } else {
+            this.position.setRelativeX(this.baseX);
+        }
         this.width = width;
-        this.height = this.lines.size() * this.client.textRenderer.fontHeight;
+        this.height = this.lines.size() * this.client.textRenderer.fontHeight + 2;
     }
 
     /**
@@ -162,11 +173,11 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 
     @Override
     protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        int y = this.getY();
+        int y = this.getY() + 2;
         for (Iterator<OrderedText> it = this.lines.iterator(); it.hasNext(); y += 9) {
             OrderedText line = it.next();
-            int x = this.centered ? (this.getX() + this.maxWidth / 2) - this.client.textRenderer.getWidth(line) / 2
-                    : this.getX();
+            int x = this.centered ? (this.getInnerX() + this.maxWidth / 2) - this.client.textRenderer.getWidth(line) / 2
+                    : this.getInnerX();
             this.client.textRenderer.draw(matrices, line, x, y, 10526880);
         }
 
