@@ -184,12 +184,14 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
     }
 
     public static class TabEntry extends Entry {
+        private final List<OrderedText> title;
         private final List<OrderedText> description;
         private final AbstractSpruceWidget container;
         private boolean selected;
 
         protected TabEntry(SideTabList parent, Text title, @Nullable Text description, AbstractSpruceWidget container) {
             super(parent, title);
+            this.title = this.client.textRenderer.wrapLines(title, this.parent.getWidth() - 18);
             if (description == null) this.description = null;
             else this.description = this.client.textRenderer.wrapLines(description, this.parent.getWidth() - 18);
             this.container = container;
@@ -201,7 +203,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
         @Override
         public int getHeight() {
-            return 8 + this.client.textRenderer.fontHeight
+            return 4 + (this.title.size() * this.client.textRenderer.fontHeight + 4)
                     + (this.description == null ? 0 : this.description.size() * this.client.textRenderer.fontHeight + 4) + 4;
         }
 
@@ -232,9 +234,13 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
         @Override
         protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-            DrawableHelper.drawTextWithShadow(matrices, this.client.textRenderer, this.getTitle(), this.getX() + 4, this.getY() + 5, 0xffffff);
+            int y = this.getY() + 4;
+            for (Iterator<OrderedText> it = this.title.iterator(); it.hasNext(); y += 9) {
+                OrderedText line = it.next();
+                this.client.textRenderer.draw(matrices, line, this.getX() + 4, y, 0xffffff);
+            }
             if (this.description != null) {
-                int y = this.getY() + 8 + this.client.textRenderer.fontHeight;
+                y += 4;
                 for (Iterator<OrderedText> it = this.description.iterator(); it.hasNext(); y += 9) {
                     OrderedText line = it.next();
                     this.client.textRenderer.draw(matrices, line, this.getX() + 8, y, 0xffffff);
