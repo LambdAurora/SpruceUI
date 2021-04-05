@@ -35,6 +35,8 @@
     "ltr": "*"
   },
   "custom": {
-    "modmenu:api": true
+    "modmenu": {
+      "badges": ["library"]
+    }
   }
 }
