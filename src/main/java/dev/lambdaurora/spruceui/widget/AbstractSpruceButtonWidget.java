@@ -156,8 +156,8 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 
     @Override
     protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.client.getTextureManager().bindTexture(AbstractButtonWidget.WIDGETS_LOCATION);
-        RenderSystem.color4f(1.f, 1.f, 1.f, this.getAlpha());
+        RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.getAlpha());
+        RenderSystem.setShaderTexture(0, AbstractButtonWidget.WIDGETS_LOCATION);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();

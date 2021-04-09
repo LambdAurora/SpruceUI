@@ -24,10 +24,10 @@ Add this to your `build.gradle` in addition of the base Fabric mod `build.gradle
 repositories {
     mavenLocal()
     maven {
-        name = "AperLambda"
+        name = 'AperLambda'
         url = 'https://aperlambda.github.io/maven'
     }
-    maven { url = "https://jitpack.io" }
+    maven { url = 'https://jitpack.io' }
 }
 
 dependencies {
@@ -41,7 +41,7 @@ dependencies {
 And this to your `gradle.properties`:
 
 ```properties
-spruceui_version=3.0.3-21w08b
+spruceui_version=3.0.3-21w14a
 ```
 
 It will JAR-in-JAR SpruceUI so users of your mod don't need to download it separately!

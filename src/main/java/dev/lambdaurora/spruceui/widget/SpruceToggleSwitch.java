@@ -64,9 +64,9 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 
     @Override
     protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.client.getTextureManager().bindTexture(TEXTURE);
         RenderSystem.enableDepthTest();
-        RenderSystem.color4f(1.f, 1.f, 1.f, this.alpha);
+        RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.alpha);
+        RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);

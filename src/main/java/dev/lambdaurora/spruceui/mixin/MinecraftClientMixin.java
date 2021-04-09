@@ -28,17 +28,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
     @Inject(method = "openScreen", at = @At("HEAD"))
-    private void spruceui_onScreenPre(Screen screen, CallbackInfo ci) {
+    private void onScreenPre(Screen screen, CallbackInfo ci) {
         OpenScreenCallback.PRE.invoker().apply((MinecraftClient) (Object) this, screen);
     }
 
     @Inject(method = "openScreen", at = @At("RETURN"))
-    private void spruceui_onScreenChange(Screen screen, CallbackInfo ci) {
+    private void onScreenChange(Screen screen, CallbackInfo ci) {
         OpenScreenCallback.EVENT.invoker().apply((MinecraftClient) (Object) this, screen);
     }
 
     @Inject(method = "onResolutionChanged", at = @At("RETURN"))
-    private void spruceui_onResolutionChanged(CallbackInfo ci) {
+    private void onResolutionChanged(CallbackInfo ci) {
         ResolutionChangeCallback.EVENT.invoker().apply((MinecraftClient) (Object) this);
     }
 }

@@ -18,7 +18,6 @@ public final class DirtTexturedBackground implements Background {
     public static final Background NORMAL = new DirtTexturedBackground(64, 64, 64, 255);
     public static final Background DARKENED = new DirtTexturedBackground(32, 32, 32, 255);
 
-    private final MinecraftClient client = MinecraftClient.getInstance();
     private final int red;
     private final int green;
     private final int blue;
@@ -33,7 +32,7 @@ public final class DirtTexturedBackground implements Background {
 
     @Override
     public void render(MatrixStack matrices, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
-        RenderUtil.renderBackgroundTexture(this.client, widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight(),
+        RenderUtil.renderBackgroundTexture(widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight(),
                 vOffset / 32.f, this.red, this.green, this.blue, this.alpha);
     }
 

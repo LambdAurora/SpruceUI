@@ -89,9 +89,7 @@ tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
 
     if (JavaVersion.current().isJava9Compatible()) {
-        if (JavaVersion.current().isJava9Compatible()) {
-            it.options.release.set(targetJavaVersion)
-        }
+        it.options.release.set(targetJavaVersion)
     }
 }
 

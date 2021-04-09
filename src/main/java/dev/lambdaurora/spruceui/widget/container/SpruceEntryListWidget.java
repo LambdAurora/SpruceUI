@@ -24,14 +24,12 @@ import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 
 import java.util.AbstractList;
 import java.util.Collection;
@@ -313,30 +311,29 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         if (this.shouldRenderTransition()) {
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE);
-            RenderSystem.disableAlphaTest();
-            RenderSystem.shadeModel(7425);
             RenderSystem.disableTexture();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
             buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
             // TOP
-            buffer.vertex(left, top + 4, 0).texture(0.f, 1.f).color(0, 0, 0, 0).next();
-            buffer.vertex(right, top + 4, 0).texture(1.f, 1.f).color(0, 0, 0, 0).next();
-            buffer.vertex(right, top, 0).texture(1.f, 0.f).color(0, 0, 0, 255).next();
-            buffer.vertex(left, top, 0).texture(0.f, 0.f).color(0, 0, 0, 255).next();
+            buffer.vertex(left, top + 4, 0).color(0, 0, 0, 0).next();
+            buffer.vertex(right, top + 4, 0).color(0, 0, 0, 0).next();
+            buffer.vertex(right, top, 0).color(0, 0, 0, 255).next();
+            buffer.vertex(left, top, 0).color(0, 0, 0, 255).next();
             // RIGHT
-            buffer.vertex(right - 4, bottom, 0).texture(0.f, 1.f).color(0, 0, 0, 0).next();
-            buffer.vertex(right, bottom, 0).texture(1.f, 1.f).color(0, 0, 0, 255).next();
-            buffer.vertex(right, top, 0).texture(1.f, 0.f).color(0, 0, 0, 255).next();
-            buffer.vertex(right - 4, top, 0).texture(0.f, 0.f).color(0, 0, 0, 0).next();
+            buffer.vertex(right - 4, bottom, 0).color(0, 0, 0, 0).next();
+            buffer.vertex(right, bottom, 0).color(0, 0, 0, 255).next();
+            buffer.vertex(right, top, 0).color(0, 0, 0, 255).next();
+            buffer.vertex(right - 4, top, 0).color(0, 0, 0, 0).next();
             // BOTTOM
-            buffer.vertex(left, bottom, 0).texture(0.f, 1.f).color(0, 0, 0, 255).next();
-            buffer.vertex(right, bottom, 0).texture(1.f, 1.f).color(0, 0, 0, 255).next();
-            buffer.vertex(right, bottom - 4, 0).texture(1.f, 0.f).color(0, 0, 0, 0).next();
-            buffer.vertex(left, bottom - 4, 0).texture(0.f, 0.f).color(0, 0, 0, 0).next();
+            buffer.vertex(left, bottom, 0).color(0, 0, 0, 255).next();
+            buffer.vertex(right, bottom, 0).color(0, 0, 0, 255).next();
+            buffer.vertex(right, bottom - 4, 0).color(0, 0, 0, 0).next();
+            buffer.vertex(left, bottom - 4, 0).color(0, 0, 0, 0).next();
             // LEFT
-            buffer.vertex(left, bottom, 0).texture(0.f, 1.f).color(0, 0, 0, 255).next();
-            buffer.vertex(left + 4, bottom, 0).texture(1.f, 1.f).color(0, 0, 0, 0).next();
-            buffer.vertex(left + 4, top, 0).texture(1.f, 0.f).color(0, 0, 0, 0).next();
-            buffer.vertex(left, top, 0).texture(0.f, 0.f).color(0, 0, 0, 255).next();
+            buffer.vertex(left, bottom, 0).color(0, 0, 0, 255).next();
+            buffer.vertex(left + 4, bottom, 0).color(0, 0, 0, 0).next();
+            buffer.vertex(left + 4, top, 0).color(0, 0, 0, 0).next();
+            buffer.vertex(left, top, 0).color(0, 0, 0, 255).next();
             tessellator.draw();
         }
 
@@ -357,25 +354,24 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         this.getBorder().render(matrices, this, mouseX, mouseY, delta);
 
         RenderSystem.enableTexture();
-        RenderSystem.shadeModel(7424);
-        RenderSystem.enableAlphaTest();
         RenderSystem.disableBlend();
     }
 
     protected void renderScrollbar(Tessellator tessellator, BufferBuilder buffer, int scrollbarX, int scrollbarEndX, int scrollbarY, int scrollbarHeight) {
-        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-        buffer.vertex(scrollbarX, this.getY() + this.getHeight(), 0.0).texture(0.f, 1.f).color(0, 0, 0, 255).next();
-        buffer.vertex(scrollbarEndX, this.getY() + this.getHeight(), 0.0).texture(1.f, 1.f).color(0, 0, 0, 255).next();
-        buffer.vertex(scrollbarEndX, this.getY(), 0.0).texture(1.f, 0.f).color(0, 0, 0, 255).next();
-        buffer.vertex(scrollbarX, this.getY(), 0.0).texture(0.f, 0.f).color(0, 0, 0, 255).next();
-        buffer.vertex(scrollbarX, scrollbarY + scrollbarHeight, 0.0).texture(0.f, 1.f).color(128, 128, 128, 255).next();
-        buffer.vertex(scrollbarEndX, scrollbarY + scrollbarHeight, 0.0).texture(1.f, 1.f).color(128, 128, 128, 255).next();
-        buffer.vertex(scrollbarEndX, scrollbarY, 0.0).texture(1.f, 0.f).color(128, 128, 128, 255).next();
-        buffer.vertex(scrollbarX, scrollbarY, 0.0).texture(0.f, 0.f).color(128, 128, 128, 255).next();
-        buffer.vertex(scrollbarX, scrollbarY + scrollbarHeight - 1, 0.0).texture(0.f, 1.f).color(192, 192, 192, 255).next();
-        buffer.vertex(scrollbarEndX - 1, scrollbarY + scrollbarHeight - 1, 0.0).texture(1.f, 1.f).color(192, 192, 192, 255).next();
-        buffer.vertex(scrollbarEndX - 1, scrollbarY, 0.0).texture(1.f, 0.f).color(192, 192, 192, 255).next();
-        buffer.vertex(scrollbarX, scrollbarY, 0.0).texture(0.f, 0.f).color(192, 192, 192, 255).next();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+        buffer.vertex(scrollbarX, this.getY() + this.getHeight(), 0.0).color(0, 0, 0, 255).next();
+        buffer.vertex(scrollbarEndX, this.getY() + this.getHeight(), 0.0).color(0, 0, 0, 255).next();
+        buffer.vertex(scrollbarEndX, this.getY(), 0.0).color(0, 0, 0, 255).next();
+        buffer.vertex(scrollbarX, this.getY(), 0.0).color(0, 0, 0, 255).next();
+        buffer.vertex(scrollbarX, scrollbarY + scrollbarHeight, 0.0).color(128, 128, 128, 255).next();
+        buffer.vertex(scrollbarEndX, scrollbarY + scrollbarHeight, 0.0).color(128, 128, 128, 255).next();
+        buffer.vertex(scrollbarEndX, scrollbarY, 0.0).color(128, 128, 128, 255).next();
+        buffer.vertex(scrollbarX, scrollbarY, 0.0).color(128, 128, 128, 255).next();
+        buffer.vertex(scrollbarX, scrollbarY + scrollbarHeight - 1, 0.0).color(192, 192, 192, 255).next();
+        buffer.vertex(scrollbarEndX - 1, scrollbarY + scrollbarHeight - 1, 0.0).color(192, 192, 192, 255).next();
+        buffer.vertex(scrollbarEndX - 1, scrollbarY, 0.0).color(192, 192, 192, 255).next();
+        buffer.vertex(scrollbarX, scrollbarY, 0.0).color(192, 192, 192, 255).next();
         tessellator.draw();
     }
 

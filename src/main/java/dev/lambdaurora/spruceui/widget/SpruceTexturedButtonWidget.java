@@ -64,13 +64,13 @@ public class SpruceTexturedButtonWidget extends SpruceButtonWidget {
 
     @Override
     protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.client.getTextureManager().bindTexture(this.texture);
         int v = this.v;
         if (this.isFocusedOrHovered()) {
             v += this.hoveredVOffset;
         }
 
-        RenderSystem.color4f(1.f, 1.f, 1.f, this.getAlpha());
+        RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.getAlpha());
+        RenderSystem.setShaderTexture(0, this.texture);
         RenderSystem.enableDepthTest();
         drawTexture(matrices, this.getX(), this.getY(), this.u, v, this.getWidth(), this.getHeight(), this.textureWidth, this.textureHeight);
     }
