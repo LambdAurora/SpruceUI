@@ -162,7 +162,7 @@ publishing {
         def spruceuiMaven = System.getenv("SPRUCEUI_MAVEN")
         if (spruceuiMaven) {
             maven {
-                name = "SpruceUI Maven"
+                name = "SpruceUIMaven"
                 url = uri(spruceuiMaven)
                 credentials {
                     username = project.findProperty("gpr.user") ?: System.getenv("MAVEN_USERNAME")
