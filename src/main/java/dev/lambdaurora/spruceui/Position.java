@@ -142,7 +142,7 @@ public final class Position implements SprucePositioned {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Position position = (Position) o;
+        var position = (Position) o;
         return this.getX() == position.getX() && this.getY() == position.getY();
     }
 

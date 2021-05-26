@@ -13,21 +13,20 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
  * Represents a slider widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.1.0
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements Tooltipable {
@@ -164,7 +163,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     @Override
     protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         RenderSystem.setShaderColor(1.f, 1.f, 1.f, 1.f);
-        RenderSystem.setShaderTexture(0, AbstractButtonWidget.WIDGETS_LOCATION);
+        RenderSystem.setShaderTexture(0, ClickableWidget.WIDGETS_TEXTURE);
         int vOffset = (this.isFocusedOrHovered() ? 2 : 1) * 20;
         this.drawTexture(matrices, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(), 0, 46 + vOffset, 4, 20);
         this.drawTexture(matrices, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)) + 4, this.getY(), 196, 46 + vOffset, 4, 20);
@@ -175,7 +174,17 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     /* Narration */
 
     @Override
-    protected @NotNull Optional<Text> getNarrationMessage() {
-        return Optional.of(new TranslatableText("gui.narrate.slider", this.getMessage()));
+    protected Text getNarrationMessage() {
+        return new TranslatableText("gui.narrate.slider", this.getMessage());
+    }
+
+    @Override
+    protected Text getNarrationFocusedUsageMessage() {
+        return new TranslatableText("narration.slider.usage.focused");
+    }
+
+    @Override
+    protected Text getNarrationHoveredUsageMessage() {
+        return new TranslatableText("narration.slider.usage.hovered");
     }
 }

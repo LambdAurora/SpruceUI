@@ -49,7 +49,7 @@ public class SpruceCyclingOption extends SpruceOption {
 
     @Override
     public SpruceWidget createWidget(Position position, int width) {
-        SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getMessage(), btn -> {
+        var button = new SpruceButtonWidget(position, width, 20, this.getMessage(), btn -> {
             this.cycle(1);
             btn.setMessage(this.getMessage());
         });

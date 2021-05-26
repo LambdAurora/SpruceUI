@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 @FunctionalInterface
 public interface ResolutionChangeCallback {
     Event<ResolutionChangeCallback> EVENT = EventFactory.createArrayBacked(ResolutionChangeCallback.class, listeners -> client -> {
-        for (ResolutionChangeCallback event : listeners) {
+        for (var event : listeners) {
             event.apply(client);
         }
     });

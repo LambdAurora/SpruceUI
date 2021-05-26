@@ -34,7 +34,7 @@ public class SpruceToggleBooleanOption extends SpruceBooleanOption {
 
     @Override
     public SpruceWidget createWidget(Position position, int width) {
-        SpruceToggleSwitch button = new SpruceToggleSwitch(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
+        var button = new SpruceToggleSwitch(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
             this.set();
             btn.setMessage(this.getDisplayText());
         }, this.get());

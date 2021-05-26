@@ -42,7 +42,7 @@ public class SpruceStringOption extends SpruceOption {
 
     @Override
     public SpruceWidget createWidget(Position position, int width) {
-        SpruceTextFieldWidget textField = new SpruceTextFieldWidget(position, width, 20, this.getPrefix());
+        var textField = new SpruceTextFieldWidget(position, width, 20, this.getPrefix());
         textField.setText(this.get());
         if (this.predicate != null)
             textField.setTextPredicate(this.predicate);

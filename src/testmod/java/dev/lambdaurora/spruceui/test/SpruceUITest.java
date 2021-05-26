@@ -136,7 +136,7 @@ public class SpruceUITest implements ClientModInitializer {
     }
 
     public SpruceOptionListWidget buildOptionList(Position position, int width, int height) {
-        SpruceOptionListWidget list = new SpruceOptionListWidget(position, width, height);
+        var list = new SpruceOptionListWidget(position, width, height);
 
         list.addOptionEntry(this.booleanOption, this.checkboxOption);
         list.addOptionEntry(this.toggleSwitchOption, null);
@@ -158,7 +158,7 @@ public class SpruceUITest implements ClientModInitializer {
                                                                Consumer<SpruceTextAreaWidget> textAreaConsumer,
                                                                @Nullable SpruceButtonWidget.PressAction doneButtonAction) {
         int textFieldWidth = (int) (width * (3.0 / 4.0));
-        SpruceTextAreaWidget textArea = new SpruceTextAreaWidget(Position.of(width / 2 - textFieldWidth / 2, 0), textFieldWidth, height - 50,
+        var textArea = new SpruceTextAreaWidget(Position.of(width / 2 - textFieldWidth / 2, 0), textFieldWidth, height - 50,
                 new LiteralText("Text Area"));
         textArea.setLines(Arrays.asList(
                 "Hello world,",
@@ -184,7 +184,7 @@ public class SpruceUITest implements ClientModInitializer {
         textAreaConsumer.accept(textArea);
         // Display as many lines as possible
         textArea.setCursorToStart();
-        SpruceContainerWidget container = new SpruceContainerWidget(position, width, height);
+        var container = new SpruceContainerWidget(position, width, height);
         container.addChild(textArea);
 
         int printToConsoleX = width / 2 - (doneButtonAction == null ? 75 : 155);

@@ -31,7 +31,8 @@ public abstract class AbstractSpruceIconButtonWidget extends SpruceButtonWidget 
         int iconWidth = this.renderIcon(matrices, mouseX, mouseY, delta);
         if (!this.getMessage().getString().isEmpty()) {
             int color = this.isActive() ? 16777215 : 10526880;
-            drawCenteredText(matrices, this.client.textRenderer, this.getMessage(), this.getX() + 8 + iconWidth + (this.getWidth() - 8 - iconWidth - 6) / 2,
+            drawCenteredText(matrices, this.client.textRenderer, this.getMessage(),
+                    this.getX() + 8 + iconWidth + (this.getWidth() - 8 - iconWidth - 6) / 2,
                     this.getY() + (this.height - 8) / 2, color | MathHelper.ceil(this.getAlpha() * 255.0F) << 24);
         }
     }

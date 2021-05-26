@@ -43,7 +43,7 @@ public final class SpruceSimpleActionOption extends SpruceOption implements Name
 
     @Override
     public SpruceWidget createWidget(Position position, int width) {
-        SpruceButtonWidget button = this.buttonFactory.build(position, width, new TranslatableText(this.key), this.action);
+        var button = this.buttonFactory.build(position, width, new TranslatableText(this.key), this.action);
         this.getOptionTooltip().ifPresent(button::setTooltip);
         return button;
     }

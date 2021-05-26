@@ -23,7 +23,6 @@ public final class EmptyBackground implements Background {
     public static final EmptyBackground EMPTY_BACKGROUND = new EmptyBackground();
 
     private EmptyBackground() {
-
     }
 
     @Override

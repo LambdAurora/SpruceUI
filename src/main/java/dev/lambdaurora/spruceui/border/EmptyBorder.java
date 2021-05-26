@@ -16,10 +16,10 @@ import net.minecraft.client.util.math.MatrixStack;
  * Represents an empty border.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.1.0
  * @since 2.0.0
  */
-public final class EmptyBorder extends Border {
+public final class EmptyBorder implements Border {
     public static final EmptyBorder EMPTY_BORDER = new EmptyBorder();
 
     private EmptyBorder() {

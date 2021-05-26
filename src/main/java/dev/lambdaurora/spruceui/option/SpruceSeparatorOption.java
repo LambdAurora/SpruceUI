@@ -34,7 +34,7 @@ public class SpruceSeparatorOption extends SpruceOption {
 
     @Override
     public SpruceWidget createWidget(Position position, int width) {
-        SpruceSeparatorWidget separator = new SpruceSeparatorWidget(position, width, this.showTitle ? new TranslatableText(this.key) : null);
+        var separator = new SpruceSeparatorWidget(position, width, this.showTitle ? new TranslatableText(this.key) : null);
         this.getOptionTooltip().ifPresent(separator::setTooltip);
         return separator;
     }

@@ -26,7 +26,7 @@ public final class EventUtil {
 
     static Event<OpenScreenCallback> makeOpenScreenEvent() {
         return EventFactory.createArrayBacked(OpenScreenCallback.class, listeners -> (client, screen) -> {
-            for (OpenScreenCallback event : listeners) {
+            for (var event : listeners) {
                 event.apply(client, screen);
             }
         });

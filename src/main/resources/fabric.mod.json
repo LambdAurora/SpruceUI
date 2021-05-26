@@ -29,7 +29,8 @@
     "fabric-lifecycle-events-v1": "*",
     "fabric-rendering-v1": "*",
     "fabric-resource-loader-v0": ">=0.4.1",
-    "minecraft": ">=1.17-alpha.21.14.a"
+    "minecraft": ">=1.17-alpha.21.20.a",
+    "java": ">=16"
   },
   "custom": {
     "modmenu": {

@@ -43,15 +43,15 @@ public class SpruceIntegerInputOption extends SpruceOption {
 
     @Override
     public SpruceWidget createWidget(Position position, int width) {
-        SpruceTextFieldWidget textField = new SpruceTextFieldWidget(position, width, 20, this.getPrefix());
+        var textField = new SpruceTextFieldWidget(position, width, 20, this.getPrefix());
         textField.setText(String.valueOf(this.get()));
         textField.setTextPredicate(SpruceTextFieldWidget.INTEGER_INPUT_PREDICATE);
         textField.setRenderTextProvider((displayedText, offset) -> {
             try {
                 Integer.parseInt(textField.getText());
-                return OrderedText.styledString(displayedText, Style.EMPTY);
+                return OrderedText.styledForwardsVisitedString(displayedText, Style.EMPTY);
             } catch (NumberFormatException e) {
-                return OrderedText.styledString(displayedText, Style.EMPTY.withColor(Formatting.RED));
+                return OrderedText.styledForwardsVisitedString(displayedText, Style.EMPTY.withColor(Formatting.RED));
             }
         });
         textField.setChangedListener(input -> {

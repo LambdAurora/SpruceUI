@@ -18,8 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.Iterator;
-
 /**
  * Represents a parent widget, contains children which are other widgets.
  *
@@ -83,7 +81,7 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 
     @Override
     protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-        Iterator<E> it = this.children().iterator();
+        var it = this.children().iterator();
 
         E element;
         do {

@@ -11,6 +11,7 @@ package dev.lambdaurora.spruceui.hud;
 
 import dev.lambdaurora.spruceui.event.OpenScreenCallback;
 import dev.lambdaurora.spruceui.event.ResolutionChangeCallback;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
@@ -18,7 +19,7 @@ import org.aperlambda.lambdacommon.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -29,7 +30,7 @@ import java.util.Optional;
  * @since 1.2.0
  */
 public class HudManager {
-    private static final HashMap<Identifier, Hud> HUDS = new HashMap<>();
+    private static final Map<Identifier, Hud> HUDS = new Object2ObjectOpenHashMap<>();
 
     public void initialize() {
         HudRenderCallback.EVENT.register((matrices, tickDelta) -> HUDS.forEach((id, hud) -> {

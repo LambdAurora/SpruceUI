@@ -27,7 +27,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -47,7 +46,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         this(position, width, height, title, Math.max(100, width / 8), title != null ? 20 : 0);
     }
 
-    public SpruceTabbedWidget(@NotNull Position position, int width, int height, @Nullable Text title, int sideWidth, int sideTopOffset) {
+    public SpruceTabbedWidget(@NotNull Position position, int width, int height, @Nullable Text title, int sideWidth,
+                              int sideTopOffset) {
         super(position, SpruceWidget.class);
         this.width = width;
         this.height = height;
@@ -70,7 +70,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
     }
 
     public void addTabEntry(Text title, @Nullable Text description, AbstractSpruceWidget container) {
-        TabEntry entry = this.list.addTabEntry(title, description, container);
+        var entry = this.list.addTabEntry(title, description, container);
         entry.container.getPosition().setAnchor(this.anchor);
     }
 
@@ -133,7 +133,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
     @Override
     protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (this.title != null) {
-            drawCenteredText(matrices, this.client.textRenderer, this.title, this.getX() + this.list.getWidth() / 2, this.getY() + 6, 0xffffffff);
+            drawCenteredText(matrices, this.client.textRenderer, this.title, this.getX() + this.list.getWidth() / 2,
+                    this.getY() + 6, 0xffffffff);
         }
         this.list.render(matrices, mouseX, mouseY, delta);
         if (this.list.getCurrentTab() != null)
@@ -195,8 +196,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
             else this.description = this.client.textRenderer.wrapLines(description, this.parent.getWidth() - 18);
             this.container = container;
 
-            if (container instanceof SpruceEntryListWidget<?>) {
-                ((SpruceEntryListWidget<?>) container).setAllowOutsideHorizontalNavigation(true);
+            if (container instanceof SpruceEntryListWidget<?> listWidget) {
+                listWidget.setAllowOutsideHorizontalNavigation(true);
             }
         }
 
@@ -234,14 +235,14 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         @Override
         protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             int y = this.getY() + 4;
-            for (Iterator<OrderedText> it = this.title.iterator(); it.hasNext(); y += 9) {
-                OrderedText line = it.next();
+            for (var it = this.title.iterator(); it.hasNext(); y += 9) {
+                var line = it.next();
                 this.client.textRenderer.draw(matrices, line, this.getX() + 4, y, 0xffffff);
             }
             if (this.description != null) {
                 y += 4;
-                for (Iterator<OrderedText> it = this.description.iterator(); it.hasNext(); y += 9) {
-                    OrderedText line = it.next();
+                for (var it = this.description.iterator(); it.hasNext(); y += 9) {
+                    var line = it.next();
                     this.client.textRenderer.draw(matrices, line, this.getX() + 8, y, 0xffffff);
                 }
             }
@@ -251,9 +252,14 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             super.renderBackground(matrices, mouseX, mouseY, delta);
             if (this.isFocused() && this.parent.isFocused())
-                fill(matrices, this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight() - 4, 0x2fffffff);
+                fill(matrices, this.getX(), this.getY(),
+                        this.getX() + this.getWidth(),
+                        this.getY() + this.getHeight() - 4,
+                        0x2fffffff);
             else if (this.selected || this.isMouseHovered())
-                fill(matrices, this.getX(), this.getY(), this.getX() + this.getWidth(), this.getY() + this.getHeight() - 4, 0x1affffff);
+                fill(matrices, this.getX(), this.getY(), this.getX() + this.getWidth(),
+                        this.getY() + this.getHeight() - 4,
+                        0x1affffff);
         }
 
         @Override
@@ -347,7 +353,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         }
 
         public TabEntry addTabEntry(Text title, @Nullable Text description, AbstractSpruceWidget container) {
-            TabEntry entry = new TabEntry(this, title, description, container);
+            var entry = new TabEntry(this, title, description, container);
             this.addEntry(entry);
             if (this.getCurrentTab() == null)
                 this.setSelected(entry);
@@ -355,7 +361,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         }
 
         public SeparatorEntry addSeparatorEntry(Text title) {
-            SeparatorEntry entry = new SeparatorEntry(this, title);
+            var entry = new SeparatorEntry(this, title);
             this.addEntry(entry);
             return entry;
         }
@@ -365,11 +371,11 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         @Override
         public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
             if (this.requiresCursor()) return false;
-            SpruceTabbedWidget.Entry old = this.getFocused();
+            var old = this.getFocused();
             boolean result = super.onNavigation(direction, tab);
-            SpruceTabbedWidget.Entry focused = this.getFocused();
-            if (result && old != focused && focused instanceof TabEntry) {
-                this.setSelected((TabEntry) focused);
+            var focused = this.getFocused();
+            if (result && old != focused && focused instanceof TabEntry tabEntry) {
+                this.setSelected(tabEntry);
             }
             return result;
         }

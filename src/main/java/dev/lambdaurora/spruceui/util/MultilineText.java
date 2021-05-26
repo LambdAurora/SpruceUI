@@ -72,10 +72,10 @@ public final class MultilineText {
     }
 
     public @NotNull List<String> getLines() {
-        List<String> lines = new ArrayList<>();
+        var lines = new ArrayList<String>();
 
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String row : this.rows) {
+        var stringBuilder = new StringBuilder();
+        for (var row : this.rows) {
             stringBuilder.append(row.replace("\n", ""));
             if (row.endsWith("\n")) {
                 lines.add(stringBuilder.toString());
@@ -97,8 +97,8 @@ public final class MultilineText {
      * @return The text.
      */
     public @NotNull String getText() {
-        StringBuilder builder = new StringBuilder();
-        for (String row : this.rows)
+        var builder = new StringBuilder();
+        for (var row : this.rows)
             builder.append(row);
         return builder.toString();
     }
@@ -117,7 +117,7 @@ public final class MultilineText {
      * Recomputes the lines wrapping.
      */
     public void recompute() {
-        String text = this.getText();
+        var text = this.getText();
         this.clear();
         this.add(text);
     }
@@ -188,7 +188,7 @@ public final class MultilineText {
     public void replaceRow(int row, @NotNull Function<String, String> replacer) {
         if (row < 0 || row >= this.rows.size())
             return;
-        String line = this.get(row);
+        var line = this.get(row);
         this.replaceRow(row, replacer.apply(line));
     }
 
@@ -204,11 +204,11 @@ public final class MultilineText {
     }
 
     public static @NotNull Collection<? extends String> wrap(@NotNull Collection<? extends String> text, int width) {
-        MinecraftClient client = MinecraftClient.getInstance();
+        var client = MinecraftClient.getInstance();
         if (client == null)
             return text;
 
-        List<String> lines = new ArrayList<>();
+        var lines = new ArrayList<String>();
 
         for (String line : text) {
             if (line.equals("\n") || line.isEmpty()) {
@@ -218,11 +218,11 @@ public final class MultilineText {
 
             if (line.endsWith("\n")) line = line.substring(0, line.length() - 1);
             while (!line.isEmpty()) {
-                String part = client.textRenderer.trimToWidth(line, width);
+                var part = client.textRenderer.trimToWidth(line, width);
                 line = line.substring(part.length());
                 lines.add(part);
             }
-            String part = lines.remove(lines.size() - 1);
+            var part = lines.remove(lines.size() - 1);
             lines.add(part + "\n");
         }
 

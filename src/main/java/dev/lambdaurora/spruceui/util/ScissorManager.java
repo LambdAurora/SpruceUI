@@ -12,7 +12,6 @@ package dev.lambdaurora.spruceui.util;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.Window;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayDeque;
@@ -22,7 +21,7 @@ import java.util.Deque;
  * Represents a manager for {@link GL11#glScissor(int, int, int, int)}.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.1.0
  * @since 2.0.0
  */
 public final class ScissorManager {
@@ -70,7 +69,7 @@ public final class ScissorManager {
         if (SCISSOR_STACK.isEmpty())
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
         double scaleFactor = getCurrentScaleFactor();
-        ScissorHandle handle = new ScissorHandle((int) (scaleFactor * x), adaptY(y, height, scaleFactor),
+        var handle = new ScissorHandle((int) (scaleFactor * x), adaptY(y, height, scaleFactor),
                 (int) (scaleFactor * width), (int) (scaleFactor * height));
         handle.apply();
         SCISSOR_STACK.push(handle);
@@ -89,27 +88,15 @@ public final class ScissorManager {
     }
 
     private static int adaptY(int y, int height, double scaleFactor) {
-        Window window = MinecraftClient.getInstance().getWindow();
+        var window = MinecraftClient.getInstance().getWindow();
         int tmpHeight = (int) (window.getFramebufferHeight() / scaleFactor);
         int scaledHeight = window.getFramebufferHeight() / scaleFactor > (double) tmpHeight ? tmpHeight + 1 : tmpHeight;
         return (int) (scaleFactor * (scaledHeight - height - y));
     }
 
-    static class ScissorHandle {
-        int x;
-        int y;
-        int width;
-        int height;
-
-        public ScissorHandle(int x, int y, int width, int height) {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-        }
-
+    static record ScissorHandle(int x, int y, int width, int height) {
         void apply() {
-            GL11.glScissor(this.x, this.y, this.width, this.height);
+            GL11.glScissor(this.x(), this.y(), this.width(), this.height());
         }
     }
 }

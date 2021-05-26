@@ -21,10 +21,10 @@ import java.util.Arrays;
  * Represents a simple solid border to draw around a widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.1.0
  * @since 2.0.0
  */
-public final class SimpleBorder extends Border {
+public final class SimpleBorder implements Border {
     public static final SimpleBorder SIMPLE_BORDER = new SimpleBorder(1, 192, 192, 192, 255);
 
     private final int thickness;
@@ -55,8 +55,8 @@ public final class SimpleBorder extends Border {
     public void render(MatrixStack matrices, SpruceWidget widget, int mouseX, int mouseY, float delta) {
         RenderSystem.disableTexture();
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        var tessellator = Tessellator.getInstance();
+        var buffer = tessellator.getBuffer();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
         int x = widget.getX();

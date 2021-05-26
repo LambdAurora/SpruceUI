@@ -24,12 +24,14 @@ import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 
 import java.util.AbstractList;
 import java.util.Collection;
@@ -43,7 +45,8 @@ import java.util.List;
  * @version 3.0.0
  * @since 2.0.0
  */
-public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E> implements WithBackground, WithBorder {
+public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E>
+        implements WithBackground, WithBorder {
     protected final Position anchor = Position.of(this, 0, 0);
     private final List<E> entries = new Entries();
     private final int anchorYOffset;
@@ -160,7 +163,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         this.scrollAmount = MathHelper.clamp(amount, 0, this.getMaxScroll());
         this.anchor.setRelativeY((int) (this.anchorYOffset + this.getBorder().getThickness() - this.scrollAmount));
 
-        for (E entry : this.entries) {
+        for (var entry : this.entries) {
             entry.setVisibleInList(!(entry.getY() + entry.getHeight() < this.getY() || entry.getY() > this.getY() + this.getHeight()));
         }
     }
@@ -285,7 +288,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         return true;
     }
 
-    /* Render */
+    /* Rendering */
 
     @Override
     protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
@@ -305,8 +308,8 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         this.entries.forEach(e -> e.render(matrices, mouseX, mouseY, delta));
         ScissorManager.pop();
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        var tessellator = Tessellator.getInstance();
+        var buffer = tessellator.getBuffer();
         // Render the transition thingy.
         if (this.shouldRenderTransition()) {
             RenderSystem.enableBlend();
@@ -375,6 +378,18 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         tessellator.draw();
     }
 
+    /* Narration */
+
+    protected void appendPositionNarrations(NarrationMessageBuilder builder, E entry) {
+        var list = this.children();
+        if (list.size() > 1) {
+            int i = list.indexOf(entry);
+            if (i != -1) {
+                builder.put(NarrationPart.POSITION, new TranslatableText("narrator.position.list", i + 1, list.size()));
+            }
+        }
+    }
+
     @Environment(EnvType.CLIENT)
     class Entries extends AbstractList<E> {
         private final List<E> entries;
@@ -392,7 +407,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         }
 
         public E set(int i, E entry) {
-            E entry2 = this.entries.set(i, entry);
+            var entry2 = this.entries.set(i, entry);
             this.recomputePositions();
             SpruceEntryListWidget.this.setOwnerShip(entry);
             return entry2;
@@ -405,14 +420,14 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
         }
 
         public E remove(int i) {
-            E result = this.entries.remove(i);
+            var result = this.entries.remove(i);
             this.recomputePositions();
             return result;
         }
 
         private void recomputePositions() {
             int y = 0;
-            for (E entry : this.entries) {
+            for (var entry : this.entries) {
                 entry.getPosition().setRelativeY(y);
                 y += entry.getHeight();
             }

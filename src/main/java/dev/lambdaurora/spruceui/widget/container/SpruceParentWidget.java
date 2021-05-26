@@ -15,7 +15,6 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +33,7 @@ public interface SpruceParentWidget<E extends SpruceWidget> extends SpruceWidget
     void setFocused(@Nullable E focused);
 
     default Optional<E> hoveredElement(double mouseX, double mouseY) {
-        Iterator<E> it = this.children().iterator();
+        var it = this.children().iterator();
 
         E element;
         do {
@@ -53,7 +52,8 @@ public interface SpruceParentWidget<E extends SpruceWidget> extends SpruceWidget
     @Override
     default boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
-        boolean result = NavigationUtils.tryNavigate(direction, tab, this.children(), this.getFocused(), this::setFocused, false);
+        boolean result = NavigationUtils.tryNavigate(direction, tab, this.children(), this.getFocused(), this::setFocused,
+                false);
         if (result)
             this.setFocused(true);
         return result;

@@ -37,7 +37,7 @@ public enum TestEnum implements Nameable {
      * @return The next available enum value.
      */
     public @NotNull TestEnum next() {
-        TestEnum[] v = values();
+        var v = values();
         if (v.length == this.ordinal() + 1)
             return v[0];
         return v[this.ordinal() + 1];

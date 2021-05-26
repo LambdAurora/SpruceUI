@@ -50,7 +50,7 @@ public class SpruceDoubleOption extends SpruceOption {
 
     @Override
     public SpruceWidget createWidget(Position position, int width) {
-        SpruceOptionSliderWidget slider = new SpruceOptionSliderWidget(position, width, 20, this);
+        var slider = new SpruceOptionSliderWidget(position, width, 20, this);
         this.getOptionTooltip().ifPresent(slider::setTooltip);
         return slider;
     }

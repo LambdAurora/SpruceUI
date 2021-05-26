@@ -14,7 +14,8 @@ import dev.lambdaurora.spruceui.widget.AbstractSpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,11 +23,11 @@ import org.jetbrains.annotations.NotNull;
  * Represents a vanilla button wrapper for SpruceUI's own button widgets.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.1.0
  * @since 2.0.0
  */
 @Environment(EnvType.CLIENT)
-public class VanillaButtonWrapper extends AbstractButtonWidget implements SpruceElement {
+public class VanillaButtonWrapper extends ClickableWidget implements SpruceElement {
     private final AbstractSpruceButtonWidget widget;
 
     public VanillaButtonWrapper(@NotNull AbstractSpruceButtonWidget widget) {
@@ -62,7 +63,16 @@ public class VanillaButtonWrapper extends AbstractButtonWidget implements Spruce
 
     @Override
     public boolean changeFocus(boolean down) {
-        boolean value = this.onNavigation(down ? NavigationDirection.DOWN : NavigationDirection.UP, true);
-        return value;
+        return this.onNavigation(down ? NavigationDirection.DOWN : NavigationDirection.UP, true);
+    }
+
+    @Override
+    public SelectionType getType() {
+        return this.widget.getType();
+    }
+
+    @Override
+    public void appendNarrations(NarrationMessageBuilder builder) {
+        this.widget.appendNarrations(builder);
     }
 }

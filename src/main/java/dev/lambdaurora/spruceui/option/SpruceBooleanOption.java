@@ -79,7 +79,7 @@ public class SpruceBooleanOption extends SpruceOption {
 
     @Override
     public SpruceWidget createWidget(Position position, int width) {
-        SpruceButtonWidget button = new SpruceButtonWidget(position, width, 20, this.getDisplayText(), btn -> {
+        var button = new SpruceButtonWidget(position, width, 20, this.getDisplayText(), btn -> {
             this.set();
             btn.setMessage(this.getDisplayText());
         });
@@ -94,7 +94,7 @@ public class SpruceBooleanOption extends SpruceOption {
      */
     public Text getDisplayText() {
         boolean value = this.get();
-        Text toggleText = SpruceTexts.getToggleText(value);
+        var toggleText = SpruceTexts.getToggleText(value);
         if (this.colored)
             toggleText = toggleText.copy().setStyle(toggleText.getStyle().withColor(value ? Formatting.GREEN : Formatting.RED));
         return this.getDisplayText(toggleText);

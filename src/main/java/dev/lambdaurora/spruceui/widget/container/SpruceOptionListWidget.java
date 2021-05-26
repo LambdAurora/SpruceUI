@@ -13,14 +13,17 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.navigation.NavigationUtils;
 import dev.lambdaurora.spruceui.option.SpruceOption;
+import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -77,6 +80,30 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
     }
 
+    /* Narration */
+
+    @Override
+    public void appendNarrations(NarrationMessageBuilder builder) {
+        this.children()
+                .stream()
+                .filter(AbstractSpruceWidget::isMouseHovered)
+                .findFirst()
+                .ifPresentOrElse(
+                        hoveredEntry -> {
+                            hoveredEntry.appendNarrations(builder.nextMessage());
+                            this.appendPositionNarrations(builder, hoveredEntry);
+                        }, () -> {
+                            var focusedEntry = this.getFocused();
+                            if (focusedEntry != null) {
+                                focusedEntry.appendNarrations(builder.nextMessage());
+                                this.appendPositionNarrations(builder, focusedEntry);
+                            }
+                        }
+                );
+
+        builder.put(NarrationPart.USAGE, new TranslatableText("narration.component_list.usage"));
+    }
+
     public static class OptionEntry extends SpruceEntryListWidget.Entry implements SpruceParentWidget<SpruceWidget> {
         private final List<SpruceWidget> children = new ArrayList<>();
         private final SpruceOptionListWidget parent;
@@ -88,13 +115,14 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         }
 
         public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption option, boolean small) {
-            OptionEntry entry = new OptionEntry(parent);
-            entry.children.add(option.createWidget(Position.of(entry, entry.getWidth() / 2 - (small ? 75 : 155), 2), small ? 150 : 310));
+            var entry = new OptionEntry(parent);
+            entry.children.add(option.createWidget(Position.of(entry, entry.getWidth() / 2 - (small ? 75 : 155), 2),
+                    small ? 150 : 310));
             return entry;
         }
 
         public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption firstOption, @Nullable SpruceOption secondOption) {
-            OptionEntry entry = new OptionEntry(parent);
+            var entry = new OptionEntry(parent);
             entry.children.add(firstOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 2), 150));
             if (secondOption != null) {
                 entry.children.add(secondOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155 + 160, 2), 150));
@@ -143,7 +171,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 
         @Override
         protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-            Iterator<SpruceWidget> it = this.children().iterator();
+            var it = this.children().iterator();
 
             SpruceWidget element;
             do {
@@ -193,6 +221,14 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         @Override
         protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
             this.children.forEach(widget -> widget.render(matrices, mouseX, mouseY, delta));
+        }
+
+        /* Narration */
+
+        @Override
+        public void appendNarrations(NarrationMessageBuilder builder) {
+            var focused = this.getFocused();
+            if (focused != null) focused.appendNarrations(builder);
         }
 
         /* Navigation */

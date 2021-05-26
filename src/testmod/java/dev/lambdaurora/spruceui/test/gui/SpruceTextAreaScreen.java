@@ -9,11 +9,10 @@
 
 package dev.lambdaurora.spruceui.test.gui;
 
+import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.test.SpruceUITest;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
-import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
@@ -37,13 +36,15 @@ public class SpruceTextAreaScreen extends SpruceScreen {
     protected void init() {
         super.init();
 
-        SpruceContainerWidget containerWidget = SpruceUITest.buildTextAreaContainer(Position.of(this, 0, 50), this.width, this.height - 50, textArea -> {
-            if (this.textArea != null) {
-                textArea.setText(this.textArea.getText());
-            }
-            this.textArea = textArea;
-        }, btn -> this.client.openScreen(this.parent));
-        this.addChild(containerWidget);
+        var containerWidget =
+                SpruceUITest.buildTextAreaContainer(Position.of(this, 0, 50), this.width, this.height - 50,
+                        textArea -> {
+                            if (this.textArea != null) {
+                                textArea.setText(this.textArea.getText());
+                            }
+                            this.textArea = textArea;
+                        }, btn -> this.client.openScreen(this.parent));
+        this.addDrawableChild(containerWidget);
     }
 
     @Override

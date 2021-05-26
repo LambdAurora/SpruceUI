@@ -109,7 +109,10 @@ public class Tooltip extends DrawableHelper implements SprucePositioned {
      * @param <T> the type of the widget
      * @since 1.6.0
      */
-    public static <T extends Tooltipable & SpruceWidget> void queueFor(@NotNull T widget, int mouseX, int mouseY, int tooltipTicks, @NotNull Consumer<Integer> tooltipTicksSetter, long lastTick, @NotNull Consumer<Long> lastTickSetter) {
+    public static <T extends Tooltipable & SpruceWidget> void queueFor(@NotNull T widget, int mouseX, int mouseY, int tooltipTicks,
+                                                                       @NotNull Consumer<Integer> tooltipTicksSetter,
+                                                                       long lastTick,
+                                                                       @NotNull Consumer<Long> lastTickSetter) {
         if (widget.isVisible()) {
             widget.getTooltip().ifPresent(tooltip -> {
                 long currentRender = System.currentTimeMillis();
@@ -124,11 +127,14 @@ public class Tooltip extends DrawableHelper implements SprucePositioned {
                     tooltipTicksSetter.accept(0);
 
                 if (!tooltip.getString().isEmpty() && tooltipTicks >= 45) {
-                    List<OrderedText> wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(tooltip, Math.max(widget.getWidth() * 2 / 3, 200));
+                    var wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(
+                            tooltip, Math.max(widget.getWidth() * 2 / 3, 200));
                     if (widget.isMouseHovered())
                         create(mouseX, mouseY, wrappedTooltipText).queue();
                     else if (widget.isFocused())
-                        create(widget.getX() - 12, widget.getY() + 12 + wrappedTooltipText.size() * 10, wrappedTooltipText).queue();
+                        create(widget.getX() - 12, widget.getY() + widget.getHeight() + 16,
+                                wrappedTooltipText)
+                                .queue();
                 }
             });
         }

@@ -20,7 +20,7 @@ import net.minecraft.text.Text;
  * @since 1.0.0
  */
 public class SpruceButtonWidget extends AbstractSprucePressableButtonWidget {
-    private PressAction action;
+    private final PressAction action;
 
     public SpruceButtonWidget(Position position, int width, int height, Text message, PressAction action) {
         super(position, width, height, message);

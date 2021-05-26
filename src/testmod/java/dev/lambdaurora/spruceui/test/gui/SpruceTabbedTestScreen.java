@@ -37,7 +37,7 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
         super.init();
         this.tabbedWidget = new SpruceTabbedWidget(Position.of(this, 0, 4), this.width, this.height - 35 - 4, this.title);
         this.tabbedWidget.addTabEntry(new LiteralText("Hello World"), null, (width, height) -> {
-            SpruceContainerWidget container = new SpruceContainerWidget(Position.origin(), width, height);
+            var container = new SpruceContainerWidget(Position.origin(), width, height);
             container.addChildren((containerWidth, containerHeight, widgetAdder) -> {
                 widgetAdder.accept(new SpruceLabelWidget(Position.of(0, 16),
                         new LiteralText("Hello World!").formatted(Formatting.WHITE),
@@ -57,10 +57,10 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
                 (width, height) -> SpruceUITest.buildTextAreaContainer(Position.origin(), width, height,
                         textArea -> {
                         }, null));
-        this.addChild(this.tabbedWidget);
+        this.addDrawableChild(this.tabbedWidget);
 
         // Add done button.
-        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+        this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
                 btn -> this.client.openScreen(this.parent)).asVanilla());
     }
 }

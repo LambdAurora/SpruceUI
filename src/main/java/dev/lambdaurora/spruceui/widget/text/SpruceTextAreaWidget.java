@@ -20,7 +20,10 @@ import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -166,7 +169,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
             }
         }
 
-        String text = this.getText();
+        var text = this.getText();
         int cursorPosition = this.cursor.getPosition();
         int oldSize = this.lines.size();
 
@@ -196,7 +199,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
             return;
         }
 
-        String line = this.lines.get(this.cursor.row);
+        var line = this.lines.get(this.cursor.row);
 
         if ((line.isEmpty() || line.equals("\n")) && this.lines.size() != 1) {
             this.lines.remove(this.cursor.row);
@@ -208,7 +211,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
         if (this.cursor.column == 0 && this.cursor.row == 0)
             return;
 
-        String text = this.getText();
+        var text = this.getText();
         int cursorPosition = this.cursor.getPosition();
         this.cursor.moveLeft();
         this.lines.clear();
@@ -222,7 +225,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
             return;
         }
 
-        String line = this.lines.get(this.cursor.row);
+        var line = this.lines.get(this.cursor.row);
 
         if (line.isEmpty()) {
             int row = this.cursor.row;
@@ -236,10 +239,10 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
         if (this.cursor.column >= line.length() && this.cursor.row == this.lines.size() - 1)
             return;
 
-        String text = this.getText();
+        var text = this.getText();
         int cursorPosition = this.cursor.getPosition();
 
-        String newText = text.substring(0, cursorPosition) + text.substring(cursorPosition + 1);
+        var newText = text.substring(0, cursorPosition) + text.substring(cursorPosition + 1);
         this.lines.clear();
         this.lines.add(newText);
         this.sanitize();
@@ -263,7 +266,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 
         int oldSize = this.lines.size();
 
-        String whole = this.getText();
+        var whole = this.getText();
         int position = this.cursor.getPosition();
 
         String newText;
@@ -302,21 +305,12 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
         if (this.requiresCursor()) return false;
         if (!tab) {
             this.setFocused(true);
-            boolean result = false;
-            switch (direction) {
-                case RIGHT:
-                    result = this.onSelectionUpdate(this.cursor::moveRight);
-                    break;
-                case LEFT:
-                    result = this.onSelectionUpdate(this.cursor::moveLeft);
-                    break;
-                case UP:
-                    result = this.onSelectionUpdate(this.cursor::moveUp);
-                    break;
-                case DOWN:
-                    result = this.onSelectionUpdate(this.cursor::moveDown);
-                    break;
-            }
+            boolean result = switch (direction) {
+                case RIGHT -> this.onSelectionUpdate(this.cursor::moveRight);
+                case LEFT -> this.onSelectionUpdate(this.cursor::moveLeft);
+                case UP -> this.onSelectionUpdate(this.cursor::moveUp);
+                case DOWN -> this.onSelectionUpdate(this.cursor::moveDown);
+            };
             if (result)
                 return true;
         }
@@ -349,7 +343,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
             this.write(MinecraftClient.getInstance().keyboard.getClipboard());
             return true;
         } else if (Screen.isCopy(keyCode) || Screen.isCut(keyCode)) {
-            String selected = this.selection.getSelectedText();
+            var selected = this.selection.getSelectedText();
             if (!selected.isEmpty())
                 MinecraftClient.getInstance().keyboard.setClipboard(selected);
             if (Screen.isCut(keyCode) && this.isEditable()) {
@@ -473,7 +467,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 
         int lineY = this.getY() + 4;
         for (int row = this.firstLine; row < this.firstLine + length; row++) {
-            String line = this.lines.get(row);
+            var line = this.lines.get(row);
             if (line == null)
                 continue;
             if (line.endsWith("\n")) line = line.substring(0, line.length() - 1);
@@ -514,13 +508,13 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
             return;
 
         int x = this.getX() + 4 + this.textRenderer.getWidth(line.substring(0, startIndex));
-        String selected = line.substring(startIndex, endIndex);
+        var selected = line.substring(startIndex, endIndex);
 
         int x2 = x + this.textRenderer.getWidth(selected);
         int y2 = lineY + this.textRenderer.fontHeight;
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        var tessellator = Tessellator.getInstance();
+        var buffer = tessellator.getBuffer();
         RenderSystem.disableTexture();
         RenderSystem.enableColorLogicOp();
         RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
@@ -617,7 +611,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
                 }
             }
 
-            String line = lines.get(this.row);
+            var line = lines.get(this.row);
             if (line.endsWith("\n")) line = line.substring(0, line.length() - 1);
 
             if (this.column > line.length()) {
@@ -756,8 +750,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
      * @since 1.6.3
      */
     public class Selection {
-        private Cursor anchor = new Cursor(false);
-        private Cursor follower = new Cursor(false);
+        private final Cursor anchor = new Cursor(false);
+        private final Cursor follower = new Cursor(false);
         private boolean active = false;
 
         /**
@@ -815,8 +809,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
             if (!this.active)
                 return false;
 
-            Cursor start = this.getStart();
-            Cursor end = this.getEnd();
+            var start = this.getStart();
+            var end = this.getEnd();
 
             if (start.isSame(end)) {
                 this.cancel();
@@ -844,7 +838,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
             }
 
             String text = getText();
-            String newText = text.substring(0, start.getPosition()) + text.substring(end.getPosition());
+            var newText = text.substring(0, start.getPosition()) + text.substring(end.getPosition());
 
             lines.clear();
             lines.add(newText);
@@ -864,8 +858,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
             if (!this.active)
                 return "";
 
-            Cursor start = this.getStart();
-            Cursor end = this.getEnd();
+            var start = this.getStart();
+            var end = this.getEnd();
 
             if (start.isSame(end))
                 return "";
@@ -885,7 +879,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
         }
 
         private boolean isInverted() {
-            return this.anchor.row > this.follower.row || (this.anchor.row == this.follower.row && this.anchor.column > this.follower.column);
+            return this.anchor.row > this.follower.row
+                    || (this.anchor.row == this.follower.row && this.anchor.column > this.follower.column);
         }
     }
 }

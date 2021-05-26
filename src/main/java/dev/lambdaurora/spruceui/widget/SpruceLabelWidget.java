@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -30,7 +29,7 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 3.0.2
+ * @version 3.1.0
  * @since 1.0.0
  */
 public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipable, WithBorder {
@@ -47,7 +46,8 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     private boolean centered;
     private Border border = EmptyBorder.EMPTY_BORDER;
 
-    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action, boolean centered) {
+    public SpruceLabelWidget(Position position, @NotNull Text text, int maxWidth, @NotNull Consumer<SpruceLabelWidget> action,
+                             boolean centered) {
         super(position);
         this.maxWidth = maxWidth;
         this.baseX = position.getRelativeX();
@@ -174,8 +174,8 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     @Override
     protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         int y = this.getY() + 2;
-        for (Iterator<OrderedText> it = this.lines.iterator(); it.hasNext(); y += 9) {
-            OrderedText line = it.next();
+        for (var it = this.lines.iterator(); it.hasNext(); y += 9) {
+            var line = it.next();
             int x = this.centered ? (this.getInnerX() + this.maxWidth / 2) - this.client.textRenderer.getWidth(line) / 2
                     : this.getInnerX();
             this.client.textRenderer.draw(matrices, line, x, y, 10526880);
@@ -185,7 +185,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 
         if (this.tooltip != null) {
             if (!this.tooltip.getString().isEmpty()) {
-                List<OrderedText> wrappedTooltipText = this.client.textRenderer.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
+                var wrappedTooltipText = this.client.textRenderer.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
                 if (this.hovered)
                     Tooltip.create(mouseX, mouseY, wrappedTooltipText).queue();
                 else if (this.focused)
@@ -197,7 +197,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
     /* Narration */
 
     @Override
-    protected @NotNull Optional<Text> getNarrationMessage() {
-        return Optional.ofNullable(this.getText());
+    protected Text getNarrationMessage() {
+        return this.getText();
     }
 }

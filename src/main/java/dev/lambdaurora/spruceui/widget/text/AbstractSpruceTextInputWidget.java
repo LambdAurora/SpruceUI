@@ -23,13 +23,11 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
-
 /**
  * Represents a text input widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.1.0
  * @since 2.1.0
  */
 public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
@@ -187,7 +185,7 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
     /* Narration */
 
     @Override
-    protected @NotNull Optional<Text> getNarrationMessage() {
-        return Optional.of(new TranslatableText("gui.narrate.editBox", this.title, this.getText()));
+    protected Text getNarrationMessage() {
+        return new TranslatableText("gui.narrate.editBox", this.getTitle(), this.getText());
     }
 }

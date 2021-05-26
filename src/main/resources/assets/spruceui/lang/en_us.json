@@ -2,6 +2,7 @@
   "spruceui.reset": "Reset",
   "spruceui.gui.unbind": "Unbind",
   "spruceui.narrator.separator": "%s separator",
+  "spruceui.narration.toggle_switch": "Toggle Switch: %s, with state %s",
   "spruceui.options.generic": "%s: %s",
   "spruceui.options.generic.fancy": "Fancy",
   "spruceui.options.generic.fast": "Fast",

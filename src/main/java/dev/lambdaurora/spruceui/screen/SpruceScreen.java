@@ -23,9 +23,6 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
@@ -45,7 +42,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 
     @Override
     public void setFocused(Element focused) {
-        Element old = this.getFocused();
+        var old = this.getFocused();
         if (old == focused) return;
         if (old instanceof SpruceWidget)
             ((SpruceWidget) old).setFocused(false);
@@ -63,8 +60,8 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        Optional<NavigationDirection> direction = NavigationDirection.fromKey(keyCode, Screen.hasShiftDown());
-        return direction.map(dir -> this.onNavigation(dir, keyCode == GLFW.GLFW_KEY_TAB))
+        return NavigationDirection.fromKey(keyCode, Screen.hasShiftDown())
+                .map(dir -> this.onNavigation(dir, keyCode == GLFW.GLFW_KEY_TAB))
                 .orElseGet(() -> super.keyPressed(keyCode, scanCode, modifiers));
     }
 
@@ -73,17 +70,17 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
     @Override
     public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
-        Element focused = this.getFocused();
+        var focused = this.getFocused();
         boolean isNonNull = focused != null;
         if (!isNonNull || !this.tryNavigating(focused, direction, tab)) {
-            List<? extends Element> list = this.children();
-            int i = list.indexOf(focused);
+            var children = this.children();
+            int i = children.indexOf(focused);
             int next;
             if (isNonNull && i >= 0) next = i + (direction.isLookingForward() ? 1 : 0);
             else if (direction.isLookingForward()) next = 0;
-            else next = list.size();
+            else next = children.size();
 
-            ListIterator<? extends Element> iterator = list.listIterator(next);
+            var iterator = children.listIterator(next);
             BooleanSupplier hasNext = direction.isLookingForward() ? iterator::hasNext : iterator::hasPrevious;
             Supplier<Element> nextGetter = direction.isLookingForward() ? iterator::next : iterator::previous;
 
@@ -125,9 +122,9 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
     }
 
     public void renderWidgets(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        for (Element element : this.children()) {
-            if (element instanceof Drawable)
-                ((Drawable) element).render(matrices, mouseX, mouseY, delta);
+        for (var element : this.children()) {
+            if (element instanceof Drawable drawable)
+                drawable.render(matrices, mouseX, mouseY, delta);
         }
     }
 }

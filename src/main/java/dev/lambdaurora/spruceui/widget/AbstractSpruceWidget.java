@@ -13,21 +13,22 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.Selectable;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.util.NarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.1.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceWidget extends DrawableHelper implements SpruceWidget {
@@ -42,7 +43,6 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     protected boolean wasHovered = false;
     protected boolean dragging = false;
     protected long lastDrag = 0L;
-    private long nextNarration = 0;
 
     public AbstractSpruceWidget(@NotNull Position position) {
         this.position = position;
@@ -85,6 +85,13 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     }
 
     @Override
+    public SelectionType getType() {
+        if (this.focused) return SelectionType.FOCUSED;
+        else if (this.hovered) return SelectionType.HOVERED;
+        else return Selectable.SelectionType.NONE;
+    }
+
+    @Override
     public boolean isMouseHovered() {
         return this.hovered;
     }
@@ -122,9 +129,6 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
         if (this.requiresCursor()) return false;
         if (this.isVisible() && this.isActive()) {
             this.setFocused(!this.isFocused());
-            if (this.isFocused()) {
-                this.queueNarration(200);
-            }
             return this.isFocused();
         }
         return false;
@@ -196,7 +200,8 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
      *
      * @param keyCode the named key code of the event as described in the {@link org.lwjgl.glfw.GLFW GLFW} class
      * @param scanCode the unique/platform-specific scan code of the keyboard input
-     * @param modifiers a GLFW bitfield describing the modifier keys that are held down (see <a href="https://www.glfw.org/docs/3.3/group__mods.html">GLFW Modifier key flags</a>})
+     * @param modifiers a GLFW bitfield describing the modifier keys that are held down
+     * (see <a href="https://www.glfw.org/docs/3.3/group__mods.html">GLFW Modifier key flags</a>})
      * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
      */
     protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
@@ -218,7 +223,8 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
      *
      * @param keyCode the named key code of the event as described in the {@link org.lwjgl.glfw.GLFW GLFW} class
      * @param scanCode the unique/platform-specific scan code of the keyboard input
-     * @param modifiers a GLFW bitfield describing the modifier keys that are held down (see <a href="https://www.glfw.org/docs/3.3/group__mods.html">GLFW Modifier key flags</a>)
+     * @param modifiers a GLFW bitfield describing the modifier keys that are held down
+     * (see <a href="https://www.glfw.org/docs/3.3/group__mods.html">GLFW Modifier key flags</a>)
      * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
      * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
      * @see org.lwjgl.glfw.GLFWKeyCallbackI#invoke(long, int, int, int, int)
@@ -253,17 +259,8 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         if (this.isVisible()) {
-            this.hovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.getWidth() && mouseY < this.getY() + this.getHeight();
-
-            if (this.wasHovered != this.isMouseHovered()) {
-                if (this.isMouseHovered()) {
-                    if (this.isFocused())
-                        this.queueNarration(200);
-                    else
-                        this.queueNarration(750);
-                } else
-                    this.nextNarration = Long.MAX_VALUE;
-            }
+            this.hovered = mouseX >= this.getX() && mouseY >= this.getY()
+                    && mouseX < this.getX() + this.getWidth() && mouseY < this.getY() + this.getHeight();
 
             if (this.dragging && !this.isMouseHovered()) {
                 if (Util.getMeasuringTimeMs() - this.lastDrag > 60) {
@@ -274,7 +271,6 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
             this.renderBackground(matrices, mouseX, mouseY, delta);
             this.renderWidget(matrices, mouseX, mouseY, delta);
 
-            this.narrate();
             this.wasHovered = this.isMouseHovered();
         } else {
             this.hovered = this.wasHovered = false;
@@ -310,18 +306,11 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
 
     /* Narration */
 
-    /**
-     * Narrates the narration message if queued and the delay is passed.
-     */
-    protected void narrate() {
-        if (this.isActive() && this.isFocusedOrHovered() && Util.getMeasuringTimeMs() > this.nextNarration && this.nextNarration != 0) {
-            this.getNarrationMessage().map(Text::getString).ifPresent(message -> {
-                if (!message.isEmpty()) {
-                    NarratorManager.INSTANCE.narrate(message);
-                    this.nextNarration = Long.MAX_VALUE;
-                }
-            });
-        }
+    @Override
+    public void appendNarrations(NarrationMessageBuilder builder) {
+        var narrationMessage = this.getNarrationMessage();
+        if (narrationMessage != null)
+            builder.put(NarrationPart.TITLE, narrationMessage);
     }
 
     /**
@@ -329,16 +318,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
      *
      * @return the narration message if present
      */
-    protected @NotNull Optional<Text> getNarrationMessage() {
-        return Optional.empty();
-    }
-
-    /**
-     * Queues the next narration.
-     *
-     * @param delay the delay in milliseconds to wait for the next narration
-     */
-    public void queueNarration(int delay) {
-        this.nextNarration = Util.getMeasuringTimeMs() + (long) delay;
+    protected @Nullable Text getNarrationMessage() {
+        return null;
     }
 }

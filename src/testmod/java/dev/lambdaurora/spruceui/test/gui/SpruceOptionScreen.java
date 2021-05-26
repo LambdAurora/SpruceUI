@@ -53,12 +53,12 @@ public class SpruceOptionScreen extends SpruceScreen {
             this.init(this.client, this.client.getWindow().getScaledWidth(), this.client.getWindow().getScaledHeight());
         };
 
-        this.addChild(this.list);
+        this.addDrawableChild(this.list);
 
         // Add reset button. You can add option buttons outside a button list widget. GameOptions instance is required because of Vanilla limitations.
         //this.addButton(this.resetOption.createButton(this.client.options, this.width / 2 - 155, this.height - 29, 150));
         // Add done button.
-        this.addButton(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+        this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
                 btn -> this.client.openScreen(this.parent)).asVanilla());
     }
 

@@ -2,6 +2,7 @@
   "spruceui.reset": "Réinitialiser",
   "spruceui.gui.unbind": "Délier",
   "spruceui.narrator.separator": "Séparateur %s",
+  "spruceui.narration.toggle_switch": "Interrupteur à bascule: %s, avec état %s",
   "spruceui.options.generic": "%s: %s",
   "spruceui.options.generic.fancy": "Détaillé",
   "spruceui.options.generic.fast": "Rapide",

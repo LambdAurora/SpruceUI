@@ -12,25 +12,21 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.Optional;
 
 /**
  * Represents a separator element.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.1.0
  * @since 1.0.1
  */
 public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Tooltipable {
@@ -67,9 +63,6 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
      * @param title the title
      */
     public void setTitle(@Nullable Text title) {
-        if (!Objects.equals(title, this.title)) {
-            this.queueNarration(250);
-        }
         this.title = title;
     }
 
@@ -112,36 +105,10 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
     /* Narration */
 
     @Override
-    protected @NotNull Optional<Text> getNarrationMessage() {
+    protected Text getNarrationMessage() {
         return this.getTitle().map(Text::asString)
                 .filter(title -> !title.isEmpty())
-                .map(title -> new TranslatableText("spruceui.narrator.separator", title));
-    }
-
-    /**
-     * Represents a button wrapper for the option.
-     *
-     * @author LambdAurora
-     * @version 3.0.0
-     * @since 1.0.1
-     */
-    public static class ButtonWrapper extends AbstractButtonWidget {
-        private final SpruceSeparatorWidget widget;
-
-        public ButtonWrapper(@NotNull SpruceSeparatorWidget separator, int height) {
-            super(separator.getX(), separator.getY(), separator.getWidth(), height, separator.getTitle().orElse(LiteralText.EMPTY));
-            this.widget = separator;
-        }
-
-        @Override
-        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-            this.widget.getPosition().setRelativeY(this.y + this.height / 2 - 9 / 2);
-            this.widget.render(matrices, mouseX, mouseY, delta);
-        }
-
-        @Override
-        public boolean changeFocus(boolean down) {
-            return this.widget.onNavigation(down ? NavigationDirection.DOWN : NavigationDirection.UP, true);
-        }
+                .map(title -> new TranslatableText("spruceui.narrator.separator", title))
+                .orElse(null);
     }
 }

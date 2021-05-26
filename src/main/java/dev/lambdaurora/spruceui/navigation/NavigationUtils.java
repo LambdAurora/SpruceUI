@@ -12,7 +12,6 @@ package dev.lambdaurora.spruceui.navigation;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 
 import java.util.List;
-import java.util.ListIterator;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -47,7 +46,7 @@ public final class NavigationUtils {
             else if (direction.isLookingForward()) next = 0;
             else next = children.size();
 
-            ListIterator<E> iterator = children.listIterator(next);
+            var iterator = children.listIterator(next);
             BooleanSupplier hasNext = direction.isLookingForward() ? iterator::hasNext : iterator::hasPrevious;
             Supplier<E> nextGetter = direction.isLookingForward() ? iterator::next : iterator::previous;
 

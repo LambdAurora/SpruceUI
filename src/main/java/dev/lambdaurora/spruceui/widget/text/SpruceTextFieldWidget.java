@@ -19,7 +19,12 @@ import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.*;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.screen.narration.NarrationPart;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.OrderedText;
@@ -41,7 +46,7 @@ import java.util.function.Predicate;
  * Represents a text field widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.1.0
  * @since 2.1.0
  */
 public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget implements Tooltipable {
@@ -95,7 +100,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         this.changedListener = (input) -> {
         };
         this.textPredicate = Objects::nonNull;
-        this.renderTextProvider = (input, firstCharacterIndex) -> OrderedText.styledString(input, Style.EMPTY);
+        this.renderTextProvider = (input, firstCharacterIndex) -> OrderedText.styledForwardsVisitedString(input, Style.EMPTY);
     }
 
     @Override
@@ -169,7 +174,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         }
 
         int width = this.getInnerWidth();
-        String string = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex), width);
+        var string = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex), width);
         int l = string.length() + this.firstCharacterIndex;
         if (this.cursor.column == this.firstCharacterIndex) {
             this.firstCharacterIndex -= this.client.textRenderer.trimToWidth(this.text, width, true).length();
@@ -190,7 +195,6 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         }
 
         this.editingTime = Util.getMeasuringTimeMs() + 5000L;
-        this.queueNarration(500);
     }
 
     private boolean onSelectionUpdate(@NotNull Runnable action) {
@@ -213,7 +217,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
             return;
         }
 
-        String text = this.getText();
+        var text = this.getText();
         int cursorPosition = this.cursor.getPosition();
 
         String newText;
@@ -240,9 +244,9 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         if (this.cursor.column == 0)
             return;
 
-        String text = this.getText();
+        var text = this.getText();
         int cursorPosition = this.cursor.getPosition();
-        String newText = text.substring(0, cursorPosition - 1) + text.substring(cursorPosition);
+        var newText = text.substring(0, cursorPosition - 1) + text.substring(cursorPosition);
         if (this.textPredicate.test(newText)) {
             this.text = newText;
             this.onChanged();
@@ -265,10 +269,10 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         if (this.cursor.column >= this.getText().length())
             return;
 
-        String text = this.getText();
+        var text = this.getText();
         int cursorPosition = this.cursor.getPosition();
 
-        String newText = text.substring(0, cursorPosition) + text.substring(cursorPosition + 1);
+        var newText = text.substring(0, cursorPosition) + text.substring(cursorPosition + 1);
         if (this.textPredicate.test(newText)) {
             this.text = newText;
             this.onChanged();
@@ -292,7 +296,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         }
         this.selection.erase();
 
-        String oldText = this.getText();
+        var oldText = this.getText();
         int position = this.cursor.getPosition();
 
         String newText;
@@ -317,17 +321,11 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         if (this.requiresCursor()) return false;
         if (!tab && direction.isHorizontal()) {
             this.setFocused(true);
-            boolean result = false;
-            switch (direction) {
-                case RIGHT:
-                    result = this.onSelectionUpdate(this.cursor::moveRight);
-                    break;
-                case LEFT:
-                    result = this.onSelectionUpdate(this.cursor::moveLeft);
-                    break;
-                default:
-                    break;
-            }
+            boolean result = switch (direction) {
+                case RIGHT -> this.onSelectionUpdate(this.cursor::moveRight);
+                case LEFT -> this.onSelectionUpdate(this.cursor::moveLeft);
+                default -> false;
+            };
             if (result)
                 return true;
         }
@@ -361,7 +359,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
             this.write(MinecraftClient.getInstance().keyboard.getClipboard());
             return true;
         } else if (Screen.isCopy(keyCode) || Screen.isCut(keyCode)) {
-            String selected = this.selection.getSelectedText();
+            var selected = this.selection.getSelectedText();
             if (!selected.isEmpty())
                 MinecraftClient.getInstance().keyboard.setClipboard(selected);
             if (Screen.isCut(keyCode)) {
@@ -404,8 +402,10 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
             this.setFocused(true);
 
             this.onSelectionUpdate(() -> {
-                String displayedText = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex), this.getInnerWidth());
-                this.cursor.lastColumn = this.cursor.column = this.firstCharacterIndex + this.client.textRenderer.trimToWidth(displayedText, x).length();
+                var displayedText = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex),
+                        this.getInnerWidth());
+                this.cursor.lastColumn = this.cursor.column = this.firstCharacterIndex
+                        + this.client.textRenderer.trimToWidth(displayedText, x).length();
             });
 
             return true;
@@ -424,7 +424,8 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         this.drawCursor(matrices);
 
         if (!this.dragging && this.editingTime == 0) {
-            Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
+            Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks,
+                    i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
         } else if (this.editingTime < Util.getMeasuringTimeMs()) {
             this.editingTime = 0;
         }
@@ -440,9 +441,11 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         int x = this.getX() + 4;
         int y = this.getY() + this.getHeight() / 2 - 4;
 
-        String displayedText = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex), this.getInnerWidth());
+        var displayedText = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex),
+                this.getInnerWidth());
 
-        this.client.textRenderer.drawWithShadow(matrices, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex), x, y, textColor);
+        this.client.textRenderer.drawWithShadow(matrices, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
+                x, y, textColor);
         this.drawSelection(displayedText, y);
     }
 
@@ -463,13 +466,13 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
             return;
 
         int x = this.getX() + 4 + this.client.textRenderer.getWidth(line.substring(0, startIndex));
-        String selected = line.substring(startIndex, endIndex);
+        var selected = line.substring(startIndex, endIndex);
 
         int x2 = x + this.client.textRenderer.getWidth(selected);
         int y2 = lineY + this.client.textRenderer.fontHeight;
 
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        var tessellator = Tessellator.getInstance();
+        var buffer = tessellator.getBuffer();
         RenderSystem.disableTexture();
         RenderSystem.enableColorLogicOp();
         RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
@@ -497,19 +500,30 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         int cursorY = this.getY() + this.getHeight() / 2 - 4;
 
         if (this.text.isEmpty()) {
-            drawTextWithShadow(matrices, this.client.textRenderer, new LiteralText("_"), this.getX() + 4, cursorY, ColorUtil.TEXT_COLOR);
+            drawTextWithShadow(matrices, this.client.textRenderer, new LiteralText("_"),
+                    this.getX() + 4, cursorY, ColorUtil.TEXT_COLOR);
             return;
         }
 
         this.cursor.sanitize();
 
-        String cursorLine = this.text.substring(this.firstCharacterIndex);
-        int cursorX = this.getX() + 4 + this.client.textRenderer.getWidth(cursorLine.substring(0, this.cursor.column - this.firstCharacterIndex));
+        var cursorLine = this.text.substring(this.firstCharacterIndex);
+        int cursorX = this.getX() + 4 + this.client.textRenderer.getWidth(
+                cursorLine.substring(0, this.cursor.column - this.firstCharacterIndex)
+        );
 
         if (this.cursor.column - this.firstCharacterIndex < cursorLine.length())
             fill(matrices, cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
         else
             this.client.textRenderer.drawWithShadow(matrices, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
+    }
+
+    /* Narration */
+
+    @Override
+    public void appendNarrations(NarrationMessageBuilder builder) {
+        super.appendNarrations(builder);
+        this.getTooltip().ifPresent(text -> builder.put(NarrationPart.HINT, text));
     }
 
     /**
@@ -551,7 +565,8 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
             this.lastColumn = this.column;
 
             if (amount < 0 && this.column <= SpruceTextFieldWidget.this.firstCharacterIndex) {
-                SpruceTextFieldWidget.this.firstCharacterIndex = MathHelper.clamp(SpruceTextFieldWidget.this.firstCharacterIndex = this.column - 1, 0, text.length());
+                SpruceTextFieldWidget.this.firstCharacterIndex =
+                        MathHelper.clamp(SpruceTextFieldWidget.this.firstCharacterIndex = this.column - 1, 0, text.length());
             }
         }
 
@@ -613,8 +628,8 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
      * @since 2.1.0
      */
     public class Selection {
-        private Cursor anchor = new Cursor(false);
-        private Cursor follower = new Cursor(false);
+        private final Cursor anchor = new Cursor(false);
+        private final Cursor follower = new Cursor(false);
         private boolean active = false;
 
         /**
@@ -668,8 +683,8 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
             if (!this.active)
                 return false;
 
-            Cursor start = this.getStart();
-            Cursor end = this.getEnd();
+            var start = this.getStart();
+            var end = this.getEnd();
 
             if (start.isSame(end)) {
                 this.cancel();
@@ -682,8 +697,8 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
                 return true;
             }
 
-            String text = getText();
-            String newText = text.substring(0, start.getPosition()) + text.substring(end.getPosition());
+            var text = getText();
+            var newText = text.substring(0, start.getPosition()) + text.substring(end.getPosition());
             if (SpruceTextFieldWidget.this.textPredicate.test(newText)) {
                 SpruceTextFieldWidget.this.text = newText;
                 SpruceTextFieldWidget.this.onChanged();
@@ -704,8 +719,8 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
             if (!this.active)
                 return "";
 
-            Cursor start = this.getStart();
-            Cursor end = this.getEnd();
+            var start = this.getStart();
+            var end = this.getEnd();
 
             if (start.isSame(end))
                 return "";

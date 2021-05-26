@@ -37,11 +37,13 @@ public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePr
         this(position, width, height, message, DEFAULT_ACTION, value, showMessage);
     }
 
-    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value) {
+    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message,
+                                             @NotNull PressAction action, boolean value) {
         this(position, width, height, message, action, value, true);
     }
 
-    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action,
+    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message,
+                                             @NotNull PressAction action,
                                              boolean value, boolean showMessage) {
         super(position, width, height, message);
         this.action = action;
