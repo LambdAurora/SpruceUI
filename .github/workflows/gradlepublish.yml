@@ -27,7 +27,7 @@ jobs:
 
       # The USERNAME and PASSWORD need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle
-      - name: Publish to GitHub Packages
+      - name: Publish to GitHub Packages and other Mavens
         run: gradle publish
         env:
           BRANCH_NAME: ${{ github.ref }}
@@ -35,3 +35,6 @@ jobs:
           REPO_NAME: ${{ github.repository }}
           USERNAME: ${{ github.actor }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAVEN_URL: ${{ secrets.MAVEN_URL }}
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}

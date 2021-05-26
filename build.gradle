@@ -158,5 +158,17 @@ publishing {
                 password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
             }
         }
+
+        def spruceuiMaven = System.getenv("SPRUCEUI_MAVEN")
+        if (spruceuiMaven) {
+            maven {
+                name = "SpruceUI Maven"
+                url = uri(spruceuiMaven)
+                credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("MAVEN_USERNAME")
+                    password = project.findProperty("gpr.key") ?: System.getenv("MAVEN_PASSWORD")
+                }
+            }
+        }
     }
 }
