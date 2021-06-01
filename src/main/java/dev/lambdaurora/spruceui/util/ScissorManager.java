@@ -94,7 +94,7 @@ public final class ScissorManager {
         return (int) (scaleFactor * (scaledHeight - height - y));
     }
 
-    static record ScissorHandle(int x, int y, int width, int height) {
+    record ScissorHandle(int x, int y, int width, int height) {
         void apply() {
             GL11.glScissor(this.x(), this.y(), this.width(), this.height());
         }
