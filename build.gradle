@@ -20,9 +20,13 @@ Set<String> modules = [
         'fabric-screen-api-v1'
 ]
 
+boolean isMCVersionNonRelease() {
+    return project.minecraft_version.matches('^\\d\\dw\\d\\d[a-z]$')
+            || project.minecraft_version.matches('\\d+\\.\\d+-(pre|rc)(\\d+)')
+}
+
 String getMCVersionString() {
-    if (project.minecraft_version.matches('^\\d\\dw\\d\\d[a-z]$')
-            || project.minecraft_version.matches('\\d+\\.\\d+-(pre|rc)(\\d+)')) {
+    if (isMCVersionNonRelease()) {
         return project.minecraft_version
     }
     int lastDot = project.minecraft_version.lastIndexOf('.')
@@ -68,12 +72,12 @@ dependencies {
         transitive = false
     }
 
-    libApi "org.jetbrains:annotations:20.1.0"
-    libApi("org.aperlambda:lambdajcommon:1.8.1") {
+    libApi 'org.jetbrains:annotations:20.1.0'
+    libApi('org.aperlambda:lambdajcommon:1.8.1') {
         exclude group: 'com.google.code.gson'
         exclude group: 'com.google.guava'
     }
-    include "org.aperlambda:lambdajcommon:1.8.1"
+    include 'org.aperlambda:lambdajcommon:1.8.1'
 
     testmodImplementation project(":")
 }
@@ -86,21 +90,21 @@ java {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
+    it.options.encoding = 'UTF-8'
 
     it.options.release.set(targetJavaVersion)
 }
 
 processResources {
-    inputs.property "version", project.version
+    inputs.property 'version', project.version
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
+    filesMatching('fabric.mod.json') {
+        expand 'version': project.version
     }
 }
 
 jar {
-    from("LICENSE") {
+    from('LICENSE') {
         rename { "${it}_${project.archivesBaseName}" }
     }
 }
@@ -126,8 +130,8 @@ publishing {
             }
 
             pom {
-                name = "SpruceUI"
-                description = "A Fabric Minecraft API mod which adds some GUI utilities."
+                name = 'SpruceUI'
+                description = 'A Fabric Minecraft API mod which adds some GUI utilities.'
             }
 
             pom.withXml {
@@ -148,26 +152,26 @@ publishing {
     repositories {
         mavenLocal()
         maven {
-            name = "BuildDirLocal"
+            name = 'BuildDirLocal'
             url = "$buildDir/repo"
         }
         maven {
-            name = "GithubPackages"
-            url = uri("https://maven.pkg.github.com/LambdAurora/SpruceUI")
+            name = 'GithubPackages'
+            url = uri('https://maven.pkg.github.com/LambdAurora/SpruceUI')
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+                username = project.findProperty('gpr.user') ?: System.getenv('USERNAME')
+                password = project.findProperty('gpr.key') ?: System.getenv('TOKEN')
             }
         }
 
-        def spruceuiMaven = System.getenv("SPRUCEUI_MAVEN")
+        def spruceuiMaven = System.getenv('SPRUCEUI_MAVEN')
         if (spruceuiMaven) {
             maven {
-                name = "SpruceUIMaven"
+                name = 'SpruceUIMaven'
                 url = uri(spruceuiMaven)
                 credentials {
-                    username = project.findProperty("gpr.user") ?: System.getenv("MAVEN_USERNAME")
-                    password = project.findProperty("gpr.key") ?: System.getenv("MAVEN_PASSWORD")
+                    username = project.findProperty('gpr.user') ?: System.getenv('MAVEN_USERNAME')
+                    password = project.findProperty('gpr.key') ?: System.getenv('MAVEN_PASSWORD')
                 }
             }
         }
