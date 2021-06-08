@@ -24,12 +24,12 @@
     "spruceui.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.1",
+    "fabricloader": ">=0.11.3",
     "fabric-api-base": "*",
     "fabric-lifecycle-events-v1": "*",
     "fabric-rendering-v1": "*",
-    "fabric-resource-loader-v0": ">=0.4.1",
-    "minecraft": ">=1.17-alpha.21.20.a",
+    "fabric-resource-loader-v0": ">=0.4.7",
+    "minecraft": ">=1.17",
     "java": ">=16"
   },
   "custom": {
