@@ -10,36 +10,35 @@
 package dev.lambdaurora.spruceui.hud;
 
 import com.google.common.collect.ImmutableList;
+import dev.lambdaurora.spruceui.util.Identifiable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
-import org.aperlambda.lambdacommon.Identifier;
-import org.aperlambda.lambdacommon.utils.Identifiable;
-import org.aperlambda.lambdacommon.utils.function.Predicates;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Represents a HUD.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.2.0
  * @since 1.2.0
  */
 public abstract class Hud extends DrawableHelper implements Identifiable {
     protected final Identifier identifier;
     protected final List<HudComponent> components = new ArrayList<>();
+    protected final String translationKey;
     private boolean enabled = true;
     protected boolean visible = true;
 
-    public Hud(@NotNull Identifier identifier) {
-        this.identifier = identifier;
-    }
-
-    public Hud(@NotNull net.minecraft.util.Identifier identifier) {
-        this(new Identifier(identifier.toString()));
+    public Hud(@NotNull Identifier id) {
+        this.identifier = id;
+        this.translationKey = this.identifier.getNamespace() + ".hud." + this.identifier.getPath()
+                .replace('/', '.');
     }
 
     /**
@@ -48,7 +47,7 @@ public abstract class Hud extends DrawableHelper implements Identifiable {
      * @return The translation key.
      */
     public String getTranslationKey() {
-        return this.identifier.getNamespace() + ".hud." + this.identifier.getName();
+        return this.translationKey;
     }
 
     /**
@@ -112,7 +111,8 @@ public abstract class Hud extends DrawableHelper implements Identifiable {
      * @see #hasTicks()
      */
     public void tick() {
-        this.components.stream().filter(Predicates.and(HudComponent::hasTicks, HudComponent::isEnabled)).forEach(HudComponent::tick);
+        this.components.stream().filter(((Predicate<HudComponent>) HudComponent::hasTicks).and(HudComponent::isEnabled))
+                .forEach(HudComponent::tick);
     }
 
     /**
