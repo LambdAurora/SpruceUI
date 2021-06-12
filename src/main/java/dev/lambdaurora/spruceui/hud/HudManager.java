@@ -15,7 +15,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
-import org.aperlambda.lambdacommon.Identifier;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -26,7 +26,7 @@ import java.util.Optional;
  * Represents the HUD manager.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.2.0
  * @since 1.2.0
  */
 public class HudManager {
