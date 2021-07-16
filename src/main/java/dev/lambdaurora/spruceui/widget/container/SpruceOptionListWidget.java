@@ -116,16 +116,18 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 
         public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption option, boolean small) {
             var entry = new OptionEntry(parent);
-            entry.children.add(option.createWidget(Position.of(entry, entry.getWidth() / 2 - (small ? 75 : 155), 2),
-                    small ? 150 : 310));
+            int width = small ? entry.getWidth() / 12 : entry.getWitdh() / 6;
+            entry.children.add(option.createWidget(Position.of(entry, entry.getWidth() / 2 - width / 2, 2),
+                    width));
             return entry;
         }
 
         public static OptionEntry create(SpruceOptionListWidget parent, SpruceOption firstOption, @Nullable SpruceOption secondOption) {
             var entry = new OptionEntry(parent);
-            entry.children.add(firstOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155, 2), 150));
+            int width = entry.getWidth() / 12;
+            entry.children.add(firstOption.createWidget(Position.of(entry, entry.getWidth() / 2 - width - 5, 2), width));
             if (secondOption != null) {
-                entry.children.add(secondOption.createWidget(Position.of(entry, entry.getWidth() / 2 - 155 + 160, 2), 150));
+                entry.children.add(secondOption.createWidget(Position.of(entry, entry.getWidth() / 2 - width - 5 + width + 10, 2), width));
             }
             return entry;
         }
