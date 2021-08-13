@@ -35,6 +35,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     private final Consumer<SpruceSliderWidget> applyConsumer;
     private double multiplier;
     private String sign;
+    private boolean inUse = false;
 
     public SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double value, @NotNull Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
         super(position, width, height, message);
@@ -137,16 +138,21 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     @Override
     protected void onClick(double mouseX, double mouseY) {
         this.setValueFromMouse(mouseX);
+        this.inUse = true;
     }
 
     @Override
     protected void onRelease(double mouseX, double mouseY) {
-        this.playDownSound();
+        if (this.inUse) {
+            this.playDownSound();
+            this.inUse = false;
+        }
     }
 
     @Override
     protected void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
         this.setValueFromMouse(mouseX);
+        this.inUse = true;
     }
 
     private void setValueFromMouse(double mouseX) {
@@ -167,6 +173,10 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
         int vOffset = (this.isFocusedOrHovered() ? 2 : 1) * 20;
         this.drawTexture(matrices, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(), 0, 46 + vOffset, 4, 20);
         this.drawTexture(matrices, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)) + 4, this.getY(), 196, 46 + vOffset, 4, 20);
+
+        if (!this.isMouseHovered() && this.inUse) {
+            this.inUse = false;
+        }
 
         super.renderButton(matrices, mouseX, mouseY, delta);
     }

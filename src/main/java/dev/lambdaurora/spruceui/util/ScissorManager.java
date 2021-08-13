@@ -9,19 +9,19 @@
 
 package dev.lambdaurora.spruceui.util;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import net.minecraft.client.MinecraftClient;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
 /**
- * Represents a manager for {@link GL11#glScissor(int, int, int, int)}.
+ * Represents a manager for {@link RenderSystem#enableScissor(int, int, int, int)}.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 3.2.1
  * @since 2.0.0
  */
 public final class ScissorManager {
@@ -66,8 +66,6 @@ public final class ScissorManager {
      * @param height the height of the drawable area
      */
     public static void push(int x, int y, int width, int height) {
-        if (SCISSOR_STACK.isEmpty())
-            GL11.glEnable(GL11.GL_SCISSOR_TEST);
         double scaleFactor = getCurrentScaleFactor();
         var handle = new ScissorHandle((int) (scaleFactor * x), adaptY(y, height, scaleFactor),
                 (int) (scaleFactor * width), (int) (scaleFactor * height));
@@ -81,7 +79,7 @@ public final class ScissorManager {
     public static void pop() {
         SCISSOR_STACK.pop();
         if (SCISSOR_STACK.isEmpty()) {
-            GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            RenderSystem.disableScissor();
         } else {
             SCISSOR_STACK.getFirst().apply();
         }
@@ -96,7 +94,7 @@ public final class ScissorManager {
 
     record ScissorHandle(int x, int y, int width, int height) {
         void apply() {
-            GL11.glScissor(this.x(), this.y(), this.width(), this.height());
+            RenderSystem.enableScissor(this.x(), this.y(), this.width(), this.height());
         }
     }
 }

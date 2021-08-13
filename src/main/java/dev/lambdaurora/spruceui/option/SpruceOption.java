@@ -10,11 +10,11 @@
 package dev.lambdaurora.spruceui.option;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.util.Nameable;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import org.aperlambda.lambdacommon.utils.Nameable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,7 +25,7 @@ import java.util.Optional;
  * Represents an option.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.2.1
  * @since 1.0.3
  */
 public abstract class SpruceOption implements Nameable {

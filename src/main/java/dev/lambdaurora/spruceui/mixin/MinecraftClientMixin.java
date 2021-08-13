@@ -22,17 +22,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Represents the injection point for the {@link OpenScreenCallback} and {@link ResolutionChangeCallback} events.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.2.1
  * @since 1.2.0
  */
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-    @Inject(method = "openScreen", at = @At("HEAD"))
+    @Inject(method = "setScreen", at = @At("HEAD"))
     private void onScreenPre(Screen screen, CallbackInfo ci) {
         OpenScreenCallback.PRE.invoker().apply((MinecraftClient) (Object) this, screen);
     }
 
-    @Inject(method = "openScreen", at = @At("RETURN"))
+    @Inject(method = "setScreen", at = @At("RETURN"))
     private void onScreenChange(Screen screen, CallbackInfo ci) {
         OpenScreenCallback.EVENT.invoker().apply((MinecraftClient) (Object) this, screen);
     }

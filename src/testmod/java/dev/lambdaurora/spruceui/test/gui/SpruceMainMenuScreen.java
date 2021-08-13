@@ -37,15 +37,15 @@ public class SpruceMainMenuScreen extends SpruceScreen {
 
         int startY = this.height / 4 + 48;
         this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, new LiteralText("Option Test"),
-                btn -> this.client.openScreen(new SpruceOptionScreen(this))));
+                btn -> this.client.setScreen(new SpruceOptionScreen(this))));
         this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, new LiteralText("Text Area Test"),
-                btn -> this.client.openScreen(new SpruceTextAreaScreen(this))));
+                btn -> this.client.setScreen(new SpruceTextAreaScreen(this))));
         this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, new LiteralText("Tabbed Screen Test"),
-                btn -> this.client.openScreen(new SpruceTabbedTestScreen(this))));
+                btn -> this.client.setScreen(new SpruceTabbedTestScreen(this))));
 
         // Add done button.
         this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
-                btn -> this.client.openScreen(this.parent)));
+                btn -> this.client.setScreen(this.parent)));
     }
 
     @Override

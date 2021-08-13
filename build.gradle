@@ -1,8 +1,9 @@
 plugins {
-    id 'fabric-loom' version '0.8.+'
+    id 'fabric-loom' version '0.9.45'
+    id 'io.github.juuxel.loom-quiltflower' version '1.1.3'
     id 'java-library'
     id 'maven-publish'
-    id 'org.cadixdev.licenser' version '0.6.0'
+    id 'org.cadixdev.licenser' version '0.6.1'
 }
 
 group = project.maven_group
@@ -45,6 +46,7 @@ minecraft {
 
 repositories {
     mavenLocal()
+    // @TODO Remove this repository once lambdajcommon is removed
     maven {
         name 'AperLambda'
         url 'https://aperlambda.github.io/maven'
@@ -73,10 +75,7 @@ dependencies {
     }
 
     libApi 'org.jetbrains:annotations:20.1.0'
-    libApi('org.aperlambda:lambdajcommon:1.8.1') {
-        exclude group: 'com.google.code.gson'
-        exclude group: 'com.google.guava'
-    }
+    // @TODO Remove this library.
     include 'org.aperlambda:lambdajcommon:1.8.1'
 
     testmodImplementation project(":")
@@ -152,12 +151,12 @@ publishing {
     repositories {
         mavenLocal()
         maven {
-            name = 'BuildDirLocal'
-            url = "$buildDir/repo"
+            name 'BuildDirLocal'
+            url "$buildDir/repo"
         }
         maven {
-            name = 'GithubPackages'
-            url = uri('https://maven.pkg.github.com/LambdAurora/SpruceUI')
+            name 'GithubPackages'
+            url 'https://maven.pkg.github.com/LambdAurora/SpruceUI'
             credentials {
                 username = project.findProperty('gpr.user') ?: System.getenv('USERNAME')
                 password = project.findProperty('gpr.key') ?: System.getenv('TOKEN')

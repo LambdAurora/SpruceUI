@@ -59,7 +59,7 @@ public class SpruceOptionScreen extends SpruceScreen {
         //this.addButton(this.resetOption.createButton(this.client.options, this.width / 2 - 155, this.height - 29, 150));
         // Add done button.
         this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
-                btn -> this.client.openScreen(this.parent)).asVanilla());
+                btn -> this.client.setScreen(this.parent)).asVanilla());
     }
 
     @Override

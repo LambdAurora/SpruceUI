@@ -10,6 +10,7 @@
 package dev.lambdaurora.spruceui.option;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.util.SpruceUtil;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
@@ -17,7 +18,6 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import org.aperlambda.lambdacommon.utils.LambdaUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -27,7 +27,7 @@ import java.util.function.Supplier;
  * Represents an integer input option.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.2.1
  * @since 2.1.0
  */
 public class SpruceIntegerInputOption extends SpruceOption {
@@ -55,7 +55,7 @@ public class SpruceIntegerInputOption extends SpruceOption {
             }
         });
         textField.setChangedListener(input -> {
-            int value = LambdaUtils.parseIntFromString(input);
+            int value = SpruceUtil.parseIntFromString(input);
             this.set(value);
         });
         this.getOptionTooltip().ifPresent(textField::setTooltip);

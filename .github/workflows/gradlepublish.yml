@@ -18,7 +18,7 @@ jobs:
           settings-path: ${{ github.workspace }} # location for the settings.xml file
 
       - name: Build with Gradle
-        run: gradle build
+        run: ./gradlew build
 
       - uses: actions/upload-artifact@v2
         with:
@@ -28,7 +28,7 @@ jobs:
       # The USERNAME and PASSWORD need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle
       - name: Publish to GitHub Packages and other Mavens
-        run: gradle publish
+        run: ./gradlew publish
         env:
           BRANCH_NAME: ${{ github.ref }}
           RUN_COUNT: ${{ github.run_number }}

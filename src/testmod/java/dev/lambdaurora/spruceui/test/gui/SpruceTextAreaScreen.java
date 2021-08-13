@@ -43,7 +43,7 @@ public class SpruceTextAreaScreen extends SpruceScreen {
                                 textArea.setText(this.textArea.getText());
                             }
                             this.textArea = textArea;
-                        }, btn -> this.client.openScreen(this.parent));
+                        }, btn -> this.client.setScreen(this.parent));
         this.addDrawableChild(containerWidget);
     }
 

@@ -9,17 +9,17 @@
 
 package dev.lambdaurora.spruceui.hud;
 
+import dev.lambdaurora.spruceui.util.Identifiable;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
-import org.aperlambda.lambdacommon.Identifier;
-import org.aperlambda.lambdacommon.utils.Identifiable;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a HUD component.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.2.1
  * @since 1.2.0
  */
 public abstract class HudComponent extends DrawableHelper implements Identifiable {
@@ -28,7 +28,7 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
     protected int x;
     protected int y;
 
-    protected HudComponent(@NotNull Identifier identifier, int x, int y) {
+    protected HudComponent(Identifier identifier, int x, int y) {
         this.identifier = identifier;
         this.x = x;
         this.y = y;
@@ -40,7 +40,7 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
      * @return This component's translation key.
      */
     public String getTranslationKey() {
-        return this.identifier.getNamespace() + ".hud.component." + this.identifier.getName();
+        return this.identifier.getNamespace() + ".hud.component." + this.identifier.getPath();
     }
 
     /**

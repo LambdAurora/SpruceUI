@@ -14,14 +14,13 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import org.aperlambda.lambdacommon.Identifier;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.util.Identifier;
 
 /**
  * Represents a text HUD component.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.2.1
  * @since 1.3.5
  */
 public class TextHudComponent extends HudComponent {
@@ -29,11 +28,11 @@ public class TextHudComponent extends HudComponent {
     protected Text text;
     protected int color;
 
-    public TextHudComponent(@NotNull Identifier identifier, int x, int y, Text text) {
+    public TextHudComponent(Identifier identifier, int x, int y, Text text) {
         this(identifier, x, y, text, 0xffffffff);
     }
 
-    public TextHudComponent(@NotNull Identifier identifier, int x, int y, Text text, int color) {
+    public TextHudComponent(Identifier identifier, int x, int y, Text text, int color) {
         super(identifier, x, y);
         this.client = MinecraftClient.getInstance();
         this.text = text;
@@ -43,7 +42,7 @@ public class TextHudComponent extends HudComponent {
     /**
      * Gets this component's text.
      *
-     * @return The component's text.
+     * @return the component's text
      */
     public Text getText() {
         return this.text;
@@ -52,7 +51,7 @@ public class TextHudComponent extends HudComponent {
     /**
      * Sets this component's text.
      *
-     * @param text The text.
+     * @param text the text
      */
     public void setText(Text text) {
         this.text = text;
@@ -61,7 +60,7 @@ public class TextHudComponent extends HudComponent {
     /**
      * Gets this component's text color.
      *
-     * @return The text color.
+     * @return the text color
      */
     public int getColor() {
         return this.color;
@@ -70,7 +69,7 @@ public class TextHudComponent extends HudComponent {
     /**
      * Sets this component's text color.
      *
-     * @param color The text color.
+     * @param color the text color
      */
     public void setColor(int color) {
         this.color = color;

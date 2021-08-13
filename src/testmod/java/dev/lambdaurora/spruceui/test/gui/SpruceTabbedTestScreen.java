@@ -61,6 +61,6 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
 
         // Add done button.
         this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
-                btn -> this.client.openScreen(this.parent)).asVanilla());
+                btn -> this.client.setScreen(this.parent)).asVanilla());
     }
 }

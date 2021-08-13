@@ -16,17 +16,16 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import org.aperlambda.lambdacommon.utils.Nameable;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents an option with a simple action.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.2.1
  * @since 1.0.1
  */
-public final class SpruceSimpleActionOption extends SpruceOption implements Nameable {
+public final class SpruceSimpleActionOption extends SpruceOption {
     private final ButtonFactory buttonFactory;
     private final SpruceButtonWidget.PressAction action;
 
