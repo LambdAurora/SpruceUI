@@ -11,18 +11,17 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 /**
  * Represents a pressable button widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 public abstract class AbstractSprucePressableButtonWidget extends AbstractSpruceButtonWidget {
-    public AbstractSprucePressableButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message) {
+    public AbstractSprucePressableButtonWidget(Position position, int width, int height, Text message) {
         super(position, width, height, message);
     }
 

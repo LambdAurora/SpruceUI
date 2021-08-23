@@ -11,13 +11,12 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.EmptyBorder;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a widget with a border.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 public interface WithBorder {
@@ -35,12 +34,12 @@ public interface WithBorder {
      *
      * @return the border
      */
-    @NotNull Border getBorder();
+    Border getBorder();
 
     /**
      * Sets the border of this widget.
      *
      * @param border the border
      */
-    void setBorder(@NotNull Border border);
+    void setBorder(Border border);
 }

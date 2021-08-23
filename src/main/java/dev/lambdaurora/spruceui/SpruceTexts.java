@@ -11,13 +11,12 @@ package dev.lambdaurora.spruceui;
 
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a text utility class.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 1.5.7
  */
 public final class SpruceTexts {
@@ -136,7 +135,7 @@ public final class SpruceTexts {
      * @see #CONTROLS_RESET
      * @since 1.6.0
      */
-    public static Text getNarratorControlsReset(@NotNull Text bindingName) {
+    public static Text getNarratorControlsReset(Text bindingName) {
         return new TranslatableText("narrator.controls.reset", bindingName);
     }
 }

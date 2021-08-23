@@ -19,7 +19,6 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -32,13 +31,13 @@ import java.util.List;
  * A {@link SpruceOption} allows to have an easy control over the widgets present in the list.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionListWidget.OptionEntry> {
     private int lastIndex = 0;
 
-    public SpruceOptionListWidget(@NotNull Position position, int width, int height) {
+    public SpruceOptionListWidget(Position position, int width, int height) {
         super(position, width, height, 4, OptionEntry.class);
     }
 
@@ -171,7 +170,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 
         @Override
         protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-            var it = this.children().iterator();
+            var it = this.iterator();
 
             SpruceWidget element;
             do {
@@ -220,7 +219,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 
         @Override
         protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-            this.children.forEach(widget -> widget.render(matrices, mouseX, mouseY, delta));
+            this.forEach(widget -> widget.render(matrices, mouseX, mouseY, delta));
         }
 
         /* Narration */
@@ -234,7 +233,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
         /* Navigation */
 
         @Override
-        public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+        public boolean onNavigation(NavigationDirection direction, boolean tab) {
             if (this.requiresCursor()) return false;
             if (!tab && direction.isVertical()) {
                 if (this.isFocused()) {

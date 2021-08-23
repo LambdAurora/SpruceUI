@@ -19,7 +19,6 @@ import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -29,7 +28,7 @@ import java.util.function.Predicate;
  * Represents a text field widget with a title on top.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 2.1.0
  */
 public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
@@ -157,29 +156,29 @@ public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements 
     }
 
     @Override
-    public @NotNull Background getBackground() {
+    public Background getBackground() {
         return this.getTextFieldWidget().getBackground();
     }
 
     @Override
-    public void setBackground(@NotNull Background background) {
+    public void setBackground(Background background) {
         this.getTextFieldWidget().setBackground(background);
     }
 
     @Override
-    public @NotNull Border getBorder() {
+    public Border getBorder() {
         return this.getTextFieldWidget().getBorder();
     }
 
     @Override
-    public void setBorder(@NotNull Border border) {
+    public void setBorder(Border border) {
         this.getTextFieldWidget().setBorder(border);
     }
 
     /* Navigation */
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+    public boolean onNavigation(NavigationDirection direction, boolean tab) {
         return this.getTextFieldWidget().onNavigation(direction, tab);
     }
 

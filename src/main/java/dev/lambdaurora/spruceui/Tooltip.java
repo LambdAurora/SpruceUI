@@ -18,17 +18,17 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Queue;
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
+import java.util.function.LongConsumer;
 
 /**
  * Represents a tooltip.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 1.0.0
  */
 public class Tooltip extends DrawableHelper implements SprucePositioned {
@@ -38,29 +38,29 @@ public class Tooltip extends DrawableHelper implements SprucePositioned {
     private final int y;
     private final List<OrderedText> tooltip;
 
-    public Tooltip(int x, int y, @NotNull String tooltip, int parentWidth) {
+    public Tooltip(int x, int y, String tooltip, int parentWidth) {
         this(x, y, StringVisitable.plain(tooltip), parentWidth);
     }
 
-    public Tooltip(int x, int y, @NotNull StringVisitable tooltip, int parentWidth) {
+    public Tooltip(int x, int y, StringVisitable tooltip, int parentWidth) {
         this(x, y, MinecraftClient.getInstance().textRenderer.wrapLines(tooltip, Math.max(parentWidth * 2 / 3, 200)));
     }
 
-    public Tooltip(int x, int y, @NotNull List<OrderedText> tooltip) {
+    public Tooltip(int x, int y, List<OrderedText> tooltip) {
         this.x = x;
         this.y = y;
         this.tooltip = tooltip;
     }
 
-    public static @NotNull Tooltip create(int x, int y, @NotNull String tooltip, int parentWidth) {
+    public static Tooltip create(int x, int y, String tooltip, int parentWidth) {
         return new Tooltip(x, y, tooltip, parentWidth);
     }
 
-    public static @NotNull Tooltip create(int x, int y, @NotNull StringVisitable tooltip, int parentWidth) {
+    public static Tooltip create(int x, int y, StringVisitable tooltip, int parentWidth) {
         return new Tooltip(x, y, tooltip, parentWidth);
     }
 
-    public static @NotNull Tooltip create(int x, int y, @NotNull List<OrderedText> tooltip) {
+    public static Tooltip create(int x, int y, List<OrderedText> tooltip) {
         return new Tooltip(x, y, tooltip);
     }
 
@@ -109,10 +109,10 @@ public class Tooltip extends DrawableHelper implements SprucePositioned {
      * @param <T> the type of the widget
      * @since 1.6.0
      */
-    public static <T extends Tooltipable & SpruceWidget> void queueFor(@NotNull T widget, int mouseX, int mouseY, int tooltipTicks,
-                                                                       @NotNull Consumer<Integer> tooltipTicksSetter,
+    public static <T extends Tooltipable & SpruceWidget> void queueFor(T widget, int mouseX, int mouseY, int tooltipTicks,
+                                                                       IntConsumer tooltipTicksSetter,
                                                                        long lastTick,
-                                                                       @NotNull Consumer<Long> lastTickSetter) {
+                                                                       LongConsumer lastTickSetter) {
         if (widget.isVisible()) {
             widget.getTooltip().ifPresent(tooltip -> {
                 long currentRender = System.currentTimeMillis();

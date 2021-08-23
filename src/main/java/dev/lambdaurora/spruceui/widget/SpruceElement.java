@@ -11,7 +11,6 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.gui.Element;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents an element with navigation and controller input implementation.
@@ -28,7 +27,7 @@ public interface SpruceElement extends Element {
      * @param tab {@code true} if the navigation was triggered by the tab key, else {@code false}
      * @return {@code true} if success, else {@code false}
      */
-    default boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+    default boolean onNavigation(NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         if (direction.isVertical()) {
             return this.changeFocus(direction == NavigationDirection.DOWN);

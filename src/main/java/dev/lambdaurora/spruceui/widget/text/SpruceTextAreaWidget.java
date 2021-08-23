@@ -28,7 +28,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -39,7 +38,7 @@ import java.util.List;
  * Represents a text area widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 1.6.3
  */
 public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
@@ -50,7 +49,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
     private int firstLine = 0;
     private int displayedLines;
 
-    public SpruceTextAreaWidget(@NotNull Position position, int width, int height, Text title) {
+    public SpruceTextAreaWidget(Position position, int width, int height, Text title) {
         super(position, width, height, title);
         this.textRenderer = this.client.textRenderer;
         this.displayedLines = this.getInnerHeight() / this.textRenderer.fontHeight;
@@ -64,7 +63,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
      *
      * @return the lines
      */
-    public @NotNull List<String> getLines() {
+    public List<String> getLines() {
         return this.lines.getLines();
     }
 
@@ -73,14 +72,14 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
      *
      * @param lines the lines
      */
-    public void setLines(@NotNull List<String> lines) {
+    public void setLines(List<String> lines) {
         this.lines.setLines(lines);
         this.selection.active = false;
         this.setCursorToEnd();
     }
 
     @Override
-    public @NotNull String getText() {
+    public String getText() {
         return this.lines.getText();
     }
 
@@ -132,7 +131,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
     }
 
     @Override
-    public void setBorder(@NotNull Border border) {
+    public void setBorder(Border border) {
         super.setBorder(border);
         this.lines.setWidth(this.getInnerWidth());
         this.sanitize();
@@ -253,7 +252,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
      *
      * @param text the text to write
      */
-    public void write(@NotNull String text) {
+    public void write(String text) {
         if (text.isEmpty())
             return;
 
@@ -287,7 +286,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
         if (oldSize < this.lines.size()) this.cursor.moveRight();
     }
 
-    protected boolean doesLineOccupyFullSpace(@NotNull String cursorLine) {
+    protected boolean doesLineOccupyFullSpace(String cursorLine) {
         return this.textRenderer.getWidth(cursorLine) >= this.getInnerWidth();
     }
 
@@ -301,7 +300,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
     /* Navigation */
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+    public boolean onNavigation(NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         if (!tab) {
             this.setFocused(true);
@@ -394,7 +393,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
         }
     }
 
-    private boolean onSelectionUpdate(@NotNull Runnable action) {
+    private boolean onSelectionUpdate(Runnable action) {
         this.selection.tryStartSelection();
         action.run();
         this.selection.moveToCursor();
@@ -459,7 +458,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
      *
      * @param matrices the matrices
      */
-    protected void drawText(@NotNull MatrixStack matrices) {
+    protected void drawText(MatrixStack matrices) {
         int length = Math.min(this.lines.size(), this.displayedLines);
 
         int textColor = this.getTextColor();
@@ -487,7 +486,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
      * @param lineY the line Y-coordinates
      * @param row the row number
      */
-    protected void drawSelection(@NotNull MatrixStack matrices, @NotNull String line, int lineY, int row) {
+    protected void drawSelection(MatrixStack matrices, String line, int lineY, int row) {
         if (!this.isFocused())
             return;
         if (!this.selection.isRowSelected(row))
@@ -535,7 +534,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
      *
      * @param matrices the matrices
      */
-    protected void drawCursor(@NotNull MatrixStack matrices) {
+    protected void drawCursor(MatrixStack matrices) {
         if (!this.isFocused())
             return;
         if (this.lines.isEmpty()) {
@@ -668,7 +667,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
          *
          * @param cursor the other cursor
          */
-        public void copy(@NotNull Cursor cursor) {
+        public void copy(Cursor cursor) {
             this.row = cursor.row;
             this.lastColumn = this.column = cursor.column;
         }
@@ -696,7 +695,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
          * @param other the other cursor
          * @return {@code true} if this cursor is at the same place as the other cursor, else {@code false}
          */
-        public boolean isSame(@NotNull Cursor other) {
+        public boolean isSame(Cursor other) {
             return this.row == other.row && this.column == other.column;
         }
 
@@ -854,7 +853,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
          *
          * @return the selected text, if no text is selected the return value is an empty string
          */
-        public @NotNull String getSelectedText() {
+        public String getSelectedText() {
             if (!this.active)
                 return "";
 
@@ -870,11 +869,11 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
             return getText().substring(start.getPosition(), end.getPosition());
         }
 
-        public @NotNull Cursor getStart() {
+        public Cursor getStart() {
             return this.isInverted() ? this.follower : this.anchor;
         }
 
-        public @NotNull Cursor getEnd() {
+        public Cursor getEnd() {
             return this.isInverted() ? this.anchor : this.follower;
         }
 

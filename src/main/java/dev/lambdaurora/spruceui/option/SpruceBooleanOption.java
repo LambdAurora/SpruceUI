@@ -15,7 +15,6 @@ import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -27,7 +26,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption {
@@ -47,7 +46,7 @@ public class SpruceBooleanOption extends SpruceOption {
         this.setTooltip(tooltip);
     }
 
-    public void set(@NotNull String value) {
+    public void set(String value) {
         this.set("true".equals(value));
     }
 

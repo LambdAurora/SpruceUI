@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  * Provides some common utils.
  *
  * @author LambdAurora
- * @version 3.2.1
+ * @version 3.3.0
  * @since 3.2.1
  */
 public class SpruceUtil {
@@ -25,7 +25,7 @@ public class SpruceUtil {
      * @param value a {@code String} which represents an integer
      * @return the parsed integer, if parsing fails returns {@code 0}.
      */
-    public static int parseIntFromString(@NotNull String value) {
+    public static int parseIntFromString(String value) {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {

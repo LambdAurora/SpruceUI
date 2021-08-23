@@ -15,7 +15,6 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -25,7 +24,7 @@ import java.util.Optional;
  * Represents an option.
  *
  * @author LambdAurora
- * @version 3.2.1
+ * @version 3.3.0
  * @since 1.0.3
  */
 public abstract class SpruceOption implements Nameable {
@@ -38,7 +37,7 @@ public abstract class SpruceOption implements Nameable {
     }
 
     @Override
-    public @NotNull String getName() {
+    public String getName() {
         return I18n.translate(this.key);
     }
 

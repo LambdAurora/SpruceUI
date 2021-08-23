@@ -32,7 +32,6 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -46,7 +45,7 @@ import java.util.function.Predicate;
  * Represents a text field widget.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 3.3.0
  * @since 2.1.0
  */
 public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget implements Tooltipable {
@@ -92,7 +91,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
     private int tooltipTicks;
     private long lastTick;
 
-    public SpruceTextFieldWidget(@NotNull Position position, int width, int height, Text title) {
+    public SpruceTextFieldWidget(Position position, int width, int height, Text title) {
         super(position, width, height, title);
         this.cursor.toStart();
         this.sanitize();
@@ -104,7 +103,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
     }
 
     @Override
-    public @NotNull String getText() {
+    public String getText() {
         return this.text;
     }
 
@@ -121,7 +120,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
     }
 
     @Override
-    public @NotNull Optional<Text> getTooltip() {
+    public Optional<Text> getTooltip() {
         return Optional.ofNullable(this.tooltip);
     }
 
@@ -197,7 +196,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
         this.editingTime = Util.getMeasuringTimeMs() + 5000L;
     }
 
-    private boolean onSelectionUpdate(@NotNull Runnable action) {
+    private boolean onSelectionUpdate(Runnable action) {
         this.selection.tryStartSelection();
         action.run();
         this.selection.moveToCursor();
@@ -285,7 +284,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
      *
      * @param text the text to write
      */
-    public void write(@NotNull String text) {
+    public void write(String text) {
         if (text.isEmpty())
             return;
 
@@ -317,7 +316,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
     /* Navigation */
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+    public boolean onNavigation(NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         if (!tab && direction.isHorizontal()) {
             this.setFocused(true);
@@ -436,7 +435,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
      *
      * @param matrices the matrices
      */
-    protected void drawText(@NotNull MatrixStack matrices) {
+    protected void drawText(MatrixStack matrices) {
         int textColor = this.getTextColor();
         int x = this.getX() + 4;
         int y = this.getY() + this.getHeight() / 2 - 4;
@@ -455,7 +454,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
      * @param line the current line
      * @param lineY the line Y-coordinates
      */
-    protected void drawSelection(@NotNull String line, int lineY) {
+    protected void drawSelection(String line, int lineY) {
         if (!this.isFocused() || !this.selection.active)
             return;
 
@@ -493,7 +492,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
      *
      * @param matrices the matrices
      */
-    protected void drawCursor(@NotNull MatrixStack matrices) {
+    protected void drawCursor(MatrixStack matrices) {
         if (!this.isFocused())
             return;
 
@@ -579,7 +578,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
          *
          * @param cursor the other cursor
          */
-        public void copy(@NotNull SpruceTextFieldWidget.Cursor cursor) {
+        public void copy(SpruceTextFieldWidget.Cursor cursor) {
             this.lastColumn = this.column = cursor.column;
         }
 
@@ -599,7 +598,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
          * @param other the other cursor
          * @return {@code true} if this cursor is at the same place as the other cursor, else {@code false}
          */
-        public boolean isSame(@NotNull SpruceTextFieldWidget.Cursor other) {
+        public boolean isSame(SpruceTextFieldWidget.Cursor other) {
             return this.column == other.column;
         }
 
@@ -715,7 +714,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
          *
          * @return the selected text, if no text is selected the return value is an empty string
          */
-        public @NotNull String getSelectedText() {
+        public String getSelectedText() {
             if (!this.active)
                 return "";
 
@@ -728,11 +727,11 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
             return getText().substring(start.getPosition(), end.getPosition());
         }
 
-        public @NotNull Cursor getStart() {
+        public Cursor getStart() {
             return this.isInverted() ? this.follower : this.anchor;
         }
 
-        public @NotNull Cursor getEnd() {
+        public Cursor getEnd() {
             return this.isInverted() ? this.anchor : this.follower;
         }
 

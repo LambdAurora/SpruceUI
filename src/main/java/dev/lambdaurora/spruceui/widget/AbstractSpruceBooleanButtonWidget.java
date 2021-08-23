@@ -11,13 +11,12 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a pressable button that switches between two states which values are {@code true} and {@code false}.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePressableButtonWidget {
@@ -28,22 +27,22 @@ public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePr
     private boolean value;
     protected boolean showMessage;
 
-    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message, boolean value) {
+    public AbstractSpruceBooleanButtonWidget(Position position, int width, int height, Text message, boolean value) {
         this(position, width, height, message, value, true);
     }
 
-    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message,
-                                             boolean value, boolean showMessage) {
+    public AbstractSpruceBooleanButtonWidget(Position position, int width, int height, Text message, boolean value,
+                                             boolean showMessage) {
         this(position, width, height, message, DEFAULT_ACTION, value, showMessage);
     }
 
-    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message,
-                                             @NotNull PressAction action, boolean value) {
+    public AbstractSpruceBooleanButtonWidget(Position position, int width, int height, Text message,
+                                             PressAction action, boolean value) {
         this(position, width, height, message, action, value, true);
     }
 
-    public AbstractSpruceBooleanButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message,
-                                             @NotNull PressAction action,
+    public AbstractSpruceBooleanButtonWidget(Position position, int width, int height, Text message,
+                                             PressAction action,
                                              boolean value, boolean showMessage) {
         super(position, width, height, message);
         this.action = action;

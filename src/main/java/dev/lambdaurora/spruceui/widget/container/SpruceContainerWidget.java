@@ -18,7 +18,6 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.util.math.MatrixStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.function.Consumer;
  * Represents a container widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidget> implements WithBackground, WithBorder {
@@ -43,31 +42,31 @@ public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidg
     }
 
     @Override
-    public @NotNull Background getBackground() {
+    public Background getBackground() {
         return this.background;
     }
 
     @Override
-    public void setBackground(@NotNull Background background) {
+    public void setBackground(Background background) {
         this.background = background;
     }
 
     @Override
-    public @NotNull Border getBorder() {
+    public Border getBorder() {
         return this.border;
     }
 
     @Override
-    public void setBorder(@NotNull Border border) {
+    public void setBorder(Border border) {
         this.border = border;
     }
 
-    public void addChild(@NotNull SpruceWidget child) {
+    public void addChild(SpruceWidget child) {
         this.setOwnerShip(child);
         this.children.add(child);
     }
 
-    public void addChildren(@NotNull ChildrenFactory childrenFactory) {
+    public void addChildren(ChildrenFactory childrenFactory) {
         childrenFactory.build(this.width, this.height, this::addChild);
     }
 
@@ -80,7 +79,7 @@ public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidg
 
     @Override
     protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.children.forEach(child -> child.render(matrices, mouseX, mouseY, delta));
+        this.forEach(child -> child.render(matrices, mouseX, mouseY, delta));
         this.getBorder().render(matrices, this, mouseX, mouseY, delta);
     }
 

@@ -10,7 +10,6 @@
 package dev.lambdaurora.spruceui;
 
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -19,7 +18,7 @@ import java.util.Optional;
  * Represents an object which can show a tooltip.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 1.0.0
  */
 public interface Tooltipable {
@@ -28,7 +27,7 @@ public interface Tooltipable {
      *
      * @return the tooltip to show
      */
-    @NotNull Optional<Text> getTooltip();
+    Optional<Text> getTooltip();
 
     /**
      * Sets the tooltip.

@@ -18,7 +18,10 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
@@ -26,17 +29,18 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 /**
- * Represents a screen.
+ * Represents an handled screen.
  *
+ * @param <T> the type of the screen handler
  * @author LambdAurora
  * @version 3.3.0
- * @since 2.0.0
+ * @since 3.3.0
  */
-public abstract class SpruceScreen extends Screen implements SprucePositioned, SpruceElement {
+public abstract class SpruceHandledScreen<T extends ScreenHandler> extends HandledScreen<T> implements SprucePositioned, SpruceElement {
     protected double scaleFactor;
 
-    protected SpruceScreen(Text title) {
-        super(title);
+    public SpruceHandledScreen(T handler, PlayerInventory inventory, Text title) {
+        super(handler, inventory, title);
     }
 
     @Override
@@ -59,7 +63,8 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        return NavigationDirection.fromKey(keyCode, Screen.hasShiftDown())
+        return super.keyPressed(keyCode, scanCode, modifiers)
+                || NavigationDirection.fromKey(keyCode, Screen.hasShiftDown())
                 .map(dir -> this.onNavigation(dir, keyCode == GLFW.GLFW_KEY_TAB))
                 .orElseGet(() -> super.keyPressed(keyCode, scanCode, modifiers));
     }
@@ -110,7 +115,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         ScissorManager.pushScaleFactor(this.scaleFactor);
-        this.renderBackground(matrices);
+        super.render(matrices, mouseX, mouseY, delta);
         this.renderWidgets(matrices, mouseX, mouseY, delta);
         this.renderTitle(matrices, mouseX, mouseY, delta);
         Tooltip.renderAll(this, matrices);

@@ -21,14 +21,13 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a widget.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceWidget extends DrawableHelper implements SpruceWidget {
@@ -44,13 +43,13 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     protected boolean dragging = false;
     protected long lastDrag = 0L;
 
-    public AbstractSpruceWidget(@NotNull Position position) {
+    public AbstractSpruceWidget(Position position) {
         this.position = position;
         this.visible = true;
     }
 
     @Override
-    public @NotNull Position getPosition() {
+    public Position getPosition() {
         return this.position;
     }
 
@@ -125,7 +124,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
     }
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+    public boolean onNavigation(NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         if (this.isVisible() && this.isActive()) {
             this.setFocused(!this.isFocused());

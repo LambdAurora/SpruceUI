@@ -21,13 +21,12 @@ import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a text input widget.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 3.3.0
  * @since 2.1.0
  */
 public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
@@ -38,7 +37,7 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
     private int editableColor = ColorUtil.TEXT_COLOR;
     private int uneditableColor = ColorUtil.UNEDITABLE_COLOR;
 
-    public AbstractSpruceTextInputWidget(@NotNull Position position, int width, int height, Text title) {
+    public AbstractSpruceTextInputWidget(Position position, int width, int height, Text title) {
         super(position);
         this.width = width;
         this.height = height;
@@ -124,22 +123,22 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
     public abstract void setCursorToEnd();
 
     @Override
-    public @NotNull Background getBackground() {
+    public Background getBackground() {
         return this.background;
     }
 
     @Override
-    public void setBackground(@NotNull Background background) {
+    public void setBackground(Background background) {
         this.background = background;
     }
 
     @Override
-    public @NotNull Border getBorder() {
+    public Border getBorder() {
         return this.border;
     }
 
     @Override
-    public void setBorder(@NotNull Border border) {
+    public void setBorder(Border border) {
         this.border = border;
     }
 

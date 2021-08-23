@@ -12,13 +12,12 @@ package dev.lambdaurora.spruceui.event;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.client.MinecraftClient;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents an event callback which is fired when the Minecraft's resolution is changed.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 1.2.0
  */
 @FunctionalInterface
@@ -29,5 +28,5 @@ public interface ResolutionChangeCallback {
         }
     });
 
-    void apply(@NotNull MinecraftClient client);
+    void apply(MinecraftClient client);
 }

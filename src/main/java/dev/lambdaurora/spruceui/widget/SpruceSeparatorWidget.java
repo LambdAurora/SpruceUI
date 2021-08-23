@@ -17,7 +17,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -26,7 +25,7 @@ import java.util.Optional;
  * Represents a separator element.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 3.3.0
  * @since 1.0.1
  */
 public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Tooltipable {
@@ -53,7 +52,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
      *
      * @return the title
      */
-    public @NotNull Optional<Text> getTitle() {
+    public Optional<Text> getTitle() {
         return Optional.ofNullable(this.title);
     }
 
@@ -67,7 +66,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
     }
 
     @Override
-    public @NotNull Optional<Text> getTooltip() {
+    public Optional<Text> getTooltip() {
         return Optional.ofNullable(this.tooltip);
     }
 

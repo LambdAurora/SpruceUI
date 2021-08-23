@@ -10,7 +10,6 @@
 package dev.lambdaurora.spruceui.util;
 
 import net.minecraft.client.MinecraftClient;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ import java.util.function.Function;
  * Represents a multiline text.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 1.6.3
  */
 public final class MultilineText {
@@ -41,7 +40,7 @@ public final class MultilineText {
         this.rows.addAll(wrap(text, width));
     }
 
-    public MultilineText(int width, @NotNull Collection<? extends String> lines) {
+    public MultilineText(int width, Collection<? extends String> lines) {
         this(width);
         this.rows.addAll(wrap(lines, width));
     }
@@ -67,11 +66,11 @@ public final class MultilineText {
         }
     }
 
-    public @NotNull List<String> getRows() {
+    public List<String> getRows() {
         return this.rows;
     }
 
-    public @NotNull List<String> getLines() {
+    public List<String> getLines() {
         var lines = new ArrayList<String>();
 
         var stringBuilder = new StringBuilder();
@@ -96,7 +95,7 @@ public final class MultilineText {
      *
      * @return The text.
      */
-    public @NotNull String getText() {
+    public String getText() {
         var builder = new StringBuilder();
         for (var row : this.rows)
             builder.append(row);
@@ -108,7 +107,7 @@ public final class MultilineText {
      *
      * @param text The text.
      */
-    public void setText(@NotNull String text) {
+    public void setText(String text) {
         this.clear();
         this.add(text);
     }
@@ -178,14 +177,14 @@ public final class MultilineText {
      * @param row The row of the line.
      * @param line The new text.
      */
-    public void replaceRow(int row, @NotNull String line) {
+    public void replaceRow(int row, String line) {
         if (row < 0 || row >= this.rows.size())
             return;
         this.remove(row);
         this.rows.add(row, line);
     }
 
-    public void replaceRow(int row, @NotNull Function<String, String> replacer) {
+    public void replaceRow(int row, Function<String, String> replacer) {
         if (row < 0 || row >= this.rows.size())
             return;
         var line = this.get(row);
@@ -199,11 +198,11 @@ public final class MultilineText {
         this.rows.clear();
     }
 
-    public static @NotNull Collection<? extends String> wrap(@NotNull String text, int width) {
+    public static Collection<? extends String> wrap(String text, int width) {
         return wrap(Arrays.asList(text.split("\n")), width);
     }
 
-    public static @NotNull Collection<? extends String> wrap(@NotNull Collection<? extends String> text, int width) {
+    public static Collection<? extends String> wrap(Collection<? extends String> text, int width) {
         var client = MinecraftClient.getInstance();
         if (client == null)
             return text;

@@ -13,13 +13,12 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SprucePositioned;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Selectable;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a widget.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 3.3.0
  * @since 1.6.0
  */
 public interface SpruceWidget extends SprucePositioned, SpruceElement, Selectable, Drawable {
@@ -28,7 +27,7 @@ public interface SpruceWidget extends SprucePositioned, SpruceElement, Selectabl
      *
      * @return the position
      */
-    @NotNull Position getPosition();
+    Position getPosition();
 
     @Override
     default int getX() {

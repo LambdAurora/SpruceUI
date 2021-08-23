@@ -19,13 +19,12 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a checkbox widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 1.0.0
  */
 public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
@@ -33,19 +32,19 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
     private boolean showCross = false;
     private boolean colored = false;
 
-    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, boolean value) {
+    public SpruceCheckboxWidget(Position position, int width, int height, Text message, boolean value) {
         super(position, width, height, message, value);
     }
 
-    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, boolean value, boolean showMessage) {
+    public SpruceCheckboxWidget(Position position, int width, int height, Text message, boolean value, boolean showMessage) {
         super(position, width, height, message, value, showMessage);
     }
 
-    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value) {
+    public SpruceCheckboxWidget(Position position, int width, int height, Text message, PressAction action, boolean value) {
         super(position, width, height, message, action, value);
     }
 
-    public SpruceCheckboxWidget(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action, boolean value, boolean showMessage) {
+    public SpruceCheckboxWidget(Position position, int width, int height, Text message, PressAction action, boolean value, boolean showMessage) {
         super(position, width, height, message, action, value, showMessage);
     }
 

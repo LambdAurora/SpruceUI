@@ -18,7 +18,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -26,7 +25,7 @@ import java.util.function.Consumer;
  * Represents a slider widget.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 3.3.0
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements Tooltipable {
@@ -37,7 +36,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     private String sign;
     private boolean inUse = false;
 
-    public SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double value, @NotNull Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
+    public SpruceSliderWidget(Position position, int width, int height, Text message, double value, Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
         super(position, width, height, message);
         this.value = value;
         this.baseMessage = message;
@@ -47,7 +46,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
         this.updateMessage();
     }
 
-    public SpruceSliderWidget(Position position, int width, int height, @NotNull Text message, double progress, @NotNull Consumer<SpruceSliderWidget> applyConsumer) {
+    public SpruceSliderWidget(Position position, int width, int height, Text message, double progress, Consumer<SpruceSliderWidget> applyConsumer) {
         this(position, width, height, message, progress, applyConsumer, 100.0, "%");
     }
 
@@ -99,7 +98,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
      *
      * @return the base message of the slider
      */
-    public @NotNull Text getBaseMessage() {
+    public Text getBaseMessage() {
         return this.baseMessage;
     }
 
@@ -108,7 +107,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
      *
      * @param baseMessage the base message of the slider
      */
-    public void setBaseMessage(@NotNull Text baseMessage) {
+    public void setBaseMessage(Text baseMessage) {
         this.baseMessage = baseMessage;
     }
 
@@ -123,7 +122,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
     /* Navigation */
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+    public boolean onNavigation(NavigationDirection direction, boolean tab) {
         if (direction.isHorizontal() && !tab) {
             if (direction.isLookingForward() && this.value < 1 || this.value > 0) {
                 this.setValue(this.getValue() + (direction.isLookingForward() ? (1 / this.multiplier) : -(1 / this.multiplier)));

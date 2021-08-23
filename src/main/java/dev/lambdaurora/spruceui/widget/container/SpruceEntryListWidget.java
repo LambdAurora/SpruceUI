@@ -30,7 +30,7 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.AbstractList;
@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @param <E> the type of entry
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E>
@@ -57,7 +57,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     private boolean scrolling = false;
     private boolean allowOutsideHorizontalNavigation = false;
 
-    public SpruceEntryListWidget(@NotNull Position position, int width, int height, int anchorYOffset, Class<E> entryClass) {
+    public SpruceEntryListWidget(Position position, int width, int height, int anchorYOffset, Class<E> entryClass) {
         super(position, entryClass);
         this.width = width;
         this.height = height;
@@ -79,12 +79,12 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     }
 
     @Override
-    public @NotNull Background getBackground() {
+    public Background getBackground() {
         return this.background;
     }
 
     @Override
-    public void setBackground(@NotNull Background background) {
+    public void setBackground(Background background) {
         this.background = background;
     }
 
@@ -107,12 +107,12 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     }
 
     @Override
-    public @NotNull Border getBorder() {
+    public Border getBorder() {
         return this.border;
     }
 
     @Override
-    public void setBorder(@NotNull Border border) {
+    public void setBorder(Border border) {
         this.border = border;
         this.anchor.setRelativeX(border.getThickness());
         if (this.anchor.getRelativeY() == this.anchorYOffset && this.hasBorder())
@@ -187,21 +187,48 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     }
 
     protected final void clearEntries() {
+        this.setFocused(null);
         this.entries.clear();
     }
 
     protected void replaceEntries(Collection<E> newEntries) {
+        var oldFocused = this.getFocused();
         this.entries.clear();
         this.entries.addAll(newEntries);
+        if (!newEntries.contains(oldFocused)) {
+            this.setFocused(null);
+        }
     }
 
-    protected E getEntry(int index) {
+    protected @Nullable E getEntry(int index) {
         return this.children().get(index);
     }
 
     protected int addEntry(E entry) {
         this.entries.add(entry);
         return this.entries.size() - 1;
+    }
+
+    protected boolean removeEntry(E entry) {
+        if (this.getFocused() == entry) {
+            this.refocusOnRemoval(entry);
+        }
+        return this.entries.remove(entry);
+    }
+
+    protected void refocusOnRemoval(E focused) {
+        int i = this.entries.indexOf(focused);
+        if (i == -1)
+            return;
+
+        int newIndex = i - 1;
+        if (newIndex < 0)
+            newIndex = i;
+
+        if (this.getEntriesCount() == newIndex - 1)
+            this.setFocused(null);
+        else
+            this.setFocused(this.getEntry(newIndex));
     }
 
     protected int getEntriesCount() {
@@ -243,7 +270,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
     /* Navigation */
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+    public boolean onNavigation(NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         if (direction.isHorizontal() && this.getFocused() != null) {
             boolean result = this.getFocused().onNavigation(direction, tab);

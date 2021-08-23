@@ -19,34 +19,33 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a checkbox widget.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 3.3.0
  * @since 1.0.0
  */
 public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
     private static final Identifier TEXTURE = new Identifier("spruceui", "textures/gui/toggle_switch.png");
 
-    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, boolean value) {
+    public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value) {
         super(position, width, height, message, value);
     }
 
-    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, boolean value,
+    public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value,
                               boolean showMessage) {
         super(position, width, height, message, value, showMessage);
     }
 
-    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action,
+    public SpruceToggleSwitch(Position position, int width, int height, Text message, PressAction action,
                               boolean value) {
         super(position, width, height, message, action, value);
     }
 
-    public SpruceToggleSwitch(@NotNull Position position, int width, int height, @NotNull Text message, @NotNull PressAction action,
+    public SpruceToggleSwitch(Position position, int width, int height, Text message, PressAction action,
                               boolean value, boolean showMessage) {
         super(position, width, height, message, action, value, showMessage);
     }

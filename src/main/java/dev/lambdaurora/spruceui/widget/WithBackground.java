@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a widget with a background.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 public interface WithBackground {
@@ -25,12 +25,12 @@ public interface WithBackground {
      *
      * @return the background
      */
-    @NotNull Background getBackground();
+    Background getBackground();
 
     /**
      * Sets the background of this widget.
      *
      * @param background the background
      */
-    void setBackground(@NotNull Background background);
+    void setBackground(Background background);
 }

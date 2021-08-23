@@ -13,7 +13,6 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.widget.SpruceCheckboxWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -25,7 +24,7 @@ import java.util.function.Supplier;
  * Works the as {@link SpruceBooleanOption} but uses a checkbox instead.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 1.6.0
  */
 public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
@@ -54,7 +53,7 @@ public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
     }
 
     @Override
-    public Text getDisplayText(@NotNull Text value) {
+    public Text getDisplayText(Text value) {
         return this.getPrefix();
     }
 }

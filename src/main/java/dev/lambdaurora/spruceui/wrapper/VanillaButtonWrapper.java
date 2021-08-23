@@ -17,20 +17,19 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a vanilla button wrapper for SpruceUI's own button widgets.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 @Environment(EnvType.CLIENT)
 public class VanillaButtonWrapper extends ClickableWidget implements SpruceElement {
     private final AbstractSpruceButtonWidget widget;
 
-    public VanillaButtonWrapper(@NotNull AbstractSpruceButtonWidget widget) {
+    public VanillaButtonWrapper(AbstractSpruceButtonWidget widget) {
         super(widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight(), widget.getMessage());
         this.widget = widget;
     }
@@ -57,7 +56,7 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
     }
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+    public boolean onNavigation(NavigationDirection direction, boolean tab) {
         return this.widget.onNavigation(direction, tab);
     }
 

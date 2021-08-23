@@ -21,7 +21,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -31,7 +30,7 @@ import java.util.Optional;
  * Represents a button-like widget.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget implements Tooltipable {
@@ -41,7 +40,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
     private long lastTick;
     protected float alpha = 1.f;
 
-    public AbstractSpruceButtonWidget(@NotNull Position position, int width, int height, @NotNull Text message) {
+    public AbstractSpruceButtonWidget(Position position, int width, int height, Text message) {
         super(position);
         this.width = width;
         this.height = height;
@@ -53,7 +52,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
      *
      * @return the message of this widget.
      */
-    public @NotNull Text getMessage() {
+    public Text getMessage() {
         return this.message;
     }
 
@@ -62,7 +61,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
      *
      * @param message the message of this widget.
      */
-    public void setMessage(@NotNull Text message) {
+    public void setMessage(Text message) {
         this.message = message;
     }
 
@@ -75,7 +74,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
     }
 
     @Override
-    public @NotNull Optional<Text> getTooltip() {
+    public Optional<Text> getTooltip() {
         return Optional.ofNullable(this.tooltip);
     }
 

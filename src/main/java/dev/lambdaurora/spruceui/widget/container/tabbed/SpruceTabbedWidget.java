@@ -22,18 +22,15 @@ import dev.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Represents a container widget with tabs.
  *
  * @author LambdAurora
- * @version 3.0.2
+ * @version 3.3.0
  * @since 2.0.0
  */
 public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget> {
@@ -42,11 +39,11 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
     private final Position anchor;
     private boolean isLeft = false;
 
-    public SpruceTabbedWidget(@NotNull Position position, int width, int height, @Nullable Text title) {
+    public SpruceTabbedWidget(Position position, int width, int height, @Nullable Text title) {
         this(position, width, height, title, Math.max(100, width / 8), title != null ? 20 : 0);
     }
 
-    public SpruceTabbedWidget(@NotNull Position position, int width, int height, @Nullable Text title, int sideWidth,
+    public SpruceTabbedWidget(Position position, int width, int height, @Nullable Text title, int sideWidth,
                               int sideTopOffset) {
         super(position, SpruceWidget.class);
         this.width = width;
@@ -78,6 +75,26 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         this.list.addSeparatorEntry(title);
     }
 
+    /**
+     * Removes a tab entry by title.
+     *
+     * @param title the title of the tab entry to remove
+     * @return {@code true} if the tab entry has been removed, {@code false} otherwise
+     */
+    public boolean removeTabEntry(Text title) {
+        return this.list.removeTabEntry(title);
+    }
+
+    /**
+     * Removes a separator entry by title.
+     *
+     * @param title the title of the separator entry to remove
+     * @return {@code true} if the separator entry has been removed, {@code false} otherwise
+     */
+    public boolean removeSeparatorEntry(Text title) {
+        return this.list.removeSeparatorEntry(title);
+    }
+
     @Override
     public void setFocused(@Nullable SpruceWidget focused) {
         super.setFocused(focused);
@@ -86,15 +103,18 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
     @Override
     public List<SpruceWidget> children() {
         if (this.list.getCurrentTab() == null)
-            return Collections.singletonList(this.list);
-        return Arrays.asList(this.list, this.list.getCurrentTab().container);
+            return List.of(this.list);
+        return List.of(this.list, this.list.getCurrentTab().container);
     }
 
     /* Navigation */
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+    public boolean onNavigation(NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
+
+        if (this.list.getCurrentTab() == null)
+            return super.onNavigation(direction, tab);
 
         if (tab) {
             boolean result = this.list.getCurrentTab().container.onNavigation(direction, tab);
@@ -166,12 +186,12 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         }
 
         @Override
-        public @NotNull Background getBackground() {
+        public Background getBackground() {
             return this.background;
         }
 
         @Override
-        public void setBackground(@NotNull Background background) {
+        public void setBackground(Background background) {
             this.background = background;
         }
 
@@ -302,7 +322,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
         /* Navigation */
 
         @Override
-        public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+        public boolean onNavigation(NavigationDirection direction, boolean tab) {
             return this.separatorWidget.onNavigation(direction, tab);
         }
 
@@ -328,7 +348,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
     public static class SideTabList extends SpruceEntryListWidget<Entry> {
         private TabEntry currentTab = null;
 
-        protected SideTabList(@NotNull Position position, int width, int height) {
+        protected SideTabList(Position position, int width, int height) {
             super(position, width, height, 0, SpruceTabbedWidget.Entry.class);
             this.setRenderTransition(false);
         }
@@ -344,10 +364,11 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
                 this.setSelected(this.currentTab);
         }
 
-        public void setSelected(TabEntry tab) {
+        public void setSelected(@Nullable TabEntry tab) {
             if (this.currentTab != null)
                 this.currentTab.selected = false;
-            tab.setFocused(true);
+            if (tab != null)
+                tab.setFocused(true);
             this.setFocused(tab);
             this.currentTab = tab;
         }
@@ -366,10 +387,58 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
             return entry;
         }
 
+        @Override
+        public boolean removeEntry(SpruceTabbedWidget.Entry entry) {
+            if (this.getCurrentTab() == entry) {
+                this.refocusTabOnRemoval(entry);
+            }
+            return super.removeEntry(entry);
+        }
+
+        public boolean removeTabEntry(Text title) {
+            for (var entry : this) {
+                if (entry instanceof TabEntry && entry.getTitle().equals(title)) {
+                    return this.removeEntry(entry);
+                }
+            }
+            return false;
+        }
+
+        public boolean removeSeparatorEntry(Text title) {
+            for (var entry : this) {
+                if (entry instanceof SeparatorEntry && entry.getTitle().equals(title)) {
+                    return this.removeEntry(entry);
+                }
+            }
+            return false;
+        }
+
+        protected void refocusTabOnRemoval(SpruceTabbedWidget.Entry focused) {
+            int currentIndex = this.children().indexOf(focused);
+
+            for (int index = currentIndex - 1; index >= 0; index--) {
+                var entry = this.getEntry(index);
+                if (entry instanceof TabEntry tabEntry) {
+                    this.setSelected(tabEntry);
+                    return;
+                }
+            }
+
+            for (int index = currentIndex + 1; index < this.children().size(); index++) {
+                var entry = this.getEntry(index);
+                if (entry instanceof TabEntry tabEntry) {
+                    this.setSelected(tabEntry);
+                    return;
+                }
+            }
+
+            this.setSelected(null);
+        }
+
         /* Navigation */
 
         @Override
-        public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+        public boolean onNavigation(NavigationDirection direction, boolean tab) {
             if (this.requiresCursor()) return false;
             var old = this.getFocused();
             boolean result = super.onNavigation(direction, tab);

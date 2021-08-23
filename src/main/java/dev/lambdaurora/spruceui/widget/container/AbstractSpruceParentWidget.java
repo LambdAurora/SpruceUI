@@ -14,7 +14,6 @@ import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.navigation.NavigationUtils;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -23,14 +22,14 @@ import org.lwjgl.glfw.GLFW;
  *
  * @param <E> the type of children widgets
  * @author LambdAurora
- * @version 3.0.0
+ * @version 3.3.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends AbstractSpruceWidget implements SpruceParentWidget<E> {
     private final Class<E> childClass;
     private @Nullable E focused;
 
-    public AbstractSpruceParentWidget(@NotNull Position position, Class<E> childClass) {
+    public AbstractSpruceParentWidget(Position position, Class<E> childClass) {
         super(position);
         this.childClass = childClass;
     }
@@ -69,7 +68,7 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
     /* Navigation */
 
     @Override
-    public boolean onNavigation(@NotNull NavigationDirection direction, boolean tab) {
+    public boolean onNavigation(NavigationDirection direction, boolean tab) {
         if (this.requiresCursor()) return false;
         boolean result = NavigationUtils.tryNavigate(direction, tab, this.children(), this.focused, this::setFocused, false);
         if (result)
@@ -81,7 +80,7 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 
     @Override
     protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-        var it = this.children().iterator();
+        var it = this.iterator();
 
         E element;
         do {
