@@ -16,3 +16,8 @@
  - Added a variant of `SpruceScreen` for `HandledScreen`s.
  - Adjusted the consumers of `Tooltip#queueFor` to avoid boxing.
  - Removed bunch of useless `@NotNull` annotations.
+
+#### 3.3.1
+
+ - Added ability for `SpruceEntryListWidget` children to override scroll behaviour ([#23](https://github.com/LambdAurora/SpruceUI/pull/23)).
+ - Removed inclusion of lambdajcommon.
