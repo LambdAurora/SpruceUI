@@ -1,9 +1,9 @@
 plugins {
-    id 'fabric-loom' version '0.9.45'
-    id 'io.github.juuxel.loom-quiltflower' version '1.1.3'
-    id 'java-library'
-    id 'maven-publish'
-    id 'org.cadixdev.licenser' version '0.6.1'
+	id 'fabric-loom' version '0.10.+'
+	id 'io.github.juuxel.loom-quiltflower-mini' version '1.2.1'
+	id 'java-library'
+	id 'maven-publish'
+	id 'org.cadixdev.licenser' version '0.6.1'
 }
 
 group = project.maven_group
@@ -14,165 +14,150 @@ archivesBaseName = project.archives_base_name
 def targetJavaVersion = 16
 
 Set<String> modules = [
-        'fabric-api-base',
-        'fabric-lifecycle-events-v1',
-        'fabric-rendering-v1',
-        'fabric-resource-loader-v0',
-        'fabric-screen-api-v1'
+		'fabric-api-base',
+		'fabric-lifecycle-events-v1',
+		'fabric-rendering-v1',
+		'fabric-resource-loader-v0',
+		'fabric-screen-api-v1'
 ]
 
 boolean isMCVersionNonRelease() {
-    return project.minecraft_version.matches('^\\d\\dw\\d\\d[a-z]$')
-            || project.minecraft_version.matches('\\d+\\.\\d+-(pre|rc)(\\d+)')
+	return project.minecraft_version.matches('^\\d\\dw\\d\\d[a-z]$')
+			|| project.minecraft_version.matches('\\d+\\.\\d+-(pre|rc)(\\d+)')
 }
 
 String getMCVersionString() {
-    if (isMCVersionNonRelease()) {
-        return project.minecraft_version
-    }
-    def version = project.minecraft_version.split('\\.')
-    return version[0] + '.' + version[1]
+	if (isMCVersionNonRelease()) {
+		return project.minecraft_version
+	}
+	def version = project.minecraft_version.split('\\.')
+	return version[0] + '.' + version[1]
 }
 
 sourceSets {
-    testmod {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
-    }
-}
-
-minecraft {
+	testmod {
+		compileClasspath += main.compileClasspath
+		runtimeClasspath += main.runtimeClasspath
+	}
 }
 
 repositories {
-    mavenLocal()
-    // @TODO Remove this repository once lambdajcommon is removed
-    maven {
-        name 'AperLambda'
-        url 'https://aperlambda.github.io/maven'
-    }
-    maven {
-        name 'TerraformersMC'
-        url 'https://maven.terraformersmc.com/releases'
-    }
+	mavenLocal()
+	maven {
+		name 'TerraformersMC'
+		url 'https://maven.terraformersmc.com/releases'
+	}
 }
 
 configurations {
-    api.extendsFrom libApi
+	api.extendsFrom libApi
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    modules.stream().map { fabricApi.module(it, project.fabric_api_version) }.forEach {
-        modImplementation it
-    }
+	modules.stream().map { fabricApi.module(it, project.fabric_api_version) }.forEach {
+		modImplementation it
+	}
 
-    modRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") {
-        transitive = false
-    }
+	modRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") {
+		transitive = false
+	}
 
-    libApi 'org.jetbrains:annotations:20.1.0'
-    // @TODO Remove this library.
-    include 'org.aperlambda:lambdajcommon:1.8.1'
+	libApi 'org.jetbrains:annotations:20.1.0'
 
-    testmodImplementation project(":")
+	testmodImplementation project(":")
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion(targetJavaVersion)
-    targetCompatibility = JavaVersion.toVersion(targetJavaVersion)
+	sourceCompatibility = JavaVersion.toVersion(targetJavaVersion)
+	targetCompatibility = JavaVersion.toVersion(targetJavaVersion)
 
-    withSourcesJar()
+	withSourcesJar()
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = 'UTF-8'
+	it.options.encoding = 'UTF-8'
 
-    it.options.release.set(targetJavaVersion)
+	it.options.release.set(targetJavaVersion)
 }
 
 processResources {
-    inputs.property 'version', project.version
+	inputs.property 'version', project.version
 
-    filesMatching('fabric.mod.json') {
-        expand 'version': project.version
-    }
+	filesMatching('fabric.mod.json') {
+		expand 'version': project.version
+	}
 }
 
 jar {
-    from('LICENSE') {
-        rename { "${it}_${project.archivesBaseName}" }
-    }
+	from('LICENSE') {
+		rename { "${it}_${project.archivesBaseName}" }
+	}
 }
 
 runClient {
-    classpath(sourceSets.testmod.runtimeClasspath)
+	classpath(sourceSets.testmod.runtimeClasspath)
 }
 
 license {
-    header file('HEADER')
-    include '**/*.java'
+	header file('HEADER')
+	include '**/*.java'
 }
 
 // configure the maven publication
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
 
-            pom {
-                name = 'SpruceUI'
-                description = 'A Fabric Minecraft API mod which adds some GUI utilities.'
-            }
+			pom {
+				name = 'SpruceUI'
+				description = 'A Minecraft mod API which adds some GUI utilities.'
+			}
 
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
+			pom.withXml {
+				def dependenciesNode = asNode().appendNode('dependencies')
 
-                configurations.libApi.allDependencies.each {
-                    def dependencyNode = dependenciesNode.appendNode('dependency')
+				configurations.libApi.allDependencies.each {
+					def dependencyNode = dependenciesNode.appendNode('dependency')
 
-                    dependencyNode.appendNode('groupId', it.group)
-                    dependencyNode.appendNode('artifactId', it.name)
-                    dependencyNode.appendNode('version', it.version)
-                    dependencyNode.appendNode('scope', 'compile')
-                }
-            }
-        }
-    }
+					dependencyNode.appendNode('groupId', it.group)
+					dependencyNode.appendNode('artifactId', it.name)
+					dependencyNode.appendNode('version', it.version)
+					dependencyNode.appendNode('scope', 'compile')
+				}
+			}
+		}
+	}
 
-    repositories {
-        mavenLocal()
-        maven {
-            name 'BuildDirLocal'
-            url "$buildDir/repo"
-        }
-        maven {
-            name 'GithubPackages'
-            url 'https://maven.pkg.github.com/LambdAurora/SpruceUI'
-            credentials {
-                username = project.findProperty('gpr.user') ?: System.getenv('USERNAME')
-                password = project.findProperty('gpr.key') ?: System.getenv('TOKEN')
-            }
-        }
+	repositories {
+		mavenLocal()
+		maven {
+			name 'BuildDirLocal'
+			url "$buildDir/repo"
+		}
+		maven {
+			name 'GithubPackages'
+			url 'https://maven.pkg.github.com/LambdAurora/SpruceUI'
+			credentials {
+				username = project.findProperty('gpr.user') ?: System.getenv('USERNAME')
+				password = project.findProperty('gpr.key') ?: System.getenv('TOKEN')
+			}
+		}
 
-        def spruceuiMaven = System.getenv('SPRUCEUI_MAVEN')
-        if (spruceuiMaven) {
-            maven {
-                name = 'SpruceUIMaven'
-                url = uri(spruceuiMaven)
-                credentials {
-                    username = project.findProperty('gpr.user') ?: System.getenv('MAVEN_USERNAME')
-                    password = project.findProperty('gpr.key') ?: System.getenv('MAVEN_PASSWORD')
-                }
-            }
-        }
-    }
+		def spruceuiMaven = System.getenv('SPRUCEUI_MAVEN')
+		if (spruceuiMaven) {
+			maven {
+				name = 'SpruceUIMaven'
+				url = uri(spruceuiMaven)
+				credentials {
+					username = project.findProperty('gpr.user') ?: System.getenv('MAVEN_USERNAME')
+					password = project.findProperty('gpr.key') ?: System.getenv('MAVEN_PASSWORD')
+				}
+			}
+		}
+	}
 }
