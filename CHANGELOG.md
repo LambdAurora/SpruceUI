@@ -21,3 +21,7 @@
 
  - Added ability for `SpruceEntryListWidget` children to override scroll behaviour ([#23](https://github.com/LambdAurora/SpruceUI/pull/23)).
  - Removed inclusion of lambdajcommon.
+
+#### 3.3.2
+
+ - Removed exposed ModMenu in POM publication.

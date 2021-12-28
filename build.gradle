@@ -62,7 +62,7 @@ dependencies {
 		modImplementation it
 	}
 
-	modRuntimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}") {
+	modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") {
 		transitive = false
 	}
 
