@@ -36,8 +36,8 @@ String getMCVersionString() {
 
 sourceSets {
 	testmod {
-		compileClasspath += main.compileClasspath
-		runtimeClasspath += main.runtimeClasspath
+		compileClasspath += sourceSets.main.compileClasspath
+		runtimeClasspath += sourceSets.main.runtimeClasspath
 	}
 }
 
@@ -62,13 +62,13 @@ dependencies {
 		modImplementation it
 	}
 
-	modRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") {
+	modRuntimeOnly("com.terraformersmc:modmenu:${project.modmenu_version}") {
 		transitive = false
 	}
 
 	libApi 'org.jetbrains:annotations:20.1.0'
 
-	testmodImplementation project(":")
+	testmodImplementation sourceSets.main.output
 }
 
 java {
@@ -98,8 +98,13 @@ jar {
 	}
 }
 
-runClient {
-	classpath(sourceSets.testmod.runtimeClasspath)
+loom {
+	runs {
+		testmodClient {
+			client()
+			source(sourceSets.testmod)
+		}
+	}
 }
 
 license {
@@ -116,19 +121,6 @@ publishing {
 			pom {
 				name = 'SpruceUI'
 				description = 'A Minecraft mod API which adds some GUI utilities.'
-			}
-
-			pom.withXml {
-				def dependenciesNode = asNode().appendNode('dependencies')
-
-				configurations.libApi.allDependencies.each {
-					def dependencyNode = dependenciesNode.appendNode('dependency')
-
-					dependencyNode.appendNode('groupId', it.group)
-					dependencyNode.appendNode('artifactId', it.name)
-					dependencyNode.appendNode('version', it.version)
-					dependencyNode.appendNode('scope', 'compile')
-				}
 			}
 		}
 	}
