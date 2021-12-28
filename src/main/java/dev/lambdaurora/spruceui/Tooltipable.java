@@ -22,17 +22,17 @@ import java.util.Optional;
  * @since 1.0.0
  */
 public interface Tooltipable {
-    /**
-     * Gets the tooltip.
-     *
-     * @return the tooltip to show
-     */
-    Optional<Text> getTooltip();
+	/**
+	 * Gets the tooltip.
+	 *
+	 * @return the tooltip to show
+	 */
+	Optional<Text> getTooltip();
 
-    /**
-     * Sets the tooltip.
-     *
-     * @param tooltip the tooltip to show
-     */
-    void setTooltip(@Nullable Text tooltip);
+	/**
+	 * Sets the tooltip.
+	 *
+	 * @param tooltip the tooltip to show
+	 */
+	void setTooltip(@Nullable Text tooltip);
 }

@@ -26,108 +26,108 @@ import org.lwjgl.glfw.GLFW;
  * @since 2.0.0
  */
 public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends AbstractSpruceWidget implements SpruceParentWidget<E> {
-    private final Class<E> childClass;
-    private @Nullable E focused;
+	private final Class<E> childClass;
+	private @Nullable E focused;
 
-    public AbstractSpruceParentWidget(Position position, Class<E> childClass) {
-        super(position);
-        this.childClass = childClass;
-    }
+	public AbstractSpruceParentWidget(Position position, Class<E> childClass) {
+		super(position);
+		this.childClass = childClass;
+	}
 
-    @Override
-    public void setFocused(boolean focused) {
-        super.setFocused(focused);
-        if (!focused) {
-            this.setFocused(null);
-        }
-    }
+	@Override
+	public void setFocused(boolean focused) {
+		super.setFocused(focused);
+		if (!focused) {
+			this.setFocused(null);
+		}
+	}
 
-    @Override
-    public @Nullable E getFocused() {
-        return this.focused;
-    }
+	@Override
+	public @Nullable E getFocused() {
+		return this.focused;
+	}
 
-    @Override
-    public void setFocused(@Nullable E focused) {
-        if (this.focused == focused)
-            return;
-        if (this.focused != null)
-            this.focused.setFocused(false);
-        if (focused == null)
-            this.focused = null;
-        else if (this.childClass.isInstance(focused)) {
-            this.focused = focused;
-            this.focused.setFocused(true);
-        }
-    }
+	@Override
+	public void setFocused(@Nullable E focused) {
+		if (this.focused == focused)
+			return;
+		if (this.focused != null)
+			this.focused.setFocused(false);
+		if (focused == null)
+			this.focused = null;
+		else if (this.childClass.isInstance(focused)) {
+			this.focused = focused;
+			this.focused.setFocused(true);
+		}
+	}
 
-    protected void setOwnerShip(E child) {
-        child.getPosition().setAnchor(this);
-    }
+	protected void setOwnerShip(E child) {
+		child.getPosition().setAnchor(this);
+	}
 
-    /* Navigation */
+	/* Navigation */
 
-    @Override
-    public boolean onNavigation(NavigationDirection direction, boolean tab) {
-        if (this.requiresCursor()) return false;
-        boolean result = NavigationUtils.tryNavigate(direction, tab, this.children(), this.focused, this::setFocused, false);
-        if (result)
-            this.setFocused(true);
-        return result;
-    }
+	@Override
+	public boolean onNavigation(NavigationDirection direction, boolean tab) {
+		if (this.requiresCursor()) return false;
+		boolean result = NavigationUtils.tryNavigate(direction, tab, this.children(), this.focused, this::setFocused, false);
+		if (result)
+			this.setFocused(true);
+		return result;
+	}
 
-    /* Input */
+	/* Input */
 
-    @Override
-    protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-        var it = this.iterator();
+	@Override
+	protected boolean onMouseClick(double mouseX, double mouseY, int button) {
+		var it = this.iterator();
 
-        E element;
-        do {
-            if (!it.hasNext()) {
-                return false;
-            }
+		E element;
+		do {
+			if (!it.hasNext()) {
+				return false;
+			}
 
-            element = it.next();
-        } while (!element.mouseClicked(mouseX, mouseY, button));
+			element = it.next();
+		} while (!element.mouseClicked(mouseX, mouseY, button));
 
-        this.setFocused(element);
-        if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
-            this.setDragging(true);
-        }
+		this.setFocused(element);
+		if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
+			this.setDragging(true);
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    protected boolean onMouseRelease(double mouseX, double mouseY, int button) {
-        this.setDragging(false);
-        return this.hoveredElement(mouseX, mouseY).filter(element -> element.mouseReleased(mouseX, mouseY, button)).isPresent();
-    }
+	@Override
+	protected boolean onMouseRelease(double mouseX, double mouseY, int button) {
+		this.setDragging(false);
+		return this.hoveredElement(mouseX, mouseY).filter(element -> element.mouseReleased(mouseX, mouseY, button)).isPresent();
+	}
 
-    @Override
-    protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        return this.getFocused() != null && this.isDragging() && button == GLFW.GLFW_MOUSE_BUTTON_1
-                && this.getFocused().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-    }
+	@Override
+	protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		return this.getFocused() != null && this.isDragging() && button == GLFW.GLFW_MOUSE_BUTTON_1
+				&& this.getFocused().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	}
 
-    @Override
-    protected boolean onMouseScroll(double mouseX, double mouseY, double amount) {
-        return this.hoveredElement(mouseX, mouseY).filter(element -> element.mouseScrolled(mouseX, mouseY, amount)).isPresent();
-    }
+	@Override
+	protected boolean onMouseScroll(double mouseX, double mouseY, double amount) {
+		return this.hoveredElement(mouseX, mouseY).filter(element -> element.mouseScrolled(mouseX, mouseY, amount)).isPresent();
+	}
 
-    @Override
-    protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
-        return this.getFocused() != null && this.getFocused().keyPressed(keyCode, scanCode, modifiers);
-    }
+	@Override
+	protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
+		return this.getFocused() != null && this.getFocused().keyPressed(keyCode, scanCode, modifiers);
+	}
 
-    @Override
-    protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers) {
-        return this.getFocused() != null && this.getFocused().keyReleased(keyCode, scanCode, modifiers);
-    }
+	@Override
+	protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers) {
+		return this.getFocused() != null && this.getFocused().keyReleased(keyCode, scanCode, modifiers);
+	}
 
-    @Override
-    protected boolean onCharTyped(char chr, int keyCode) {
-        return this.getFocused() != null && this.getFocused().charTyped(chr, keyCode);
-    }
+	@Override
+	protected boolean onCharTyped(char chr, int keyCode) {
+		return this.getFocused() != null && this.getFocused().charTyped(chr, keyCode);
+	}
 }

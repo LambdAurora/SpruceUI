@@ -20,12 +20,12 @@ import net.minecraft.client.util.math.MatrixStack;
  * @since 2.0.0
  */
 public interface Border {
-    void render(MatrixStack matrices, SpruceWidget widget, int mouseX, int mouseY, float delta);
+	void render(MatrixStack matrices, SpruceWidget widget, int mouseX, int mouseY, float delta);
 
-    /**
-     * Returns the thickness of the border.
-     *
-     * @return the thickness
-     */
-    int getThickness();
+	/**
+	 * Returns the thickness of the border.
+	 *
+	 * @return the thickness
+	 */
+	int getThickness();
 }

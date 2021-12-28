@@ -28,27 +28,27 @@ import java.util.function.Supplier;
  * @since 2.0.0
  */
 public class SpruceToggleBooleanOption extends SpruceBooleanOption {
-    public SpruceToggleBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip) {
-        super(key, getter, setter, tooltip, false);
-    }
+	public SpruceToggleBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip) {
+		super(key, getter, setter, tooltip, false);
+	}
 
-    @Override
-    public SpruceWidget createWidget(Position position, int width) {
-        var button = new SpruceToggleSwitch(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
-            this.set();
-            btn.setMessage(this.getDisplayText());
-        }, this.get());
-        this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button;
-    }
+	@Override
+	public SpruceWidget createWidget(Position position, int width) {
+		var button = new SpruceToggleSwitch(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
+			this.set();
+			btn.setMessage(this.getDisplayText());
+		}, this.get());
+		this.getOptionTooltip().ifPresent(button::setTooltip);
+		return button;
+	}
 
-    @Override
-    public Text getDisplayText() {
-        return this.getPrefix();
-    }
+	@Override
+	public Text getDisplayText() {
+		return this.getPrefix();
+	}
 
-    @Override
-    public Text getDisplayText(Text value) {
-        return this.getPrefix();
-    }
+	@Override
+	public Text getDisplayText(Text value) {
+		return this.getPrefix();
+	}
 }

@@ -22,17 +22,17 @@ import net.minecraft.text.LiteralText;
  * @since 1.0.0
  */
 public class SpruceOptionSliderWidget extends SpruceSliderWidget {
-    private final SpruceDoubleOption option;
+	private final SpruceDoubleOption option;
 
-    public SpruceOptionSliderWidget(Position position, int width, int height, SpruceDoubleOption option) {
-        super(position, width, height, LiteralText.EMPTY, option.getRatio(option.get()), slider -> option.set(option.getValue(slider.getValue())));
-        this.option = option;
-        this.updateMessage();
-    }
+	public SpruceOptionSliderWidget(Position position, int width, int height, SpruceDoubleOption option) {
+		super(position, width, height, LiteralText.EMPTY, option.getRatio(option.get()), slider -> option.set(option.getValue(slider.getValue())));
+		this.option = option;
+		this.updateMessage();
+	}
 
-    @Override
-    protected void updateMessage() {
-        if (this.option != null)
-            this.setMessage(this.option.getDisplayString());
-    }
+	@Override
+	protected void updateMessage() {
+		if (this.option != null)
+			this.setMessage(this.option.getDisplayString());
+	}
 }

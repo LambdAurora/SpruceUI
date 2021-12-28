@@ -22,11 +22,11 @@ import net.minecraft.client.MinecraftClient;
  */
 @FunctionalInterface
 public interface ResolutionChangeCallback {
-    Event<ResolutionChangeCallback> EVENT = EventFactory.createArrayBacked(ResolutionChangeCallback.class, listeners -> client -> {
-        for (var event : listeners) {
-            event.apply(client);
-        }
-    });
+	Event<ResolutionChangeCallback> EVENT = EventFactory.createArrayBacked(ResolutionChangeCallback.class, listeners -> client -> {
+		for (var event : listeners) {
+			event.apply(client);
+		}
+	});
 
-    void apply(MinecraftClient client);
+	void apply(MinecraftClient client);
 }

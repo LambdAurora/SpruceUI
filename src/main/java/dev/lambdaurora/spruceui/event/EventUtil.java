@@ -20,26 +20,26 @@ import net.fabricmc.fabric.api.event.EventFactory;
  * @since 1.4.0
  */
 public final class EventUtil {
-    private EventUtil() {
-        throw new UnsupportedOperationException("EventUtil is a singleton.");
-    }
+	private EventUtil() {
+		throw new UnsupportedOperationException("EventUtil is a singleton.");
+	}
 
-    static Event<OpenScreenCallback> makeOpenScreenEvent() {
-        return EventFactory.createArrayBacked(OpenScreenCallback.class, listeners -> (client, screen) -> {
-            for (var event : listeners) {
-                event.apply(client, screen);
-            }
-        });
-    }
+	static Event<OpenScreenCallback> makeOpenScreenEvent() {
+		return EventFactory.createArrayBacked(OpenScreenCallback.class, listeners -> (client, screen) -> {
+			for (var event : listeners) {
+				event.apply(client, screen);
+			}
+		});
+	}
 
-    /**
-     * Registers a full open screen event.
-     *
-     * @param pre Pre open screen callback.
-     * @param post Post open screen callback.
-     */
-    public static void onOpenScreen(OpenScreenCallback pre, OpenScreenCallback post) {
-        OpenScreenCallback.PRE.register(pre);
-        OpenScreenCallback.EVENT.register(post);
-    }
+	/**
+	 * Registers a full open screen event.
+	 *
+	 * @param pre Pre open screen callback.
+	 * @param post Post open screen callback.
+	 */
+	public static void onOpenScreen(OpenScreenCallback pre, OpenScreenCallback post) {
+		OpenScreenCallback.PRE.register(pre);
+		OpenScreenCallback.EVENT.register(post);
+	}
 }

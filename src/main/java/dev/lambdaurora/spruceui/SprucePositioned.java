@@ -17,21 +17,21 @@ package dev.lambdaurora.spruceui;
  * @since 1.4.0
  */
 public interface SprucePositioned {
-    /**
-     * Returns the X coordinate.
-     *
-     * @return the X coordinate
-     */
-    default int getX() {
-        return 0;
-    }
+	/**
+	 * Returns the X coordinate.
+	 *
+	 * @return the X coordinate
+	 */
+	default int getX() {
+		return 0;
+	}
 
-    /**
-     * Returns the Y coordinate.
-     *
-     * @return the Y coordinate
-     */
-    default int getY() {
-        return 0;
-    }
+	/**
+	 * Returns the Y coordinate.
+	 *
+	 * @return the Y coordinate
+	 */
+	default int getY() {
+		return 0;
+	}
 }

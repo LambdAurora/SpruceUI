@@ -9,8 +9,6 @@
 
 package dev.lambdaurora.spruceui.util;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * Provides some common utils.
  *
@@ -19,17 +17,17 @@ import org.jetbrains.annotations.NotNull;
  * @since 3.2.1
  */
 public class SpruceUtil {
-    /**
-     * Parses an integer from a string. If the value is not a integer it returns {@code 0}.
-     *
-     * @param value a {@code String} which represents an integer
-     * @return the parsed integer, if parsing fails returns {@code 0}.
-     */
-    public static int parseIntFromString(String value) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
+	/**
+	 * Parses an integer from a string. If the value is not a integer it returns {@code 0}.
+	 *
+	 * @param value a {@code String} which represents an integer
+	 * @return the parsed integer, if parsing fails returns {@code 0}.
+	 */
+	public static int parseIntFromString(String value) {
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
 }

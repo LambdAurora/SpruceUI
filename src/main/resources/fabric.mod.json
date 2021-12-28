@@ -24,7 +24,7 @@
     "spruceui.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.3",
+    "fabricloader": ">=0.12.12",
     "fabric-api-base": "*",
     "fabric-lifecycle-events-v1": "*",
     "fabric-rendering-v1": "*",

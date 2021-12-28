@@ -23,8 +23,8 @@ import org.jetbrains.annotations.Nullable;
  */
 @FunctionalInterface
 public interface OpenScreenCallback {
-    Event<OpenScreenCallback> PRE = EventUtil.makeOpenScreenEvent();
-    Event<OpenScreenCallback> EVENT = EventUtil.makeOpenScreenEvent();
+	Event<OpenScreenCallback> PRE = EventUtil.makeOpenScreenEvent();
+	Event<OpenScreenCallback> EVENT = EventUtil.makeOpenScreenEvent();
 
-    void apply(MinecraftClient client, @Nullable Screen screen);
+	void apply(MinecraftClient client, @Nullable Screen screen);
 }

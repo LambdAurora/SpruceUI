@@ -17,10 +17,10 @@ package dev.lambdaurora.spruceui.util;
  * @since 3.2.0
  */
 public interface Nameable {
-    /**
-     * Gets the name of the object.
-     *
-     * @return the name of this object
-     */
-    String getName();
+	/**
+	 * Gets the name of the object.
+	 *
+	 * @return the name of this object
+	 */
+	String getName();
 }

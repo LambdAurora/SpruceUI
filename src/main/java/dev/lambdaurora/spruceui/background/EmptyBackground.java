@@ -20,17 +20,17 @@ import net.minecraft.client.util.math.MatrixStack;
  * @since 2.0.0
  */
 public final class EmptyBackground implements Background {
-    public static final EmptyBackground EMPTY_BACKGROUND = new EmptyBackground();
+	public static final EmptyBackground EMPTY_BACKGROUND = new EmptyBackground();
 
-    private EmptyBackground() {
-    }
+	private EmptyBackground() {
+	}
 
-    @Override
-    public void render(MatrixStack matrices, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
-    }
+	@Override
+	public void render(MatrixStack matrices, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
+	}
 
-    @Override
-    public String toString() {
-        return "EmptyBackground{}";
-    }
+	@Override
+	public String toString() {
+		return "EmptyBackground{}";
+	}
 }

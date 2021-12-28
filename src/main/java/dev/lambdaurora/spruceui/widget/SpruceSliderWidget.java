@@ -29,171 +29,171 @@ import java.util.function.Consumer;
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements Tooltipable {
-    private Text baseMessage;
-    protected double value;
-    private final Consumer<SpruceSliderWidget> applyConsumer;
-    private double multiplier;
-    private String sign;
-    private boolean inUse = false;
+	private Text baseMessage;
+	protected double value;
+	private final Consumer<SpruceSliderWidget> applyConsumer;
+	private double multiplier;
+	private String sign;
+	private boolean inUse = false;
 
-    public SpruceSliderWidget(Position position, int width, int height, Text message, double value, Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
-        super(position, width, height, message);
-        this.value = value;
-        this.baseMessage = message;
-        this.applyConsumer = applyConsumer;
-        this.multiplier = multiplier;
-        this.sign = sign;
-        this.updateMessage();
-    }
+	public SpruceSliderWidget(Position position, int width, int height, Text message, double value, Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
+		super(position, width, height, message);
+		this.value = value;
+		this.baseMessage = message;
+		this.applyConsumer = applyConsumer;
+		this.multiplier = multiplier;
+		this.sign = sign;
+		this.updateMessage();
+	}
 
-    public SpruceSliderWidget(Position position, int width, int height, Text message, double progress, Consumer<SpruceSliderWidget> applyConsumer) {
-        this(position, width, height, message, progress, applyConsumer, 100.0, "%");
-    }
+	public SpruceSliderWidget(Position position, int width, int height, Text message, double progress, Consumer<SpruceSliderWidget> applyConsumer) {
+		this(position, width, height, message, progress, applyConsumer, 100.0, "%");
+	}
 
-    /**
-     * Gets the value of the slider.
-     *
-     * @return the value of the slider
-     */
-    public double getValue() {
-        return this.value;
-    }
+	/**
+	 * Gets the value of the slider.
+	 *
+	 * @return the value of the slider
+	 */
+	public double getValue() {
+		return this.value;
+	}
 
-    /**
-     * Sets the value of the slider.
-     *
-     * @param value the value of the slider
-     */
-    private void setValue(double value) {
-        double oldValue = this.value;
-        this.value = MathHelper.clamp(value, 0.0D, 1.0D);
-        if (oldValue != this.value) {
-            this.applyValue();
-        }
+	/**
+	 * Sets the value of the slider.
+	 *
+	 * @param value the value of the slider
+	 */
+	private void setValue(double value) {
+		double oldValue = this.value;
+		this.value = MathHelper.clamp(value, 0.0D, 1.0D);
+		if (oldValue != this.value) {
+			this.applyValue();
+		}
 
-        this.updateMessage();
-    }
+		this.updateMessage();
+	}
 
 
-    /**
-     * Returns the value of this slider as an integer.
-     *
-     * @return the value as an integer
-     */
-    public int getIntValue() {
-        return (int) (this.value * this.multiplier);
-    }
+	/**
+	 * Returns the value of this slider as an integer.
+	 *
+	 * @return the value as an integer
+	 */
+	public int getIntValue() {
+		return (int) (this.value * this.multiplier);
+	}
 
-    /**
-     * Sets the value of this slider.
-     *
-     * @param value the new value as an integer
-     */
-    public void setIntValue(int value) {
-        this.setValue(value / this.multiplier);
-    }
+	/**
+	 * Sets the value of this slider.
+	 *
+	 * @param value the new value as an integer
+	 */
+	public void setIntValue(int value) {
+		this.setValue(value / this.multiplier);
+	}
 
-    /**
-     * Gets the base message of the slider.
-     *
-     * @return the base message of the slider
-     */
-    public Text getBaseMessage() {
-        return this.baseMessage;
-    }
+	/**
+	 * Gets the base message of the slider.
+	 *
+	 * @return the base message of the slider
+	 */
+	public Text getBaseMessage() {
+		return this.baseMessage;
+	}
 
-    /**
-     * Sets the base message of the slider.
-     *
-     * @param baseMessage the base message of the slider
-     */
-    public void setBaseMessage(Text baseMessage) {
-        this.baseMessage = baseMessage;
-    }
+	/**
+	 * Sets the base message of the slider.
+	 *
+	 * @param baseMessage the base message of the slider
+	 */
+	public void setBaseMessage(Text baseMessage) {
+		this.baseMessage = baseMessage;
+	}
 
-    protected void updateMessage() {
-        this.setMessage(this.baseMessage.copy().append(": " + this.getIntValue() + sign));
-    }
+	protected void updateMessage() {
+		this.setMessage(this.baseMessage.copy().append(": " + this.getIntValue() + sign));
+	}
 
-    protected void applyValue() {
-        this.applyConsumer.accept(this);
-    }
+	protected void applyValue() {
+		this.applyConsumer.accept(this);
+	}
 
-    /* Navigation */
+	/* Navigation */
 
-    @Override
-    public boolean onNavigation(NavigationDirection direction, boolean tab) {
-        if (direction.isHorizontal() && !tab) {
-            if (direction.isLookingForward() && this.value < 1 || this.value > 0) {
-                this.setValue(this.getValue() + (direction.isLookingForward() ? (1 / this.multiplier) : -(1 / this.multiplier)));
-                return true;
-            }
-        }
-        return super.onNavigation(direction, tab);
-    }
+	@Override
+	public boolean onNavigation(NavigationDirection direction, boolean tab) {
+		if (direction.isHorizontal() && !tab) {
+			if (direction.isLookingForward() && this.value < 1 || this.value > 0) {
+				this.setValue(this.getValue() + (direction.isLookingForward() ? (1 / this.multiplier) : -(1 / this.multiplier)));
+				return true;
+			}
+		}
+		return super.onNavigation(direction, tab);
+	}
 
-    /* Input */
+	/* Input */
 
-    @Override
-    protected void onClick(double mouseX, double mouseY) {
-        this.setValueFromMouse(mouseX);
-        this.inUse = true;
-    }
+	@Override
+	protected void onClick(double mouseX, double mouseY) {
+		this.setValueFromMouse(mouseX);
+		this.inUse = true;
+	}
 
-    @Override
-    protected void onRelease(double mouseX, double mouseY) {
-        if (this.inUse) {
-            this.playDownSound();
-            this.inUse = false;
-        }
-    }
+	@Override
+	protected void onRelease(double mouseX, double mouseY) {
+		if (this.inUse) {
+			this.playDownSound();
+			this.inUse = false;
+		}
+	}
 
-    @Override
-    protected void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
-        this.setValueFromMouse(mouseX);
-        this.inUse = true;
-    }
+	@Override
+	protected void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
+		this.setValueFromMouse(mouseX);
+		this.inUse = true;
+	}
 
-    private void setValueFromMouse(double mouseX) {
-        this.setValue((mouseX - (double) (this.getX() + 4)) / (double) (this.getWidth() - 8));
-    }
+	private void setValueFromMouse(double mouseX) {
+		this.setValue((mouseX - (double) (this.getX() + 4)) / (double) (this.getWidth() - 8));
+	}
 
-    /* Rendering */
+	/* Rendering */
 
-    @Override
-    protected int getVOffset() {
-        return 0;
-    }
+	@Override
+	protected int getVOffset() {
+		return 0;
+	}
 
-    @Override
-    protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        RenderSystem.setShaderColor(1.f, 1.f, 1.f, 1.f);
-        RenderSystem.setShaderTexture(0, ClickableWidget.WIDGETS_TEXTURE);
-        int vOffset = (this.isFocusedOrHovered() ? 2 : 1) * 20;
-        this.drawTexture(matrices, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(), 0, 46 + vOffset, 4, 20);
-        this.drawTexture(matrices, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)) + 4, this.getY(), 196, 46 + vOffset, 4, 20);
+	@Override
+	protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		RenderSystem.setShaderColor(1.f, 1.f, 1.f, 1.f);
+		RenderSystem.setShaderTexture(0, ClickableWidget.WIDGETS_TEXTURE);
+		int vOffset = (this.isFocusedOrHovered() ? 2 : 1) * 20;
+		this.drawTexture(matrices, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(), 0, 46 + vOffset, 4, 20);
+		this.drawTexture(matrices, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)) + 4, this.getY(), 196, 46 + vOffset, 4, 20);
 
-        if (!this.isMouseHovered() && this.inUse) {
-            this.inUse = false;
-        }
+		if (!this.isMouseHovered() && this.inUse) {
+			this.inUse = false;
+		}
 
-        super.renderButton(matrices, mouseX, mouseY, delta);
-    }
+		super.renderButton(matrices, mouseX, mouseY, delta);
+	}
 
-    /* Narration */
+	/* Narration */
 
-    @Override
-    protected Text getNarrationMessage() {
-        return new TranslatableText("gui.narrate.slider", this.getMessage());
-    }
+	@Override
+	protected Text getNarrationMessage() {
+		return new TranslatableText("gui.narrate.slider", this.getMessage());
+	}
 
-    @Override
-    protected Text getNarrationFocusedUsageMessage() {
-        return new TranslatableText("narration.slider.usage.focused");
-    }
+	@Override
+	protected Text getNarrationFocusedUsageMessage() {
+		return new TranslatableText("narration.slider.usage.focused");
+	}
 
-    @Override
-    protected Text getNarrationHoveredUsageMessage() {
-        return new TranslatableText("narration.slider.usage.hovered");
-    }
+	@Override
+	protected Text getNarrationHoveredUsageMessage() {
+		return new TranslatableText("narration.slider.usage.hovered");
+	}
 }

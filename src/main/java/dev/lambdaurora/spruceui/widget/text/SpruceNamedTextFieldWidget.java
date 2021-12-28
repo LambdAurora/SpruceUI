@@ -32,199 +32,199 @@ import java.util.function.Predicate;
  * @since 2.1.0
  */
 public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
-    private static final int Y_OFFSET = 13;
-    private final SpruceTextFieldWidget textFieldWidget;
+	private static final int Y_OFFSET = 13;
+	private final SpruceTextFieldWidget textFieldWidget;
 
-    public SpruceNamedTextFieldWidget(SpruceTextFieldWidget widget) {
-        super(widget.getPosition().copy());
-        widget.getPosition().setAnchor(this);
-        widget.getPosition().setRelativeX(0);
-        widget.getPosition().setRelativeY(Y_OFFSET);
+	public SpruceNamedTextFieldWidget(SpruceTextFieldWidget widget) {
+		super(widget.getPosition().copy());
+		widget.getPosition().setAnchor(this);
+		widget.getPosition().setRelativeX(0);
+		widget.getPosition().setRelativeY(Y_OFFSET);
 
-        this.textFieldWidget = widget;
-    }
+		this.textFieldWidget = widget;
+	}
 
-    public SpruceTextFieldWidget getTextFieldWidget() {
-        return this.textFieldWidget;
-    }
+	public SpruceTextFieldWidget getTextFieldWidget() {
+		return this.textFieldWidget;
+	}
 
-    @Override
-    public int getWidth() {
-        return this.getTextFieldWidget().getWidth();
-    }
+	@Override
+	public int getWidth() {
+		return this.getTextFieldWidget().getWidth();
+	}
 
-    @Override
-    public int getHeight() {
-        return this.getTextFieldWidget().getHeight() + Y_OFFSET;
-    }
+	@Override
+	public int getHeight() {
+		return this.getTextFieldWidget().getHeight() + Y_OFFSET;
+	}
 
-    @Override
-    public boolean isVisible() {
-        return this.getTextFieldWidget().isVisible();
-    }
+	@Override
+	public boolean isVisible() {
+		return this.getTextFieldWidget().isVisible();
+	}
 
-    @Override
-    public void setVisible(boolean visible) {
-        this.getTextFieldWidget().setVisible(visible);
-    }
+	@Override
+	public void setVisible(boolean visible) {
+		this.getTextFieldWidget().setVisible(visible);
+	}
 
-    @Override
-    public boolean isFocused() {
-        return this.getTextFieldWidget().isFocused();
-    }
+	@Override
+	public boolean isFocused() {
+		return this.getTextFieldWidget().isFocused();
+	}
 
-    @Override
-    public void setFocused(boolean focused) {
-        this.getTextFieldWidget().setFocused(focused);
-    }
+	@Override
+	public void setFocused(boolean focused) {
+		this.getTextFieldWidget().setFocused(focused);
+	}
 
-    public String getText() {
-        return this.getTextFieldWidget().getText();
-    }
+	public String getText() {
+		return this.getTextFieldWidget().getText();
+	}
 
-    public void setText(String text) {
-        this.getTextFieldWidget().setText(text);
-    }
+	public void setText(String text) {
+		this.getTextFieldWidget().setText(text);
+	}
 
-    public Consumer<String> getChangedListener() {
-        return this.getTextFieldWidget().getChangedListener();
-    }
+	public Consumer<String> getChangedListener() {
+		return this.getTextFieldWidget().getChangedListener();
+	}
 
-    public void setChangedListener(Consumer<String> changedListener) {
-        this.getTextFieldWidget().setChangedListener(changedListener);
-    }
+	public void setChangedListener(Consumer<String> changedListener) {
+		this.getTextFieldWidget().setChangedListener(changedListener);
+	}
 
-    public Predicate<String> getTextPredicate() {
-        return this.getTextFieldWidget().getTextPredicate();
-    }
+	public Predicate<String> getTextPredicate() {
+		return this.getTextFieldWidget().getTextPredicate();
+	}
 
-    public void setTextPredicate(Predicate<String> textPredicate) {
-        this.getTextFieldWidget().setTextPredicate(textPredicate);
-    }
+	public void setTextPredicate(Predicate<String> textPredicate) {
+		this.getTextFieldWidget().setTextPredicate(textPredicate);
+	}
 
-    public BiFunction<String, Integer, OrderedText> getRenderTextProvider() {
-        return this.getTextFieldWidget().getRenderTextProvider();
-    }
+	public BiFunction<String, Integer, OrderedText> getRenderTextProvider() {
+		return this.getTextFieldWidget().getRenderTextProvider();
+	}
 
-    public void setRenderTextProvider(BiFunction<String, Integer, OrderedText> renderTextProvider) {
-        this.getTextFieldWidget().setRenderTextProvider(renderTextProvider);
-    }
+	public void setRenderTextProvider(BiFunction<String, Integer, OrderedText> renderTextProvider) {
+		this.getTextFieldWidget().setRenderTextProvider(renderTextProvider);
+	}
 
-    /**
-     * Returns the color for editable text.
-     *
-     * @return the editable text
-     */
-    public int getEditableColor() {
-        return this.getTextFieldWidget().getEditableColor();
-    }
+	/**
+	 * Returns the color for editable text.
+	 *
+	 * @return the editable text
+	 */
+	public int getEditableColor() {
+		return this.getTextFieldWidget().getEditableColor();
+	}
 
-    /**
-     * Sets the color for editable text.
-     *
-     * @param editableColor the editable color
-     */
-    public void setEditableColor(int editableColor) {
-        this.getTextFieldWidget().setEditableColor(editableColor);
-    }
+	/**
+	 * Sets the color for editable text.
+	 *
+	 * @param editableColor the editable color
+	 */
+	public void setEditableColor(int editableColor) {
+		this.getTextFieldWidget().setEditableColor(editableColor);
+	}
 
-    /**
-     * Returns the color for uneditable text.
-     *
-     * @return the uneditable color
-     */
-    public int getUneditableColor() {
-        return this.getTextFieldWidget().getUneditableColor();
-    }
+	/**
+	 * Returns the color for uneditable text.
+	 *
+	 * @return the uneditable color
+	 */
+	public int getUneditableColor() {
+		return this.getTextFieldWidget().getUneditableColor();
+	}
 
-    /**
-     * Sets the color for uneditable text.
-     *
-     * @param uneditableColor the uneditable color
-     */
-    public void setUneditableColor(int uneditableColor) {
-        this.getTextFieldWidget().setUneditableColor(uneditableColor);
-    }
+	/**
+	 * Sets the color for uneditable text.
+	 *
+	 * @param uneditableColor the uneditable color
+	 */
+	public void setUneditableColor(int uneditableColor) {
+		this.getTextFieldWidget().setUneditableColor(uneditableColor);
+	}
 
-    /**
-     * Returns the text color.
-     *
-     * @return the text color
-     */
-    public int getTextColor() {
-        return this.getTextFieldWidget().getTextColor();
-    }
+	/**
+	 * Returns the text color.
+	 *
+	 * @return the text color
+	 */
+	public int getTextColor() {
+		return this.getTextFieldWidget().getTextColor();
+	}
 
-    @Override
-    public Background getBackground() {
-        return this.getTextFieldWidget().getBackground();
-    }
+	@Override
+	public Background getBackground() {
+		return this.getTextFieldWidget().getBackground();
+	}
 
-    @Override
-    public void setBackground(Background background) {
-        this.getTextFieldWidget().setBackground(background);
-    }
+	@Override
+	public void setBackground(Background background) {
+		this.getTextFieldWidget().setBackground(background);
+	}
 
-    @Override
-    public Border getBorder() {
-        return this.getTextFieldWidget().getBorder();
-    }
+	@Override
+	public Border getBorder() {
+		return this.getTextFieldWidget().getBorder();
+	}
 
-    @Override
-    public void setBorder(Border border) {
-        this.getTextFieldWidget().setBorder(border);
-    }
+	@Override
+	public void setBorder(Border border) {
+		this.getTextFieldWidget().setBorder(border);
+	}
 
-    /* Navigation */
+	/* Navigation */
 
-    @Override
-    public boolean onNavigation(NavigationDirection direction, boolean tab) {
-        return this.getTextFieldWidget().onNavigation(direction, tab);
-    }
+	@Override
+	public boolean onNavigation(NavigationDirection direction, boolean tab) {
+		return this.getTextFieldWidget().onNavigation(direction, tab);
+	}
 
-    /* Input */
+	/* Input */
 
-    @Override
-    protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-        return this.getTextFieldWidget().mouseClicked(mouseX, mouseY, button);
-    }
+	@Override
+	protected boolean onMouseClick(double mouseX, double mouseY, int button) {
+		return this.getTextFieldWidget().mouseClicked(mouseX, mouseY, button);
+	}
 
-    @Override
-    protected boolean onMouseRelease(double mouseX, double mouseY, int button) {
-        return this.getTextFieldWidget().mouseReleased(mouseX, mouseY, button);
-    }
+	@Override
+	protected boolean onMouseRelease(double mouseX, double mouseY, int button) {
+		return this.getTextFieldWidget().mouseReleased(mouseX, mouseY, button);
+	}
 
-    @Override
-    protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        return this.getTextFieldWidget().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-    }
+	@Override
+	protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		return this.getTextFieldWidget().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	}
 
-    @Override
-    protected boolean onMouseScroll(double mouseX, double mouseY, double amount) {
-        return this.getTextFieldWidget().mouseScrolled(mouseX, mouseY, amount);
-    }
+	@Override
+	protected boolean onMouseScroll(double mouseX, double mouseY, double amount) {
+		return this.getTextFieldWidget().mouseScrolled(mouseX, mouseY, amount);
+	}
 
-    @Override
-    protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
-        return this.getTextFieldWidget().keyPressed(keyCode, scanCode, modifiers);
-    }
+	@Override
+	protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
+		return this.getTextFieldWidget().keyPressed(keyCode, scanCode, modifiers);
+	}
 
-    @Override
-    protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers) {
-        return this.getTextFieldWidget().keyReleased(keyCode, scanCode, modifiers);
-    }
+	@Override
+	protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers) {
+		return this.getTextFieldWidget().keyReleased(keyCode, scanCode, modifiers);
+	}
 
-    @Override
-    protected boolean onCharTyped(char chr, int keyCode) {
-        return this.getTextFieldWidget().charTyped(chr, keyCode);
-    }
+	@Override
+	protected boolean onCharTyped(char chr, int keyCode) {
+		return this.getTextFieldWidget().charTyped(chr, keyCode);
+	}
 
-    /* Rendering */
+	/* Rendering */
 
-    @Override
-    protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        DrawableHelper.drawTextWithShadow(matrices, this.client.textRenderer, this.getTextFieldWidget().getTitle(), this.getX() + 2, this.getY() + 2, ColorUtil.TEXT_COLOR);
+	@Override
+	protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		DrawableHelper.drawTextWithShadow(matrices, this.client.textRenderer, this.getTextFieldWidget().getTitle(), this.getX() + 2, this.getY() + 2, ColorUtil.TEXT_COLOR);
 
-        this.getTextFieldWidget().render(matrices, mouseX, mouseY, delta);
-    }
+		this.getTextFieldWidget().render(matrices, mouseX, mouseY, delta);
+	}
 }

@@ -29,65 +29,65 @@ import org.jetbrains.annotations.Nullable;
  * @since 1.0.0
  */
 public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
-    private static final Identifier TEXTURE = new Identifier("spruceui", "textures/gui/toggle_switch.png");
+	private static final Identifier TEXTURE = new Identifier("spruceui", "textures/gui/toggle_switch.png");
 
-    public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value) {
-        super(position, width, height, message, value);
-    }
+	public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value) {
+		super(position, width, height, message, value);
+	}
 
-    public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value,
-                              boolean showMessage) {
-        super(position, width, height, message, value, showMessage);
-    }
+	public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value,
+	                          boolean showMessage) {
+		super(position, width, height, message, value, showMessage);
+	}
 
-    public SpruceToggleSwitch(Position position, int width, int height, Text message, PressAction action,
-                              boolean value) {
-        super(position, width, height, message, action, value);
-    }
+	public SpruceToggleSwitch(Position position, int width, int height, Text message, PressAction action,
+	                          boolean value) {
+		super(position, width, height, message, action, value);
+	}
 
-    public SpruceToggleSwitch(Position position, int width, int height, Text message, PressAction action,
-                              boolean value, boolean showMessage) {
-        super(position, width, height, message, action, value, showMessage);
-    }
+	public SpruceToggleSwitch(Position position, int width, int height, Text message, PressAction action,
+	                          boolean value, boolean showMessage) {
+		super(position, width, height, message, action, value, showMessage);
+	}
 
-    /* Rendering */
+	/* Rendering */
 
-    @Override
-    protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        RenderSystem.enableDepthTest();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
-        drawTexture(matrices, this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
-                this.getValue() ? 50.f : 32.f, this.isFocusedOrHovered() ? 18.f : 0.f,
-                18, 18, 68, 36);
+	@Override
+	protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		RenderSystem.enableDepthTest();
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+		drawTexture(matrices, this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
+				this.getValue() ? 50.f : 32.f, this.isFocusedOrHovered() ? 18.f : 0.f,
+				18, 18, 68, 36);
 
-        if (this.showMessage) {
-            var message = Language.getInstance().reorder(
-                    this.client.textRenderer.trimToWidth(this.getMessage(), this.getWidth() - 40)
-            );
-            this.client.textRenderer.drawWithShadow(matrices, message, this.getX() + 36, this.getY() + (this.getHeight() - 8) / 2.f,
-                    14737632 | MathHelper.ceil(this.alpha * 255.0F) << 24);
-        }
-    }
+		if (this.showMessage) {
+			var message = Language.getInstance().reorder(
+					this.client.textRenderer.trimToWidth(this.getMessage(), this.getWidth() - 40)
+			);
+			this.client.textRenderer.drawWithShadow(matrices, message, this.getX() + 36, this.getY() + (this.getHeight() - 8) / 2.f,
+					14737632 | MathHelper.ceil(this.alpha * 255.0F) << 24);
+		}
+	}
 
-    @Override
-    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        RenderSystem.enableDepthTest();
-        RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.alpha);
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
-        drawTexture(matrices, this.getX(), this.getY() + (this.getHeight() / 2 - 9),
-                0.f, this.isFocusedOrHovered() ? 18.f : 0.f, 32, 18, 68, 36);
-    }
+	@Override
+	protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		RenderSystem.enableDepthTest();
+		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.alpha);
+		RenderSystem.setShaderTexture(0, TEXTURE);
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+		drawTexture(matrices, this.getX(), this.getY() + (this.getHeight() / 2 - 9),
+				0.f, this.isFocusedOrHovered() ? 18.f : 0.f, 32, 18, 68, 36);
+	}
 
-    /* Narration */
+	/* Narration */
 
-    @Override
-    protected @Nullable Text getNarrationMessage() {
-        return new TranslatableText("spruceui.narration.toggle_switch", this.getMessage(),
-                SpruceTexts.getToggleText(this.getValue()));
-    }
+	@Override
+	protected @Nullable Text getNarrationMessage() {
+		return new TranslatableText("spruceui.narration.toggle_switch", this.getMessage(),
+				SpruceTexts.getToggleText(this.getValue()));
+	}
 }

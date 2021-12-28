@@ -19,15 +19,15 @@ import net.minecraft.util.Identifier;
  * @since 3.2.0
  */
 public interface Identifiable extends Nameable {
-    /**
-     * Gets the identifier of this object.
-     *
-     * @return the identifier of this object
-     */
-    Identifier getIdentifier();
+	/**
+	 * Gets the identifier of this object.
+	 *
+	 * @return the identifier of this object
+	 */
+	Identifier getIdentifier();
 
-    @Override
-    default String getName() {
-        return this.getIdentifier().getPath();
-    }
+	@Override
+	default String getName() {
+		return this.getIdentifier().getPath();
+	}
 }

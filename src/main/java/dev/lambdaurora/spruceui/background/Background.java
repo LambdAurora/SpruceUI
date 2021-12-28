@@ -20,5 +20,5 @@ import net.minecraft.client.util.math.MatrixStack;
  * @since 2.0.0
  */
 public interface Background {
-    void render(MatrixStack matrices, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta);
+	void render(MatrixStack matrices, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta);
 }

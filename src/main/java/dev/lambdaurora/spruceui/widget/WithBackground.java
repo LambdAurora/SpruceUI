@@ -10,7 +10,6 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.background.Background;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a widget with a background.
@@ -20,17 +19,17 @@ import org.jetbrains.annotations.NotNull;
  * @since 2.0.0
  */
 public interface WithBackground {
-    /**
-     * Returns the background of this widget.
-     *
-     * @return the background
-     */
-    Background getBackground();
+	/**
+	 * Returns the background of this widget.
+	 *
+	 * @return the background
+	 */
+	Background getBackground();
 
-    /**
-     * Sets the background of this widget.
-     *
-     * @param background the background
-     */
-    void setBackground(Background background);
+	/**
+	 * Sets the background of this widget.
+	 *
+	 * @param background the background
+	 */
+	void setBackground(Background background);
 }

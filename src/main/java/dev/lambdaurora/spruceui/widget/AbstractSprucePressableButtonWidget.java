@@ -21,25 +21,25 @@ import org.lwjgl.glfw.GLFW;
  * @since 2.0.0
  */
 public abstract class AbstractSprucePressableButtonWidget extends AbstractSpruceButtonWidget {
-    public AbstractSprucePressableButtonWidget(Position position, int width, int height, Text message) {
-        super(position, width, height, message);
-    }
+	public AbstractSprucePressableButtonWidget(Position position, int width, int height, Text message) {
+		super(position, width, height, message);
+	}
 
-    public abstract void onPress();
+	public abstract void onPress();
 
-    @Override
-    public void onClick(double mouseX, double mouseY) {
-        this.onPress();
-        this.playDownSound();
-    }
+	@Override
+	public void onClick(double mouseX, double mouseY) {
+		this.onPress();
+		this.playDownSound();
+	}
 
-    @Override
-    protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
-            this.onPress();
-            this.playDownSound();
-            return true;
-        }
-        return false;
-    }
+	@Override
+	protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
+		if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
+			this.onPress();
+			this.playDownSound();
+			return true;
+		}
+		return false;
+	}
 }

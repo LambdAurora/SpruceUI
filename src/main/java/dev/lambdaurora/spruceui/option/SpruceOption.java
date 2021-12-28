@@ -28,45 +28,45 @@ import java.util.Optional;
  * @since 1.0.3
  */
 public abstract class SpruceOption implements Nameable {
-    public final String key;
-    private Optional<Text> tooltip = Optional.empty();
+	public final String key;
+	private Optional<Text> tooltip = Optional.empty();
 
-    public SpruceOption(String key) {
-        Objects.requireNonNull(key, "Cannot create an option without a key.");
-        this.key = key;
-    }
+	public SpruceOption(String key) {
+		Objects.requireNonNull(key, "Cannot create an option without a key.");
+		this.key = key;
+	}
 
-    @Override
-    public String getName() {
-        return I18n.translate(this.key);
-    }
+	@Override
+	public String getName() {
+		return I18n.translate(this.key);
+	}
 
-    public Optional<Text> getOptionTooltip() {
-        return this.tooltip;
-    }
+	public Optional<Text> getOptionTooltip() {
+		return this.tooltip;
+	}
 
-    public void setTooltip(@Nullable Text tooltip) {
-        this.tooltip = Optional.ofNullable(tooltip);
-    }
+	public void setTooltip(@Nullable Text tooltip) {
+		this.tooltip = Optional.ofNullable(tooltip);
+	}
 
-    /**
-     * Returns the display prefix text.
-     *
-     * @return the display prefix
-     */
-    public Text getPrefix() {
-        return new TranslatableText(this.key);
-    }
+	/**
+	 * Returns the display prefix text.
+	 *
+	 * @return the display prefix
+	 */
+	public Text getPrefix() {
+		return new TranslatableText(this.key);
+	}
 
-    /**
-     * Returns the display text.
-     *
-     * @param value the value
-     * @return the display text
-     */
-    public Text getDisplayText(Text value) {
-        return new TranslatableText("spruceui.options.generic", this.getPrefix(), value);
-    }
+	/**
+	 * Returns the display text.
+	 *
+	 * @param value the value
+	 * @return the display text
+	 */
+	public Text getDisplayText(Text value) {
+		return new TranslatableText("spruceui.options.generic", this.getPrefix(), value);
+	}
 
-    public abstract SpruceWidget createWidget(Position position, int width);
+	public abstract SpruceWidget createWidget(Position position, int width);
 }

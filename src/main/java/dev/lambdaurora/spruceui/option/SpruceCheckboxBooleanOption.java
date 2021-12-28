@@ -28,32 +28,32 @@ import java.util.function.Supplier;
  * @since 1.6.0
  */
 public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
-    public SpruceCheckboxBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip) {
-        super(key, getter, setter, tooltip);
-    }
+	public SpruceCheckboxBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip) {
+		super(key, getter, setter, tooltip);
+	}
 
-    public SpruceCheckboxBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored) {
-        super(key, getter, setter, tooltip, colored);
-    }
+	public SpruceCheckboxBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored) {
+		super(key, getter, setter, tooltip, colored);
+	}
 
-    @Override
-    public SpruceWidget createWidget(Position position, int width) {
-        var button = new SpruceCheckboxWidget(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
-            this.set();
-            btn.setMessage(this.getDisplayText());
-        }, this.get());
-        button.setColored(this.isColored());
-        this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button;
-    }
+	@Override
+	public SpruceWidget createWidget(Position position, int width) {
+		var button = new SpruceCheckboxWidget(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
+			this.set();
+			btn.setMessage(this.getDisplayText());
+		}, this.get());
+		button.setColored(this.isColored());
+		this.getOptionTooltip().ifPresent(button::setTooltip);
+		return button;
+	}
 
-    @Override
-    public Text getDisplayText() {
-        return this.getPrefix();
-    }
+	@Override
+	public Text getDisplayText() {
+		return this.getPrefix();
+	}
 
-    @Override
-    public Text getDisplayText(Text value) {
-        return this.getPrefix();
-    }
+	@Override
+	public Text getDisplayText(Text value) {
+		return this.getPrefix();
+	}
 }

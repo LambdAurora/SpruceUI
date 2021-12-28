@@ -31,64 +31,64 @@ import java.util.function.Consumer;
  * @since 2.0.0
  */
 public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidget> implements WithBackground, WithBorder {
-    private final List<SpruceWidget> children = new ArrayList<>();
-    private Background background = EmptyBackground.EMPTY_BACKGROUND;
-    private Border border = EmptyBorder.EMPTY_BORDER;
+	private final List<SpruceWidget> children = new ArrayList<>();
+	private Background background = EmptyBackground.EMPTY_BACKGROUND;
+	private Border border = EmptyBorder.EMPTY_BORDER;
 
-    public SpruceContainerWidget(Position position, int width, int height) {
-        super(position, SpruceWidget.class);
-        this.width = width;
-        this.height = height;
-    }
+	public SpruceContainerWidget(Position position, int width, int height) {
+		super(position, SpruceWidget.class);
+		this.width = width;
+		this.height = height;
+	}
 
-    @Override
-    public Background getBackground() {
-        return this.background;
-    }
+	@Override
+	public Background getBackground() {
+		return this.background;
+	}
 
-    @Override
-    public void setBackground(Background background) {
-        this.background = background;
-    }
+	@Override
+	public void setBackground(Background background) {
+		this.background = background;
+	}
 
-    @Override
-    public Border getBorder() {
-        return this.border;
-    }
+	@Override
+	public Border getBorder() {
+		return this.border;
+	}
 
-    @Override
-    public void setBorder(Border border) {
-        this.border = border;
-    }
+	@Override
+	public void setBorder(Border border) {
+		this.border = border;
+	}
 
-    public void addChild(SpruceWidget child) {
-        this.setOwnerShip(child);
-        this.children.add(child);
-    }
+	public void addChild(SpruceWidget child) {
+		this.setOwnerShip(child);
+		this.children.add(child);
+	}
 
-    public void addChildren(ChildrenFactory childrenFactory) {
-        childrenFactory.build(this.width, this.height, this::addChild);
-    }
+	public void addChildren(ChildrenFactory childrenFactory) {
+		childrenFactory.build(this.width, this.height, this::addChild);
+	}
 
-    @Override
-    public List<SpruceWidget> children() {
-        return this.children;
-    }
+	@Override
+	public List<SpruceWidget> children() {
+		return this.children;
+	}
 
-    /* Rendering */
+	/* Rendering */
 
-    @Override
-    protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.forEach(child -> child.render(matrices, mouseX, mouseY, delta));
-        this.getBorder().render(matrices, this, mouseX, mouseY, delta);
-    }
+	@Override
+	protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		this.forEach(child -> child.render(matrices, mouseX, mouseY, delta));
+		this.getBorder().render(matrices, this, mouseX, mouseY, delta);
+	}
 
-    @Override
-    protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.getBackground().render(matrices, this, 0, mouseX, mouseY, delta);
-    }
+	@Override
+	protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		this.getBackground().render(matrices, this, 0, mouseX, mouseY, delta);
+	}
 
-    public interface ChildrenFactory {
-        void build(int containerWidth, int containerHeight, Consumer<SpruceWidget> widgetAdder);
-    }
+	public interface ChildrenFactory {
+		void build(int containerWidth, int containerHeight, Consumer<SpruceWidget> widgetAdder);
+	}
 }

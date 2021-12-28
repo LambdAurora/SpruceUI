@@ -28,41 +28,41 @@ import java.util.function.Function;
  * @since 1.0.0
  */
 public class SpruceCyclingOption extends SpruceOption {
-    private final Consumer<Integer> setter;
-    private final Function<SpruceCyclingOption, Text> messageProvider;
+	private final Consumer<Integer> setter;
+	private final Function<SpruceCyclingOption, Text> messageProvider;
 
-    public SpruceCyclingOption(String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Text> messageProvider, @Nullable Text tooltip) {
-        super(key);
-        this.setter = setter;
-        this.messageProvider = messageProvider;
-        this.setTooltip(tooltip);
-    }
+	public SpruceCyclingOption(String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Text> messageProvider, @Nullable Text tooltip) {
+		super(key);
+		this.setter = setter;
+		this.messageProvider = messageProvider;
+		this.setTooltip(tooltip);
+	}
 
-    /**
-     * Cycles the option.
-     *
-     * @param amount The amount to cycle.
-     */
-    public void cycle(int amount) {
-        this.setter.accept(amount);
-    }
+	/**
+	 * Cycles the option.
+	 *
+	 * @param amount The amount to cycle.
+	 */
+	public void cycle(int amount) {
+		this.setter.accept(amount);
+	}
 
-    @Override
-    public SpruceWidget createWidget(Position position, int width) {
-        var button = new SpruceButtonWidget(position, width, 20, this.getMessage(), btn -> {
-            this.cycle(1);
-            btn.setMessage(this.getMessage());
-        });
-        this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button;
-    }
+	@Override
+	public SpruceWidget createWidget(Position position, int width) {
+		var button = new SpruceButtonWidget(position, width, 20, this.getMessage(), btn -> {
+			this.cycle(1);
+			btn.setMessage(this.getMessage());
+		});
+		this.getOptionTooltip().ifPresent(button::setTooltip);
+		return button;
+	}
 
-    /**
-     * Gets the option message.
-     *
-     * @return The option message.
-     */
-    public Text getMessage() {
-        return this.messageProvider.apply(this);
-    }
+	/**
+	 * Gets the option message.
+	 *
+	 * @return The option message.
+	 */
+	public Text getMessage() {
+		return this.messageProvider.apply(this);
+	}
 }

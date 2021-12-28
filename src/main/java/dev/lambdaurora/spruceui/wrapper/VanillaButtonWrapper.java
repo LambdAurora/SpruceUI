@@ -27,51 +27,51 @@ import net.minecraft.client.util.math.MatrixStack;
  */
 @Environment(EnvType.CLIENT)
 public class VanillaButtonWrapper extends ClickableWidget implements SpruceElement {
-    private final AbstractSpruceButtonWidget widget;
+	private final AbstractSpruceButtonWidget widget;
 
-    public VanillaButtonWrapper(AbstractSpruceButtonWidget widget) {
-        super(widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight(), widget.getMessage());
-        this.widget = widget;
-    }
+	public VanillaButtonWrapper(AbstractSpruceButtonWidget widget) {
+		super(widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight(), widget.getMessage());
+		this.widget = widget;
+	}
 
-    @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.widget.getPosition().setRelativeY(this.y);
-        this.widget.render(matrices, mouseX, mouseY, delta);
-    }
+	@Override
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		this.widget.getPosition().setRelativeY(this.y);
+		this.widget.render(matrices, mouseX, mouseY, delta);
+	}
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return this.widget.mouseClicked(mouseX, mouseY, button);
-    }
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		return this.widget.mouseClicked(mouseX, mouseY, button);
+	}
 
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        return this.widget.mouseReleased(mouseX, mouseY, button);
-    }
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		return this.widget.mouseReleased(mouseX, mouseY, button);
+	}
 
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-        return this.widget.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-    }
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		return this.widget.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	}
 
-    @Override
-    public boolean onNavigation(NavigationDirection direction, boolean tab) {
-        return this.widget.onNavigation(direction, tab);
-    }
+	@Override
+	public boolean onNavigation(NavigationDirection direction, boolean tab) {
+		return this.widget.onNavigation(direction, tab);
+	}
 
-    @Override
-    public boolean changeFocus(boolean down) {
-        return this.onNavigation(down ? NavigationDirection.DOWN : NavigationDirection.UP, true);
-    }
+	@Override
+	public boolean changeFocus(boolean down) {
+		return this.onNavigation(down ? NavigationDirection.DOWN : NavigationDirection.UP, true);
+	}
 
-    @Override
-    public SelectionType getType() {
-        return this.widget.getType();
-    }
+	@Override
+	public SelectionType getType() {
+		return this.widget.getType();
+	}
 
-    @Override
-    public void appendNarrations(NarrationMessageBuilder builder) {
-        this.widget.appendNarrations(builder);
-    }
+	@Override
+	public void appendNarrations(NarrationMessageBuilder builder) {
+		this.widget.appendNarrations(builder);
+	}
 }

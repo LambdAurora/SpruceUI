@@ -20,22 +20,22 @@ import net.minecraft.client.util.math.MatrixStack;
  * @since 2.0.0
  */
 public final class EmptyBorder implements Border {
-    public static final EmptyBorder EMPTY_BORDER = new EmptyBorder();
+	public static final EmptyBorder EMPTY_BORDER = new EmptyBorder();
 
-    private EmptyBorder() {
-    }
+	private EmptyBorder() {
+	}
 
-    @Override
-    public void render(MatrixStack matrices, SpruceWidget widget, int mouseX, int mouseY, float delta) {
-    }
+	@Override
+	public void render(MatrixStack matrices, SpruceWidget widget, int mouseX, int mouseY, float delta) {
+	}
 
-    @Override
-    public int getThickness() {
-        return 0;
-    }
+	@Override
+	public int getThickness() {
+		return 0;
+	}
 
-    @Override
-    public String toString() {
-        return "EmptyBorder{}";
-    }
+	@Override
+	public String toString() {
+		return "EmptyBorder{}";
+	}
 }

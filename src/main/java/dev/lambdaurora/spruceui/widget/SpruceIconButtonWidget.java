@@ -14,16 +14,16 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 public class SpruceIconButtonWidget extends AbstractSpruceIconButtonWidget {
-    public SpruceIconButtonWidget(Position position, int width, int height, Text message, PressAction action) {
-        super(position, width, height, message, action);
-    }
+	public SpruceIconButtonWidget(Position position, int width, int height, Text message, PressAction action) {
+		super(position, width, height, message, action);
+	}
 
-    /**
-     * Renders the icon of the button.
-     *
-     * @return the x-offset the icon creates
-     */
-    protected int renderIcon(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        return 0;
-    }
+	/**
+	 * Renders the icon of the button.
+	 *
+	 * @return the x-offset the icon creates
+	 */
+	protected int renderIcon(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		return 0;
+	}
 }

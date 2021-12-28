@@ -27,18 +27,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-    @Inject(method = "setScreen", at = @At("HEAD"))
-    private void onScreenPre(Screen screen, CallbackInfo ci) {
-        OpenScreenCallback.PRE.invoker().apply((MinecraftClient) (Object) this, screen);
-    }
+	@Inject(method = "setScreen", at = @At("HEAD"))
+	private void onScreenPre(Screen screen, CallbackInfo ci) {
+		OpenScreenCallback.PRE.invoker().apply((MinecraftClient) (Object) this, screen);
+	}
 
-    @Inject(method = "setScreen", at = @At("RETURN"))
-    private void onScreenChange(Screen screen, CallbackInfo ci) {
-        OpenScreenCallback.EVENT.invoker().apply((MinecraftClient) (Object) this, screen);
-    }
+	@Inject(method = "setScreen", at = @At("RETURN"))
+	private void onScreenChange(Screen screen, CallbackInfo ci) {
+		OpenScreenCallback.EVENT.invoker().apply((MinecraftClient) (Object) this, screen);
+	}
 
-    @Inject(method = "onResolutionChanged", at = @At("RETURN"))
-    private void onResolutionChanged(CallbackInfo ci) {
-        ResolutionChangeCallback.EVENT.invoker().apply((MinecraftClient) (Object) this);
-    }
+	@Inject(method = "onResolutionChanged", at = @At("RETURN"))
+	private void onResolutionChanged(CallbackInfo ci) {
+		ResolutionChangeCallback.EVENT.invoker().apply((MinecraftClient) (Object) this);
+	}
 }

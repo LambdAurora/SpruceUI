@@ -30,72 +30,72 @@ import java.util.function.Supplier;
  * @since 1.0.0
  */
 public class SpruceBooleanOption extends SpruceOption {
-    private final Supplier<Boolean> getter;
-    private final Consumer<Boolean> setter;
-    private final boolean colored;
+	private final Supplier<Boolean> getter;
+	private final Consumer<Boolean> setter;
+	private final boolean colored;
 
-    public SpruceBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip) {
-        this(key, getter, setter, tooltip, false);
-    }
+	public SpruceBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip) {
+		this(key, getter, setter, tooltip, false);
+	}
 
-    public SpruceBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored) {
-        super(key);
-        this.getter = getter;
-        this.setter = setter;
-        this.colored = colored;
-        this.setTooltip(tooltip);
-    }
+	public SpruceBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip, boolean colored) {
+		super(key);
+		this.getter = getter;
+		this.setter = setter;
+		this.colored = colored;
+		this.setTooltip(tooltip);
+	}
 
-    public void set(String value) {
-        this.set("true".equals(value));
-    }
+	public void set(String value) {
+		this.set("true".equals(value));
+	}
 
-    public void set() {
-        this.set(!this.get());
-    }
+	public void set() {
+		this.set(!this.get());
+	}
 
-    private void set(boolean value) {
-        this.setter.accept(value);
-    }
+	private void set(boolean value) {
+		this.setter.accept(value);
+	}
 
-    /**
-     * Gets the current value.
-     *
-     * @return the current value
-     */
-    public boolean get() {
-        return this.getter.get();
-    }
+	/**
+	 * Gets the current value.
+	 *
+	 * @return the current value
+	 */
+	public boolean get() {
+		return this.getter.get();
+	}
 
-    /**
-     * Returns whether the option value is colored or not.
-     *
-     * @return {@code true} if the option value is colored, else {@code false}
-     */
-    public boolean isColored() {
-        return this.colored;
-    }
+	/**
+	 * Returns whether the option value is colored or not.
+	 *
+	 * @return {@code true} if the option value is colored, else {@code false}
+	 */
+	public boolean isColored() {
+		return this.colored;
+	}
 
-    @Override
-    public SpruceWidget createWidget(Position position, int width) {
-        var button = new SpruceButtonWidget(position, width, 20, this.getDisplayText(), btn -> {
-            this.set();
-            btn.setMessage(this.getDisplayText());
-        });
-        this.getOptionTooltip().ifPresent(button::setTooltip);
-        return button;
-    }
+	@Override
+	public SpruceWidget createWidget(Position position, int width) {
+		var button = new SpruceButtonWidget(position, width, 20, this.getDisplayText(), btn -> {
+			this.set();
+			btn.setMessage(this.getDisplayText());
+		});
+		this.getOptionTooltip().ifPresent(button::setTooltip);
+		return button;
+	}
 
-    /**
-     * Gets the display string.
-     *
-     * @return the display string
-     */
-    public Text getDisplayText() {
-        boolean value = this.get();
-        var toggleText = SpruceTexts.getToggleText(value);
-        if (this.colored)
-            toggleText = toggleText.copy().setStyle(toggleText.getStyle().withColor(value ? Formatting.GREEN : Formatting.RED));
-        return this.getDisplayText(toggleText);
-    }
+	/**
+	 * Gets the display string.
+	 *
+	 * @return the display string
+	 */
+	public Text getDisplayText() {
+		boolean value = this.get();
+		var toggleText = SpruceTexts.getToggleText(value);
+		if (this.colored)
+			toggleText = toggleText.copy().setStyle(toggleText.getStyle().withColor(value ? Formatting.GREEN : Formatting.RED));
+		return this.getDisplayText(toggleText);
+	}
 }

@@ -30,52 +30,52 @@ import java.util.function.Supplier;
  * @since 2.1.0
  */
 public class SpruceFloatInputOption extends SpruceOption {
-    private final Supplier<Float> getter;
-    private final Consumer<Float> setter;
+	private final Supplier<Float> getter;
+	private final Consumer<Float> setter;
 
-    public SpruceFloatInputOption(String key, Supplier<Float> getter, Consumer<Float> setter, @Nullable Text tooltip) {
-        super(key);
-        this.getter = getter;
-        this.setter = setter;
-        this.setTooltip(tooltip);
-    }
+	public SpruceFloatInputOption(String key, Supplier<Float> getter, Consumer<Float> setter, @Nullable Text tooltip) {
+		super(key);
+		this.getter = getter;
+		this.setter = setter;
+		this.setTooltip(tooltip);
+	}
 
-    @Override
-    public SpruceWidget createWidget(Position position, int width) {
-        var textField = new SpruceTextFieldWidget(position, width, 20, this.getPrefix());
-        textField.setText(String.valueOf(this.get()));
-        textField.setTextPredicate(SpruceTextFieldWidget.FLOAT_INPUT_PREDICATE);
-        textField.setRenderTextProvider((displayedText, offset) -> {
-            try {
-                Float.parseFloat(textField.getText());
-                return OrderedText.styledForwardsVisitedString(displayedText, Style.EMPTY);
-            } catch (NumberFormatException e) {
-                return OrderedText.styledForwardsVisitedString(displayedText, Style.EMPTY.withColor(Formatting.RED));
-            }
-        });
-        textField.setChangedListener(input -> {
-            float value;
-            try {
-                value = Float.parseFloat(input);
-            } catch (NumberFormatException e) {
-                value = 0;
-            }
-            this.set(value);
-        });
-        this.getOptionTooltip().ifPresent(textField::setTooltip);
-        return new SpruceNamedTextFieldWidget(textField);
-    }
+	@Override
+	public SpruceWidget createWidget(Position position, int width) {
+		var textField = new SpruceTextFieldWidget(position, width, 20, this.getPrefix());
+		textField.setText(String.valueOf(this.get()));
+		textField.setTextPredicate(SpruceTextFieldWidget.FLOAT_INPUT_PREDICATE);
+		textField.setRenderTextProvider((displayedText, offset) -> {
+			try {
+				Float.parseFloat(textField.getText());
+				return OrderedText.styledForwardsVisitedString(displayedText, Style.EMPTY);
+			} catch (NumberFormatException e) {
+				return OrderedText.styledForwardsVisitedString(displayedText, Style.EMPTY.withColor(Formatting.RED));
+			}
+		});
+		textField.setChangedListener(input -> {
+			float value;
+			try {
+				value = Float.parseFloat(input);
+			} catch (NumberFormatException e) {
+				value = 0;
+			}
+			this.set(value);
+		});
+		this.getOptionTooltip().ifPresent(textField::setTooltip);
+		return new SpruceNamedTextFieldWidget(textField);
+	}
 
-    public void set(float value) {
-        this.setter.accept(value);
-    }
+	public void set(float value) {
+		this.setter.accept(value);
+	}
 
-    /**
-     * Gets the current value.
-     *
-     * @return the current value
-     */
-    public float get() {
-        return this.getter.get();
-    }
+	/**
+	 * Gets the current value.
+	 *
+	 * @return the current value
+	 */
+	public float get() {
+		return this.getter.get();
+	}
 }

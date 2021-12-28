@@ -20,26 +20,26 @@ import dev.lambdaurora.spruceui.border.EmptyBorder;
  * @since 2.0.0
  */
 public interface WithBorder {
-    /**
-     * Returns whether this widget has a border or not.
-     *
-     * @return {@code true} if this widget has a border, else {@code false}.
-     */
-    default boolean hasBorder() {
-        return this.getBorder().getThickness() != 0 && this.getBorder() != EmptyBorder.EMPTY_BORDER;
-    }
+	/**
+	 * Returns whether this widget has a border or not.
+	 *
+	 * @return {@code true} if this widget has a border, else {@code false}.
+	 */
+	default boolean hasBorder() {
+		return this.getBorder().getThickness() != 0 && this.getBorder() != EmptyBorder.EMPTY_BORDER;
+	}
 
-    /**
-     * Gets the border of this widget.
-     *
-     * @return the border
-     */
-    Border getBorder();
+	/**
+	 * Gets the border of this widget.
+	 *
+	 * @return the border
+	 */
+	Border getBorder();
 
-    /**
-     * Sets the border of this widget.
-     *
-     * @param border the border
-     */
-    void setBorder(Border border);
+	/**
+	 * Sets the border of this widget.
+	 *
+	 * @param border the border
+	 */
+	void setBorder(Border border);
 }
