@@ -311,6 +311,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 
     @Override
     protected boolean onMouseScroll(double mouseX, double mouseY, double amount) {
+        if(super.onMouseScroll(mouseX, mouseY, amount)) return true;
         this.setScrollAmount(this.getScrollAmount() - amount * ((double) this.getMaxPosition() / this.getEntriesCount()) / 2);
         return true;
     }
