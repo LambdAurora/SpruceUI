@@ -13,15 +13,15 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.EmptyBackground;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
-import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
-import dev.lambdaurora.spruceui.widget.SpruceSeparatorWidget;
-import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import dev.lambdaurora.spruceui.widget.WithBackground;
+import dev.lambdaurora.spruceui.widget.*;
 import dev.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -161,14 +161,32 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 			this.list.getCurrentTab().container.render(matrices, mouseX, mouseY, delta);
 	}
 
+
+
+	/* Narration */
+
+	@Override
+	public void appendNarrations(NarrationMessageBuilder builder) {
+		if (this.list.getCurrentTab() != null) {
+			builder.put(NarrationPart.TITLE, list.currentTab.getTitle());
+			builder.put(NarrationPart.POSITION, new TranslatableText("narrator.position.list", list.children().indexOf(list.currentTab) + 1, list.children().size()));
+			if(list.currentTab.getDescription() != null) {
+				builder.put(NarrationPart.HINT, list.currentTab.getDescription());
+			}
+			builder.put(NarrationPart.USAGE, new TranslatableText("narrator.usage.list"));
+		}
+	}
+
 	public static abstract class Entry extends SpruceEntryListWidget.Entry implements WithBackground {
 		protected final SideTabList parent;
 		private final Text title;
+		private final Text description;
 		private Background background = EmptyBackground.EMPTY_BACKGROUND;
 
-		protected Entry(SideTabList parent, Text title) {
+		protected Entry(SideTabList parent, Text title, Text description) {
 			this.parent = parent;
 			this.title = title;
+			this.description = description;
 		}
 
 		@Override
@@ -184,6 +202,16 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		public Text getTitle() {
 			return this.title;
 		}
+
+		/**
+		 * Returns the description of this entry.
+		 *
+		 * @return the description
+		 */
+		public Text getDescription() {
+			return this.description;
+		}
+
 
 		@Override
 		public Background getBackground() {
@@ -210,7 +238,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		private boolean selected;
 
 		protected TabEntry(SideTabList parent, Text title, @Nullable Text description, AbstractSpruceWidget container) {
-			super(parent, title);
+			super(parent, title, description);
 			this.title = this.client.textRenderer.wrapLines(title, this.parent.getWidth() - 18);
 			if (description == null) this.description = null;
 			else this.description = this.client.textRenderer.wrapLines(description, this.parent.getWidth() - 18);
@@ -301,7 +329,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		private final SpruceSeparatorWidget separatorWidget;
 
 		protected SeparatorEntry(SideTabList parent, Text title) {
-			super(parent, title);
+			super(parent, title, null);
 			this.separatorWidget = new SpruceSeparatorWidget(Position.of(this, 0, 2), this.getWidth(), title) {
 				@Override
 				public int getWidth() {
