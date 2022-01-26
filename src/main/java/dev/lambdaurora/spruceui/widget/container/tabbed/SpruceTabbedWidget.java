@@ -167,14 +167,28 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
 	@Override
 	public void appendNarrations(NarrationMessageBuilder builder) {
-		if (this.list.getCurrentTab() != null) {
-			builder.put(NarrationPart.TITLE, list.currentTab.getTitle());
-			builder.put(NarrationPart.POSITION, new TranslatableText("narrator.position.list", list.children().indexOf(list.currentTab) + 1, list.children().size()));
-			if(list.currentTab.getDescription() != null) {
-				builder.put(NarrationPart.HINT, list.currentTab.getDescription());
-			}
-			builder.put(NarrationPart.USAGE, new TranslatableText("narrator.usage.list"));
-		}
+		this.getList()
+				.children()
+				.stream()
+				.filter(AbstractSpruceWidget::isMouseHovered)
+				.findFirst()
+				.ifPresentOrElse(
+						hoveredEntry -> {
+							hoveredEntry.appendNarrations(builder.nextMessage());
+							this.appendPositionNarrations(builder, hoveredEntry);
+						}, () -> {
+							var currentTab = this.list.getCurrentTab();
+							if (currentTab != null) {
+								currentTab.appendNarrations(builder.nextMessage());
+							}
+							this.appendPositionNarrations(builder, currentTab);
+						}
+				);
+		builder.put(NarrationPart.USAGE);
+	}
+
+	private void appendPositionNarrations(NarrationMessageBuilder builder, Entry hoveredEntry) {
+		builder.put(NarrationPart.POSITION, new TranslatableText("narrator.position.list", list.children().indexOf(hoveredEntry) + 1, list.children().size()));
 	}
 
 	public static abstract class Entry extends SpruceEntryListWidget.Entry implements WithBackground {
@@ -221,6 +235,16 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		@Override
 		public void setBackground(Background background) {
 			this.background = background;
+		}
+
+		/* Narration */
+
+		@Override
+		public void appendNarrations(NarrationMessageBuilder builder) {
+			builder.put(NarrationPart.TITLE, this.getTitle());
+			if (this.getDescription() != null) {
+				builder.put(NarrationPart.HINT, this.getDescription());
+			}
 		}
 
 		/* Rendering */
