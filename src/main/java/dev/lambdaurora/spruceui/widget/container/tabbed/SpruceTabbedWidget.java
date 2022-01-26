@@ -178,17 +178,16 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 							this.appendPositionNarrations(builder, hoveredEntry);
 						}, () -> {
 							var currentTab = this.list.getCurrentTab();
-							builder.put(NarrationPart.USAGE, new TranslatableText("narration.button.usage.hovered"));
 							if (currentTab != null) {
 								currentTab.appendNarrations(builder.nextMessage());
+								this.appendPositionNarrations(builder, currentTab);
 							}
-							this.appendPositionNarrations(builder, currentTab);
-							builder.put(NarrationPart.USAGE, new TranslatableText("narration.button.usage.focused"));
 						}
 				);
+		builder.put(NarrationPart.USAGE, new TranslatableText("narration.selection.usage"));
 	}
 
-	private void appendPositionNarrations(NarrationMessageBuilder builder, Entry hoveredEntry) {
+	protected void appendPositionNarrations(NarrationMessageBuilder builder, Entry hoveredEntry) {
 		builder.put(NarrationPart.POSITION, new TranslatableText("narrator.position.list", list.children().indexOf(hoveredEntry) + 1, list.children().size()));
 	}
 
