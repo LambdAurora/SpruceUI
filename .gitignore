@@ -1,7 +1,7 @@
 #
 # LambdAurora's ignore file
 #
-# v0.15
+# v0.16
 
 # JetBrains
 .idea/
@@ -47,6 +47,7 @@ logs/
 classes/
 ## Python
 __pycache__/
+venv/
 ## Rust
 **/*.rs.bk
 
