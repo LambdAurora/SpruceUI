@@ -1,9 +1,9 @@
 plugins {
-	id 'fabric-loom' version '0.10.+'
-	id 'io.github.juuxel.loom-quiltflower-mini' version '1.2.1'
+	id 'fabric-loom' version '0.11.+'
+	id 'io.github.juuxel.loom-quiltflower' version '1.6.0'
+	id 'org.quiltmc.gradle.licenser' version '1.0.1'
 	id 'java-library'
 	id 'maven-publish'
-	id 'org.cadixdev.licenser' version '0.6.1'
 }
 
 group = project.maven_group
@@ -80,7 +80,8 @@ java {
 
 tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = 'UTF-8'
-
+	it.options.deprecation(true)
+	it.options.incremental(true)
 	it.options.release.set(targetJavaVersion)
 }
 
@@ -108,7 +109,7 @@ loom {
 }
 
 license {
-	header file('HEADER')
+	rule file('HEADER')
 	include '**/*.java'
 }
 
