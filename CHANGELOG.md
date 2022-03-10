@@ -25,3 +25,7 @@
 #### 3.3.2
 
  - Removed exposed ModMenu in POM publication.
+
+#### 3.3.3
+
+ - Updated to 1.18.2, fix transitiveness issues.

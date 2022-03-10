@@ -57,7 +57,7 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.blendFunc(GlStateManager.class_4535.SRC_ALPHA, GlStateManager.class_4534.ONE_MINUS_SRC_ALPHA);
 		drawTexture(matrices, this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
 				this.getValue() ? 50.f : 32.f, this.isFocusedOrHovered() ? 18.f : 0.f,
 				18, 18, 68, 36);
@@ -78,7 +78,7 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.blendFunc(GlStateManager.class_4535.SRC_ALPHA, GlStateManager.class_4534.ONE_MINUS_SRC_ALPHA);
 		drawTexture(matrices, this.getX(), this.getY() + (this.getHeight() / 2 - 9),
 				0.f, this.isFocusedOrHovered() ? 18.f : 0.f, 32, 18, 68, 36);
 	}

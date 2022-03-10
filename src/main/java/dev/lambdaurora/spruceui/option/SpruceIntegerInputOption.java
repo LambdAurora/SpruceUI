@@ -49,9 +49,9 @@ public class SpruceIntegerInputOption extends SpruceOption {
 		textField.setRenderTextProvider((displayedText, offset) -> {
 			try {
 				Integer.parseInt(textField.getText());
-				return OrderedText.styledForwardsVisitedString(displayedText, Style.EMPTY);
+				return OrderedText.method_30747(displayedText, Style.EMPTY);
 			} catch (NumberFormatException e) {
-				return OrderedText.styledForwardsVisitedString(displayedText, Style.EMPTY.withColor(Formatting.RED));
+				return OrderedText.method_30747(displayedText, Style.EMPTY.withColor(Formatting.RED));
 			}
 		});
 		textField.setChangedListener(input -> {

@@ -91,7 +91,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.blendFunc(GlStateManager.class_4535.SRC_ALPHA, GlStateManager.class_4534.ONE_MINUS_SRC_ALPHA);
 		if (this.getValue()) {
 			if (this.colored)
 				RenderSystem.setShaderColor(0.f, 1.f, 0.f, this.alpha);
@@ -116,7 +116,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.blendFunc(GlStateManager.class_4535.SRC_ALPHA, GlStateManager.class_4534.ONE_MINUS_SRC_ALPHA);
 		drawTexture(matrices, this.getX(), this.getY(), this.isFocusedOrHovered() ? 20.f : 0.f, 0.f, this.getHeight(), this.getHeight(), 64, 64);
 	}
 

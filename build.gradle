@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '0.11.+'
 	id 'io.github.juuxel.loom-quiltflower' version '1.6.0'
+	id 'org.quiltmc.quilt-mappings-on-loom' version '4.0.0'
 	id 'org.quiltmc.gradle.licenser' version '1.0.1'
 	id 'java-library'
 	id 'maven-publish'
@@ -11,7 +12,7 @@ version = "${project.mod_version}+${getMCVersionString()}"
 archivesBaseName = project.archives_base_name
 
 // This field defines the Java version your mod target.
-def targetJavaVersion = 16
+def targetJavaVersion = 17
 
 Set<String> modules = [
 		'fabric-api-base',
@@ -55,7 +56,9 @@ configurations {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_mappings}:v2"
+	mappings(loom.layered {
+		addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:v2"))
+	})
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modules.stream().map { fabricApi.module(it, project.fabric_api_version) }.forEach {
