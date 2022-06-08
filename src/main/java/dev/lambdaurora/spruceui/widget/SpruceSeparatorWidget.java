@@ -16,7 +16,6 @@ import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -105,9 +104,9 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 
 	@Override
 	protected Text getNarrationMessage() {
-		return this.getTitle().map(Text::asString)
+		return this.getTitle().map(Text::getString)
 				.filter(title -> !title.isEmpty())
-				.map(title -> new TranslatableText("spruceui.narrator.separator", title))
+				.map(title -> Text.translatable("spruceui.narrator.separator", title))
 				.orElse(null);
 	}
 }

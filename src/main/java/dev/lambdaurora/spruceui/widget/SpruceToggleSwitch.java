@@ -15,7 +15,6 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.math.MathHelper;
@@ -87,7 +86,7 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected @Nullable Text getNarrationMessage() {
-		return new TranslatableText("spruceui.narration.toggle_switch", this.getMessage(),
+		return Text.translatable("spruceui.narration.toggle_switch", this.getMessage(),
 				SpruceTexts.getToggleText(this.getValue()));
 	}
 }

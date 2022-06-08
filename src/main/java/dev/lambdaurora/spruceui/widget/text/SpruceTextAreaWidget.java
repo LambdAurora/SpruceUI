@@ -11,6 +11,9 @@ package dev.lambdaurora.spruceui.widget.text;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.Tessellator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormats;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
@@ -21,11 +24,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat;
-import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -471,7 +470,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 				continue;
 			if (line.endsWith("\n")) line = line.substring(0, line.length() - 1);
 
-			drawTextWithShadow(matrices, this.textRenderer, new LiteralText(line), textX, lineY, textColor);
+			drawTextWithShadow(matrices, this.textRenderer, Text.literal(line), textX, lineY, textColor);
 			this.drawSelection(matrices, line, lineY, row);
 
 			lineY += this.textRenderer.fontHeight;
@@ -513,7 +512,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		int y2 = lineY + this.textRenderer.fontHeight;
 
 		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.getBuffer();
+		var buffer = tessellator.getBufferBuilder();
 		RenderSystem.disableTexture();
 		RenderSystem.enableColorLogicOp();
 		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
@@ -538,7 +537,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		if (!this.isFocused())
 			return;
 		if (this.lines.isEmpty()) {
-			drawTextWithShadow(matrices, this.textRenderer, new LiteralText("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
+			drawTextWithShadow(matrices, this.textRenderer, Text.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
 			return;
 		}
 

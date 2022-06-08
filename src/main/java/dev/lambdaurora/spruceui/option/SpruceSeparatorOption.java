@@ -13,7 +13,6 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.widget.SpruceSeparatorWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -34,7 +33,7 @@ public class SpruceSeparatorOption extends SpruceOption {
 
 	@Override
 	public SpruceWidget createWidget(Position position, int width) {
-		var separator = new SpruceSeparatorWidget(position, width, this.showTitle ? new TranslatableText(this.key) : null);
+		var separator = new SpruceSeparatorWidget(position, width, this.showTitle ? Text.translatable(this.key) : null);
 		this.getOptionTooltip().ifPresent(separator::setTooltip);
 		return separator;
 	}

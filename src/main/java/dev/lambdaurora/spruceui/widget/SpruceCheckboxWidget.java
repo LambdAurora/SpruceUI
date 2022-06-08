@@ -15,7 +15,6 @@ import dev.lambdaurora.spruceui.Position;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.math.MathHelper;
@@ -124,11 +123,11 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected Text getNarrationFocusedUsageMessage() {
-		return new TranslatableText("narration.checkbox.usage.focused");
+		return Text.translatable("narration.checkbox.usage.focused");
 	}
 
 	@Override
 	protected Text getNarrationHoveredUsageMessage() {
-		return new TranslatableText("narration.checkbox.usage.hovered");
+		return Text.translatable("narration.checkbox.usage.hovered");
 	}
 }

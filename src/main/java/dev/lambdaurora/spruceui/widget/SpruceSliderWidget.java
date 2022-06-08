@@ -16,7 +16,6 @@ import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.function.Consumer;
@@ -184,16 +183,16 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 
 	@Override
 	protected Text getNarrationMessage() {
-		return new TranslatableText("gui.narrate.slider", this.getMessage());
+		return Text.translatable("gui.narrate.slider", this.getMessage());
 	}
 
 	@Override
 	protected Text getNarrationFocusedUsageMessage() {
-		return new TranslatableText("narration.slider.usage.focused");
+		return Text.translatable("narration.slider.usage.focused");
 	}
 
 	@Override
 	protected Text getNarrationHoveredUsageMessage() {
-		return new TranslatableText("narration.slider.usage.hovered");
+		return Text.translatable("narration.slider.usage.hovered");
 	}
 }

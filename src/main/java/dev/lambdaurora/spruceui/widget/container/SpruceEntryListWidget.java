@@ -12,6 +12,10 @@ package dev.lambdaurora.spruceui.widget.container;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tessellator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormats;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.DirtTexturedBackground;
@@ -28,7 +32,7 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -337,7 +341,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		ScissorManager.pop();
 
 		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.getBuffer();
+		var buffer = tessellator.getBufferBuilder();
 		// Render the transition thingy.
 		if (this.shouldRenderTransition()) {
 			RenderSystem.enableBlend();
@@ -413,7 +417,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		if (list.size() > 1) {
 			int i = list.indexOf(entry);
 			if (i != -1) {
-				builder.put(NarrationPart.POSITION, new TranslatableText("narrator.position.list", i + 1, list.size()));
+				builder.put(NarrationPart.POSITION, Text.translatable("narrator.position.list", i + 1, list.size()));
 			}
 		}
 	}

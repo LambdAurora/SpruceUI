@@ -20,7 +20,6 @@ import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 
 /**
  * Represents a text input widget.
@@ -185,6 +184,6 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
 
 	@Override
 	protected Text getNarrationMessage() {
-		return new TranslatableText("gui.narrate.editBox", this.getTitle(), this.getText());
+		return Text.translatable("gui.narrate.editBox", this.getTitle(), this.getText());
 	}
 }
