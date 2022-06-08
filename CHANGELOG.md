@@ -29,3 +29,7 @@
 #### 3.3.3
 
  - Updated to 1.18.2, fix transitiveness issues.
+
+## 4.0.0
+
+ - Updated to Minecraft 1.19.
