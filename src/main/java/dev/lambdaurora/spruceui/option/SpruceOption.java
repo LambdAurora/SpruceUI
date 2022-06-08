@@ -14,7 +14,6 @@ import dev.lambdaurora.spruceui.util.Nameable;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -55,7 +54,7 @@ public abstract class SpruceOption implements Nameable {
 	 * @return the display prefix
 	 */
 	public Text getPrefix() {
-		return new TranslatableText(this.key);
+		return Text.translatable(this.key);
 	}
 
 	/**
@@ -65,7 +64,7 @@ public abstract class SpruceOption implements Nameable {
 	 * @return the display text
 	 */
 	public Text getDisplayText(Text value) {
-		return new TranslatableText("spruceui.options.generic", this.getPrefix(), value);
+		return Text.translatable("spruceui.options.generic", this.getPrefix(), value);
 	}
 
 	public abstract SpruceWidget createWidget(Position position, int width);

@@ -19,7 +19,6 @@ import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -202,15 +201,15 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 
 	@Override
 	protected @Nullable Text getNarrationMessage() {
-		return new TranslatableText("gui.narrate.button", this.getMessage());
+		return Text.translatable("gui.narrate.button", this.getMessage());
 	}
 
 	protected Text getNarrationFocusedUsageMessage() {
-		return new TranslatableText("narration.button.usage.focused");
+		return Text.translatable("narration.button.usage.focused");
 	}
 
 	protected Text getNarrationHoveredUsageMessage() {
-		return new TranslatableText("narration.button.usage.hovered");
+		return Text.translatable("narration.button.usage.hovered");
 	}
 
 	@Override

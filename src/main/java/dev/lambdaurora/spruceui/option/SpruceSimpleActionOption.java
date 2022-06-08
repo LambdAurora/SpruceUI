@@ -14,7 +14,6 @@ import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceTexturedButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,7 +41,7 @@ public final class SpruceSimpleActionOption extends SpruceOption {
 
 	@Override
 	public SpruceWidget createWidget(Position position, int width) {
-		var button = this.buttonFactory.build(position, width, new TranslatableText(this.key), this.action);
+		var button = this.buttonFactory.build(position, width, Text.translatable(this.key), this.action);
 		this.getOptionTooltip().ifPresent(button::setTooltip);
 		return button;
 	}

@@ -10,7 +10,6 @@
 package dev.lambdaurora.spruceui;
 
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 
 /**
  * Represents a text utility class.
@@ -25,7 +24,7 @@ public final class SpruceTexts {
 	 *
 	 * @since 1.6.0
 	 */
-	public static final Text CHAT_LINK_OPEN = new TranslatableText("chat.link.open");
+	public static final Text CHAT_LINK_OPEN = Text.translatable("chat.link.open");
 
 	/**
 	 * Represents the button text to reset a keybinding.
@@ -33,74 +32,74 @@ public final class SpruceTexts {
 	 * @see #getNarratorControlsReset(Text)
 	 * @since 1.6.0
 	 */
-	public static final Text CONTROLS_RESET = new TranslatableText("controls.reset");
+	public static final Text CONTROLS_RESET = Text.translatable("controls.reset");
 
 	/**
 	 * Represents the text "reset all" which is presents on a button in the controls screen.
 	 *
 	 * @since 1.6.0
 	 */
-	public static final Text CONTROLS_RESET_ALL = new TranslatableText("controls.resetAll");
+	public static final Text CONTROLS_RESET_ALL = Text.translatable("controls.resetAll");
 
-	public static final Text GUI_DONE = new TranslatableText("gui.done");
+	public static final Text GUI_DONE = Text.translatable("gui.done");
 
 	/**
 	 * Represents "none" as text.
 	 *
 	 * @since 2.0.0
 	 */
-	public static final Text GUI_NONE = new TranslatableText("gui.none");
+	public static final Text GUI_NONE = Text.translatable("gui.none");
 
 	/**
 	 * Represents the unbind action as text.
 	 *
 	 * @since 2.0.0
 	 */
-	public static final Text GUI_UNBIND = new TranslatableText("spruceui.gui.unbind");
+	public static final Text GUI_UNBIND = Text.translatable("spruceui.gui.unbind");
 
-	public static final Text MENU_OPTIONS = new TranslatableText("menu.options");
+	public static final Text MENU_OPTIONS = Text.translatable("menu.options");
 
 	/**
 	 * Represents the text "not bound".
 	 *
 	 * @since 1.6.0
 	 */
-	public static final Text NOT_BOUND = new TranslatableText("key.keyboard.unknown");
+	public static final Text NOT_BOUND = Text.translatable("key.keyboard.unknown");
 
 	/**
 	 * Represents the option value "default" as text.
 	 */
-	public static final Text OPTIONS_GENERIC_DEFAULT = new TranslatableText("generator.default");
+	public static final Text OPTIONS_GENERIC_DEFAULT = Text.translatable("generator.default");
 
 	/**
 	 * Represents the option value "fancy" as text.
 	 */
-	public static final Text OPTIONS_GENERIC_FANCY = new TranslatableText("spruceui.options.generic.fancy");
+	public static final Text OPTIONS_GENERIC_FANCY = Text.translatable("spruceui.options.generic.fancy");
 
 	/**
 	 * Represents the option value "fast" as text.
 	 */
-	public static final Text OPTIONS_GENERIC_FAST = new TranslatableText("spruceui.options.generic.fast");
+	public static final Text OPTIONS_GENERIC_FAST = Text.translatable("spruceui.options.generic.fast");
 
 	/**
 	 * Represents the option value "fastest" as text.
 	 */
-	public static final Text OPTIONS_GENERIC_FASTEST = new TranslatableText("spruceui.options.generic.fastest");
+	public static final Text OPTIONS_GENERIC_FASTEST = Text.translatable("spruceui.options.generic.fastest");
 
 	/**
 	 * Represents the option value "simple" as text.
 	 */
-	public static final Text OPTIONS_GENERIC_SIMPLE = new TranslatableText("spruceui.options.generic.simple");
+	public static final Text OPTIONS_GENERIC_SIMPLE = Text.translatable("spruceui.options.generic.simple");
 
 	/**
 	 * Represents the option value "on" as text.
 	 */
-	public static final Text OPTIONS_ON = new TranslatableText("options.on");
+	public static final Text OPTIONS_ON = Text.translatable("options.on");
 
 	/**
 	 * Represents the option value "off" as text.
 	 */
-	public static final Text OPTIONS_OFF = new TranslatableText("options.off");
+	public static final Text OPTIONS_OFF = Text.translatable("options.off");
 
 	/**
 	 * Returns the option value whether if the option is ON or OFF.
@@ -115,17 +114,17 @@ public final class SpruceTexts {
 	/**
 	 * Represents the option value "visible" as text.
 	 */
-	public static final Text OPTIONS_VISIBLE = new TranslatableText("options.visible");
+	public static final Text OPTIONS_VISIBLE = Text.translatable("options.visible");
 
 	/**
 	 * Represents the option value "hidden" as text.
 	 */
-	public static final Text OPTIONS_HIDDEN = new TranslatableText("options.hidden");
+	public static final Text OPTIONS_HIDDEN = Text.translatable("options.hidden");
 
 	/**
 	 * Represents the "reset" text.
 	 */
-	public static final Text RESET_TEXT = new TranslatableText("spruceui.reset");
+	public static final Text RESET_TEXT = Text.translatable("spruceui.reset");
 
 	/**
 	 * Returns the narrator text to describe the button which resets a keybinding.
@@ -136,6 +135,6 @@ public final class SpruceTexts {
 	 * @since 1.6.0
 	 */
 	public static Text getNarratorControlsReset(Text bindingName) {
-		return new TranslatableText("narrator.controls.reset", bindingName);
+		return Text.translatable("narrator.controls.reset", bindingName);
 	}
 }

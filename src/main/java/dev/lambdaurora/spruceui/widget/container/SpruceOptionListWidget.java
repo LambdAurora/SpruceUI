@@ -18,7 +18,7 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -100,7 +100,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 						}
 				);
 
-		builder.put(NarrationPart.USAGE, new TranslatableText("narration.component_list.usage"));
+		builder.put(NarrationPart.USAGE, Text.translatable("narration.component_list.usage"));
 	}
 
 	public static class OptionEntry extends SpruceEntryListWidget.Entry implements SpruceParentWidget<SpruceWidget> {
