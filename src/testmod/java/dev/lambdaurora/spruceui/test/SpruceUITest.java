@@ -19,7 +19,7 @@ import dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -59,19 +59,19 @@ public class SpruceUITest implements ClientModInitializer {
         this.booleanOption = new SpruceBooleanOption("spruceui_test.option.boolean",
                 () -> this.aBoolean,
                 newValue -> this.aBoolean = newValue,
-                new LiteralText("Represents a boolean option, can either be true or false.\n" +
+                Text.literal("Represents a boolean option, can either be true or false.\n" +
                         "The option value can be colored."),
                 true);
         this.checkboxOption = new SpruceCheckboxBooleanOption("spruceui_test.option.checkbox",
                 () -> this.checkboxBoolean,
                 newValue -> this.checkboxBoolean = newValue,
-                new LiteralText("Represents a boolean option as a checkbox, can either be true or false.\n"
+                Text.literal("Represents a boolean option as a checkbox, can either be true or false.\n"
                         + "It's another implementation of `SpruceBooleanOption` internally."),
                 true);
         this.toggleSwitchOption = new SpruceToggleBooleanOption("spruceui_test.option.toggle_switch",
                 () -> this.toggleBoolean,
                 newValue -> this.toggleBoolean = newValue,
-                new LiteralText("Represents a boolean option as a toggle switch, can either be true or false.\n"
+                Text.literal("Represents a boolean option as a toggle switch, can either be true or false.\n"
                         + "It's another implementation of `SpruceBooleanOption` internally."));
 
         this.separatorOption = new SpruceSeparatorOption("spruceui_test.option.separator", true, null);
@@ -80,39 +80,39 @@ public class SpruceUITest implements ClientModInitializer {
                 0.0, 50.0, 1.f,
                 () -> this.aDouble,
                 newValue -> this.aDouble = newValue,
-                option -> option.getDisplayText(new LiteralText(String.valueOf(this.aDouble))),
-                new LiteralText("Represents an option with a floating point value.\n"
+                option -> option.getDisplayText(Text.literal(String.valueOf(this.aDouble))),
+                Text.literal("Represents an option with a floating point value.\n"
                         + "There is a minimum, a maximum and a step.\n"
                         + "There is also a lambda for the display text as you can integrate a suffix/prefix like \"%\" or anything else."));
 
         this.cyclingOption = new SpruceCyclingOption("spruceui_test.option.cycling",
                 amount -> this.cyclingValue = this.cyclingValue.next(),
                 option -> option.getDisplayText(this.cyclingValue.getText()),
-                new LiteralText("Represents a cycling option.\n"
+                Text.literal("Represents a cycling option.\n"
                         + "Each press will cycle the value between some pre-defined values."));
 
         this.intInputOption = new SpruceIntegerInputOption("spruceui_test.option.int_input",
                 () -> this.anInt,
                 value -> this.anInt = value,
-                new LiteralText("Represents an option with an integer value as text."));
+                Text.literal("Represents an option with an integer value as text."));
         this.floatInputOption = new SpruceFloatInputOption("spruceui_test.option.float_input",
                 () -> this.aFloat,
                 value -> this.aFloat = value,
-                new LiteralText("Represents an option with a float value as text."));
+                Text.literal("Represents an option with a float value as text."));
         this.doubleInputOption = new SpruceDoubleInputOption("spruceui_test.option.double_input",
                 () -> this.anInputDouble,
                 value -> this.anInputDouble = value,
-                new LiteralText("Represents an option with a double value as text."));
+                Text.literal("Represents an option with a double value as text."));
 
         // Choose whatever action this option should do.
         this.actionOption = SpruceSimpleActionOption.of("spruceui_test.option.action",
                 btn -> {
                     MinecraftClient client = MinecraftClient.getInstance();
                     SystemToast toast = SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT,
-                            new LiteralText("Action button pressed!"), new LiteralText("I'm a result of the action"));
+                            Text.literal("Action button pressed!"), Text.literal("I'm a result of the action"));
                     client.getToastManager().add(toast);
                 },
-                new LiteralText("Represents an option with a simple action.\n"
+                Text.literal("Represents an option with a simple action.\n"
                         + "It's used like a normal button and a press callback."));
 
         // Reset option to reset values.
@@ -125,7 +125,7 @@ public class SpruceUITest implements ClientModInitializer {
             // Re-initialize the screen to update all the values.
             if (this.resetConsumer != null)
                 this.resetConsumer.accept(btn);
-        }, new LiteralText("Represents a reset option.\n"
+        }, Text.literal("Represents a reset option.\n"
                 + "The option title is already defined and translated in several languages.\n"
                 + "You have to manage screen re-initialization and reset logic yourself."));
     }
@@ -159,7 +159,7 @@ public class SpruceUITest implements ClientModInitializer {
                                                                @Nullable SpruceButtonWidget.PressAction doneButtonAction) {
         int textFieldWidth = (int) (width * (3.0 / 4.0));
         var textArea = new SpruceTextAreaWidget(Position.of(width / 2 - textFieldWidth / 2, 0), textFieldWidth, height - 50,
-                new LiteralText("Text Area"));
+                Text.literal("Text Area"));
         textArea.setLines(Arrays.asList(
                 "Hello world,",
                 "",
@@ -189,7 +189,7 @@ public class SpruceUITest implements ClientModInitializer {
 
         int printToConsoleX = width / 2 - (doneButtonAction == null ? 75 : 155);
         // Print to console button, may be useful for debugging.
-        container.addChild(new SpruceButtonWidget(Position.of(printToConsoleX, height - 29), 150, 20, new LiteralText("Print to console"),
+        container.addChild(new SpruceButtonWidget(Position.of(printToConsoleX, height - 29), 150, 20, Text.literal("Print to console"),
                 btn -> {
                     System.out.println("########################## START TEXT AREA CONTENT ##########################");
                     System.out.println(textArea.getText());
