@@ -18,7 +18,7 @@ import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -33,7 +33,7 @@ public class SpruceOptionScreen extends SpruceScreen {
     private SpruceOptionListWidget list;
 
     public SpruceOptionScreen(@Nullable Screen parent) {
-        super(new LiteralText("SpruceUI Test Option Menu"));
+        super(Text.literal("SpruceUI Test Option Menu"));
         this.parent = parent;
     }
 

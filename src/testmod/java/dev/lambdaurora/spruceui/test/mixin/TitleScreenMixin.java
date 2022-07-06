@@ -14,7 +14,6 @@ import dev.lambdaurora.spruceui.test.gui.SpruceMainMenuScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,7 +28,7 @@ public class TitleScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("RETURN"))
     private void onInit(CallbackInfo ci) {
-        this.addDrawableChild(new SpruceButtonWidget(Position.of(0, 0), 150, 20, new LiteralText("SpruceUI Test Menu"),
+        this.addDrawableChild(new SpruceButtonWidget(Position.of(0, 0), 150, 20, Text.literal("SpruceUI Test Menu"),
                 btn -> this.client.setScreen(new SpruceMainMenuScreen(this))).asVanilla());
     }
 }

@@ -10,7 +10,6 @@
 package dev.lambdaurora.spruceui.test;
 
 import dev.lambdaurora.spruceui.util.Nameable;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +27,7 @@ public enum TestEnum implements Nameable {
     private final Text text;
 
     TestEnum() {
-        this.text = new LiteralText(this.getName());
+        this.text = Text.literal(this.getName());
     }
 
     /**
