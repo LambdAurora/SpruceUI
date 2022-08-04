@@ -1,11 +1,12 @@
 {
   "spruceui.reset": "Сброс",
-  "spruceui.gui.unbind": "Несвязанный",
-  "spruceui.narrator.separator": "%s разделитель",
+  "spruceui.gui.unbind": "Отвязать",
+  "spruceui.narrator.separator": "Разделитель %s",
+  "spruceui.narration.toggle_switch": "Переключатель: %s, положение: %s",
   "spruceui.options.generic": "%s: %s",
-  "spruceui.options.generic.fancy": "Детальный",
-  "spruceui.options.generic.fast": "Быстрый",
-  "spruceui.options.generic.fastest": "Быстрейший",
-  "spruceui.options.generic.simple": "Простой",
+  "spruceui.options.generic.fancy": "Детально",
+  "spruceui.options.generic.fast": "Быстро",
+  "spruceui.options.generic.fastest": "Быстрейше",
+  "spruceui.options.generic.simple": "Упрощённо",
   "spruceui.widget.separator": "Разделитель"
 }
