@@ -66,6 +66,16 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
 	}
 
 	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		return this.widget.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean keyReleased(final int keyCode, final int scanCode, final int modifiers) {
+		return this.widget.keyReleased(keyCode, scanCode, modifiers);
+	}
+
+	@Override
 	public SelectionType getType() {
 		return this.widget.getType();
 	}
