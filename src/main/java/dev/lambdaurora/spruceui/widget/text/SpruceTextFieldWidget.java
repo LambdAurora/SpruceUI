@@ -98,7 +98,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		this.changedListener = (input) -> {
 		};
 		this.textPredicate = Objects::nonNull;
-		this.renderTextProvider = (input, firstCharacterIndex) -> OrderedText.method_30747(input, Style.EMPTY);
+		this.renderTextProvider = (input, firstCharacterIndex) -> OrderedText.forward(input, Style.EMPTY);
 	}
 
 	@Override

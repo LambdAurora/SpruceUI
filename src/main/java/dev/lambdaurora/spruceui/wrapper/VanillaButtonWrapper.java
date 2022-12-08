@@ -36,7 +36,7 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
 
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.widget.getPosition().setRelativeY(this.y);
+		this.widget.getPosition().setRelativeY(this.getY());
 		this.widget.render(matrices, mouseX, mouseY, delta);
 	}
 
@@ -71,7 +71,7 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
 	}
 
 	@Override
-	public void appendNarrations(NarrationMessageBuilder builder) {
+	public void updateNarration(NarrationMessageBuilder builder) {
 		this.widget.appendNarrations(builder);
 	}
 }

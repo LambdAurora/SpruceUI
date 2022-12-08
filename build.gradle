@@ -1,7 +1,6 @@
 plugins {
-	id 'fabric-loom' version '0.12.+'
-	id 'io.github.juuxel.loom-quiltflower' version '1.7.+'
-	id 'org.quiltmc.quilt-mappings-on-loom' version '4.0.0'
+	id 'fabric-loom' version '1.0.+'
+	id 'io.github.juuxel.loom-quiltflower' version '1.8.+'
 	id 'org.quiltmc.gradle.licenser' version '1.1.+'
 	id 'java-library'
 	id 'maven-publish'
@@ -19,7 +18,8 @@ Set<String> modules = [
 		'fabric-lifecycle-events-v1',
 		'fabric-rendering-v1',
 		'fabric-resource-loader-v0',
-		'fabric-screen-api-v1'
+		'fabric-screen-api-v1',
+		'fabric-key-binding-api-v1'
 ]
 
 boolean isMCVersionNonRelease() {
@@ -48,6 +48,10 @@ repositories {
 		name 'TerraformersMC'
 		url 'https://maven.terraformersmc.com/releases'
 	}
+	maven {
+		name = "QuiltMC"
+		url = "https://maven.quiltmc.org/repository/release"
+	}
 }
 
 configurations {
@@ -56,9 +60,7 @@ configurations {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings(loom.layered {
-		addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:v2"))
-	})
+	mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:intermediary-v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modules.stream().map { fabricApi.module(it, project.fabric_api_version) }.forEach {
