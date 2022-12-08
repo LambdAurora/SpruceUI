@@ -15,9 +15,10 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
+          cache: 'gradle'
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --stacktrace
 
       - uses: actions/upload-artifact@v2
         with:
@@ -27,7 +28,7 @@ jobs:
       # The USERNAME and PASSWORD need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle
       - name: Publish to GitHub Packages and other Mavens
-        run: ./gradlew publish
+        run: ./gradlew publish --stacktrace
         env:
           BRANCH_NAME: ${{ github.ref }}
           RUN_COUNT: ${{ github.run_number }}

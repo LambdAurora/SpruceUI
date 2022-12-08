@@ -33,3 +33,10 @@
 ## 4.0.0
 
  - Updated to Minecraft 1.19.
+
+### 4.1.0
+
+ - Updated libraries.
+ - Couple minor bug fixes to improve UX ([#31](https://github.com/LambdAurora/SpruceUI/pull/31)).
+ - Updated russian translations ([#30](https://github.com/LambdAurora/SpruceUI/pull/30)).
+ - Added Traditional Chinese translations ([#34](https://github.com/LambdAurora/SpruceUI/pull/34)).

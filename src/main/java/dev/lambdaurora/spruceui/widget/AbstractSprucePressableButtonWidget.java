@@ -35,7 +35,7 @@ public abstract class AbstractSprucePressableButtonWidget extends AbstractSpruce
 
 	@Override
 	protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
-		if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
+		if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER || keyCode == GLFW.GLFW_KEY_SPACE) {
 			this.onPress();
 			this.playDownSound();
 			return true;

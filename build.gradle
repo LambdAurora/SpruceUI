@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.0.+'
+	id 'fabric-loom' version '1.+'
 	id 'io.github.juuxel.loom-quiltflower' version '1.8.+'
 	id 'org.quiltmc.gradle.licenser' version '1.1.+'
 	id 'java-library'
@@ -22,17 +22,8 @@ Set<String> modules = [
 		'fabric-key-binding-api-v1'
 ]
 
-boolean isMCVersionNonRelease() {
-	return project.minecraft_version.matches('^\\d\\dw\\d\\d[a-z]$')
-			|| project.minecraft_version.matches('\\d+\\.\\d+-(pre|rc)(\\d+)')
-}
-
 String getMCVersionString() {
-	if (isMCVersionNonRelease()) {
-		return project.minecraft_version
-	}
-	def version = project.minecraft_version.split('\\.')
-	return version[0] + '.' + version[1]
+	return project.minecraft_version
 }
 
 sourceSets {
@@ -44,6 +35,10 @@ sourceSets {
 
 repositories {
 	mavenLocal()
+	maven {
+		name 'Quilt'
+		url 'https://maven.quiltmc.org/repository/release'
+	}
 	maven {
 		name 'TerraformersMC'
 		url 'https://maven.terraformersmc.com/releases'
@@ -70,8 +65,9 @@ dependencies {
 	modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") {
 		transitive = false
 	}
+	modLocalRuntime fabricApi.module("fabric-key-binding-api-v1", project.fabric_api_version)
 
-	libApi 'org.jetbrains:annotations:20.1.0'
+	libApi 'org.jetbrains:annotations:23.0.0'
 
 	testmodImplementation sourceSets.main.output
 }
