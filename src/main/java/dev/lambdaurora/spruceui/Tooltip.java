@@ -90,7 +90,7 @@ public class Tooltip extends DrawableHelper implements SprucePositioned {
 	 * @param matrices the matrices
 	 */
 	public void render(Screen screen, MatrixStack matrices) {
-		screen.renderOrderedTooltip(matrices, this.tooltip, this.x, this.y);
+		screen.renderTextTooltip(matrices, this.tooltip, this.x, this.y);
 	}
 
 	/**

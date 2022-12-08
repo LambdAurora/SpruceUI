@@ -18,7 +18,8 @@ Set<String> modules = [
 		'fabric-lifecycle-events-v1',
 		'fabric-rendering-v1',
 		'fabric-resource-loader-v0',
-		'fabric-screen-api-v1'
+		'fabric-screen-api-v1',
+		'fabric-key-binding-api-v1'
 ]
 
 String getMCVersionString() {
@@ -41,6 +42,10 @@ repositories {
 	maven {
 		name 'TerraformersMC'
 		url 'https://maven.terraformersmc.com/releases'
+	}
+	maven {
+		name = "QuiltMC"
+		url = "https://maven.quiltmc.org/repository/release"
 	}
 }
 
