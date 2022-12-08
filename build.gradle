@@ -1,7 +1,6 @@
 plugins {
-	id 'fabric-loom' version '0.12.+'
-	id 'io.github.juuxel.loom-quiltflower' version '1.7.+'
-	id 'org.quiltmc.quilt-mappings-on-loom' version '4.0.0'
+	id 'fabric-loom' version '1.+'
+	id 'io.github.juuxel.loom-quiltflower' version '1.8.+'
 	id 'org.quiltmc.gradle.licenser' version '1.1.+'
 	id 'java-library'
 	id 'maven-publish'
@@ -22,17 +21,8 @@ Set<String> modules = [
 		'fabric-screen-api-v1'
 ]
 
-boolean isMCVersionNonRelease() {
-	return project.minecraft_version.matches('^\\d\\dw\\d\\d[a-z]$')
-			|| project.minecraft_version.matches('\\d+\\.\\d+-(pre|rc)(\\d+)')
-}
-
 String getMCVersionString() {
-	if (isMCVersionNonRelease()) {
-		return project.minecraft_version
-	}
-	def version = project.minecraft_version.split('\\.')
-	return version[0] + '.' + version[1]
+	return project.minecraft_version
 }
 
 sourceSets {
@@ -45,6 +35,10 @@ sourceSets {
 repositories {
 	mavenLocal()
 	maven {
+		name 'Quilt'
+		url 'https://maven.quiltmc.org/repository/release'
+	}
+	maven {
 		name 'TerraformersMC'
 		url 'https://maven.terraformersmc.com/releases'
 	}
@@ -56,9 +50,7 @@ configurations {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings(loom.layered {
-		addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:v2"))
-	})
+	mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:intermediary-v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modules.stream().map { fabricApi.module(it, project.fabric_api_version) }.forEach {
@@ -68,8 +60,9 @@ dependencies {
 	modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") {
 		transitive = false
 	}
+	modLocalRuntime fabricApi.module("fabric-key-binding-api-v1", project.fabric_api_version)
 
-	libApi 'org.jetbrains:annotations:20.1.0'
+	libApi 'org.jetbrains:annotations:23.0.0'
 
 	testmodImplementation sourceSets.main.output
 }
