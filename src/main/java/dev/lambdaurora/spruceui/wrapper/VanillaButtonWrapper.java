@@ -41,6 +41,12 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
 	}
 
 	@Override
+	public void method_48579(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		this.widget.getPosition().setRelativeY(this.getY());
+		this.widget.render(matrices, mouseX, mouseY, delta);
+	}
+
+	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		return this.widget.mouseClicked(mouseX, mouseY, button);
 	}
@@ -58,11 +64,6 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
 	@Override
 	public boolean onNavigation(NavigationDirection direction, boolean tab) {
 		return this.widget.onNavigation(direction, tab);
-	}
-
-	@Override
-	public boolean changeFocus(boolean down) {
-		return this.onNavigation(down ? NavigationDirection.DOWN : NavigationDirection.UP, true);
 	}
 
 	@Override

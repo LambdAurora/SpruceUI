@@ -57,7 +57,6 @@ public final class SimpleBorder implements Border {
 
 	@Override
 	public void render(MatrixStack matrices, SpruceWidget widget, int mouseX, int mouseY, float delta) {
-		RenderSystem.disableTexture();
 
 		var tessellator = Tessellator.getInstance();
 		var buffer = tessellator.getBufferBuilder();
@@ -90,7 +89,6 @@ public final class SimpleBorder implements Border {
 		this.vertex(buffer, x, y, focused);
 		tessellator.draw();
 
-		RenderSystem.enableTexture();
 	}
 
 	private void vertex(BufferBuilder buffer, int x, int y, boolean focused) {

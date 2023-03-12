@@ -44,12 +44,12 @@ public abstract class SpruceHandledScreen<T extends ScreenHandler> extends Handl
 	}
 
 	@Override
-	public void setFocused(Element focused) {
+	public void setFocusedChild(Element focused) {
 		var old = this.getFocused();
 		if (old == focused) return;
 		if (old instanceof SpruceWidget)
 			((SpruceWidget) old).setFocused(false);
-		super.setFocused(focused);
+		super.setFocusedChild(focused);
 		if (focused instanceof SpruceWidget)
 			((SpruceWidget) focused).setFocused(true);
 	}
@@ -91,14 +91,14 @@ public abstract class SpruceHandledScreen<T extends ScreenHandler> extends Handl
 			Element nextElement;
 			do {
 				if (!hasNext.getAsBoolean()) {
-					this.setFocused(null);
+					this.setFocusedChild(null);
 					return false;
 				}
 
 				nextElement = nextGetter.get();
 			} while (!this.tryNavigating(nextElement, direction, tab));
 
-			this.setFocused(nextElement);
+			this.setFocusedChild(nextElement);
 		}
 		return true;
 	}
@@ -107,7 +107,8 @@ public abstract class SpruceHandledScreen<T extends ScreenHandler> extends Handl
 		if (element instanceof SpruceElement) {
 			return ((SpruceElement) element).onNavigation(direction, tab);
 		}
-		return element.changeFocus(direction.isLookingForward());
+		element.setFocused(direction.isLookingForward());
+		return true;
 	}
 
 	/* Render */

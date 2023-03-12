@@ -471,7 +471,6 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 
 		var tessellator = Tessellator.getInstance();
 		var buffer = tessellator.getBufferBuilder();
-		RenderSystem.disableTexture();
 		RenderSystem.enableColorLogicOp();
 		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
 		RenderSystem.setShader(GameRenderer::getPositionShader);
@@ -483,7 +482,6 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		buffer.vertex(x, lineY, 0.d).next();
 		tessellator.draw();
 		RenderSystem.disableColorLogicOp();
-		RenderSystem.enableTexture();
 	}
 
 	/**

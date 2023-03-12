@@ -119,11 +119,6 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
 	/* Navigation */
 
 	@Override
-	public boolean changeFocus(boolean lookForwards) {
-		return this.onNavigation(lookForwards ? NavigationDirection.DOWN : NavigationDirection.UP, true);
-	}
-
-	@Override
 	public boolean onNavigation(NavigationDirection direction, boolean tab) {
 		if (this.requiresCursor()) return false;
 		if (this.isVisible() && this.isActive()) {

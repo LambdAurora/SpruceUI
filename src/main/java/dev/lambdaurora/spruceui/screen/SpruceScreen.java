@@ -40,12 +40,12 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 	}
 
 	@Override
-	public void setFocused(Element focused) {
+	public void setFocusedChild(Element focused) {
 		var old = this.getFocused();
 		if (old == focused) return;
 		if (old instanceof SpruceWidget)
 			((SpruceWidget) old).setFocused(false);
-		super.setFocused(focused);
+		super.setFocusedChild(focused);
 		if (focused instanceof SpruceWidget)
 			((SpruceWidget) focused).setFocused(true);
 	}
@@ -86,14 +86,14 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 			Element nextElement;
 			do {
 				if (!hasNext.getAsBoolean()) {
-					this.setFocused(null);
+					this.setFocusedChild(null);
 					return false;
 				}
 
 				nextElement = nextGetter.get();
 			} while (!this.tryNavigating(nextElement, direction, tab));
 
-			this.setFocused(nextElement);
+			this.setFocusedChild(nextElement);
 		}
 		return true;
 	}
@@ -102,7 +102,8 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 		if (element instanceof SpruceElement) {
 			return ((SpruceElement) element).onNavigation(direction, tab);
 		}
-		return element.changeFocus(direction.isLookingForward());
+		element.setFocused(direction.isLookingForward());
+		return true;
 	}
 
 	/* Render */
@@ -110,7 +111,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 		ScissorManager.pushScaleFactor(this.scaleFactor);
-		this.renderBackground(matrices);
+		this.renderBackgroundTexture(matrices);
 		this.renderWidgets(matrices, mouseX, mouseY, delta);
 		this.renderTitle(matrices, mouseX, mouseY, delta);
 		Tooltip.renderAll(this, matrices);
