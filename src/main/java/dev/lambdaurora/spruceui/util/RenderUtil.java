@@ -90,7 +90,6 @@ public final class RenderUtil {
 	public static void renderSelectionBox(int x, int y, int width, int height, int red, int green, int blue, int alpha) {
 		var tessellator = Tessellator.getInstance();
 		var bufferBuilder = tessellator.getBufferBuilder();
-		RenderSystem.disableTexture();
 
 		int top = y + height;
 		int right = x + width;
@@ -110,6 +109,5 @@ public final class RenderUtil {
 		bufferBuilder.vertex(right - 1, y + 1, 0).next();
 		bufferBuilder.vertex(x + 1, y + 1, 0).next();
 		tessellator.draw();
-		RenderSystem.enableTexture();
 	}
 }

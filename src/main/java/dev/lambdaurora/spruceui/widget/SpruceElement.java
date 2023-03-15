@@ -30,7 +30,8 @@ public interface SpruceElement extends Element {
 	default boolean onNavigation(NavigationDirection direction, boolean tab) {
 		if (this.requiresCursor()) return false;
 		if (direction.isVertical()) {
-			return this.changeFocus(direction == NavigationDirection.DOWN);
+			this.setFocused(direction == NavigationDirection.DOWN);
+			return true;
 		}
 		return false;
 	}

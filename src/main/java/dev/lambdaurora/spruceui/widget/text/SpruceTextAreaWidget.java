@@ -513,19 +513,18 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 
 		var tessellator = Tessellator.getInstance();
 		var buffer = tessellator.getBufferBuilder();
-		RenderSystem.disableTexture();
 		RenderSystem.enableColorLogicOp();
 		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
 		RenderSystem.setShader(GameRenderer::getPositionShader);
-		RenderSystem.setShaderColor(0.f, 0.f, 255.f, 255.f);
+		RenderSystem.setShaderColor(0.0f, 0.0f, 1.0f, 1.0f);
 		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
 		buffer.vertex(x, y2, 0.d).next();
 		buffer.vertex(x2, y2, 0.d).next();
 		buffer.vertex(x2, lineY, 0.d).next();
 		buffer.vertex(x, lineY, 0.d).next();
 		tessellator.draw();
+		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.disableColorLogicOp();
-		RenderSystem.enableTexture();
 	}
 
 	/**
