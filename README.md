@@ -13,7 +13,7 @@ Just do `./gradlew build` and everything should build just fine!
 
 ## Use inside a mod
 
-You can look at the [SpruceUI test mod](https://github.com/LambdAurora/SpruceUI/tree/1.16/src/testmod) for examples of use.
+You can look at the [SpruceUI test mod](https://github.com/LambdAurora/SpruceUI/tree/1.19.4/src/testmod) for examples of use.
 
 ### Import inside a project
 
@@ -38,7 +38,7 @@ dependencies {
 And this to your `gradle.properties`:
 
 ```properties
-spruceui_version=4.1.0+1.19.3
+spruceui_version=4.2.0+1.19.4
 ```
 
 It will JAR-in-JAR SpruceUI so users of your mod don't need to download it separately!

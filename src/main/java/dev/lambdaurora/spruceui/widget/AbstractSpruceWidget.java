@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020-2022 LambdAurora <email@lambdaurora.dev>
+ * Copyright © 2020-2023 LambdAurora <email@lambdaurora.dev>
  *
  * This file is part of SpruceUI.
  *
@@ -13,7 +13,6 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -87,7 +86,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
 	public SelectionType getType() {
 		if (this.focused) return SelectionType.FOCUSED;
 		else if (this.hovered) return SelectionType.HOVERED;
-		else return Selectable.SelectionType.NONE;
+		else return SelectionType.NONE;
 	}
 
 	@Override

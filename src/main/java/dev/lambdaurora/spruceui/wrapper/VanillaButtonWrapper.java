@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020-2022 LambdAurora <email@lambdaurora.dev>
+ * Copyright © 2020-2023 LambdAurora <email@lambdaurora.dev>
  *
  * This file is part of SpruceUI.
  *
@@ -22,7 +22,7 @@ import net.minecraft.client.util.math.MatrixStack;
  * Represents a vanilla button wrapper for SpruceUI's own button widgets.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 4.2.0
  * @since 2.0.0
  */
 @Environment(EnvType.CLIENT)
@@ -41,10 +41,7 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
 	}
 
 	@Override
-	public void method_48579(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.widget.getPosition().setRelativeY(this.getY());
-		this.widget.render(matrices, mouseX, mouseY, delta);
-	}
+	public void drawWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {

@@ -15,16 +15,20 @@ jobs:
         java: [ 17, 19 ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK
-        uses: actions/setup-java@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v3
         with:
           java-version: ${{ matrix.java }}
           distribution: 'temurin'
-          cache: 'gradle'
 
       - name: Build with Gradle
-        run: ./gradlew build --parallel --stacktrace
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build --parallel --stacktrace
+          cache-read-only: ${{ !startsWith(github.ref, 'refs/heads/1.') && !startsWith(github.ref, 'refs/heads/dev/') && !startsWith(github.ref, 'refs/tags/v') }}
 
       - uses: actions/upload-artifact@v2
         with:

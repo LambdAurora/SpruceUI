@@ -1,10 +1,12 @@
 plugins {
-	id 'fabric-loom' version '1.+'
+	id 'fabric-loom' version '1.1.+'
 	id 'io.github.juuxel.loom-quiltflower' version '1.8.+'
 	id 'org.quiltmc.gradle.licenser' version '1.1.+'
 	id 'java-library'
 	id 'maven-publish'
 }
+
+import net.fabricmc.loom.task.RemapJarTask
 
 group = project.maven_group
 version = "${project.mod_version}+${getMCVersionString()}"
@@ -108,6 +110,21 @@ loom {
 		}
 	}
 }
+
+task testmodJar(type: Jar) {
+	group "build"
+	from sourceSets.testmod.output
+	archiveClassifier = "testmod-dev"
+	destinationDirectory = project.file("build/devlibs")
+}
+
+task remapTestmodJar(type: RemapJarTask, dependsOn: testmodJar) {
+	group "build"
+	inputFile = testmodJar.archiveFile
+	classpath.from sourceSets.testmod.compileClasspath
+	archiveClassifier = "testmod"
+}
+build.dependsOn remapTestmodJar
 
 license {
 	rule file('HEADER')
