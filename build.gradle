@@ -172,3 +172,17 @@ publishing {
 		}
 	}
 }
+repositories {
+    mavenLocal()
+    maven {
+        name 'Gegy'
+        url 'https://maven.gegy.dev'
+    }
+}
+
+dependencies {
+    /* Fabric definitions */
+
+    include modImplementation("dev.lambdaurora:spruceui:${project.spruceui_version}")
+}
+/gradlew.build
