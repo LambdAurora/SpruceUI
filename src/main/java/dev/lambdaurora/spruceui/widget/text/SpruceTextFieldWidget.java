@@ -21,6 +21,7 @@ import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
@@ -415,11 +416,11 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		super.renderWidget(matrices, mouseX, mouseY, delta);
+	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+		super.renderWidget(guiGraphics, mouseX, mouseY, delta);
 
-		this.drawText(matrices);
-		this.drawCursor(matrices);
+		this.drawText(guiGraphics);
+		this.drawCursor(guiGraphics);
 
 		if (!this.dragging && this.editingTime == 0) {
 			Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks,
@@ -432,9 +433,9 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	/**
 	 * Draws the text of the text area.
 	 *
-	 * @param matrices the matrices
+	 * @param guiGraphics The GuiGraphics instance to render with.
 	 */
-	protected void drawText(MatrixStack matrices) {
+	protected void drawText(GuiGraphics guiGraphics) {
 		int textColor = this.getTextColor();
 		int x = this.getX() + 4;
 		int y = this.getY() + this.getHeight() / 2 - 4;
@@ -442,7 +443,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		var displayedText = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex),
 				this.getInnerWidth());
 
-		this.client.textRenderer.drawWithShadow(matrices, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
+		guiGraphics.drawShadowedText(this.client.textRenderer, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
 				x, y, textColor);
 		this.drawSelection(displayedText, y);
 	}
@@ -487,16 +488,16 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	/**
 	 * Draws the cursor.
 	 *
-	 * @param matrices the matrices
+	 * @param guiGraphics The GuiGraphics instance to render with.
 	 */
-	protected void drawCursor(MatrixStack matrices) {
+	protected void drawCursor(GuiGraphics guiGraphics) {
 		if (!this.isFocused())
 			return;
 
 		int cursorY = this.getY() + this.getHeight() / 2 - 4;
 
 		if (this.text.isEmpty()) {
-			drawTextWithShadow(matrices, this.client.textRenderer, Text.literal("_"),
+			guiGraphics.drawShadowedText(this.client.textRenderer, Text.literal("_"),
 					this.getX() + 4, cursorY, ColorUtil.TEXT_COLOR);
 			return;
 		}
@@ -509,9 +510,9 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		);
 
 		if (this.cursor.column - this.firstCharacterIndex < cursorLine.length())
-			fill(matrices, cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
+			guiGraphics.fill(cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
 		else
-			this.client.textRenderer.drawWithShadow(matrices, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
+			guiGraphics.drawShadowedText(this.client.textRenderer, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
 	}
 
 	/* Narration */

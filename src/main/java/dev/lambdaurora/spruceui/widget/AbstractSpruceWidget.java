@@ -12,7 +12,7 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
  * @version 3.3.0
  * @since 2.0.0
  */
-public abstract class AbstractSpruceWidget extends DrawableHelper implements SpruceWidget {
+public abstract class AbstractSpruceWidget implements SpruceWidget {
 	protected final MinecraftClient client = MinecraftClient.getInstance();
 	protected final Position position;
 	private boolean visible;
@@ -250,7 +250,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
 	/* Rendering */
 
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 		if (this.isVisible()) {
 			this.hovered = mouseX >= this.getX() && mouseY >= this.getY()
 					&& mouseX < this.getX() + this.getWidth() && mouseY < this.getY() + this.getHeight();
@@ -261,8 +261,8 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
 				}
 			}
 
-			this.renderBackground(matrices, mouseX, mouseY, delta);
-			this.renderWidget(matrices, mouseX, mouseY, delta);
+			this.renderBackground(guiGraphics, mouseX, mouseY, delta);
+			this.renderWidget(guiGraphics, mouseX, mouseY, delta);
 
 			this.wasHovered = this.isMouseHovered();
 		} else {
@@ -278,7 +278,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
 	 * @param mouseY the mouse Y-coordinate
 	 * @param delta the tick delta
 	 */
-	protected abstract void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta);
+	protected abstract void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
 
 	/**
 	 * Renders the background of the widget.
@@ -288,7 +288,7 @@ public abstract class AbstractSpruceWidget extends DrawableHelper implements Spr
 	 * @param mouseY the mouse Y-coordinate
 	 * @param delta the tick delta
 	 */
-	protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 	}
 
 	/* Sound */

@@ -17,6 +17,7 @@ import dev.lambdaurora.spruceui.widget.SpruceElement;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -114,22 +115,22 @@ public abstract class SpruceHandledScreen<T extends ScreenHandler> extends Handl
 	/* Render */
 
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 		ScissorManager.pushScaleFactor(this.scaleFactor);
-		super.render(matrices, mouseX, mouseY, delta);
-		this.renderWidgets(matrices, mouseX, mouseY, delta);
-		this.renderTitle(matrices, mouseX, mouseY, delta);
-		Tooltip.renderAll(this, matrices);
+		super.render(guiGraphics, mouseX, mouseY, delta);
+		this.renderWidgets(guiGraphics, mouseX, mouseY, delta);
+		this.renderTitle(guiGraphics, mouseX, mouseY, delta);
+		Tooltip.renderAll(guiGraphics);
 		ScissorManager.popScaleFactor();
 	}
 
-	public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	public void renderTitle(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 	}
 
-	public void renderWidgets(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	public void renderWidgets(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 		for (var element : this.children()) {
 			if (element instanceof Drawable drawable)
-				drawable.render(matrices, mouseX, mouseY, delta);
+				drawable.render(guiGraphics, mouseX, mouseY, delta);
 		}
 	}
 }

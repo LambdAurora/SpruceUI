@@ -33,9 +33,9 @@ public class HudManager {
 	private static final Map<Identifier, Hud> HUDS = new Object2ObjectOpenHashMap<>();
 
 	public void initialize() {
-		HudRenderCallback.EVENT.register((matrices, tickDelta) -> HUDS.forEach((id, hud) -> {
+		HudRenderCallback.EVENT.register((guiGraphics, tickDelta) -> HUDS.forEach((id, hud) -> {
 			if (hud.isEnabled() && hud.isVisible())
-				hud.render(matrices, tickDelta);
+				hud.render(guiGraphics, tickDelta);
 		}));
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (!canRenderHuds(client))

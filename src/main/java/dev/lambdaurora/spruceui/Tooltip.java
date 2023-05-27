@@ -12,14 +12,18 @@ package dev.lambdaurora.spruceui;
 import com.google.common.collect.Queues;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.DefaultTooltipPositioner;
+import net.minecraft.client.gui.tooltip.TooltipPositioner;
+import net.minecraft.client.item.TooltipData;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.function.IntConsumer;
 import java.util.function.LongConsumer;
@@ -31,7 +35,7 @@ import java.util.function.LongConsumer;
  * @version 3.3.0
  * @since 1.0.0
  */
-public class Tooltip extends DrawableHelper implements SprucePositioned {
+public class Tooltip implements SprucePositioned {
 	private static final Queue<Tooltip> TOOLTIPS = Queues.newConcurrentLinkedQueue();
 	private static boolean delayed = false;
 	private final int x;
@@ -86,11 +90,10 @@ public class Tooltip extends DrawableHelper implements SprucePositioned {
 	/**
 	 * Renders the tooltip.
 	 *
-	 * @param screen the screen on which the tooltip is rendered
-	 * @param matrices the matrices
+	 * @param guiGraphics The GuiGraphics instance used to render.
 	 */
-	public void render(Screen screen, MatrixStack matrices) {
-		screen.renderTextTooltip(matrices, this.tooltip, this.x, this.y);
+	public void render(GuiGraphics guiGraphics) {
+		guiGraphics.drawTooltip(MinecraftClient.getInstance().textRenderer, this.tooltip, DefaultTooltipPositioner.INSTANCE, this.x, this.y);
 	}
 
 	/**
@@ -156,14 +159,14 @@ public class Tooltip extends DrawableHelper implements SprucePositioned {
 	 * @param screen the screen on which the tooltips are rendered
 	 * @param matrices the matrices
 	 */
-	public static void renderAll(Screen screen, MatrixStack matrices) {
+	public static void renderAll(GuiGraphics guiGraphics) {
 		if (delayed)
 			return;
 		synchronized (TOOLTIPS) {
 			Tooltip tooltip;
 
 			while ((tooltip = TOOLTIPS.poll()) != null)
-				tooltip.render(screen, matrices);
+				tooltip.render(guiGraphics);
 		}
 	}
 }

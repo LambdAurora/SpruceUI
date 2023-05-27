@@ -17,6 +17,7 @@ import dev.lambdaurora.spruceui.widget.SpruceElement;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -109,22 +110,22 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 	/* Render */
 
 	@Override
-	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		ScissorManager.pushScaleFactor(this.scaleFactor);
-		this.renderBackgroundTexture(matrices);
-		this.renderWidgets(matrices, mouseX, mouseY, delta);
-		this.renderTitle(matrices, mouseX, mouseY, delta);
-		Tooltip.renderAll(this, matrices);
+		this.renderBackgroundTexture(graphics);
+		this.renderWidgets(graphics, mouseX, mouseY, delta);
+		this.renderTitle(graphics, mouseX, mouseY, delta);
+		Tooltip.renderAll(graphics);
 		ScissorManager.popScaleFactor();
 	}
 
-	public void renderTitle(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 	}
 
-	public void renderWidgets(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	public void renderWidgets(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		for (var element : this.children()) {
 			if (element instanceof Drawable drawable)
-				drawable.render(matrices, mouseX, mouseY, delta);
+				drawable.render(graphics, mouseX, mouseY, delta);
 		}
 	}
 }

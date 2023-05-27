@@ -22,6 +22,7 @@ import dev.lambdaurora.spruceui.util.MultilineText;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -445,19 +446,19 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		super.renderWidget(matrices, mouseX, mouseY, delta);
+	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+		super.renderWidget(guiGraphics, mouseX, mouseY, delta);
 
-		this.drawText(matrices);
-		this.drawCursor(matrices);
+		this.drawText(guiGraphics);
+		this.drawCursor(guiGraphics);
 	}
 
 	/**
 	 * Draws the text of the text area.
 	 *
-	 * @param matrices the matrices
+	 * @param guiGraphics the GuiGraphics instance to render with.
 	 */
-	protected void drawText(MatrixStack matrices) {
+	protected void drawText(GuiGraphics guiGraphics) {
 		int length = Math.min(this.lines.size(), this.displayedLines);
 
 		int textColor = this.getTextColor();
@@ -470,8 +471,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 				continue;
 			if (line.endsWith("\n")) line = line.substring(0, line.length() - 1);
 
-			drawTextWithShadow(matrices, this.textRenderer, Text.literal(line), textX, lineY, textColor);
-			this.drawSelection(matrices, line, lineY, row);
+			guiGraphics.drawShadowedText(this.textRenderer, Text.literal(line), textX, lineY, textColor);
+			this.drawSelection(guiGraphics, line, lineY, row);
 
 			lineY += this.textRenderer.fontHeight;
 		}
@@ -480,12 +481,12 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	/**
 	 * Draws the selection over the text.
 	 *
-	 * @param matrices the matrices
+	 * @param guiGraphics the GuiGraphics instance to render with.
 	 * @param line the current line
 	 * @param lineY the line Y-coordinates
 	 * @param row the row number
 	 */
-	protected void drawSelection(MatrixStack matrices, String line, int lineY, int row) {
+	protected void drawSelection(GuiGraphics guiGraphics, String line, int lineY, int row) {
 		if (!this.isFocused())
 			return;
 		if (!this.selection.isRowSelected(row))
@@ -530,13 +531,13 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	/**
 	 * Draws the cursor.
 	 *
-	 * @param matrices the matrices
+	 * @param guiGraphics the GuiGraphics instance to render with.
 	 */
-	protected void drawCursor(MatrixStack matrices) {
+	protected void drawCursor(GuiGraphics guiGraphics) {
 		if (!this.isFocused())
 			return;
 		if (this.lines.isEmpty()) {
-			drawTextWithShadow(matrices, this.textRenderer, Text.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
+			guiGraphics.drawShadowedText(this.textRenderer, Text.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
 			return;
 		}
 
@@ -548,9 +549,9 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		int cursorY = this.getY() + 4 + actualRow * this.textRenderer.fontHeight;
 
 		if (this.cursor.row < this.lines.size() - 1 || this.cursor.column < cursorLine.length() || this.doesLineOccupyFullSpace(cursorLine))
-			fill(matrices, cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
+			guiGraphics.fill(cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
 		else
-			this.textRenderer.drawWithShadow(matrices, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
+			guiGraphics.drawShadowedText(this.textRenderer, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
 	}
 
 	/**

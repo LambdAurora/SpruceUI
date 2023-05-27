@@ -15,6 +15,7 @@ import dev.lambdaurora.spruceui.navigation.NavigationUtils;
 import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.util.math.MatrixStack;
@@ -218,8 +219,8 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 		/* Rendering */
 
 		@Override
-		protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			this.forEach(widget -> widget.render(matrices, mouseX, mouseY, delta));
+		protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+			this.forEach(widget -> widget.render(guiGraphics, mouseX, mouseY, delta));
 		}
 
 		/* Narration */
