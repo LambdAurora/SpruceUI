@@ -13,6 +13,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -52,12 +53,12 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	protected void renderButton(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		drawTexture(matrices, this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
+		guiGraphics.drawTexture(TEXTURE, this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
 				this.getValue() ? 50.f : 32.f, this.isFocusedOrHovered() ? 18.f : 0.f,
 				18, 18, 68, 36);
 
@@ -65,20 +66,20 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 			var message = Language.getInstance().reorder(
 					this.client.textRenderer.trimToWidth(this.getMessage(), this.getWidth() - 40)
 			);
-			this.client.textRenderer.drawWithShadow(matrices, message, this.getX() + 36, this.getY() + (this.getHeight() - 8) / 2.f,
+			guiGraphics.drawShadowedText(this.client.textRenderer, message, this.getX() + 36, this.getY() + (this.getHeight() - 8) / 2,
 					14737632 | MathHelper.ceil(this.alpha * 255.0F) << 24);
 		}
 	}
 
 	@Override
-	protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 		RenderSystem.enableDepthTest();
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.alpha);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		drawTexture(matrices, this.getX(), this.getY() + (this.getHeight() / 2 - 9),
+		guiGraphics.drawTexture(TEXTURE, this.getX(), this.getY() + (this.getHeight() / 2 - 9),
 				0.f, this.isFocusedOrHovered() ? 18.f : 0.f, 32, 18, 68, 36);
 	}
 

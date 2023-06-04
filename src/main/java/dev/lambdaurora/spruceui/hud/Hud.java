@@ -12,7 +12,7 @@ package dev.lambdaurora.spruceui.hud;
 import com.google.common.collect.ImmutableList;
 import dev.lambdaurora.spruceui.util.Identifiable;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ import java.util.function.Predicate;
  * @version 3.2.0
  * @since 1.2.0
  */
-public abstract class Hud extends DrawableHelper implements Identifiable {
+public abstract class Hud implements Identifiable {
 	protected final Identifier identifier;
 	protected final List<HudComponent> components = new ArrayList<>();
 	protected final String translationKey;
@@ -100,8 +100,8 @@ public abstract class Hud extends DrawableHelper implements Identifiable {
 	 * @param tickDelta Progress for linearly interpolating between the previous and current game state.
 	 * @see #isEnabled()
 	 */
-	public void render(MatrixStack matrices, float tickDelta) {
-		this.components.stream().filter(HudComponent::isEnabled).forEach(component -> component.render(matrices, tickDelta));
+	public void render(GuiGraphics guiGraphics, float tickDelta) {
+		this.components.stream().filter(HudComponent::isEnabled).forEach(component -> component.render(guiGraphics, tickDelta));
 	}
 
 	/**

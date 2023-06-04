@@ -16,7 +16,7 @@ import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 
@@ -222,9 +222,9 @@ public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements 
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		DrawableHelper.drawTextWithShadow(matrices, this.client.textRenderer, this.getTextFieldWidget().getTitle(), this.getX() + 2, this.getY() + 2, ColorUtil.TEXT_COLOR);
+	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+		guiGraphics.drawShadowedText(this.client.textRenderer, this.getTextFieldWidget().getTitle(), this.getX() + 2, this.getY() + 2, ColorUtil.TEXT_COLOR);
 
-		this.getTextFieldWidget().render(matrices, mouseX, mouseY, delta);
+		this.getTextFieldWidget().render(guiGraphics, mouseX, mouseY, delta);
 	}
 }

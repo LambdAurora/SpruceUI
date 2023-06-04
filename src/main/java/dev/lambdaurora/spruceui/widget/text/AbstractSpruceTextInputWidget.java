@@ -18,6 +18,7 @@ import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
@@ -171,13 +172,13 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.getBorder().render(matrices, this, mouseX, mouseY, delta);
+	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+		this.getBorder().render(guiGraphics, this, mouseX, mouseY, delta);
 	}
 
 	@Override
-	protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.getBackground().render(matrices, this, 0, mouseX, mouseY, delta);
+	protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+		this.getBackground().render(guiGraphics, this, 0, mouseX, mouseY, delta);
 	}
 
 	/* Narration */

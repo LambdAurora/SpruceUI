@@ -14,6 +14,7 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.gui.widget.ClickableWidget;
@@ -137,22 +138,22 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	protected void renderWidget(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		this.renderButton(matrices, mouseX, mouseY, delta);
+	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+		this.renderButton(guiGraphics, mouseX, mouseY, delta);
 		if (!this.dragging)
 			Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks,
 					i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
 	}
 
-	protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	protected void renderButton(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 		int color = this.active ? 16777215 : 10526880;
-		drawCenteredText(matrices, this.client.textRenderer, this.getMessage(),
+		guiGraphics.drawCenteredShadowedText(this.client.textRenderer, this.getMessage(),
 				this.getX() + this.getWidth() / 2, this.getY() + (this.getHeight() - 8) / 2,
 				color | MathHelper.ceil(this.alpha * 255.0F) << 24);
 	}
 
 	@Override
-	protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.getAlpha());
 		RenderSystem.setShaderTexture(0, ClickableWidget.WIDGETS_TEXTURE);
 		RenderSystem.enableBlend();
@@ -160,37 +161,37 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 		RenderSystem.enableDepthTest();
 		int v = 46 + this.getVOffset() * 20;
 		if (this.getWidth() / 2 < 200) {
-			this.drawTexture(matrices,
+			guiGraphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
 					this.getX(), this.getY(),
 					0, v,
 					this.getWidth() / 2, this.getHeight());
-			this.drawTexture(matrices,
+			guiGraphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
 					this.getX() + this.getWidth() / 2, this.getY(),
 					200 - this.getWidth() / 2, v,
 					this.getWidth() / 2, this.getHeight());
 		} else {
 			int middleWidth = this.getWidth() - 100;
-			this.drawTexture(matrices,
+			guiGraphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
 					this.getX(), this.getY(),
 					0, v,
 					50, this.getHeight());
 
 			int x;
 			for (x = 50; x < middleWidth; x += 100) {
-				this.drawTexture(matrices,
+				guiGraphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
 						this.getX() + x, this.getY(),
 						50, v,
 						100, this.getHeight());
 			}
 
 			if (x - middleWidth > 0) {
-				this.drawTexture(matrices,
+				guiGraphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
 						this.getX() + x, this.getY(),
 						50, v,
 						x - middleWidth, this.getHeight());
 			}
 
-			this.drawTexture(matrices,
+			guiGraphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
 					this.getX() + this.getWidth() - 50, this.getY(),
 					150, v,
 					50, this.getHeight());

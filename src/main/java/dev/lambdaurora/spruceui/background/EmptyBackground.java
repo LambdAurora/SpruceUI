@@ -10,6 +10,7 @@
 package dev.lambdaurora.spruceui.background;
 
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.util.math.MatrixStack;
 
 /**
@@ -26,7 +27,7 @@ public final class EmptyBackground implements Background {
 	}
 
 	@Override
-	public void render(MatrixStack matrices, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics guiGraphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
 	}
 
 	@Override

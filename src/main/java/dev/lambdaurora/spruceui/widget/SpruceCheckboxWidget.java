@@ -12,6 +12,8 @@ package dev.lambdaurora.spruceui.widget;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
@@ -86,7 +88,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	protected void renderButton(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
@@ -94,29 +96,29 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 		if (this.getValue()) {
 			if (this.colored)
 				RenderSystem.setShaderColor(0.f, 1.f, 0.f, this.alpha);
-			drawTexture(matrices, this.getX(), this.getY(), 0.f, 40.f, this.getHeight(), this.getHeight(), 64, 64);
+			guiGraphics.drawTexture(TEXTURE, this.getX(), this.getY(), 0.f, 40.f, this.getHeight(), this.getHeight(), 64, 64);
 		} else if (this.showCross) {
 			if (this.colored)
 				RenderSystem.setShaderColor(1.f, 0.f, 0.f, this.alpha);
-			drawTexture(matrices, this.getX(), this.getY(), 0.f, 20.f, this.getHeight(), this.getHeight(), 64, 64);
+			guiGraphics.drawTexture(TEXTURE, this.getX(), this.getY(), 0.f, 20.f, this.getHeight(), this.getHeight(), 64, 64);
 		}
 
 		if (this.showMessage) {
 			OrderedText message = Language.getInstance().reorder(this.client.textRenderer.trimToWidth(this.getMessage(), this.getWidth() - this.getHeight() - 4));
-			this.client.textRenderer.drawWithShadow(matrices, message, this.getX() + this.getHeight() + 4, this.getY() + (this.getHeight() - 8) / 2.f,
+			guiGraphics.drawShadowedText(MinecraftClient.getInstance().textRenderer, message, this.getX() + this.getHeight() + 4, this.getY() + (this.getHeight() - 8) / 2,
 					14737632 | MathHelper.ceil(this.alpha * 255.0F) << 24);
 		}
 	}
 
 	@Override
-	protected void renderBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 		RenderSystem.enableDepthTest();
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.alpha);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		drawTexture(matrices, this.getX(), this.getY(), this.isFocusedOrHovered() ? 20.f : 0.f, 0.f, this.getHeight(), this.getHeight(), 64, 64);
+		guiGraphics.drawTexture(TEXTURE, this.getX(), this.getY(), this.isFocusedOrHovered() ? 20.f : 0.f, 0.f, this.getHeight(), this.getHeight(), 64, 64);
 	}
 
 	/* Narration */

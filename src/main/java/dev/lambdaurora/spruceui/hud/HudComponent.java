@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.hud;
 
 import dev.lambdaurora.spruceui.util.Identifiable;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
  * @version 3.2.1
  * @since 1.2.0
  */
-public abstract class HudComponent extends DrawableHelper implements Identifiable {
+public abstract class HudComponent implements Identifiable {
 	protected final Identifier identifier;
 	protected boolean enabled = true;
 	protected int x;
@@ -67,7 +67,7 @@ public abstract class HudComponent extends DrawableHelper implements Identifiabl
 	 * @param tickDelta Progress for linearly interpolating between the previous and current game state.
 	 * @see #isEnabled()
 	 */
-	public abstract void render(MatrixStack matrices, float tickDelta);
+	public abstract void render(GuiGraphics guiGraphics, float tickDelta);
 
 	/**
 	 * Updates the HUD each tick if enabled and has tick updates.
