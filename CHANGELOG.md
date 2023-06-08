@@ -50,4 +50,4 @@
 
  - Updated to Minecraft 1.20.
  - Switched to new versioning scheme where each major Minecraft version results in a library major bump.
- - 
+ - Use the new `GuiGraphics` Minecraft class which will cause heavy breakage.
