@@ -12,7 +12,6 @@ package dev.lambdaurora.spruceui.hud.component;
 import dev.lambdaurora.spruceui.hud.HudComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -20,7 +19,7 @@ import net.minecraft.util.Identifier;
  * Represents a text HUD component.
  *
  * @author LambdAurora
- * @version 3.2.1
+ * @version 5.0.0
  * @since 1.3.5
  */
 public class TextHudComponent extends HudComponent {
@@ -76,7 +75,7 @@ public class TextHudComponent extends HudComponent {
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, float tickDelta) {
-		guiGraphics.drawShadowedText(client.textRenderer, this.text, this.x, this.y, this.color);
+	public void render(GuiGraphics graphics, float tickDelta) {
+		graphics.drawShadowedText(this.client.textRenderer, this.text, this.x, this.y, this.color);
 	}
 }

@@ -11,13 +11,12 @@ package dev.lambdaurora.spruceui.background;
 
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.util.math.MatrixStack;
 
 /**
  * Represents an empty background.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 5.0.0
  * @since 2.0.0
  */
 public final class EmptyBackground implements Background {
@@ -27,7 +26,7 @@ public final class EmptyBackground implements Background {
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
 	}
 
 	@Override

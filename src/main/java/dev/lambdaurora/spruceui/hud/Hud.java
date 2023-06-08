@@ -25,7 +25,7 @@ import java.util.function.Predicate;
  * Represents a HUD.
  *
  * @author LambdAurora
- * @version 3.2.0
+ * @version 5.0.0
  * @since 1.2.0
  */
 public abstract class Hud implements Identifiable {
@@ -100,8 +100,8 @@ public abstract class Hud implements Identifiable {
 	 * @param tickDelta Progress for linearly interpolating between the previous and current game state.
 	 * @see #isEnabled()
 	 */
-	public void render(GuiGraphics guiGraphics, float tickDelta) {
-		this.components.stream().filter(HudComponent::isEnabled).forEach(component -> component.render(guiGraphics, tickDelta));
+	public void render(GuiGraphics graphics, float tickDelta) {
+		this.components.stream().filter(HudComponent::isEnabled).forEach(component -> component.render(graphics, tickDelta));
 	}
 
 	/**

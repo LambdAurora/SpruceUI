@@ -11,7 +11,6 @@ package dev.lambdaurora.spruceui.hud;
 
 import dev.lambdaurora.spruceui.util.Identifiable;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  * Represents a HUD component.
  *
  * @author LambdAurora
- * @version 3.2.1
+ * @version 5.0.0
  * @since 1.2.0
  */
 public abstract class HudComponent implements Identifiable {
@@ -67,7 +66,7 @@ public abstract class HudComponent implements Identifiable {
 	 * @param tickDelta Progress for linearly interpolating between the previous and current game state.
 	 * @see #isEnabled()
 	 */
-	public abstract void render(GuiGraphics guiGraphics, float tickDelta);
+	public abstract void render(GuiGraphics graphics, float tickDelta);
 
 	/**
 	 * Updates the HUD each tick if enabled and has tick updates.

@@ -13,17 +13,12 @@ import com.google.common.collect.Queues;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.DefaultTooltipPositioner;
-import net.minecraft.client.gui.tooltip.TooltipPositioner;
-import net.minecraft.client.item.TooltipData;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.function.IntConsumer;
 import java.util.function.LongConsumer;
@@ -32,7 +27,7 @@ import java.util.function.LongConsumer;
  * Represents a tooltip.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 5.0.0
  * @since 1.0.0
  */
 public class Tooltip implements SprucePositioned {
@@ -90,10 +85,10 @@ public class Tooltip implements SprucePositioned {
 	/**
 	 * Renders the tooltip.
 	 *
-	 * @param guiGraphics The GuiGraphics instance used to render.
+	 * @param graphics The GuiGraphics instance used to render.
 	 */
-	public void render(GuiGraphics guiGraphics) {
-		guiGraphics.drawTooltip(MinecraftClient.getInstance().textRenderer, this.tooltip, DefaultTooltipPositioner.INSTANCE, this.x, this.y);
+	public void render(GuiGraphics graphics) {
+		graphics.drawTooltip(MinecraftClient.getInstance().textRenderer, this.tooltip, DefaultTooltipPositioner.INSTANCE, this.x, this.y);
 	}
 
 	/**
@@ -113,9 +108,9 @@ public class Tooltip implements SprucePositioned {
 	 * @since 1.6.0
 	 */
 	public static <T extends Tooltipable & SpruceWidget> void queueFor(T widget, int mouseX, int mouseY, int tooltipTicks,
-	                                                                   IntConsumer tooltipTicksSetter,
-	                                                                   long lastTick,
-	                                                                   LongConsumer lastTickSetter) {
+			IntConsumer tooltipTicksSetter,
+			long lastTick,
+			LongConsumer lastTickSetter) {
 		if (widget.isVisible()) {
 			widget.getTooltip().ifPresent(tooltip -> {
 				long currentRender = System.currentTimeMillis();
@@ -156,17 +151,16 @@ public class Tooltip implements SprucePositioned {
 	/**
 	 * Renders all the tooltips.
 	 *
-	 * @param screen the screen on which the tooltips are rendered
-	 * @param matrices the matrices
+	 * @param graphics the GUI graphics to render from
 	 */
-	public static void renderAll(GuiGraphics guiGraphics) {
+	public static void renderAll(GuiGraphics graphics) {
 		if (delayed)
 			return;
 		synchronized (TOOLTIPS) {
 			Tooltip tooltip;
 
 			while ((tooltip = TOOLTIPS.poll()) != null)
-				tooltip.render(guiGraphics);
+				tooltip.render(graphics);
 		}
 	}
 }

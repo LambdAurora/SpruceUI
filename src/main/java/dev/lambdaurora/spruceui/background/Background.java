@@ -17,9 +17,9 @@ import net.minecraft.client.util.math.MatrixStack;
  * Represents a background which can be rendered on a widget.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 5.0.0
  * @since 2.0.0
  */
 public interface Background {
-	void render(GuiGraphics guiGraphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta);
+	void render(GuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta);
 }

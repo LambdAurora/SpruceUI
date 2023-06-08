@@ -18,7 +18,6 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -32,7 +31,7 @@ import java.util.List;
  * A {@link SpruceOption} allows to have an easy control over the widgets present in the list.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 5.0.0
  * @since 2.0.0
  */
 public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionListWidget.OptionEntry> {
@@ -219,8 +218,8 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 		/* Rendering */
 
 		@Override
-		protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-			this.forEach(widget -> widget.render(guiGraphics, mouseX, mouseY, delta));
+		protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+			this.forEach(widget -> widget.render(graphics, mouseX, mouseY, delta));
 		}
 
 		/* Narration */

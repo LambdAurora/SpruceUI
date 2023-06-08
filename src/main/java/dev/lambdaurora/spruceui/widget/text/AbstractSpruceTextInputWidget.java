@@ -19,14 +19,13 @@ import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 /**
  * Represents a text input widget.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 5.0.0
  * @since 2.1.0
  */
 public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
@@ -172,13 +171,13 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-		this.getBorder().render(guiGraphics, this, mouseX, mouseY, delta);
+	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
 	}
 
 	@Override
-	protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-		this.getBackground().render(guiGraphics, this, 0, mouseX, mouseY, delta);
+	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
 	}
 
 	/* Narration */

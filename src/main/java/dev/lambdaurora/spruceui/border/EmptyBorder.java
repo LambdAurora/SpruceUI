@@ -11,13 +11,12 @@ package dev.lambdaurora.spruceui.border;
 
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.util.math.MatrixStack;
 
 /**
  * Represents an empty border.
  *
  * @author LambdAurora
- * @version 3.1.0
+ * @version 5.0.0
  * @since 2.0.0
  */
 public final class EmptyBorder implements Border {
@@ -27,7 +26,7 @@ public final class EmptyBorder implements Border {
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
 	}
 
 	@Override

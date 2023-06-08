@@ -26,7 +26,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -45,7 +44,7 @@ import java.util.function.Predicate;
  * Represents a text field widget.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 5.0.0
  * @since 2.1.0
  */
 public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget implements Tooltipable {
@@ -416,11 +415,11 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-		super.renderWidget(guiGraphics, mouseX, mouseY, delta);
+	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		super.renderWidget(graphics, mouseX, mouseY, delta);
 
-		this.drawText(guiGraphics);
-		this.drawCursor(guiGraphics);
+		this.drawText(graphics);
+		this.drawCursor(graphics);
 
 		if (!this.dragging && this.editingTime == 0) {
 			Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks,
@@ -433,9 +432,9 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	/**
 	 * Draws the text of the text area.
 	 *
-	 * @param guiGraphics The GuiGraphics instance to render with.
+	 * @param graphics The GUI graphics instance to render with
 	 */
-	protected void drawText(GuiGraphics guiGraphics) {
+	protected void drawText(GuiGraphics graphics) {
 		int textColor = this.getTextColor();
 		int x = this.getX() + 4;
 		int y = this.getY() + this.getHeight() / 2 - 4;
@@ -443,7 +442,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		var displayedText = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex),
 				this.getInnerWidth());
 
-		guiGraphics.drawShadowedText(this.client.textRenderer, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
+		graphics.drawShadowedText(this.client.textRenderer, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
 				x, y, textColor);
 		this.drawSelection(displayedText, y);
 	}
@@ -488,16 +487,16 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	/**
 	 * Draws the cursor.
 	 *
-	 * @param guiGraphics The GuiGraphics instance to render with.
+	 * @param graphics The GUI graphics instance to render with
 	 */
-	protected void drawCursor(GuiGraphics guiGraphics) {
+	protected void drawCursor(GuiGraphics graphics) {
 		if (!this.isFocused())
 			return;
 
 		int cursorY = this.getY() + this.getHeight() / 2 - 4;
 
 		if (this.text.isEmpty()) {
-			guiGraphics.drawShadowedText(this.client.textRenderer, Text.literal("_"),
+			graphics.drawShadowedText(this.client.textRenderer, Text.literal("_"),
 					this.getX() + 4, cursorY, ColorUtil.TEXT_COLOR);
 			return;
 		}
@@ -510,9 +509,9 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		);
 
 		if (this.cursor.column - this.firstCharacterIndex < cursorLine.length())
-			guiGraphics.fill(cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
+			graphics.fill(cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
 		else
-			guiGraphics.drawShadowedText(this.client.textRenderer, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
+			graphics.drawShadowedText(this.client.textRenderer, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
 	}
 
 	/* Narration */

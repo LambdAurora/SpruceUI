@@ -45,3 +45,9 @@
 
  - Updated to Minecraft 1.19.4.
  - Added High Contrast textures for SpruceUI widgets.
+
+## 5.0.0
+
+ - Updated to Minecraft 1.20.
+ - Switched to new versioning scheme where each major Minecraft version results in a library major bump.
+ - 

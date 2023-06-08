@@ -17,13 +17,12 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.util.math.MatrixStack;
 
 /**
  * Represents a vanilla button wrapper for SpruceUI's own button widgets.
  *
  * @author LambdAurora
- * @version 4.2.0
+ * @version 5.0.0
  * @since 2.0.0
  */
 @Environment(EnvType.CLIENT)
@@ -36,13 +35,13 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.widget.getPosition().setRelativeY(this.getY());
-		this.widget.render(guiGraphics, mouseX, mouseY, delta);
+		this.widget.render(graphics, mouseX, mouseY, delta);
 	}
 
 	@Override
-	public void drawWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {}
+	public void drawWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {

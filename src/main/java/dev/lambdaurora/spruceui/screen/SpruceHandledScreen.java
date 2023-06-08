@@ -20,7 +20,6 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -30,11 +29,11 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 /**
- * Represents an handled screen.
+ * Represents a handled screen.
  *
  * @param <T> the type of the screen handler
  * @author LambdAurora
- * @version 3.3.0
+ * @version 5.0.0
  * @since 3.3.0
  */
 public abstract class SpruceHandledScreen<T extends ScreenHandler> extends HandledScreen<T> implements SprucePositioned, SpruceElement {
@@ -115,22 +114,22 @@ public abstract class SpruceHandledScreen<T extends ScreenHandler> extends Handl
 	/* Render */
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		ScissorManager.pushScaleFactor(this.scaleFactor);
-		super.render(guiGraphics, mouseX, mouseY, delta);
-		this.renderWidgets(guiGraphics, mouseX, mouseY, delta);
-		this.renderTitle(guiGraphics, mouseX, mouseY, delta);
-		Tooltip.renderAll(guiGraphics);
+		super.render(graphics, mouseX, mouseY, delta);
+		this.renderWidgets(graphics, mouseX, mouseY, delta);
+		this.renderTitle(graphics, mouseX, mouseY, delta);
+		Tooltip.renderAll(graphics);
 		ScissorManager.popScaleFactor();
 	}
 
-	public void renderTitle(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 	}
 
-	public void renderWidgets(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+	public void renderWidgets(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		for (var element : this.children()) {
 			if (element instanceof Drawable drawable)
-				drawable.render(guiGraphics, mouseX, mouseY, delta);
+				drawable.render(graphics, mouseX, mouseY, delta);
 		}
 	}
 }

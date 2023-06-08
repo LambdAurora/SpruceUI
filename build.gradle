@@ -1,7 +1,7 @@
 plugins {
-	id 'fabric-loom' version '1.1.+'
+	id 'fabric-loom' version '1.2.+'
 	id 'io.github.juuxel.loom-quiltflower' version '1.8.+'
-	id 'org.quiltmc.gradle.licenser' version '1.1.+'
+	id 'org.quiltmc.gradle.licenser' version '2.0.+'
 	id 'java-library'
 	id 'maven-publish'
 }
@@ -68,8 +68,6 @@ dependencies {
 		transitive = false
 	}
 	modLocalRuntime fabricApi.module("fabric-key-binding-api-v1", project.fabric_api_version)
-
-	libApi 'org.jetbrains:annotations:23.0.0'
 
 	testmodImplementation sourceSets.main.output
 }

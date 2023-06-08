@@ -20,7 +20,6 @@ import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +30,7 @@ import java.util.List;
  * Represents a container widget with tabs.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 5.0.0
  * @since 2.0.0
  */
 public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget> {
@@ -45,7 +44,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	}
 
 	public SpruceTabbedWidget(Position position, int width, int height, @Nullable Text title, int sideWidth,
-	                          int sideTopOffset) {
+			int sideTopOffset) {
 		super(position, SpruceWidget.class);
 		this.width = width;
 		this.height = height;
@@ -152,14 +151,14 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	/* Render */
 
 	@Override
-	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.title != null) {
-			guiGraphics.drawCenteredShadowedText(this.client.textRenderer, this.title, this.getX() + this.list.getWidth() / 2,
+			graphics.drawCenteredShadowedText(this.client.textRenderer, this.title, this.getX() + this.list.getWidth() / 2,
 					this.getY() + 6, 0xffffffff);
 		}
-		this.list.render(guiGraphics, mouseX, mouseY, delta);
+		this.list.render(graphics, mouseX, mouseY, delta);
 		if (this.list.getCurrentTab() != null)
-			this.list.getCurrentTab().container.render(guiGraphics, mouseX, mouseY, delta);
+			this.list.getCurrentTab().container.render(graphics, mouseX, mouseY, delta);
 	}
 
 	public static abstract class Entry extends SpruceEntryListWidget.Entry implements WithBackground {
@@ -199,8 +198,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Rendering */
 
 		@Override
-		protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-			this.getBackground().render(guiGraphics, this, 0, mouseX, mouseY, delta);
+		protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+			this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
 		}
 	}
 
@@ -254,31 +253,31 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Render */
 
 		@Override
-		protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+		protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 			int y = this.getY() + 4;
 			for (var it = this.title.iterator(); it.hasNext(); y += 9) {
 				var line = it.next();
-				guiGraphics.drawText(this.client.textRenderer, line, this.getX() + 4, y, 0xffffff, false);
+				graphics.drawText(this.client.textRenderer, line, this.getX() + 4, y, 0xffffff, false);
 			}
 			if (this.description != null) {
 				y += 4;
 				for (var it = this.description.iterator(); it.hasNext(); y += 9) {
 					var line = it.next();
-					guiGraphics.drawText(this.client.textRenderer, line, this.getX() + 8, y, 0xffffff, false);
+					graphics.drawText(this.client.textRenderer, line, this.getX() + 8, y, 0xffffff, false);
 				}
 			}
 		}
 
 		@Override
-		protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-			super.renderBackground(guiGraphics, mouseX, mouseY, delta);
+		protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+			super.renderBackground(graphics, mouseX, mouseY, delta);
 			if (this.isFocused() && this.parent.isFocused())
-				guiGraphics.fill(this.getX(), this.getY(),
+				graphics.fill(this.getX(), this.getY(),
 						this.getX() + this.getWidth(),
 						this.getY() + this.getHeight() - 4,
 						0x2fffffff);
 			else if (this.selected || this.isMouseHovered())
-				guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.getWidth(),
+				graphics.fill(this.getX(), this.getY(), this.getX() + this.getWidth(),
 						this.getY() + this.getHeight() - 4,
 						0x1affffff);
 		}
@@ -330,8 +329,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Rendering */
 
 		@Override
-		protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-			this.separatorWidget.render(guiGraphics, mouseX, mouseY, delta);
+		protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+			this.separatorWidget.render(graphics, mouseX, mouseY, delta);
 		}
 
 		@Override

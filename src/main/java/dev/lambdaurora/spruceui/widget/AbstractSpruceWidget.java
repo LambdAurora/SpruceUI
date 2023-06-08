@@ -16,7 +16,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Util;
@@ -26,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a widget.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 5.0.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceWidget implements SpruceWidget {
@@ -250,7 +249,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	/* Rendering */
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.isVisible()) {
 			this.hovered = mouseX >= this.getX() && mouseY >= this.getY()
 					&& mouseX < this.getX() + this.getWidth() && mouseY < this.getY() + this.getHeight();
@@ -261,8 +260,8 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 				}
 			}
 
-			this.renderBackground(guiGraphics, mouseX, mouseY, delta);
-			this.renderWidget(guiGraphics, mouseX, mouseY, delta);
+			this.renderBackground(graphics, mouseX, mouseY, delta);
+			this.renderWidget(graphics, mouseX, mouseY, delta);
 
 			this.wasHovered = this.isMouseHovered();
 		} else {
@@ -273,22 +272,22 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	/**
 	 * Renders the widget.
 	 *
-	 * @param matrices the matrix stack
+	 * @param graphics the GUI graphics instance to render with
 	 * @param mouseX the mouse X-coordinate
 	 * @param mouseY the mouse Y-coordinate
 	 * @param delta the tick delta
 	 */
-	protected abstract void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta);
+	protected abstract void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta);
 
 	/**
 	 * Renders the background of the widget.
 	 *
-	 * @param matrices the matrix stack
+	 * @param graphics the GUI graphics instance to render with
 	 * @param mouseX the mouse X-coordinate
 	 * @param mouseY the mouse Y-coordinate
 	 * @param delta the tick delta
 	 */
-	protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 	}
 
 	/* Sound */
