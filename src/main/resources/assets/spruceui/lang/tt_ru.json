@@ -1,0 +1,13 @@
+{
+  "modmenu.descriptionTranslation.spruceui": "Тик GUI китапханәсе.",
+  "spruceui.reset": "Ташлау",
+  "spruceui.gui.unbind": "Бәйләгечне аеру",
+  "spruceui.narrator.separator": "%s аергычы",
+  "spruceui.narration.toggle_switch": "%s күчергече, %s кыяммәте",
+  "spruceui.options.generic": "%s: %s",
+  "spruceui.options.generic.fancy": "Җентекле",
+  "spruceui.options.generic.fast": "Тиз",
+  "spruceui.options.generic.fastest": "Иң тиз",
+  "spruceui.options.generic.simple": "Гади",
+  "spruceui.widget.separator": "Аергыч"
+}
