@@ -101,7 +101,9 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	@Override
 	public void setFocused(boolean focused) {
 		this.focused = focused;
-		this.dragging = false;
+		if (!focused) {
+			this.dragging = false;
+		}
 	}
 
 	@Override
