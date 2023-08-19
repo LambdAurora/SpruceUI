@@ -92,6 +92,9 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		float[] oldColor = RenderSystem.getShaderColor();
+		float oldRed = oldColor[0], oldGreen = oldColor[1], oldBlue = oldColor[2], oldAlpha = oldColor[3];
+
 		if (this.getValue()) {
 			if (this.colored)
 				RenderSystem.setShaderColor(0.f, 1.f, 0.f, this.alpha);
@@ -100,6 +103,10 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 			if (this.colored)
 				RenderSystem.setShaderColor(1.f, 0.f, 0.f, this.alpha);
 			graphics.drawTexture(TEXTURE, this.getX(), this.getY(), 0.f, 20.f, this.getHeight(), this.getHeight(), 64, 64);
+		}
+
+		if (this.colored) {
+			RenderSystem.setShaderColor(oldRed, oldGreen, oldBlue, oldAlpha);
 		}
 
 		if (this.showMessage) {
