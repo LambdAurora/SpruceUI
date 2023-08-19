@@ -55,3 +55,7 @@
 ### 5.0.1
 
 - Fixed some shader color leaking in the boolean checkbox option.
+
+### 5.0.2
+
+- Fixed wrong background rendering in SpruceScreen.
