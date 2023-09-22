@@ -35,6 +35,10 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	private String sign;
 	private boolean inUse = false;
 
+	private static final Identifier slider = new Identifier("widget/slider");
+	private static final Identifier sliderHandle = new Identifier("widget/slider_handle");
+	private static final Identifier sliderHandleHighlighted = new Identifier("widget/slider_handle_highlighted");
+
 	public SpruceSliderWidget(Position position, int width, int height, Text message, double value, Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
 		super(position, width, height, message);
 		this.value = value;
@@ -161,14 +165,14 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 
 	@Override
 	protected Identifier getTexture() {
-		return buttonTextures.disabled();
+		return slider;
 	}
 
 	@Override
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, 1.f);
 
-		final Identifier texture = buttonTextures.method_52729(true, this.isFocusedOrHovered());
+		final Identifier texture = this.isFocusedOrHovered() ? sliderHandleHighlighted : sliderHandle;
 		graphics.drawGuiTexture(texture, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(), 8, 20);
 
 		if (!this.isMouseHovered() && this.inUse) {
