@@ -44,10 +44,10 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 		var old = this.getFocused();
 		if (old == focused) return;
 		if (old instanceof SpruceWidget)
-			((SpruceWidget) old).setFocused(false);
+			old.setFocused(false);
 		super.setFocusedChild(focused);
 		if (focused instanceof SpruceWidget)
-			((SpruceWidget) focused).setFocused(true);
+			focused.setFocused(true);
 	}
 
 	@Override
