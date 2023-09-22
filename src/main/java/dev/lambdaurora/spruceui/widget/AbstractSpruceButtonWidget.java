@@ -17,8 +17,9 @@ import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.text.Text;
+import net.minecraft.unmapped.C_fajlgudl;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -38,6 +39,13 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	private int tooltipTicks;
 	private long lastTick;
 	protected float alpha = 1.f;
+
+	/**
+	 * @see net.minecraft.client.gui.widget.PressableWidget#field_45339
+	 */
+	protected static final C_fajlgudl buttonTextures = new C_fajlgudl(
+			new Identifier("widget/button"), new Identifier("widget/button_disabled"), new Identifier("widget/button_highlighted")
+	);
 
 	public AbstractSpruceButtonWidget(Position position, int width, int height, Text message) {
 		super(position);
@@ -130,10 +138,8 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 
 	/* Rendering */
 
-	protected int getVOffset() {
-		if (!this.isActive())
-			return 0;
-		return this.isFocusedOrHovered() ? 2 : 1;
+	protected Identifier getTexture() {
+		return buttonTextures.method_52729(this.isActive(), this.isFocusedOrHovered());
 	}
 
 	@Override
@@ -154,47 +160,10 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	@Override
 	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.getAlpha());
-		RenderSystem.setShaderTexture(0, ClickableWidget.WIDGETS_TEXTURE);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.enableDepthTest();
-		int v = 46 + this.getVOffset() * 20;
-		if (this.getWidth() / 2 < 200) {
-			graphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
-					this.getX(), this.getY(),
-					0, v,
-					this.getWidth() / 2, this.getHeight());
-			graphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
-					this.getX() + this.getWidth() / 2, this.getY(),
-					200 - this.getWidth() / 2, v,
-					this.getWidth() / 2, this.getHeight());
-		} else {
-			int middleWidth = this.getWidth() - 100;
-			graphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
-					this.getX(), this.getY(),
-					0, v,
-					50, this.getHeight());
-
-			int x;
-			for (x = 50; x < middleWidth; x += 100) {
-				graphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
-						this.getX() + x, this.getY(),
-						50, v,
-						100, this.getHeight());
-			}
-
-			if (x - middleWidth > 0) {
-				graphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
-						this.getX() + x, this.getY(),
-						50, v,
-						x - middleWidth, this.getHeight());
-			}
-
-			graphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE,
-					this.getX() + this.getWidth() - 50, this.getY(),
-					150, v,
-					50, this.getHeight());
-		}
+		graphics.drawGuiTexture(this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
 
 	/* Narration */

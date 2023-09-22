@@ -19,7 +19,6 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
@@ -112,7 +111,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		ScissorManager.pushScaleFactor(this.scaleFactor);
-		this.renderBackground(graphics);
+		this.renderBackground(graphics, mouseX, mouseY, delta);
 		this.renderWidgets(graphics, mouseX, mouseY, delta);
 		this.renderTitle(graphics, mouseX, mouseY, delta);
 		Tooltip.renderAll(graphics);

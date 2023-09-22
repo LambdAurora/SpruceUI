@@ -14,9 +14,8 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.function.Consumer;
@@ -161,17 +160,16 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	/* Rendering */
 
 	@Override
-	protected int getVOffset() {
-		return 0;
+	protected Identifier getTexture() {
+		return buttonTextures.disabled();
 	}
 
 	@Override
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, 1.f);
-		RenderSystem.setShaderTexture(0, ClickableWidget.WIDGETS_TEXTURE);
-		int vOffset = (this.isFocusedOrHovered() ? 2 : 1) * 20;
-		graphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(), 0, 46 + vOffset, 4, 20);
-		graphics.drawTexture(ClickableWidget.WIDGETS_TEXTURE, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)) + 4, this.getY(), 196, 46 + vOffset, 4, 20);
+
+		final Identifier texture = buttonTextures.method_52729(true, this.isFocusedOrHovered());
+		graphics.drawGuiTexture(texture, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(), 8, 20);
 
 		if (!this.isMouseHovered() && this.inUse) {
 			this.inUse = false;
