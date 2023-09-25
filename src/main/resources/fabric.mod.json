@@ -34,7 +34,11 @@
   },
   "custom": {
     "modmenu": {
-      "badges": [ "library" ]
+      "badges": [ "library" ],
+      "links": {
+        "modmenu.discord": "https://discord.lambdaurora.dev/",
+        "modmenu.twitter": "https://twitter.com/LambdAurora"
+      }
     }
   }
 }
