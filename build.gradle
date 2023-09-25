@@ -146,7 +146,7 @@ publishing {
 		mavenLocal()
 		maven {
 			name 'BuildDirLocal'
-			url "$buildDir/repo"
+			url "${project.layout.buildDirectory.get()}/repo"
 		}
 		maven {
 			name 'GithubPackages'

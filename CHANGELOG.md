@@ -59,3 +59,8 @@
 ### 5.0.2
 
 - Fixed wrong background rendering in SpruceScreen.
+
+### 5.0.3
+
+- Updated to Minecraft 1.20.2 ([#46](https://github.com/LambdAurora/SpruceUI/pull/46)).
+- Added Tatar translations ([#44](https://github.com/LambdAurora/SpruceUI/pull/44)).

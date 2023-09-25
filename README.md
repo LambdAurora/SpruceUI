@@ -11,6 +11,8 @@ A Minecraft mod API which adds some GUI utilities.
 
 Just do `./gradlew build` and everything should build just fine!
 
+To test SpruceUI, you can run the testmod with `./gradlew runTestmodClient`.
+
 ## Use inside a mod
 
 You can look at the [SpruceUI test mod](https://github.com/LambdAurora/SpruceUI/tree/1.19.4/src/testmod) for examples of use.
@@ -38,7 +40,7 @@ dependencies {
 And this to your `gradle.properties`:
 
 ```properties
-spruceui_version=5.0.0+1.20
+spruceui_version=5.0.3+1.20.2
 ```
 
 It will JAR-in-JAR SpruceUI so users of your mod don't need to download it separately!
