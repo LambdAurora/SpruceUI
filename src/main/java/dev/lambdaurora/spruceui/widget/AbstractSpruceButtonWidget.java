@@ -43,7 +43,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	/**
 	 * @see net.minecraft.client.gui.widget.PressableWidget#field_45339
 	 */
-	protected static final C_fajlgudl buttonTextures = new C_fajlgudl(
+	protected static final C_fajlgudl BUTTON_TEXTURES = new C_fajlgudl(
 			new Identifier("widget/button"), new Identifier("widget/button_disabled"), new Identifier("widget/button_highlighted")
 	);
 
@@ -139,7 +139,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	/* Rendering */
 
 	protected Identifier getTexture() {
-		return buttonTextures.method_52729(this.isActive(), this.isFocusedOrHovered());
+		return BUTTON_TEXTURES.method_52729(this.isActive(), this.isFocusedOrHovered());
 	}
 
 	@Override
