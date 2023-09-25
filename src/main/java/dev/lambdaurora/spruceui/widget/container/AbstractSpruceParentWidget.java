@@ -112,8 +112,8 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 	}
 
 	@Override
-	protected boolean onMouseScroll(double mouseX, double mouseY, double amount) {
-		return this.hoveredElement(mouseX, mouseY).filter(element -> element.mouseScrolled(mouseX, mouseY, amount)).isPresent();
+	protected boolean onMouseScroll(double mouseX, double mouseY, double scrollX, double scrollY) {
+		return this.hoveredElement(mouseX, mouseY).filter(element -> element.mouseScrolled(mouseX, mouseY, scrollX, scrollY)).isPresent();
 	}
 
 	@Override
