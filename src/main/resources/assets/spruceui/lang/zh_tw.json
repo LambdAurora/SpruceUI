@@ -1,8 +1,9 @@
 {
-  "spruceui.reset": "重置",
+  "spruceui.reset": "重設",
   "spruceui.gui.unbind": "未綁定",
   "spruceui.narrator.separator": "%s 分割線",
-  "spruceui.options.generic": "%s: %s",
+  "spruceui.narration.toggle_switch": "開關：%s，狀態：%s",
+  "spruceui.options.generic": "%s：%s",
   "spruceui.options.generic.fancy": "華麗",
   "spruceui.options.generic.fast": "快速",
   "spruceui.options.generic.fastest": "最快",
