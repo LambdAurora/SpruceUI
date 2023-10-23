@@ -1,5 +1,5 @@
 /*
- * Copyright © 2020-2022 LambdAurora <email@lambdaurora.dev>
+ * Copyright © 2020 LambdAurora <email@lambdaurora.dev>
  *
  * This file is part of SpruceUI.
  *
@@ -22,13 +22,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TitleScreen.class)
 public class TitleScreenMixin extends Screen {
-    protected TitleScreenMixin(Text title) {
-        super(title);
-    }
+	protected TitleScreenMixin(Text title) {
+		super(title);
+	}
 
-    @Inject(method = "init", at = @At("RETURN"))
-    private void onInit(CallbackInfo ci) {
-        this.addDrawableChild(new SpruceButtonWidget(Position.of(0, 0), 150, 20, Text.literal("SpruceUI Test Menu"),
-                btn -> this.client.setScreen(new SpruceMainMenuScreen(this))).asVanilla());
-    }
+	@Inject(method = "init", at = @At("RETURN"))
+	private void onInit(CallbackInfo ci) {
+		this.addDrawableChild(new SpruceButtonWidget(Position.of(0, 0), 150, 20, Text.literal("SpruceUI Test Menu"),
+				btn -> this.client.setScreen(new SpruceMainMenuScreen(this))).asVanilla());
+	}
 }
