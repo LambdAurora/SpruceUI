@@ -35,13 +35,10 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void drawWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.widget.getPosition().setRelativeY(this.getY());
 		this.widget.render(graphics, mouseX, mouseY, delta);
 	}
-
-	@Override
-	public void drawWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
