@@ -108,7 +108,7 @@ public class SpruceUITest implements ClientModInitializer {
 		this.actionOption = SpruceSimpleActionOption.of("spruceui_test.option.action",
 				btn -> {
 					MinecraftClient client = MinecraftClient.getInstance();
-					SystemToast toast = SystemToast.create(client, SystemToast.Type.TUTORIAL_HINT,
+					SystemToast toast = SystemToast.create(client, SystemToast.C_ozahoshp.field_47586,
 							Text.literal("Action button pressed!"), Text.literal("I'm a result of the action"));
 					client.getToastManager().add(toast);
 				},

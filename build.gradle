@@ -106,6 +106,8 @@ loom {
 			source(sourceSets.testmod)
 		}
 	}
+
+	accessWidenerPath = file("src/main/resources/spruceui.accesswidener")
 }
 
 task testmodJar(type: Jar) {

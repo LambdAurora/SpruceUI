@@ -23,13 +23,14 @@
   "mixins": [
     "spruceui.mixins.json"
   ],
+  "accessWidener": "spruceui.accesswidener",
   "depends": {
     "fabricloader": ">=0.13.3",
     "fabric-api-base": "*",
     "fabric-lifecycle-events-v1": "*",
     "fabric-rendering-v1": "*",
     "fabric-resource-loader-v0": ">=0.4.7",
-    "minecraft": ">=1.20.2",
+    "minecraft": ">=1.20.3",
     "java": ">=17"
   },
   "custom": {

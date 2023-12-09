@@ -44,7 +44,7 @@ public class SpruceTextAreaScreen extends SpruceScreen {
 							}
 							this.textArea = textArea;
 						}, btn -> this.client.setScreen(this.parent));
-		this.addDrawableChild(containerWidget);
+		this.addDrawableSelectableElement(containerWidget);
 	}
 
 	@Override
