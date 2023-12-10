@@ -57,10 +57,10 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
 				(width, height) -> SpruceUITest.buildTextAreaContainer(Position.origin(), width, height,
 						textArea -> {
 						}, null));
-		this.addDrawableChild(this.tabbedWidget);
+		this.addDrawableSelectableElement(this.tabbedWidget);
 
 		// Add done button.
-		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
 				btn -> this.client.setScreen(this.parent)).asVanilla());
 	}
 }

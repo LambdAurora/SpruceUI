@@ -17,8 +17,8 @@ import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
+import net.minecraft.client.gui.widget.ClickableWidgetStateTextures;
 import net.minecraft.text.Text;
-import net.minecraft.unmapped.C_fajlgudl;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -41,9 +41,10 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	protected float alpha = 1.f;
 
 	/**
-	 * @see net.minecraft.client.gui.widget.PressableWidget#field_45339
+	 * @see net.minecraft.client.gui.widget.PressableWidget#TEXTURES
 	 */
-	protected static final C_fajlgudl BUTTON_TEXTURES = new C_fajlgudl(
+	protected static final ClickableWidgetStateTextures
+			BUTTON_TEXTURES = new ClickableWidgetStateTextures(
 			new Identifier("widget/button"), new Identifier("widget/button_disabled"), new Identifier("widget/button_highlighted")
 	);
 
@@ -139,7 +140,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	/* Rendering */
 
 	protected Identifier getTexture() {
-		return BUTTON_TEXTURES.method_52729(this.isActive(), this.isFocusedOrHovered());
+		return BUTTON_TEXTURES.getTexture(this.isActive(), this.isFocusedOrHovered());
 	}
 
 	@Override

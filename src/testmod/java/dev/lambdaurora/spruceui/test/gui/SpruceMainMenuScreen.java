@@ -36,15 +36,15 @@ public class SpruceMainMenuScreen extends SpruceScreen {
 		super.init();
 
 		int startY = this.height / 4 + 48;
-		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, Text.literal("Option Test"),
+		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, Text.literal("Option Test"),
 				btn -> this.client.setScreen(new SpruceOptionScreen(this))));
-		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Text.literal("Text Area Test"),
+		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Text.literal("Text Area Test"),
 				btn -> this.client.setScreen(new SpruceTextAreaScreen(this))));
-		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Text.literal("Tabbed Screen Test"),
+		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Text.literal("Tabbed Screen Test"),
 				btn -> this.client.setScreen(new SpruceTabbedTestScreen(this))));
 
 		// Add done button.
-		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
 				btn -> this.client.setScreen(this.parent)));
 	}
 
