@@ -54,7 +54,7 @@ public final class RenderUtil {
 		var bufferBuilder = tessellator.getBufferBuilder();
 		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, 1.f);
-		RenderSystem.setShaderTexture(0, Screen.OPTIONS_BACKGROUND_TEXTURE);
+		RenderSystem.setShaderTexture(0, Screen.MENU_BACKGROUND);
 
 		int right = x + width;
 		int bottom = y + height;

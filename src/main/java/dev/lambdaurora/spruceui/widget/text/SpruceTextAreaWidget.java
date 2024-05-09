@@ -27,6 +27,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.ChatUtil;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -319,7 +320,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 
 	@Override
 	protected boolean onCharTyped(char chr, int keyCode) {
-		if (!this.isEditorActive() || !SharedConstants.isValidChar(chr))
+		if (!this.isEditorActive() || !ChatUtil.method_57175(chr))
+			// method_57175 = isValidChar
 			return false;
 
 		if (this.isEditable()) {
