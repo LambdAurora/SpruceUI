@@ -28,7 +28,7 @@ import net.minecraft.util.math.MathHelper;
  * @since 1.0.0
  */
 public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
-	private static final Identifier TEXTURE = new Identifier("spruceui", "textures/gui/checkbox.png");
+	private static final Identifier TEXTURE = Identifier.of("spruceui", "textures/gui/checkbox.png");
 	private boolean showCross = false;
 	private boolean colored = false;
 

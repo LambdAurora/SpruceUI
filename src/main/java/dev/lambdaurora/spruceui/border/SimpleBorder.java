@@ -10,14 +10,12 @@
 package dev.lambdaurora.spruceui.border;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.Tessellator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormats;
+import com.mojang.blaze3d.vertex.*;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.unmapped.C_fpcijbbg;
 
 import java.util.Arrays;
 
@@ -58,9 +56,8 @@ public final class SimpleBorder implements Border {
 	@Override
 	public void render(GuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
 		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.getBufferBuilder();
+		var buffer = tessellator.method_60827(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
-		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		int x = widget.getX();
 		int y = widget.getY();
 		int right = x + widget.getWidth();
@@ -86,13 +83,16 @@ public final class SimpleBorder implements Border {
 		this.vertex(buffer, x + this.thickness, bottom, focused);
 		this.vertex(buffer, x + this.thickness, y, focused);
 		this.vertex(buffer, x, y, focused);
-		tessellator.draw();
-
+		C_fpcijbbg builtBuffer = buffer.method_60794();
+		if (builtBuffer != null) {
+			BufferRenderer.drawWithShader(builtBuffer);
+		}
+		tessellator.method_60828();
 	}
 
 	private void vertex(BufferBuilder buffer, int x, int y, boolean focused) {
 		int[] color = focused ? this.focusedColor : this.color;
-		buffer.vertex(x, y, 0).color(color[0], color[1], color[2], color[3]).next();
+		buffer.method_22912(x, y, 0).method_1336(color[0], color[1], color[2], color[3]);
 	}
 
 	@Override

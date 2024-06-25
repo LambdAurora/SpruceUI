@@ -12,6 +12,7 @@ package dev.lambdaurora.spruceui.hud.component;
 import dev.lambdaurora.spruceui.hud.HudComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.render.DeltaTracker;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -75,7 +76,7 @@ public class TextHudComponent extends HudComponent {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, float tickDelta) {
+	public void render(GuiGraphics graphics, DeltaTracker tickDelta) {
 		graphics.drawShadowedText(this.client.textRenderer, this.text, this.x, this.y, this.color);
 	}
 }
