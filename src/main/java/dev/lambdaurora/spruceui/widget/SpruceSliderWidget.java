@@ -35,9 +35,9 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	private String sign;
 	private boolean inUse = false;
 
-	private static final Identifier SLIDER = new Identifier("widget/slider");
-	private static final Identifier SLIDER_HANDLE = new Identifier("widget/slider_handle");
-	private static final Identifier SLIDER_HANDLE_HIGHLIGHTED = new Identifier("widget/slider_handle_highlighted");
+	private static final Identifier SLIDER = Identifier.ofDefault("widget/slider");
+	private static final Identifier SLIDER_HANDLE = Identifier.ofDefault("widget/slider_handle");
+	private static final Identifier SLIDER_HANDLE_HIGHLIGHTED = Identifier.ofDefault("widget/slider_handle_highlighted");
 
 	public SpruceSliderWidget(Position position, int width, int height, Text message, double value, Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
 		super(position, width, height, message);
