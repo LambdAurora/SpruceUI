@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 1.0.0
  */
 public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
-	private static final Identifier TEXTURE = new Identifier("spruceui", "textures/gui/toggle_switch.png");
+	private static final Identifier TEXTURE = Identifier.of("spruceui", "textures/gui/toggle_switch.png");
 
 	public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value) {
 		super(position, width, height, message, value);

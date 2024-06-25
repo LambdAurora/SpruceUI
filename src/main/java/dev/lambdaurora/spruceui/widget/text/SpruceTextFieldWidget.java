@@ -11,6 +11,7 @@ package dev.lambdaurora.spruceui.widget.text;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferRenderer;
 import com.mojang.blaze3d.vertex.Tessellator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
@@ -28,6 +29,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.unmapped.C_fpcijbbg;
 import net.minecraft.util.ChatUtil;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
@@ -470,17 +472,20 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		int y2 = lineY + this.client.textRenderer.fontHeight;
 
 		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.getBufferBuilder();
+		var buffer = tessellator.method_60827(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
 		RenderSystem.enableColorLogicOp();
 		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
 		RenderSystem.setShader(GameRenderer::getPositionShader);
 		RenderSystem.setShaderColor(0.f, 0.f, 255.f, 255.f);
-		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
-		buffer.vertex(x, y2, 0.d).next();
-		buffer.vertex(x2, y2, 0.d).next();
-		buffer.vertex(x2, lineY, 0.d).next();
-		buffer.vertex(x, lineY, 0.d).next();
-		tessellator.draw();
+		buffer.method_22912(x, y2, 0.f);
+		buffer.method_22912(x2, y2, 0.f);
+		buffer.method_22912(x2, lineY, 0.f);
+		buffer.method_22912(x, lineY, 0.f);
+		C_fpcijbbg builtBuffer = buffer.method_60794();
+		if (builtBuffer != null) {
+			BufferRenderer.drawWithShader(builtBuffer);
+		}
+		tessellator.method_60828();
 		RenderSystem.disableColorLogicOp();
 	}
 
