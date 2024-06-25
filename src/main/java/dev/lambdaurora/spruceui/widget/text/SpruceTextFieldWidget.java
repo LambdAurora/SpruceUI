@@ -19,7 +19,6 @@ import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.util.ColorUtil;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
@@ -29,6 +28,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.util.ChatUtil;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -334,7 +334,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 
 	@Override
 	protected boolean onCharTyped(char chr, int keyCode) {
-		if (!this.isEditorActive() || !SharedConstants.isValidChar(chr))
+		if (!this.isEditorActive() || !ChatUtil.method_57175(chr))
 			return false;
 
 		if (this.isActive()) {

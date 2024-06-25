@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.4.+'
+	id 'fabric-loom' version '1.6.+'
 	id 'dev.yumi.gradle.licenser' version '1.0.+'
 	id 'java-library'
 	id 'maven-publish'
@@ -12,7 +12,7 @@ version = "${project.mod_version}+${getMCVersionString()}"
 base.archivesName = project.archives_base_name
 
 // This field defines the Java version your mod target.
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 
 Set<String> modules = [
 		'fabric-api-base',

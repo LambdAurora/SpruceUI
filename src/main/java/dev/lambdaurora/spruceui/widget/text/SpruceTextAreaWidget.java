@@ -19,13 +19,13 @@ import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.util.MultilineText;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.text.Text;
+import net.minecraft.util.ChatUtil;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -319,7 +319,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 
 	@Override
 	protected boolean onCharTyped(char chr, int keyCode) {
-		if (!this.isEditorActive() || !SharedConstants.isValidChar(chr))
+		if (!this.isEditorActive() || !ChatUtil.method_57175(chr))
 			return false;
 
 		if (this.isEditable()) {
