@@ -36,8 +36,7 @@
     "modmenu": {
       "badges": [ "library" ],
       "links": {
-        "modmenu.discord": "https://discord.lambdaurora.dev/",
-        "modmenu.twitter": "https://twitter.com/LambdAurora"
+        "modmenu.discord": "https://discord.lambdaurora.dev/"
       }
     }
   }

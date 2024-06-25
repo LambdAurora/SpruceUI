@@ -40,18 +40,18 @@ public interface SpruceWidget extends SprucePositioned, SpruceElement, Selectabl
 	}
 
 	/**
-	 * Returns whether the widget is visible or not.
-	 *
-	 * @return {@code true} if the widget is visible, else {@code false}
+	 * {@return the X coordinate of the end of this widget}
 	 */
-	boolean isVisible();
+	default int getEndX() {
+		return this.getX() + this.getWidth();
+	}
 
 	/**
-	 * Sets whether the widget is visible or not.
-	 *
-	 * @param visible {@code true} if the widget is visible, else {@code false}
+	 * {@return the Y coordinate of the end of this widget}
 	 */
-	void setVisible(boolean visible);
+	default int getEndY() {
+		return this.getY() + this.getHeight();
+	}
 
 	/**
 	 * Returns the widget width.
@@ -66,6 +66,20 @@ public interface SpruceWidget extends SprucePositioned, SpruceElement, Selectabl
 	 * @return the height
 	 */
 	int getHeight();
+
+	/**
+	 * Returns whether the widget is visible or not.
+	 *
+	 * @return {@code true} if the widget is visible, else {@code false}
+	 */
+	boolean isVisible();
+
+	/**
+	 * Sets whether the widget is visible or not.
+	 *
+	 * @param visible {@code true} if the widget is visible, else {@code false}
+	 */
+	void setVisible(boolean visible);
 
 	/**
 	 * Returns whether this widget is active or not.

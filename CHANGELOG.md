@@ -64,3 +64,8 @@
 
 - Updated to Minecraft 1.20.2 ([#46](https://github.com/LambdAurora/SpruceUI/pull/46)).
 - Added Tatar translations ([#44](https://github.com/LambdAurora/SpruceUI/pull/44)).
+
+## 5.1.0
+
+- Updated to Minecraft 1.20.6 ([#51](https://github.com/LambdAurora/SpruceUI/pull/51)).
+- Added `MenuBackground` and `MenuBorder` to adapt to Minecraft's new GUI design.

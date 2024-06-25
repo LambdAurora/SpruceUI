@@ -12,6 +12,7 @@ package dev.lambdaurora.spruceui.widget.container.tabbed;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.EmptyBackground;
+import dev.lambdaurora.spruceui.border.MenuBorder;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceSeparatorWidget;
@@ -350,6 +351,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
 		protected SideTabList(Position position, int width, int height) {
 			super(position, width, height, 0, SpruceTabbedWidget.Entry.class);
+			this.setBorder(MenuBorder.TAB_LIST);
 			this.setRenderTransition(false);
 		}
 
