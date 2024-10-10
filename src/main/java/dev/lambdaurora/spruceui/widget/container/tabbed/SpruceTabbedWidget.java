@@ -20,7 +20,7 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
@@ -152,14 +152,14 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	/* Render */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
 		if (this.title != null) {
-			graphics.drawCenteredShadowedText(this.client.textRenderer, this.title, this.getX() + this.list.getWidth() / 2,
+			context.drawCenteredTextWithShadow(this.client.textRenderer, this.title, this.getX() + this.list.getWidth() / 2,
 					this.getY() + 6, 0xffffffff);
 		}
-		this.list.render(graphics, mouseX, mouseY, delta);
+		this.list.render(context, mouseX, mouseY, delta);
 		if (this.list.getCurrentTab() != null)
-			this.list.getCurrentTab().container.render(graphics, mouseX, mouseY, delta);
+			this.list.getCurrentTab().container.render(context, mouseX, mouseY, delta);
 	}
 
 	public static abstract class Entry extends SpruceEntryListWidget.Entry implements WithBackground {
@@ -199,8 +199,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Rendering */
 
 		@Override
-		protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-			this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
+		protected void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+			this.getBackground().render(context, this, 0, mouseX, mouseY, delta);
 		}
 	}
 
@@ -254,31 +254,31 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Render */
 
 		@Override
-		protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
 			int y = this.getY() + 4;
 			for (var it = this.title.iterator(); it.hasNext(); y += 9) {
 				var line = it.next();
-				graphics.drawText(this.client.textRenderer, line, this.getX() + 4, y, 0xffffff, false);
+				context.drawText(this.client.textRenderer, line, this.getX() + 4, y, 0xffffff, false);
 			}
 			if (this.description != null) {
 				y += 4;
 				for (var it = this.description.iterator(); it.hasNext(); y += 9) {
 					var line = it.next();
-					graphics.drawText(this.client.textRenderer, line, this.getX() + 8, y, 0xffffff, false);
+					context.drawText(this.client.textRenderer, line, this.getX() + 8, y, 0xffffff, false);
 				}
 			}
 		}
 
 		@Override
-		protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-			super.renderBackground(graphics, mouseX, mouseY, delta);
+		protected void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+			super.renderBackground(context, mouseX, mouseY, delta);
 			if (this.isFocused() && this.parent.isFocused())
-				graphics.fill(this.getX(), this.getY(),
+				context.fill(this.getX(), this.getY(),
 						this.getX() + this.getWidth(),
 						this.getY() + this.getHeight() - 4,
 						0x2fffffff);
 			else if (this.selected || this.isMouseHovered())
-				graphics.fill(this.getX(), this.getY(), this.getX() + this.getWidth(),
+				context.fill(this.getX(), this.getY(), this.getX() + this.getWidth(),
 						this.getY() + this.getHeight() - 4,
 						0x1affffff);
 		}
@@ -330,8 +330,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Rendering */
 
 		@Override
-		protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-			this.separatorWidget.render(graphics, mouseX, mouseY, delta);
+		protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+			this.separatorWidget.render(context, mouseX, mouseY, delta);
 		}
 
 		@Override

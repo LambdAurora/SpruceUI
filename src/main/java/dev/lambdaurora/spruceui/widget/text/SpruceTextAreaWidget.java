@@ -11,10 +11,6 @@ package dev.lambdaurora.spruceui.widget.text;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferRenderer;
-import com.mojang.blaze3d.vertex.Tessellator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormats;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
@@ -22,12 +18,12 @@ import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.util.MultilineText;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gl.ShaderProgramKeys;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.*;
 import net.minecraft.text.Text;
-import net.minecraft.unmapped.C_fpcijbbg;
-import net.minecraft.util.ChatUtil;
+import net.minecraft.util.StringHelper;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -321,7 +317,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 
 	@Override
 	protected boolean onCharTyped(char chr, int keyCode) {
-		if (!this.isEditorActive() || !ChatUtil.method_57175(chr))
+		if (!this.isEditorActive() || !StringHelper.isValidChar(chr))
 			return false;
 
 		if (this.isEditable()) {
@@ -447,19 +443,19 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		super.renderWidget(graphics, mouseX, mouseY, delta);
+	protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+		super.renderWidget(context, mouseX, mouseY, delta);
 
-		this.drawText(graphics);
-		this.drawCursor(graphics);
+		this.drawText(context);
+		this.drawCursor(context);
 	}
 
 	/**
 	 * Draws the text of the text area.
 	 *
-	 * @param graphics the GUI graphics instance to render with
+	 * @param context the draw context to render with
 	 */
-	protected void drawText(GuiGraphics graphics) {
+	protected void drawText(DrawContext context) {
 		int length = Math.min(this.lines.size(), this.displayedLines);
 
 		int textColor = this.getTextColor();
@@ -472,8 +468,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 				continue;
 			if (line.endsWith("\n")) line = line.substring(0, line.length() - 1);
 
-			graphics.drawShadowedText(this.textRenderer, Text.literal(line), textX, lineY, textColor);
-			this.drawSelection(graphics, line, lineY, row);
+			context.drawTextWithShadow(this.textRenderer, Text.literal(line), textX, lineY, textColor);
+			this.drawSelection(context, line, lineY, row);
 
 			lineY += this.textRenderer.fontHeight;
 		}
@@ -482,12 +478,12 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	/**
 	 * Draws the selection over the text.
 	 *
-	 * @param graphics the GUI graphics instance to render with
+	 * @param context the draw context to render with
 	 * @param line the current line
 	 * @param lineY the line Y-coordinates
 	 * @param row the row number
 	 */
-	protected void drawSelection(GuiGraphics graphics, String line, int lineY, int row) {
+	protected void drawSelection(DrawContext context, String line, int lineY, int row) {
 		if (!this.isFocused())
 			return;
 		if (!this.selection.isRowSelected(row))
@@ -514,20 +510,20 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		int y2 = lineY + this.textRenderer.fontHeight;
 
 		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.method_60827(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
+		var buffer = tessellator.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
 		RenderSystem.enableColorLogicOp();
 		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
-		RenderSystem.setShader(GameRenderer::getPositionShader);
+		RenderSystem.setShader(ShaderProgramKeys.POSITION);
 		RenderSystem.setShaderColor(0.0f, 0.0f, 1.0f, 1.0f);
-		buffer.method_22912(x, y2, 0.f);
-		buffer.method_22912(x2, y2, 0.f);
-		buffer.method_22912(x2, lineY, 0.f);
-		buffer.method_22912(x, lineY, 0.f);
-		C_fpcijbbg builtBuffer = buffer.method_60794();
+		buffer.vertex(x, y2, 0.f);
+		buffer.vertex(x2, y2, 0.f);
+		buffer.vertex(x2, lineY, 0.f);
+		buffer.vertex(x, lineY, 0.f);
+		BuiltBuffer builtBuffer = buffer.endNullable();
 		if (builtBuffer != null) {
-			BufferRenderer.drawWithShader(builtBuffer);
+			BufferRenderer.drawWithGlobalProgram(builtBuffer);
 		}
-		tessellator.method_60828();
+		tessellator.clear();
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.disableColorLogicOp();
 	}
@@ -535,13 +531,13 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	/**
 	 * Draws the cursor.
 	 *
-	 * @param graphics the GUI graphics instance to render with
+	 * @param context the draw context to render with
 	 */
-	protected void drawCursor(GuiGraphics graphics) {
+	protected void drawCursor(DrawContext context) {
 		if (!this.isFocused())
 			return;
 		if (this.lines.isEmpty()) {
-			graphics.drawShadowedText(this.textRenderer, Text.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
+			context.drawTextWithShadow(this.textRenderer, Text.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
 			return;
 		}
 
@@ -553,9 +549,9 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		int cursorY = this.getY() + 4 + actualRow * this.textRenderer.fontHeight;
 
 		if (this.cursor.row < this.lines.size() - 1 || this.cursor.column < cursorLine.length() || this.doesLineOccupyFullSpace(cursorLine))
-			graphics.fill(cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
+			context.fill(cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
 		else
-			graphics.drawShadowedText(this.textRenderer, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
+			context.drawTextWithShadow(this.textRenderer, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
 	}
 
 	/**

@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.background;
 
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
 
 /**
@@ -21,5 +21,5 @@ import net.minecraft.client.util.math.MatrixStack;
  * @since 2.0.0
  */
 public interface Background {
-	void render(GuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta);
+	void render(DrawContext context, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta);
 }

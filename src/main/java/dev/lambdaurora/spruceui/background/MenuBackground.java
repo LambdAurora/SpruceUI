@@ -14,7 +14,8 @@ import dev.lambdaurora.spruceui.SpruceTextures;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
 /**
@@ -35,7 +36,7 @@ public record MenuBackground(Identifier texture, Identifier inWorldTexture) impl
 	);
 
 	@Override
-	public void render(GuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
+	public void render(DrawContext context, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
 		int x = widget.getX();
 		int y = widget.getY();
 		int endX = widget.getEndX();
@@ -57,7 +58,8 @@ public record MenuBackground(Identifier texture, Identifier inWorldTexture) impl
 
 		RenderSystem.enableBlend();
 		Identifier identifier = CLIENT.world == null ? this.inWorldTexture : this.texture;
-		graphics.drawTexture(
+		context.drawTexture(
+				RenderLayer::getGuiTexturedOverlay,
 				identifier,
 				x, y,
 				endX, endY,

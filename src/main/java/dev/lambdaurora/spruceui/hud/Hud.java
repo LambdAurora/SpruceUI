@@ -12,9 +12,8 @@ package dev.lambdaurora.spruceui.hud;
 import com.google.common.collect.ImmutableList;
 import dev.lambdaurora.spruceui.util.Identifiable;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.render.DeltaTracker;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -101,8 +100,8 @@ public abstract class Hud implements Identifiable {
 	 * @param deltaTracker Progress for linearly interpolating between the previous and current game state.
 	 * @see #isEnabled()
 	 */
-	public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
-		this.components.stream().filter(HudComponent::isEnabled).forEach(component -> component.render(graphics, deltaTracker));
+	public void render(DrawContext context, RenderTickCounter deltaTracker) {
+		this.components.stream().filter(HudComponent::isEnabled).forEach(component -> component.render(context, deltaTracker));
 	}
 
 	/**
