@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.border;
 
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.DrawContext;
 
 /**
  * Represents an empty border.
@@ -26,7 +26,7 @@ public final class EmptyBorder implements Border {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
+	public void render(DrawContext context, SpruceWidget widget, int mouseX, int mouseY, float delta) {
 	}
 
 	@Override

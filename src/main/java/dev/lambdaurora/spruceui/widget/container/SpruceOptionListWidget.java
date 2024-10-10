@@ -15,7 +15,7 @@ import dev.lambdaurora.spruceui.navigation.NavigationUtils;
 import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.text.Text;
@@ -218,8 +218,8 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 		/* Rendering */
 
 		@Override
-		protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-			this.forEach(widget -> widget.render(graphics, mouseX, mouseY, delta));
+		protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+			this.forEach(widget -> widget.render(context, mouseX, mouseY, delta));
 		}
 
 		/* Narration */

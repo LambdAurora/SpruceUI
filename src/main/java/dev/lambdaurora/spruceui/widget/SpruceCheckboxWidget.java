@@ -13,7 +13,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -87,22 +88,22 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
 		float[] oldColor = RenderSystem.getShaderColor();
 		float oldRed = oldColor[0], oldGreen = oldColor[1], oldBlue = oldColor[2], oldAlpha = oldColor[3];
 
 		if (this.getValue()) {
 			if (this.colored)
 				RenderSystem.setShaderColor(0.f, 1.f, 0.f, this.alpha);
-			graphics.drawTexture(TEXTURE, this.getX(), this.getY(), 0.f, 40.f, this.getHeight(), this.getHeight(), 64, 64);
+			context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, this.getX(), this.getY(), 0.f, 40.f, this.getHeight(), this.getHeight(), 64, 64);
 		} else if (this.showCross) {
 			if (this.colored)
 				RenderSystem.setShaderColor(1.f, 0.f, 0.f, this.alpha);
-			graphics.drawTexture(TEXTURE, this.getX(), this.getY(), 0.f, 20.f, this.getHeight(), this.getHeight(), 64, 64);
+			context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, this.getX(), this.getY(), 0.f, 20.f, this.getHeight(), this.getHeight(), 64, 64);
 		}
 
 		if (this.colored) {
@@ -111,20 +112,20 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 
 		if (this.showMessage) {
 			OrderedText message = Language.getInstance().reorder(this.client.textRenderer.trimToWidth(this.getMessage(), this.getWidth() - this.getHeight() - 4));
-			graphics.drawShadowedText(MinecraftClient.getInstance().textRenderer, message, this.getX() + this.getHeight() + 4, this.getY() + (this.getHeight() - 8) / 2,
+			context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, message, this.getX() + this.getHeight() + 4, this.getY() + (this.getHeight() - 8) / 2,
 					14737632 | MathHelper.ceil(this.alpha * 255.0F) << 24);
 		}
 	}
 
 	@Override
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
 		RenderSystem.enableDepthTest();
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.alpha);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		graphics.drawTexture(TEXTURE, this.getX(), this.getY(), this.isFocusedOrHovered() ? 20.f : 0.f, 0.f, this.getHeight(), this.getHeight(), 64, 64);
+		RenderSystem.blendFunc(GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA);
+		context.drawTexture(RenderLayer::getGuiTexturedOverlay, TEXTURE, this.getX(), this.getY(), this.isFocusedOrHovered() ? 20.f : 0.f, 0.f, this.getHeight(), this.getHeight(), 64, 64);
 	}
 
 	/* Narration */

@@ -14,10 +14,11 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.gui.widget.ClickableWidgetStateTextures;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -43,9 +44,9 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	/**
 	 * @see net.minecraft.client.gui.widget.PressableWidget#TEXTURES
 	 */
-	protected static final ClickableWidgetStateTextures
-			BUTTON_TEXTURES = new ClickableWidgetStateTextures(
-			Identifier.ofDefault("widget/button"), Identifier.ofDefault("widget/button_disabled"), Identifier.ofDefault("widget/button_highlighted")
+	protected static final ButtonTextures
+			BUTTON_TEXTURES = new ButtonTextures(
+			Identifier.ofVanilla("widget/button"), Identifier.ofVanilla("widget/button_disabled"), Identifier.ofVanilla("widget/button_highlighted")
 	);
 
 	public AbstractSpruceButtonWidget(Position position, int width, int height, Text message) {
@@ -140,31 +141,31 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	/* Rendering */
 
 	protected Identifier getTexture() {
-		return BUTTON_TEXTURES.getTexture(this.isActive(), this.isFocusedOrHovered());
+		return BUTTON_TEXTURES.get(this.isActive(), this.isFocusedOrHovered());
 	}
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.renderButton(graphics, mouseX, mouseY, delta);
+	protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+		this.renderButton(context, mouseX, mouseY, delta);
 		if (!this.dragging)
 			Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks,
 					i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
 	}
 
-	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
 		int color = this.active ? 16777215 : 10526880;
-		graphics.drawCenteredShadowedText(this.client.textRenderer, this.getMessage(),
+		context.drawCenteredTextWithShadow(this.client.textRenderer, this.getMessage(),
 				this.getX() + this.getWidth() / 2, this.getY() + (this.getHeight() - 8) / 2,
 				color | MathHelper.ceil(this.alpha * 255.0F) << 24);
 	}
 
 	@Override
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.getAlpha());
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.enableDepthTest();
-		graphics.drawGuiTexture(this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+		context.drawGuiTexture(RenderLayer::getGuiTexturedOverlay, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
 
 	/* Narration */

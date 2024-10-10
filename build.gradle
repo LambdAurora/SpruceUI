@@ -56,14 +56,14 @@ configurations {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "org.quiltmc:quilt-mappings:${minecraft_version}+build.${quilt_mappings}:intermediary-v2"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modules.stream().map { fabricApi.module(it, project.fabric_api_version) }.forEach {
 		modImplementation it
 	}
 
-	modLocalRuntime("com.terraformersmc:modmenu:${project.modmenu_version}") {
+	modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") {
 		transitive = false
 	}
 	modLocalRuntime fabricApi.module("fabric-key-binding-api-v1", project.fabric_api_version)

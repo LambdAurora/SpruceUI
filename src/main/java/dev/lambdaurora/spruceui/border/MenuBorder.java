@@ -13,7 +13,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.SpruceTextures;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.util.Identifier;
 
 /**
@@ -35,7 +36,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 	public static final MenuBorder TAB_LIST = new MenuBorder(true, true, true, false);
 
 	@Override
-	public void render(GuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
+	public void render(DrawContext context, SpruceWidget widget, int mouseX, int mouseY, float delta) {
 		RenderSystem.enableBlend();
 
 		if (this.top) {
@@ -47,14 +48,14 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 				width -= THICKNESS;
 			}
 
-			graphics.drawTexture(topTexture,
+			context.drawTexture(RenderLayer::getGuiTextured, topTexture,
 					widget.getX(), widget.getY(), 0, 0, width, THICKNESS, 32, THICKNESS
 			);
 		}
 
 		if (this.top && this.right) {
 			Identifier cornerTexture = CLIENT.world == null ? SpruceTextures.MENU_TOP_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_TOP_RIGHT_BORDER;
-			graphics.drawTexture(cornerTexture,
+			context.drawTexture(RenderLayer::getGuiTextured, cornerTexture,
 					widget.getEndX() - THICKNESS, widget.getY(), 0, 0, THICKNESS, THICKNESS, THICKNESS, THICKNESS
 			);
 		}
@@ -74,7 +75,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 				height -= THICKNESS;
 			}
 
-			graphics.drawTexture(rightTexture,
+			context.drawTexture(RenderLayer::getGuiTextured, rightTexture,
 					widget.getEndX() - THICKNESS, y, 0, 0, THICKNESS, height, THICKNESS, 32
 			);
 		}
@@ -82,7 +83,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 		if (this.bottom && this.right) {
 			Identifier cornerTexture = CLIENT.world == null
 					? SpruceTextures.MENU_BOTTOM_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_BOTTOM_RIGHT_BORDER;
-			graphics.drawTexture(cornerTexture,
+			context.drawTexture(RenderLayer::getGuiTextured, cornerTexture,
 					widget.getEndX() - THICKNESS, widget.getEndY() - THICKNESS, 0, 0, THICKNESS, THICKNESS, THICKNESS, THICKNESS
 			);
 		}
@@ -96,7 +97,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 				width -= THICKNESS;
 			}
 
-			graphics.drawTexture(bottomTexture,
+			context.drawTexture(RenderLayer::getGuiTextured, bottomTexture,
 					widget.getX(), widget.getEndY() - THICKNESS, 0, 0, width, THICKNESS, 32, THICKNESS
 			);
 		}

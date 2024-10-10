@@ -17,7 +17,7 @@ import dev.lambdaurora.spruceui.border.EmptyBorder;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.DrawContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,14 +78,14 @@ public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidg
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.forEach(child -> child.render(graphics, mouseX, mouseY, delta));
-		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
+	protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+		this.forEach(child -> child.render(context, mouseX, mouseY, delta));
+		this.getBorder().render(context, this, mouseX, mouseY, delta);
 	}
 
 	@Override
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
+	protected void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+		this.getBackground().render(context, this, 0, mouseX, mouseY, delta);
 	}
 
 	public interface ChildrenFactory {

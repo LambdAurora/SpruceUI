@@ -16,7 +16,7 @@ import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.test.SpruceUITest;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
@@ -53,17 +53,17 @@ public class SpruceOptionScreen extends SpruceScreen {
 			this.init(this.client, this.client.getWindow().getScaledWidth(), this.client.getWindow().getScaledHeight());
 		};
 
-		this.addDrawableSelectableElement(this.list);
+		this.addDrawableChild(this.list);
 
 		// Add reset button. You can add option buttons outside a button list widget. GameOptions instance is required because of Vanilla limitations.
 		//this.addButton(this.resetOption.createButton(this.client.options, this.width / 2 - 155, this.height - 29, 150));
 		// Add done button.
-		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+		this.addDrawableChild(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
 				btn -> this.client.setScreen(this.parent)).asVanilla());
 	}
 
 	@Override
-	public void renderTitle(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-		guiGraphics.drawCenteredShadowedText(this.textRenderer, this.title, this.width / 2, 8, 16777215);
+	public void renderTitle(DrawContext context, int mouseX, int mouseY, float delta) {
+		context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 8, 16777215);
 	}
 }
