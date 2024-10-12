@@ -10,9 +10,9 @@
 package dev.lambdaurora.spruceui.hud;
 
 import dev.lambdaurora.spruceui.util.Identifiable;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.render.DeltaTracker;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -40,7 +40,7 @@ public abstract class HudComponent implements Identifiable {
 	 * @return This component's translation key.
 	 */
 	public String getTranslationKey() {
-		return this.identifier.getNamespace() + ".hud.component." + this.identifier.getPath();
+		return this.identifier.namespace() + ".hud.component." + this.identifier.path();
 	}
 
 	/**

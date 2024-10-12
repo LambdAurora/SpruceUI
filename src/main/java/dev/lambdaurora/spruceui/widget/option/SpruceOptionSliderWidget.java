@@ -12,7 +12,7 @@ package dev.lambdaurora.spruceui.widget.option;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.option.SpruceDoubleOption;
 import dev.lambdaurora.spruceui.widget.SpruceSliderWidget;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
 
 /**
  * Represents an option slider widget.

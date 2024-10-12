@@ -21,8 +21,8 @@ import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
+import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -154,7 +154,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	@Override
 	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.title != null) {
-			graphics.drawCenteredShadowedText(this.client.textRenderer, this.title, this.getX() + this.list.getWidth() / 2,
+			graphics.drawCenteredShadowedText(this.client.font, this.title, this.getX() + this.list.getWidth() / 2,
 					this.getY() + 6, 0xffffffff);
 		}
 		this.list.render(graphics, mouseX, mouseY, delta);
@@ -205,16 +205,16 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	}
 
 	public static class TabEntry extends Entry {
-		private final List<OrderedText> title;
-		private final List<OrderedText> description;
+		private final List<FormattedCharSequence> title;
+		private final List<FormattedCharSequence> description;
 		private final AbstractSpruceWidget container;
 		private boolean selected;
 
 		protected TabEntry(SideTabList parent, Text title, @Nullable Text description, AbstractSpruceWidget container) {
 			super(parent, title);
-			this.title = this.client.textRenderer.wrapLines(title, this.parent.getWidth() - 18);
+			this.title = this.client.font.wrapLines(title, this.parent.getWidth() - 18);
 			if (description == null) this.description = null;
-			else this.description = this.client.textRenderer.wrapLines(description, this.parent.getWidth() - 18);
+			else this.description = this.client.font.wrapLines(description, this.parent.getWidth() - 18);
 			this.container = container;
 
 			if (container instanceof SpruceEntryListWidget<?> listWidget) {
@@ -224,8 +224,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
 		@Override
 		public int getHeight() {
-			return 4 + (this.title.size() * this.client.textRenderer.fontHeight + 4)
-					+ (this.description == null ? 0 : this.description.size() * this.client.textRenderer.fontHeight + 4) + 4;
+			return 4 + (this.title.size() * this.client.font.lineHeight + 4)
+					+ (this.description == null ? 0 : this.description.size() * this.client.font.lineHeight + 4) + 4;
 		}
 
 		public boolean isSelected() {
@@ -258,13 +258,13 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 			int y = this.getY() + 4;
 			for (var it = this.title.iterator(); it.hasNext(); y += 9) {
 				var line = it.next();
-				graphics.drawText(this.client.textRenderer, line, this.getX() + 4, y, 0xffffff, false);
+				graphics.drawText(this.client.font, line, this.getX() + 4, y, 0xffffff, false);
 			}
 			if (this.description != null) {
 				y += 4;
 				for (var it = this.description.iterator(); it.hasNext(); y += 9) {
 					var line = it.next();
-					graphics.drawText(this.client.textRenderer, line, this.getX() + 8, y, 0xffffff, false);
+					graphics.drawText(this.client.font, line, this.getX() + 8, y, 0xffffff, false);
 				}
 			}
 		}

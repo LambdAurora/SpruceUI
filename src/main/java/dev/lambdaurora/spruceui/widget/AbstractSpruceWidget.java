@@ -11,14 +11,15 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.Util;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Text;
+import net.minecraft.sounds.SoundEvents;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -29,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 2.0.0
  */
 public abstract class AbstractSpruceWidget implements SpruceWidget {
-	protected final MinecraftClient client = MinecraftClient.getInstance();
+	protected final Minecraft client = Minecraft.getInstance();
 	protected final Position position;
 	private boolean visible;
 	protected int width;
@@ -82,10 +83,10 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	}
 
 	@Override
-	public SelectionType getType() {
-		if (this.focused) return SelectionType.FOCUSED;
-		else if (this.hovered) return SelectionType.HOVERED;
-		else return SelectionType.NONE;
+	public @NotNull NarrationPriority narrationPriority() {
+		if (this.focused) return NarrationPriority.FOCUSED;
+		else if (this.hovered) return NarrationPriority.HOVERED;
+		else return NarrationPriority.NONE;
 	}
 
 	@Override
@@ -161,7 +162,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 		boolean result = this.onMouseDrag(mouseX, mouseY, button, deltaX, deltaY);
 		if (result) {
 			this.dragging = true;
-			this.lastDrag = Util.getMeasuringTimeMs();
+			this.lastDrag = Util.getMillis();
 		}
 		return result;
 	}
@@ -257,7 +258,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 					&& mouseX < this.getX() + this.getWidth() && mouseY < this.getY() + this.getHeight();
 
 			if (this.dragging && !this.isMouseHovered()) {
-				if (Util.getMeasuringTimeMs() - this.lastDrag > 60) {
+				if (Util.getMillis() - this.lastDrag > 60) {
 					this.dragging = false;
 				}
 			}
@@ -295,16 +296,16 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	/* Sound */
 
 	public void playDownSound() {
-		this.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK.value(), 1.f));
+		this.client.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK.value(), 1.f));
 	}
 
 	/* Narration */
 
 	@Override
-	public void appendNarrations(NarrationMessageBuilder builder) {
+	public void updateNarration(NarrationElementOutput builder) {
 		var narrationMessage = this.getNarrationMessage();
 		if (narrationMessage != null)
-			builder.put(NarrationPart.TITLE, narrationMessage);
+			builder.add(NarratedElementType.TITLE, narrationMessage);
 	}
 
 	/**

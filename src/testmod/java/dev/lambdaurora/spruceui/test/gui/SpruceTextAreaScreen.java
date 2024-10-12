@@ -14,8 +14,8 @@ import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.test.SpruceUITest;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -44,11 +44,11 @@ public class SpruceTextAreaScreen extends SpruceScreen {
 							}
 							this.textArea = textArea;
 						}, btn -> this.client.setScreen(this.parent));
-		this.addDrawableSelectableElement(containerWidget);
+		this.addRenderableWidget(containerWidget);
 	}
 
 	@Override
 	public void renderTitle(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-		guiGraphics.drawCenteredShadowedText(this.textRenderer, this.title, this.width / 2, 8, 16777215);
+		guiGraphics.drawCenteredShadowedText(this.font, this.title, this.width / 2, 8, 16777215);
 	}
 }

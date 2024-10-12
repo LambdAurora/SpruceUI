@@ -19,7 +19,7 @@ import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
 
 /**
  * Represents a text input widget.

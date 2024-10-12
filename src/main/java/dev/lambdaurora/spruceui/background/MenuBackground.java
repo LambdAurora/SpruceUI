@@ -13,9 +13,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.SpruceTextures;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBorder;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 /**
  * Represents a background used for menus.
@@ -27,7 +27,7 @@ import net.minecraft.util.Identifier;
  * @since 5.1.0
  */
 public record MenuBackground(Identifier texture, Identifier inWorldTexture) implements Background {
-	private static final MinecraftClient CLIENT = MinecraftClient.getInstance();
+	private static final Minecraft CLIENT = Minecraft.getInstance();
 
 	public static final MenuBackground MENU_LIST = new MenuBackground(
 			SpruceTextures.MENU_LIST_BACKGROUND,
@@ -56,7 +56,7 @@ public record MenuBackground(Identifier texture, Identifier inWorldTexture) impl
 		}
 
 		RenderSystem.enableBlend();
-		Identifier identifier = CLIENT.world == null ? this.inWorldTexture : this.texture;
+		Identifier identifier = CLIENT.level == null ? this.inWorldTexture : this.texture;
 		graphics.drawTexture(
 				identifier,
 				x, y,

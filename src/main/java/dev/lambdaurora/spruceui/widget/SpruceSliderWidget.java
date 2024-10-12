@@ -14,8 +14,8 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Text;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.function.Consumer;

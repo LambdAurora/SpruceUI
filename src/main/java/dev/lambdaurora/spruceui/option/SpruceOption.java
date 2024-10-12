@@ -12,8 +12,8 @@ package dev.lambdaurora.spruceui.option;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.util.Nameable;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.Text;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -37,7 +37,7 @@ public abstract class SpruceOption implements Nameable {
 
 	@Override
 	public String getName() {
-		return I18n.translate(this.key);
+		return I18n.get(this.key);
 	}
 
 	public Optional<Text> getOptionTooltip() {

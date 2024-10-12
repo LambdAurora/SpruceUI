@@ -17,9 +17,9 @@ import dev.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.toast.SystemToast;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -107,10 +107,10 @@ public class SpruceUITest implements ClientModInitializer {
 		// Choose whatever action this option should do.
 		this.actionOption = SpruceSimpleActionOption.of("spruceui_test.option.action",
 				btn -> {
-					MinecraftClient client = MinecraftClient.getInstance();
-					SystemToast toast = SystemToast.create(client, SystemToast.Id.PERIODIC_NOTIFICATION,
+					Minecraft client = Minecraft.getInstance();
+					SystemToast toast = SystemToast.multiline(client, SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
 							Text.literal("Action button pressed!"), Text.literal("I'm a result of the action"));
-					client.getToastManager().add(toast);
+					client.getToasts().addToast(toast);
 				},
 				Text.literal("Represents an option with a simple action.\n"
 						+ "It's used like a normal button and a press callback."));

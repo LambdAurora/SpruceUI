@@ -26,11 +26,10 @@ import dev.lambdaurora.spruceui.widget.WithBackground;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.text.Text;
-import net.minecraft.unmapped.C_fpcijbbg;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -343,7 +342,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 
 		RenderSystem.enableBlend();
 		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.method_60827(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+		var buffer = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 		// Render the transition thingy.
 		if (this.shouldRenderTransition()) {
 			RenderSystem.blendFuncSeparate(
@@ -352,30 +351,30 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 			);
 			RenderSystem.setShader(GameRenderer::getPositionColorShader);
 			// TOP
-			buffer.method_22912(left, top + 4, 0).method_1336(0, 0, 0, 0);
-			buffer.method_22912(right, top + 4, 0).method_1336(0, 0, 0, 0);
-			buffer.method_22912(right, top, 0).method_1336(0, 0, 0, 255);
-			buffer.method_22912(left, top, 0).method_1336(0, 0, 0, 255);
+			buffer.addVertex(left, top + 4, 0).color(0, 0, 0, 0);
+			buffer.addVertex(right, top + 4, 0).color(0, 0, 0, 0);
+			buffer.addVertex(right, top, 0).color(0, 0, 0, 255);
+			buffer.addVertex(left, top, 0).color(0, 0, 0, 255);
 			// RIGHT
-			buffer.method_22912(right - 4, bottom, 0).method_1336(0, 0, 0, 0);
-			buffer.method_22912(right, bottom, 0).method_1336(0, 0, 0, 255);
-			buffer.method_22912(right, top, 0).method_1336(0, 0, 0, 255);
-			buffer.method_22912(right - 4, top, 0).method_1336(0, 0, 0, 0);
+			buffer.addVertex(right - 4, bottom, 0).color(0, 0, 0, 0);
+			buffer.addVertex(right, bottom, 0).color(0, 0, 0, 255);
+			buffer.addVertex(right, top, 0).color(0, 0, 0, 255);
+			buffer.addVertex(right - 4, top, 0).color(0, 0, 0, 0);
 			// BOTTOM
-			buffer.method_22912(left, bottom, 0).method_1336(0, 0, 0, 255);
-			buffer.method_22912(right, bottom, 0).method_1336(0, 0, 0, 255);
-			buffer.method_22912(right, bottom - 4, 0).method_1336(0, 0, 0, 0);
-			buffer.method_22912(left, bottom - 4, 0).method_1336(0, 0, 0, 0);
+			buffer.addVertex(left, bottom, 0).color(0, 0, 0, 255);
+			buffer.addVertex(right, bottom, 0).color(0, 0, 0, 255);
+			buffer.addVertex(right, bottom - 4, 0).color(0, 0, 0, 0);
+			buffer.addVertex(left, bottom - 4, 0).color(0, 0, 0, 0);
 			// LEFT
-			buffer.method_22912(left, bottom, 0).method_1336(0, 0, 0, 255);
-			buffer.method_22912(left + 4, bottom, 0).method_1336(0, 0, 0, 0);
-			buffer.method_22912(left + 4, top, 0).method_1336(0, 0, 0, 0);
-			buffer.method_22912(left, top, 0).method_1336(0, 0, 0, 255);
-			C_fpcijbbg builtBuffer = buffer.method_60794();
+			buffer.addVertex(left, bottom, 0).color(0, 0, 0, 255);
+			buffer.addVertex(left + 4, bottom, 0).color(0, 0, 0, 0);
+			buffer.addVertex(left + 4, top, 0).color(0, 0, 0, 0);
+			buffer.addVertex(left, top, 0).color(0, 0, 0, 255);
+			MeshData builtBuffer = buffer.build();
 			if (builtBuffer != null) {
-				BufferRenderer.drawWithShader(builtBuffer);
+				BufferUploader.drawWithShader(builtBuffer);
 			}
-			tessellator.method_60828();
+			tessellator.clear();
 		}
 
 		// Scrollbar
@@ -405,33 +404,33 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		int endY = this.getEndInnerBorderedY();
 
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
-		buffer.method_22912(scrollbarX, endY, 0.0f).method_1336(0, 0, 0, 255);
-		buffer.method_22912(scrollbarEndX, endY, 0.0f).method_1336(0, 0, 0, 255);
-		buffer.method_22912(scrollbarEndX, y, 0.0f).method_1336(0, 0, 0, 255);
-		buffer.method_22912(scrollbarX, y, 0.0f).method_1336(0, 0, 0, 255);
-		buffer.method_22912(scrollbarX, scrollbarY + scrollbarHeight, 0.0f).method_1336(128, 128, 128, 255);
-		buffer.method_22912(scrollbarEndX, scrollbarY + scrollbarHeight, 0.0f).method_1336(128, 128, 128, 255);
-		buffer.method_22912(scrollbarEndX, scrollbarY, 0.0f).method_1336(128, 128, 128, 255);
-		buffer.method_22912(scrollbarX, scrollbarY, 0.0f).method_1336(128, 128, 128, 255);
-		buffer.method_22912(scrollbarX, scrollbarY + scrollbarHeight - 1, 0.0f).method_1336(192, 192, 192, 255);
-		buffer.method_22912(scrollbarEndX - 1, scrollbarY + scrollbarHeight - 1, 0.0f).method_1336(192, 192, 192, 255);
-		buffer.method_22912(scrollbarEndX - 1, scrollbarY, 0.0f).method_1336(192, 192, 192, 255);
-		buffer.method_22912(scrollbarX, scrollbarY, 0.0f).method_1336(192, 192, 192, 255);
-		C_fpcijbbg builtBuffer = buffer.method_60794();
+		buffer.addVertex(scrollbarX, endY, 0.0f).color(0, 0, 0, 255);
+		buffer.addVertex(scrollbarEndX, endY, 0.0f).color(0, 0, 0, 255);
+		buffer.addVertex(scrollbarEndX, y, 0.0f).color(0, 0, 0, 255);
+		buffer.addVertex(scrollbarX, y, 0.0f).color(0, 0, 0, 255);
+		buffer.addVertex(scrollbarX, scrollbarY + scrollbarHeight, 0.0f).color(128, 128, 128, 255);
+		buffer.addVertex(scrollbarEndX, scrollbarY + scrollbarHeight, 0.0f).color(128, 128, 128, 255);
+		buffer.addVertex(scrollbarEndX, scrollbarY, 0.0f).color(128, 128, 128, 255);
+		buffer.addVertex(scrollbarX, scrollbarY, 0.0f).color(128, 128, 128, 255);
+		buffer.addVertex(scrollbarX, scrollbarY + scrollbarHeight - 1, 0.0f).color(192, 192, 192, 255);
+		buffer.addVertex(scrollbarEndX - 1, scrollbarY + scrollbarHeight - 1, 0.0f).color(192, 192, 192, 255);
+		buffer.addVertex(scrollbarEndX - 1, scrollbarY, 0.0f).color(192, 192, 192, 255);
+		buffer.addVertex(scrollbarX, scrollbarY, 0.0f).color(192, 192, 192, 255);
+		MeshData builtBuffer = buffer.build();
 		if (builtBuffer != null) {
-			BufferRenderer.drawWithShader(builtBuffer);
+			BufferUploader.drawWithShader(builtBuffer);
 		}
-		tessellator.method_60828();
+		tessellator.clear();
 	}
 
 	/* Narration */
 
-	protected void appendPositionNarrations(NarrationMessageBuilder builder, E entry) {
+	protected void appendPositionNarrations(NarrationElementOutput builder, E entry) {
 		var list = this.children();
 		if (list.size() > 1) {
 			int i = list.indexOf(entry);
 			if (i != -1) {
-				builder.put(NarrationPart.POSITION, Text.translatable("narrator.position.list", i + 1, list.size()));
+				builder.add(NarratedElementType.POSITION, Text.translatable("narrator.position.list", i + 1, list.size()));
 			}
 		}
 	}

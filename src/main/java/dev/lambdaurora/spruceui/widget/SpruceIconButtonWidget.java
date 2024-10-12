@@ -11,7 +11,7 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
 
 public class SpruceIconButtonWidget extends AbstractSpruceIconButtonWidget {
 	public SpruceIconButtonWidget(Position position, int width, int height, Text message, PressAction action) {

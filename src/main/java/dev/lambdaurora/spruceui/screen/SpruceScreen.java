@@ -15,11 +15,11 @@ import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.util.ScissorManager;
 import dev.lambdaurora.spruceui.widget.SpruceElement;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Text;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.function.BooleanSupplier;
@@ -40,19 +40,19 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 	}
 
 	@Override
-	public void setFocusedChild(Element focused) {
+	public void setFocused(GuiEventListener focused) {
 		var old = this.getFocused();
 		if (old == focused) return;
 		if (old instanceof SpruceWidget)
 			old.setFocused(false);
-		super.setFocusedChild(focused);
+		super.setFocused(focused);
 		if (focused instanceof SpruceWidget)
 			focused.setFocused(true);
 	}
 
 	@Override
 	protected void init() {
-		this.scaleFactor = this.client.getWindow().getScaleFactor();
+		this.scaleFactor = this.client.getWindow().getGuiScale();
 	}
 
 	/* Input */
@@ -81,24 +81,24 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 
 			var iterator = children.listIterator(next);
 			BooleanSupplier hasNext = direction.isLookingForward() ? iterator::hasNext : iterator::hasPrevious;
-			Supplier<Element> nextGetter = direction.isLookingForward() ? iterator::next : iterator::previous;
+			Supplier<GuiEventListener> nextGetter = direction.isLookingForward() ? iterator::next : iterator::previous;
 
-			Element nextElement;
+			GuiEventListener nextElement;
 			do {
 				if (!hasNext.getAsBoolean()) {
-					this.setFocusedChild(null);
+					this.setFocused(null);
 					return false;
 				}
 
 				nextElement = nextGetter.get();
 			} while (!this.tryNavigating(nextElement, direction, tab));
 
-			this.setFocusedChild(nextElement);
+			this.setFocused(nextElement);
 		}
 		return true;
 	}
 
-	private boolean tryNavigating(Element element, NavigationDirection direction, boolean tab) {
+	private boolean tryNavigating(GuiEventListener element, NavigationDirection direction, boolean tab) {
 		if (element instanceof SpruceElement) {
 			return ((SpruceElement) element).onNavigation(direction, tab);
 		}
@@ -123,7 +123,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 
 	public void renderWidgets(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		for (var element : this.children()) {
-			if (element instanceof Drawable drawable)
+			if (element instanceof Renderable drawable)
 				drawable.render(graphics, mouseX, mouseY, delta);
 		}
 	}

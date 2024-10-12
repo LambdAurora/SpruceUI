@@ -14,8 +14,8 @@ import dev.lambdaurora.spruceui.event.ResolutionChangeCallback;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -45,11 +45,11 @@ public class HudManager {
 					hud.tick();
 			});
 		});
-		OpenScreenCallback.EVENT.register((client, screen) -> initAll(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
-		ResolutionChangeCallback.EVENT.register(client -> initAll(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight()));
+		OpenScreenCallback.EVENT.register((client, screen) -> initAll(client, client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight()));
+		ResolutionChangeCallback.EVENT.register(client -> initAll(client, client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight()));
 	}
 
-	protected static void initAll(@NotNull MinecraftClient client, int screenWidth, int screenHeight) {
+	protected static void initAll(@NotNull Minecraft client, int screenWidth, int screenHeight) {
 		if (!canRenderHuds(client))
 			return;
 		HUDS.forEach((id, hud) -> {
@@ -93,8 +93,8 @@ public class HudManager {
 	 * @param client The client instance.
 	 * @return True if the HUDs can be rendered, else false.
 	 */
-	public static boolean canRenderHuds(@NotNull MinecraftClient client) {
-		return client.world != null && (!client.options.hudHidden || client.currentScreen != null);
+	public static boolean canRenderHuds(@NotNull Minecraft client) {
+		return client.level != null && (!client.options.hideGui || client.screen != null);
 	}
 
 	/**

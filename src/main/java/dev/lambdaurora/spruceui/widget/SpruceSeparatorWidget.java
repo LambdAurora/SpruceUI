@@ -13,9 +13,8 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.util.ColorUtil;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -28,7 +27,6 @@ import java.util.Optional;
  * @since 1.0.1
  */
 public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Tooltipable {
-	private final MinecraftClient client = MinecraftClient.getInstance();
 	private Text title;
 	private Text tooltip;
 	private int tooltipTicks;
@@ -86,13 +84,13 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 	@Override
 	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.title != null) {
-			int titleWidth = this.client.textRenderer.getWidth(this.title);
+			int titleWidth = this.client.font.width(this.title);
 			int titleX = this.getX() + (this.getWidth() / 2 - titleWidth / 2);
 			if (this.width > titleWidth) {
 				graphics.fill(this.getX(), this.getY() + 4, titleX - 5, this.getY() + 6, ColorUtil.TEXT_COLOR);
 				graphics.fill(titleX + titleWidth + 5, this.getY() + 4, this.getX() + this.getWidth(), this.getY() + 6, ColorUtil.TEXT_COLOR);
 			}
-			graphics.drawShadowedText(this.client.textRenderer, this.title, titleX, this.getY(), ColorUtil.WHITE);
+			graphics.drawShadowedText(this.client.font, this.title, titleX, this.getY(), ColorUtil.WHITE);
 		} else {
 			graphics.fill(this.getX(), this.getY() + 4, this.getX() + this.getWidth(), this.getY() + 6, ColorUtil.TEXT_COLOR);
 		}

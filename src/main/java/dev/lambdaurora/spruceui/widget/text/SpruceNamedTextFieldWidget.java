@@ -17,7 +17,7 @@ import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.OrderedText;
+import net.minecraft.util.FormattedCharSequence;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -101,11 +101,11 @@ public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements 
 		this.getTextFieldWidget().setTextPredicate(textPredicate);
 	}
 
-	public BiFunction<String, Integer, OrderedText> getRenderTextProvider() {
+	public BiFunction<String, Integer, FormattedCharSequence> getRenderTextProvider() {
 		return this.getTextFieldWidget().getRenderTextProvider();
 	}
 
-	public void setRenderTextProvider(BiFunction<String, Integer, OrderedText> renderTextProvider) {
+	public void setRenderTextProvider(BiFunction<String, Integer, FormattedCharSequence> renderTextProvider) {
 		this.getTextFieldWidget().setRenderTextProvider(renderTextProvider);
 	}
 
@@ -222,7 +222,7 @@ public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements 
 
 	@Override
 	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawShadowedText(this.client.textRenderer, this.getTextFieldWidget().getTitle(), this.getX() + 2, this.getY() + 2, ColorUtil.TEXT_COLOR);
+		graphics.drawShadowedText(this.client.font, this.getTextFieldWidget().getTitle(), this.getX() + 2, this.getY() + 2, ColorUtil.TEXT_COLOR);
 
 		this.getTextFieldWidget().render(graphics, mouseX, mouseY, delta);
 	}

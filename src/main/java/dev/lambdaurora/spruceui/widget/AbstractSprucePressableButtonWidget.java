@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
 import org.lwjgl.glfw.GLFW;
 
 /**

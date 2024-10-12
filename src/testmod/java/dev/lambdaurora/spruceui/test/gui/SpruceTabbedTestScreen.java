@@ -17,9 +17,9 @@ import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceLabelWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import dev.lambdaurora.spruceui.widget.container.tabbed.SpruceTabbedWidget;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.TextFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
 public class SpruceTabbedTestScreen extends SpruceScreen {
@@ -40,27 +40,27 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
 			var container = new SpruceContainerWidget(Position.origin(), width, height);
 			container.addChildren((containerWidth, containerHeight, widgetAdder) -> {
 				widgetAdder.accept(new SpruceLabelWidget(Position.of(0, 16),
-						Text.literal("Hello World!").formatted(Formatting.WHITE),
+						Text.literal("Hello World!").withStyle(TextFormatting.WHITE),
 						containerWidth, true));
 				widgetAdder.accept(new SpruceLabelWidget(Position.of(0, 48),
 						Text.literal("This is a tabbed widget. You can switch tabs by using the list on the left.\n" +
 										"It also allows quite a good controller support and arrow key navigation.")
-								.formatted(Formatting.WHITE),
+								.withStyle(TextFormatting.WHITE),
 						containerWidth, true));
 			});
 			return container;
 		});
 		this.tabbedWidget.addSeparatorEntry(Text.literal("Separator"));
-		this.tabbedWidget.addTabEntry(Text.literal("Option Test"), Text.literal("useful for config stuff.").formatted(Formatting.GRAY),
+		this.tabbedWidget.addTabEntry(Text.literal("Option Test"), Text.literal("useful for config stuff.").withStyle(TextFormatting.GRAY),
 				(width, height) -> SpruceUITest.get().buildOptionList(Position.origin(), width, height));
-		this.tabbedWidget.addTabEntry(Text.literal("Text Area"), Text.literal("to edit stuff on multiple lines.").formatted(Formatting.GRAY),
+		this.tabbedWidget.addTabEntry(Text.literal("Text Area"), Text.literal("to edit stuff on multiple lines.").withStyle(TextFormatting.GRAY),
 				(width, height) -> SpruceUITest.buildTextAreaContainer(Position.origin(), width, height,
 						textArea -> {
 						}, null));
-		this.addDrawableSelectableElement(this.tabbedWidget);
+		this.addRenderableWidget(this.tabbedWidget);
 
 		// Add done button.
-		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
 				btn -> this.client.setScreen(this.parent)).asVanilla());
 	}
 }

@@ -11,8 +11,8 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SprucePositioned;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Selectable;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.narration.NarratableEntry;
 
 /**
  * Represents a widget.
@@ -21,7 +21,7 @@ import net.minecraft.client.gui.Selectable;
  * @version 3.3.0
  * @since 1.6.0
  */
-public interface SpruceWidget extends SprucePositioned, SpruceElement, Selectable, Drawable {
+public interface SpruceWidget extends SprucePositioned, SpruceElement, NarratableEntry, Renderable {
 	/**
 	 * Returns the position of the widget.
 	 *
@@ -115,7 +115,7 @@ public interface SpruceWidget extends SprucePositioned, SpruceElement, Selectabl
 	 * @return {@code true} if the widget is hovered, else {@code false}
 	 */
 	default boolean isMouseHovered() {
-		return this.getType() == SelectionType.HOVERED;
+		return this.narrationPriority() == NarrationPriority.HOVERED;
 	}
 
 	/**

@@ -12,9 +12,9 @@ package dev.lambdaurora.spruceui.border;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.SpruceTextures;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 /**
  * Represents a typical menu border.
@@ -28,7 +28,7 @@ import net.minecraft.util.Identifier;
  * @since 5.1.0
  */
 public record MenuBorder(boolean top, boolean right, boolean bottom, boolean left) implements Border {
-	private static final MinecraftClient CLIENT = MinecraftClient.getInstance();
+	private static final Minecraft CLIENT = Minecraft.getInstance();
 	private static final int THICKNESS = 2;
 
 	public static final MenuBorder LIST = new MenuBorder(true, false, true, false);
@@ -39,7 +39,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 		RenderSystem.enableBlend();
 
 		if (this.top) {
-			Identifier topTexture = CLIENT.world == null ? SpruceTextures.MENU_TOP_BORDER : SpruceTextures.INWORLD_MENU_TOP_BORDER;
+			Identifier topTexture = CLIENT.level == null ? SpruceTextures.MENU_TOP_BORDER : SpruceTextures.INWORLD_MENU_TOP_BORDER;
 
 			int width = widget.getWidth();
 
@@ -53,14 +53,14 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 		}
 
 		if (this.top && this.right) {
-			Identifier cornerTexture = CLIENT.world == null ? SpruceTextures.MENU_TOP_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_TOP_RIGHT_BORDER;
+			Identifier cornerTexture = CLIENT.level == null ? SpruceTextures.MENU_TOP_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_TOP_RIGHT_BORDER;
 			graphics.drawTexture(cornerTexture,
 					widget.getEndX() - THICKNESS, widget.getY(), 0, 0, THICKNESS, THICKNESS, THICKNESS, THICKNESS
 			);
 		}
 
 		if (this.right) {
-			Identifier rightTexture = CLIENT.world == null ? SpruceTextures.MENU_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_RIGHT_BORDER;
+			Identifier rightTexture = CLIENT.level == null ? SpruceTextures.MENU_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_RIGHT_BORDER;
 
 			int y = widget.getY();
 			int height = widget.getHeight();
@@ -80,7 +80,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 		}
 
 		if (this.bottom && this.right) {
-			Identifier cornerTexture = CLIENT.world == null
+			Identifier cornerTexture = CLIENT.level == null
 					? SpruceTextures.MENU_BOTTOM_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_BOTTOM_RIGHT_BORDER;
 			graphics.drawTexture(cornerTexture,
 					widget.getEndX() - THICKNESS, widget.getEndY() - THICKNESS, 0, 0, THICKNESS, THICKNESS, THICKNESS, THICKNESS
@@ -88,7 +88,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 		}
 
 		if (this.bottom) {
-			Identifier bottomTexture = CLIENT.world == null ? SpruceTextures.MENU_BOTTOM_BORDER : SpruceTextures.INWORLD_MENU_BOTTOM_BORDER;
+			Identifier bottomTexture = CLIENT.level == null ? SpruceTextures.MENU_BOTTOM_BORDER : SpruceTextures.INWORLD_MENU_BOTTOM_BORDER;
 
 			int width = widget.getWidth();
 

@@ -9,7 +9,7 @@
 
 package dev.lambdaurora.spruceui.util;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 /**
  * Represents something that can be identified.
@@ -28,6 +28,6 @@ public interface Identifiable extends Nameable {
 
 	@Override
 	default String getName() {
-		return this.getIdentifier().getPath();
+		return this.getIdentifier().path();
 	}
 }

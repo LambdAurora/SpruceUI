@@ -13,8 +13,8 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.TextFormatting;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -95,7 +95,7 @@ public class SpruceBooleanOption extends SpruceOption {
 		boolean value = this.get();
 		var toggleText = SpruceTexts.getToggleText(value);
 		if (this.colored)
-			toggleText = toggleText.copy().setStyle(toggleText.getStyle().withColor(value ? Formatting.GREEN : Formatting.RED));
+			toggleText = toggleText.copy().setStyle(toggleText.getStyle().withColor(value ? TextFormatting.GREEN : TextFormatting.RED));
 		return this.getDisplayText(toggleText);
 	}
 }

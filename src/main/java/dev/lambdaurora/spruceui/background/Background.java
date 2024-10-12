@@ -11,7 +11,6 @@ package dev.lambdaurora.spruceui.background;
 
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.util.math.MatrixStack;
 
 /**
  * Represents a background which can be rendered on a widget.

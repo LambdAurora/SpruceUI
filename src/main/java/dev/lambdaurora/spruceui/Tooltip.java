@@ -11,11 +11,11 @@ package dev.lambdaurora.spruceui;
 
 import com.google.common.collect.Queues;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.tooltip.DefaultTooltipPositioner;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.StringVisitable;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
@@ -35,17 +35,17 @@ public class Tooltip implements SprucePositioned {
 	private static boolean delayed = false;
 	private final int x;
 	private final int y;
-	private final List<OrderedText> tooltip;
+	private final List<FormattedCharSequence> tooltip;
 
 	public Tooltip(int x, int y, String tooltip, int parentWidth) {
-		this(x, y, StringVisitable.plain(tooltip), parentWidth);
+		this(x, y, FormattedText.of(tooltip), parentWidth);
 	}
 
-	public Tooltip(int x, int y, StringVisitable tooltip, int parentWidth) {
-		this(x, y, MinecraftClient.getInstance().textRenderer.wrapLines(tooltip, Math.max(parentWidth * 2 / 3, 200)));
+	public Tooltip(int x, int y, FormattedText tooltip, int parentWidth) {
+		this(x, y, Minecraft.getInstance().font.wrapLines(tooltip, Math.max(parentWidth * 2 / 3, 200)));
 	}
 
-	public Tooltip(int x, int y, List<OrderedText> tooltip) {
+	public Tooltip(int x, int y, List<FormattedCharSequence> tooltip) {
 		this.x = x;
 		this.y = y;
 		this.tooltip = tooltip;
@@ -55,11 +55,11 @@ public class Tooltip implements SprucePositioned {
 		return new Tooltip(x, y, tooltip, parentWidth);
 	}
 
-	public static Tooltip create(int x, int y, StringVisitable tooltip, int parentWidth) {
+	public static Tooltip create(int x, int y, FormattedText tooltip, int parentWidth) {
 		return new Tooltip(x, y, tooltip, parentWidth);
 	}
 
-	public static Tooltip create(int x, int y, List<OrderedText> tooltip) {
+	public static Tooltip create(int x, int y, List<FormattedCharSequence> tooltip) {
 		return new Tooltip(x, y, tooltip);
 	}
 
@@ -88,7 +88,7 @@ public class Tooltip implements SprucePositioned {
 	 * @param graphics The GuiGraphics instance used to render.
 	 */
 	public void render(GuiGraphics graphics) {
-		graphics.drawTooltip(MinecraftClient.getInstance().textRenderer, this.tooltip, DefaultTooltipPositioner.INSTANCE, this.x, this.y);
+		graphics.drawTooltip(Minecraft.getInstance().font, this.tooltip, DefaultTooltipPositioner.INSTANCE, this.x, this.y);
 	}
 
 	/**
@@ -107,10 +107,15 @@ public class Tooltip implements SprucePositioned {
 	 * @param <T> the type of the widget
 	 * @since 1.6.0
 	 */
-	public static <T extends Tooltipable & SpruceWidget> void queueFor(T widget, int mouseX, int mouseY, int tooltipTicks,
+	public static <T extends Tooltipable & SpruceWidget> void queueFor(
+			T widget,
+			int mouseX,
+			int mouseY,
+			int tooltipTicks,
 			IntConsumer tooltipTicksSetter,
 			long lastTick,
-			LongConsumer lastTickSetter) {
+			LongConsumer lastTickSetter
+	) {
 		if (widget.isVisible()) {
 			widget.getTooltip().ifPresent(tooltip -> {
 				long currentRender = System.currentTimeMillis();
@@ -125,8 +130,7 @@ public class Tooltip implements SprucePositioned {
 					tooltipTicksSetter.accept(0);
 
 				if (!tooltip.getString().isEmpty() && tooltipTicks >= 45) {
-					var wrappedTooltipText = MinecraftClient.getInstance().textRenderer.wrapLines(
-							tooltip, Math.max(widget.getWidth() * 2 / 3, 200));
+					var wrappedTooltipText = Minecraft.getInstance().font.wrapLines(tooltip, Math.max(widget.getWidth() * 2 / 3, 200));
 					if (widget.isMouseHovered())
 						create(mouseX, mouseY, wrappedTooltipText).queue();
 					else if (widget.isFocused())

@@ -10,13 +10,9 @@
 package dev.lambdaurora.spruceui.util;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferRenderer;
-import com.mojang.blaze3d.vertex.Tessellator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormats;
+import com.mojang.blaze3d.vertex.*;
 import dev.lambdaurora.spruceui.SpruceTextures;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.unmapped.C_fpcijbbg;
+import net.minecraft.client.renderer.GameRenderer;
 
 public final class RenderUtil {
 	private RenderUtil() {
@@ -53,7 +49,7 @@ public final class RenderUtil {
 	public static void renderBackgroundTexture(int x, int y, int width, int height, float vOffset,
 			int red, int green, int blue, int alpha) {
 		var tessellator = Tessellator.getInstance();
-		var bufferBuilder = tessellator.method_60827(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+		var bufferBuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, 1.f);
 		RenderSystem.setShaderTexture(0, SpruceTextures.LEGACY_OPTIONS_BACKGROUND);
@@ -61,23 +57,23 @@ public final class RenderUtil {
 		int right = x + width;
 		int bottom = y + height;
 
-		bufferBuilder.method_22912(x, bottom, 0)
-				.method_22913(0, bottom / 32.f + vOffset)
-				.method_1336(red, green, blue, alpha);
-		bufferBuilder.method_22912(right, bottom, 0)
-				.method_22913(right / 32.f, bottom / 32.f + vOffset)
-				.method_1336(red, green, blue, alpha);
-		bufferBuilder.method_22912(right, y, 0)
-				.method_22913(right / 32.f, y / 32.f + vOffset)
-				.method_1336(red, green, blue, alpha);
-		bufferBuilder.method_22912(x, y, 0)
-				.method_22913(0, y / 32.f + vOffset)
-				.method_1336(red, green, blue, alpha);
-		C_fpcijbbg builtBuffer = bufferBuilder.method_60794();
+		bufferBuilder.addVertex(x, bottom, 0)
+				.uv(0, bottom / 32.f + vOffset)
+				.color(red, green, blue, alpha);
+		bufferBuilder.addVertex(right, bottom, 0)
+				.uv(right / 32.f, bottom / 32.f + vOffset)
+				.color(red, green, blue, alpha);
+		bufferBuilder.addVertex(right, y, 0)
+				.uv(right / 32.f, y / 32.f + vOffset)
+				.color(red, green, blue, alpha);
+		bufferBuilder.addVertex(x, y, 0)
+				.uv(0, y / 32.f + vOffset)
+				.color(red, green, blue, alpha);
+		MeshData builtBuffer = bufferBuilder.build();
 		if (builtBuffer != null) {
-			BufferRenderer.drawWithShader(builtBuffer);
+			BufferUploader.drawWithShader(builtBuffer);
 		}
-		tessellator.method_60828();
+		tessellator.clear();
 	}
 
 	/**
@@ -94,30 +90,30 @@ public final class RenderUtil {
 	 */
 	public static void renderSelectionBox(int x, int y, int width, int height, int red, int green, int blue, int alpha) {
 		var tessellator = Tessellator.getInstance();
-		var bufferBuilder = tessellator.method_60827(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
+		var bufferBuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
 
 		int top = y + height;
 		int right = x + width;
 
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 		RenderSystem.setShaderColor(red / 255.f, green / 255.f, blue / 255.f, alpha / 255.f);
-		bufferBuilder.method_22912(x, top, 0);
-		bufferBuilder.method_22912(right, top, 0);
-		bufferBuilder.method_22912(right, y, 0);
-		bufferBuilder.method_22912(x, y, 0);
-		C_fpcijbbg builtBuffer = bufferBuilder.method_60794();
+		bufferBuilder.addVertex(x, top, 0);
+		bufferBuilder.addVertex(right, top, 0);
+		bufferBuilder.addVertex(right, y, 0);
+		bufferBuilder.addVertex(x, y, 0);
+		MeshData builtBuffer = bufferBuilder.build();
 		if (builtBuffer != null) {
-			BufferRenderer.drawWithShader(builtBuffer);
+			BufferUploader.drawWithShader(builtBuffer);
 		}
 		RenderSystem.setShaderColor(0, 0, 0, 1.f);
-		bufferBuilder.method_22912(x + 1, top - 1, 0);
-		bufferBuilder.method_22912(right - 1, top - 1, 0);
-		bufferBuilder.method_22912(right - 1, y + 1, 0);
-		bufferBuilder.method_22912(x + 1, y + 1, 0);
-		builtBuffer = bufferBuilder.method_60794();
+		bufferBuilder.addVertex(x + 1, top - 1, 0);
+		bufferBuilder.addVertex(right - 1, top - 1, 0);
+		bufferBuilder.addVertex(right - 1, y + 1, 0);
+		bufferBuilder.addVertex(x + 1, y + 1, 0);
+		builtBuffer = bufferBuilder.build();
 		if (builtBuffer != null) {
-			BufferRenderer.drawWithShader(builtBuffer);
+			BufferUploader.drawWithShader(builtBuffer);
 		}
-		tessellator.method_60828();
+		tessellator.clear();
 	}
 }

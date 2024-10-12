@@ -11,7 +11,7 @@ package dev.lambdaurora.spruceui.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 /**
  * Represents an event callback which is fired when the Minecraft's resolution is changed.
@@ -28,5 +28,5 @@ public interface ResolutionChangeCallback {
 		}
 	});
 
-	void apply(MinecraftClient client);
+	void apply(Minecraft client);
 }

@@ -12,8 +12,8 @@ package dev.lambdaurora.spruceui.widget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Text;
+import net.minecraft.resources.Identifier;
 
 /**
  * Represents a textured button widget.

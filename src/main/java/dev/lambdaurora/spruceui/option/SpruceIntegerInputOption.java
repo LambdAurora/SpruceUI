@@ -14,10 +14,10 @@ import dev.lambdaurora.spruceui.util.SpruceUtil;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.TextFormatting;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.Text;
+import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -49,9 +49,9 @@ public class SpruceIntegerInputOption extends SpruceOption {
 		textField.setRenderTextProvider((displayedText, offset) -> {
 			try {
 				Integer.parseInt(textField.getText());
-				return OrderedText.forward(displayedText, Style.EMPTY);
+				return FormattedCharSequence.forward(displayedText, Style.EMPTY);
 			} catch (NumberFormatException e) {
-				return OrderedText.forward(displayedText, Style.EMPTY.withColor(Formatting.RED));
+				return FormattedCharSequence.forward(displayedText, Style.EMPTY.withColor(TextFormatting.RED));
 			}
 		});
 		textField.setChangedListener(input -> {

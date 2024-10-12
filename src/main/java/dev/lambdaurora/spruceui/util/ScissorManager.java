@@ -12,7 +12,7 @@ package dev.lambdaurora.spruceui.util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -86,9 +86,9 @@ public final class ScissorManager {
 	}
 
 	private static int adaptY(int y, int height, double scaleFactor) {
-		var window = MinecraftClient.getInstance().getWindow();
-		int tmpHeight = (int) (window.getFramebufferHeight() / scaleFactor);
-		int scaledHeight = window.getFramebufferHeight() / scaleFactor > (double) tmpHeight ? tmpHeight + 1 : tmpHeight;
+		var window = Minecraft.getInstance().getWindow();
+		int tmpHeight = (int) (window.getHeight() / scaleFactor);
+		int scaledHeight = window.getHeight() / scaleFactor > (double) tmpHeight ? tmpHeight + 1 : tmpHeight;
 		return (int) (scaleFactor * (scaledHeight - height - y));
 	}
 

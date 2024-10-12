@@ -9,7 +9,7 @@
 
 package dev.lambdaurora.spruceui;
 
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
 
 /**
  * Represents a text utility class.

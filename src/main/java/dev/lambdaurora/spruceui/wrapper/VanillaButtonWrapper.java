@@ -15,8 +15,8 @@ import dev.lambdaurora.spruceui.widget.SpruceElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.widget.ClickableWidget;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 
 /**
  * Represents a vanilla button wrapper for SpruceUI's own button widgets.
@@ -26,7 +26,7 @@ import net.minecraft.client.gui.widget.ClickableWidget;
  * @since 2.0.0
  */
 @Environment(EnvType.CLIENT)
-public class VanillaButtonWrapper extends ClickableWidget implements SpruceElement {
+public class VanillaButtonWrapper extends AbstractWidget implements SpruceElement {
 	private final AbstractSpruceButtonWidget widget;
 
 	public VanillaButtonWrapper(AbstractSpruceButtonWidget widget) {
@@ -35,7 +35,7 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
 	}
 
 	@Override
-	public void drawWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.widget.getPosition().setRelativeY(this.getY());
 		this.widget.render(graphics, mouseX, mouseY, delta);
 	}
@@ -71,12 +71,12 @@ public class VanillaButtonWrapper extends ClickableWidget implements SpruceEleme
 	}
 
 	@Override
-	public SelectionType getType() {
-		return this.widget.getType();
+	public NarrationPriority narrationPriority() {
+		return this.widget.narrationPriority();
 	}
 
 	@Override
-	public void updateNarration(NarrationMessageBuilder builder) {
-		this.widget.appendNarrations(builder);
+	public void updateWidgetNarration(NarrationElementOutput builder) {
+		this.widget.updateNarration(builder);
 	}
 }

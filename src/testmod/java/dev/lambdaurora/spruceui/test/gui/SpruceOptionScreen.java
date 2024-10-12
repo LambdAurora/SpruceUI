@@ -17,8 +17,8 @@ import dev.lambdaurora.spruceui.test.SpruceUITest;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -38,7 +38,7 @@ public class SpruceOptionScreen extends SpruceScreen {
 	}
 
 	private int getTextHeight() {
-		return (5 + this.textRenderer.fontHeight) * 3 + 5;
+		return (5 + this.font.lineHeight) * 3 + 5;
 	}
 
 	@Override
@@ -50,20 +50,20 @@ public class SpruceOptionScreen extends SpruceScreen {
 		this.list = SpruceUITest.get().buildOptionList(Position.of(0, 22), this.width, this.height - 35 - 22);
 		SpruceUITest.get().resetConsumer = btn -> {
 			// Re-initialize the screen to update all the values.
-			this.init(this.client, this.client.getWindow().getScaledWidth(), this.client.getWindow().getScaledHeight());
+			this.init(this.client, this.client.getWindow().getGuiScaledWidth(), this.client.getWindow().getGuiScaledHeight());
 		};
 
-		this.addDrawableSelectableElement(this.list);
+		this.addRenderableWidget(this.list);
 
 		// Add reset button. You can add option buttons outside a button list widget. GameOptions instance is required because of Vanilla limitations.
 		//this.addButton(this.resetOption.createButton(this.client.options, this.width / 2 - 155, this.height - 29, 150));
 		// Add done button.
-		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
 				btn -> this.client.setScreen(this.parent)).asVanilla());
 	}
 
 	@Override
 	public void renderTitle(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-		guiGraphics.drawCenteredShadowedText(this.textRenderer, this.title, this.width / 2, 8, 16777215);
+		guiGraphics.drawCenteredShadowedText(this.font, this.title, this.width / 2, 8, 16777215);
 	}
 }

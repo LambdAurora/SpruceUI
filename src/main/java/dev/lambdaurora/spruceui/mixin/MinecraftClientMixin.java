@@ -11,8 +11,8 @@ package dev.lambdaurora.spruceui.mixin;
 
 import dev.lambdaurora.spruceui.event.OpenScreenCallback;
 import dev.lambdaurora.spruceui.event.ResolutionChangeCallback;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,20 +25,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * @version 3.2.1
  * @since 1.2.0
  */
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public class MinecraftClientMixin {
 	@Inject(method = "setScreen", at = @At("HEAD"))
 	private void onScreenPre(Screen screen, CallbackInfo ci) {
-		OpenScreenCallback.PRE.invoker().apply((MinecraftClient) (Object) this, screen);
+		OpenScreenCallback.PRE.invoker().apply((Minecraft) (Object) this, screen);
 	}
 
 	@Inject(method = "setScreen", at = @At("RETURN"))
 	private void onScreenChange(Screen screen, CallbackInfo ci) {
-		OpenScreenCallback.EVENT.invoker().apply((MinecraftClient) (Object) this, screen);
+		OpenScreenCallback.EVENT.invoker().apply((Minecraft) (Object) this, screen);
 	}
 
-	@Inject(method = "onResolutionChanged", at = @At("RETURN"))
+	@Inject(method = "resizeDisplay", at = @At("RETURN"))
 	private void onResolutionChanged(CallbackInfo ci) {
-		ResolutionChangeCallback.EVENT.invoker().apply((MinecraftClient) (Object) this);
+		ResolutionChangeCallback.EVENT.invoker().apply((Minecraft) (Object) this);
 	}
 }

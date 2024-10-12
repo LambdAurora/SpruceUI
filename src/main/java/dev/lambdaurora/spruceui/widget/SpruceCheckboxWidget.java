@@ -12,12 +12,10 @@ package dev.lambdaurora.spruceui.widget;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Language;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Text;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -110,8 +108,8 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 		}
 
 		if (this.showMessage) {
-			OrderedText message = Language.getInstance().reorder(this.client.textRenderer.trimToWidth(this.getMessage(), this.getWidth() - this.getHeight() - 4));
-			graphics.drawShadowedText(MinecraftClient.getInstance().textRenderer, message, this.getX() + this.getHeight() + 4, this.getY() + (this.getHeight() - 8) / 2,
+			var message = Language.getInstance().getVisualOrder(this.client.font.substrByWidth(this.getMessage(), this.getWidth() - this.getHeight() - 4));
+			graphics.drawShadowedText(this.client.font, message, this.getX() + this.getHeight() + 4, this.getY() + (this.getHeight() - 8) / 2,
 					14737632 | MathHelper.ceil(this.alpha * 255.0F) << 24);
 		}
 	}

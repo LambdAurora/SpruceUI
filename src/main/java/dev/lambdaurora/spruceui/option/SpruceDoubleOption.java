@@ -12,7 +12,7 @@ package dev.lambdaurora.spruceui.option;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.option.SpruceOptionSliderWidget;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 

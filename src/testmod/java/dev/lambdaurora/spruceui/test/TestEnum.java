@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.test;
 
 import dev.lambdaurora.spruceui.util.Nameable;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.NotNull;
 
 /**

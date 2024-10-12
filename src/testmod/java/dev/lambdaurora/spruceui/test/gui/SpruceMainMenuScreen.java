@@ -14,8 +14,8 @@ import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -36,20 +36,20 @@ public class SpruceMainMenuScreen extends SpruceScreen {
 		super.init();
 
 		int startY = this.height / 4 + 48;
-		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, Text.literal("Option Test"),
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, Text.literal("Option Test"),
 				btn -> this.client.setScreen(new SpruceOptionScreen(this))));
-		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Text.literal("Text Area Test"),
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Text.literal("Text Area Test"),
 				btn -> this.client.setScreen(new SpruceTextAreaScreen(this))));
-		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Text.literal("Tabbed Screen Test"),
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Text.literal("Tabbed Screen Test"),
 				btn -> this.client.setScreen(new SpruceTabbedTestScreen(this))));
 
 		// Add done button.
-		this.addDrawableSelectableElement(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
 				btn -> this.client.setScreen(this.parent)));
 	}
 
 	@Override
 	public void renderTitle(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-		guiGraphics.drawCenteredShadowedText(this.textRenderer, this.title, this.width / 2, 8, 16777215);
+		guiGraphics.drawCenteredShadowedText(this.font, this.title, this.width / 2, 8, 16777215);
 	}
 }

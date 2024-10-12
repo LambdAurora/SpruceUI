@@ -9,8 +9,8 @@
 
 package dev.lambdaurora.spruceui;
 
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.resources.Identifier;
 
 /**
  * Contains the identifiers of various useful textures.

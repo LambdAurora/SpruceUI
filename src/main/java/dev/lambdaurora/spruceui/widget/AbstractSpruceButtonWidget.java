@@ -15,11 +15,11 @@ import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.gui.widget.ClickableWidgetStateTextures;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.network.chat.Text;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -41,10 +41,9 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	protected float alpha = 1.f;
 
 	/**
-	 * @see net.minecraft.client.gui.widget.PressableWidget#TEXTURES
+	 * @see net.minecraft.client.gui.components.AbstractButton#SPRITES
 	 */
-	protected static final ClickableWidgetStateTextures
-			BUTTON_TEXTURES = new ClickableWidgetStateTextures(
+	protected static final WidgetSprites BUTTON_TEXTURES = new WidgetSprites(
 			Identifier.ofDefault("widget/button"), Identifier.ofDefault("widget/button_disabled"), Identifier.ofDefault("widget/button_highlighted")
 	);
 
@@ -140,7 +139,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	/* Rendering */
 
 	protected Identifier getTexture() {
-		return BUTTON_TEXTURES.getTexture(this.isActive(), this.isFocusedOrHovered());
+		return BUTTON_TEXTURES.get(this.isActive(), this.isFocusedOrHovered());
 	}
 
 	@Override
@@ -153,7 +152,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int color = this.active ? 16777215 : 10526880;
-		graphics.drawCenteredShadowedText(this.client.textRenderer, this.getMessage(),
+		graphics.drawCenteredShadowedText(this.client.font, this.getMessage(),
 				this.getX() + this.getWidth() / 2, this.getY() + (this.getHeight() - 8) / 2,
 				color | MathHelper.ceil(this.alpha * 255.0F) << 24);
 	}
@@ -183,12 +182,12 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	public void appendNarrations(NarrationMessageBuilder builder) {
-		super.appendNarrations(builder);
+	public void updateNarration(NarrationElementOutput builder) {
+		super.updateNarration(builder);
 		if (this.isActive()) {
-			if (this.isFocused()) builder.put(NarrationPart.USAGE, this.getNarrationFocusedUsageMessage());
-			else builder.put(NarrationPart.USAGE, this.getNarrationHoveredUsageMessage());
+			if (this.isFocused()) builder.add(NarratedElementType.USAGE, this.getNarrationFocusedUsageMessage());
+			else builder.add(NarratedElementType.USAGE, this.getNarrationHoveredUsageMessage());
 		}
-		this.getTooltip().ifPresent(text -> builder.put(NarrationPart.HINT, text));
+		this.getTooltip().ifPresent(text -> builder.add(NarratedElementType.HINT, text));
 	}
 }

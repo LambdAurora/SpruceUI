@@ -16,9 +16,9 @@ import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -82,25 +82,25 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 	/* Narration */
 
 	@Override
-	public void appendNarrations(NarrationMessageBuilder builder) {
+	public void updateNarration(NarrationElementOutput builder) {
 		this.children()
 				.stream()
 				.filter(AbstractSpruceWidget::isMouseHovered)
 				.findFirst()
 				.ifPresentOrElse(
 						hoveredEntry -> {
-							hoveredEntry.appendNarrations(builder.nextMessage());
+							hoveredEntry.updateNarration(builder.nest());
 							this.appendPositionNarrations(builder, hoveredEntry);
 						}, () -> {
 							var focusedEntry = this.getFocused();
 							if (focusedEntry != null) {
-								focusedEntry.appendNarrations(builder.nextMessage());
+								focusedEntry.updateNarration(builder.nest());
 								this.appendPositionNarrations(builder, focusedEntry);
 							}
 						}
 				);
 
-		builder.put(NarrationPart.USAGE, Text.translatable("narration.component_list.usage"));
+		builder.add(NarratedElementType.USAGE, Text.translatable("narration.component_list.usage"));
 	}
 
 	public static class OptionEntry extends SpruceEntryListWidget.Entry implements SpruceParentWidget<SpruceWidget> {
@@ -225,9 +225,9 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 		/* Narration */
 
 		@Override
-		public void appendNarrations(NarrationMessageBuilder builder) {
+		public void updateNarration(NarrationElementOutput builder) {
 			var focused = this.getFocused();
-			if (focused != null) focused.appendNarrations(builder);
+			if (focused != null) focused.updateNarration(builder);
 		}
 
 		/* Navigation */

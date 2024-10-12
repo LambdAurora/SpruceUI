@@ -14,9 +14,9 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Language;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Text;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,10 +62,10 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 				18, 18, 68, 36);
 
 		if (this.showMessage) {
-			var message = Language.getInstance().reorder(
-					this.client.textRenderer.trimToWidth(this.getMessage(), this.getWidth() - 40)
+			var message = Language.getInstance().getVisualOrder(
+					this.client.font.substrByWidth(this.getMessage(), this.getWidth() - 40)
 			);
-			graphics.drawShadowedText(this.client.textRenderer, message, this.getX() + 36, this.getY() + (this.getHeight() - 8) / 2,
+			graphics.drawShadowedText(this.client.font, message, this.getX() + 36, this.getY() + (this.getHeight() - 8) / 2,
 					14737632 | MathHelper.ceil(this.alpha * 255.0F) << 24);
 		}
 	}

@@ -13,7 +13,7 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;

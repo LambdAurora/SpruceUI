@@ -11,27 +11,22 @@ package dev.lambdaurora.spruceui.widget.text;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferRenderer;
-import com.mojang.blaze3d.vertex.Tessellator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormats;
+import com.mojang.blaze3d.vertex.*;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.util.ColorUtil;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.unmapped.C_fpcijbbg;
-import net.minecraft.util.ChatUtil;
-import net.minecraft.util.Util;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.Text;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.StringUtil;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -85,7 +80,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 
 	private Consumer<String> changedListener;
 	private Predicate<String> textPredicate;
-	private BiFunction<String, Integer, OrderedText> renderTextProvider;
+	private BiFunction<String, Integer, FormattedCharSequence> renderTextProvider;
 
 	private int firstCharacterIndex = 0;
 	private long editingTime;
@@ -100,7 +95,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		this.changedListener = (input) -> {
 		};
 		this.textPredicate = Objects::nonNull;
-		this.renderTextProvider = (input, firstCharacterIndex) -> OrderedText.forward(input, Style.EMPTY);
+		this.renderTextProvider = (input, firstCharacterIndex) -> FormattedCharSequence.forward(input, Style.EMPTY);
 	}
 
 	@Override
@@ -146,11 +141,11 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		this.textPredicate = textPredicate;
 	}
 
-	public BiFunction<String, Integer, OrderedText> getRenderTextProvider() {
+	public BiFunction<String, Integer, FormattedCharSequence> getRenderTextProvider() {
 		return this.renderTextProvider;
 	}
 
-	public void setRenderTextProvider(BiFunction<String, Integer, OrderedText> renderTextProvider) {
+	public void setRenderTextProvider(BiFunction<String, Integer, FormattedCharSequence> renderTextProvider) {
 		this.renderTextProvider = renderTextProvider;
 	}
 
@@ -174,10 +169,10 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		}
 
 		int width = this.getInnerWidth();
-		var string = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex), width);
+		var string = this.client.font.plainSubstrByWidth(this.text.substring(this.firstCharacterIndex), width);
 		int l = string.length() + this.firstCharacterIndex;
 		if (this.cursor.column == this.firstCharacterIndex) {
-			this.firstCharacterIndex -= this.client.textRenderer.trimToWidth(this.text, width, true).length();
+			this.firstCharacterIndex -= this.client.font.plainSubstrByWidth(this.text, width, true).length();
 		}
 
 		if (this.cursor.column > l) {
@@ -194,7 +189,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 			this.changedListener.accept(this.text);
 		}
 
-		this.editingTime = Util.getMeasuringTimeMs() + 5000L;
+		this.editingTime = Util.getMillis() + 5000L;
 	}
 
 	private boolean onSelectionUpdate(Runnable action) {
@@ -336,7 +331,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 
 	@Override
 	protected boolean onCharTyped(char chr, int keyCode) {
-		if (!this.isEditorActive() || !ChatUtil.method_57175(chr))
+		if (!this.isEditorActive() || !StringUtil.isAllowedChatCharacter(chr))
 			return false;
 
 		if (this.isActive()) {
@@ -356,12 +351,12 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 			this.sanitize();
 			return true;
 		} else if (Screen.isPaste(keyCode)) {
-			this.write(MinecraftClient.getInstance().keyboard.getClipboard());
+			this.write(this.client.keyboardHandler.getClipboard());
 			return true;
 		} else if (Screen.isCopy(keyCode) || Screen.isCut(keyCode)) {
 			var selected = this.selection.getSelectedText();
 			if (!selected.isEmpty())
-				MinecraftClient.getInstance().keyboard.setClipboard(selected);
+				this.client.keyboardHandler.setClipboard(selected);
 			if (Screen.isCut(keyCode)) {
 				this.selection.erase();
 				this.sanitize();
@@ -369,29 +364,27 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 			return true;
 		}
 
-		switch (keyCode) {
-			case GLFW.GLFW_KEY_RIGHT:
-				return this.onSelectionUpdate(this.cursor::moveRight);
-			case GLFW.GLFW_KEY_LEFT:
-				return this.onSelectionUpdate(this.cursor::moveLeft);
-			case GLFW.GLFW_KEY_END:
-				return this.onSelectionUpdate(this.cursor::toEnd);
-			case GLFW.GLFW_KEY_HOME:
-				return this.onSelectionUpdate(this.cursor::toStart);
-			case GLFW.GLFW_KEY_BACKSPACE:
+		return switch (keyCode) {
+			case GLFW.GLFW_KEY_RIGHT -> this.onSelectionUpdate(this.cursor::moveRight);
+			case GLFW.GLFW_KEY_LEFT -> this.onSelectionUpdate(this.cursor::moveLeft);
+			case GLFW.GLFW_KEY_END -> this.onSelectionUpdate(this.cursor::toEnd);
+			case GLFW.GLFW_KEY_HOME -> this.onSelectionUpdate(this.cursor::toStart);
+			case GLFW.GLFW_KEY_BACKSPACE -> {
 				this.eraseCharacter();
-				return true;
-			case GLFW.GLFW_KEY_DELETE:
+				yield true;
+			}
+			case GLFW.GLFW_KEY_DELETE -> {
 				this.removeCharacterForward();
-				return true;
-			case GLFW.GLFW_KEY_D:
+				yield true;
+			}
+			case GLFW.GLFW_KEY_D -> {
 				if (Screen.hasControlDown() && !this.text.isEmpty()) {
 					this.setText("");
 				}
-				return true;
-			default:
-				return false;
-		}
+				yield true;
+			}
+			default -> false;
+		};
 	}
 
 	@Override
@@ -402,10 +395,10 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 			this.setFocused(true);
 
 			this.onSelectionUpdate(() -> {
-				var displayedText = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex),
+				var displayedText = this.client.font.plainSubstrByWidth(this.text.substring(this.firstCharacterIndex),
 						this.getInnerWidth());
 				this.cursor.lastColumn = this.cursor.column = this.firstCharacterIndex
-						+ this.client.textRenderer.trimToWidth(displayedText, x).length();
+						+ this.client.font.plainSubstrByWidth(displayedText, x).length();
 			});
 
 			return true;
@@ -426,7 +419,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		if (!this.dragging && this.editingTime == 0) {
 			Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks,
 					i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
-		} else if (this.editingTime < Util.getMeasuringTimeMs()) {
+		} else if (this.editingTime < Util.getMillis()) {
 			this.editingTime = 0;
 		}
 	}
@@ -441,10 +434,10 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		int x = this.getX() + 4;
 		int y = this.getY() + this.getHeight() / 2 - 4;
 
-		var displayedText = this.client.textRenderer.trimToWidth(this.text.substring(this.firstCharacterIndex),
+		var displayedText = this.client.font.plainSubstrByWidth(this.text.substring(this.firstCharacterIndex),
 				this.getInnerWidth());
 
-		graphics.drawShadowedText(this.client.textRenderer, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
+		graphics.drawShadowedText(this.client.font, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
 				x, y, textColor);
 		this.drawSelection(displayedText, y);
 	}
@@ -465,27 +458,27 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		if (startIndex >= line.length())
 			return;
 
-		int x = this.getX() + 4 + this.client.textRenderer.getWidth(line.substring(0, startIndex));
+		int x = this.getX() + 4 + this.client.font.width(line.substring(0, startIndex));
 		var selected = line.substring(startIndex, endIndex);
 
-		int x2 = x + this.client.textRenderer.getWidth(selected);
-		int y2 = lineY + this.client.textRenderer.fontHeight;
+		int x2 = x + this.client.font.width(selected);
+		int y2 = lineY + this.client.font.lineHeight;
 
 		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.method_60827(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
+		var buffer = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
 		RenderSystem.enableColorLogicOp();
 		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
 		RenderSystem.setShader(GameRenderer::getPositionShader);
 		RenderSystem.setShaderColor(0.f, 0.f, 255.f, 255.f);
-		buffer.method_22912(x, y2, 0.f);
-		buffer.method_22912(x2, y2, 0.f);
-		buffer.method_22912(x2, lineY, 0.f);
-		buffer.method_22912(x, lineY, 0.f);
-		C_fpcijbbg builtBuffer = buffer.method_60794();
+		buffer.addVertex(x, y2, 0.f);
+		buffer.addVertex(x2, y2, 0.f);
+		buffer.addVertex(x2, lineY, 0.f);
+		buffer.addVertex(x, lineY, 0.f);
+		MeshData builtBuffer = buffer.build();
 		if (builtBuffer != null) {
-			BufferRenderer.drawWithShader(builtBuffer);
+			BufferUploader.drawWithShader(builtBuffer);
 		}
-		tessellator.method_60828();
+		tessellator.clear();
 		RenderSystem.disableColorLogicOp();
 	}
 
@@ -501,7 +494,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		int cursorY = this.getY() + this.getHeight() / 2 - 4;
 
 		if (this.text.isEmpty()) {
-			graphics.drawShadowedText(this.client.textRenderer, Text.literal("_"),
+			graphics.drawShadowedText(this.client.font, Text.literal("_"),
 					this.getX() + 4, cursorY, ColorUtil.TEXT_COLOR);
 			return;
 		}
@@ -509,22 +502,22 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		this.cursor.sanitize();
 
 		var cursorLine = this.text.substring(this.firstCharacterIndex);
-		int cursorX = this.getX() + 4 + this.client.textRenderer.getWidth(
+		int cursorX = this.getX() + 4 + this.client.font.width(
 				cursorLine.substring(0, this.cursor.column - this.firstCharacterIndex)
 		);
 
 		if (this.cursor.column - this.firstCharacterIndex < cursorLine.length())
 			graphics.fill(cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
 		else
-			graphics.drawShadowedText(this.client.textRenderer, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
+			graphics.drawShadowedText(this.client.font, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
 	}
 
 	/* Narration */
 
 	@Override
-	public void appendNarrations(NarrationMessageBuilder builder) {
-		super.appendNarrations(builder);
-		this.getTooltip().ifPresent(text -> builder.put(NarrationPart.HINT, text));
+	public void updateNarration(NarrationElementOutput builder) {
+		super.updateNarration(builder);
+		this.getTooltip().ifPresent(text -> builder.add(NarratedElementType.HINT, text));
 	}
 
 	/**

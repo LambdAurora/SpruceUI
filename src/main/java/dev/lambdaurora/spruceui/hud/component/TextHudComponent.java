@@ -10,11 +10,11 @@
 package dev.lambdaurora.spruceui.hud.component;
 
 import dev.lambdaurora.spruceui.hud.HudComponent;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.render.DeltaTracker;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Text;
+import net.minecraft.resources.Identifier;
 
 /**
  * Represents a text HUD component.
@@ -24,7 +24,7 @@ import net.minecraft.util.Identifier;
  * @since 1.3.5
  */
 public class TextHudComponent extends HudComponent {
-	protected MinecraftClient client;
+	protected Minecraft client;
 	protected Text text;
 	protected int color;
 
@@ -34,7 +34,7 @@ public class TextHudComponent extends HudComponent {
 
 	public TextHudComponent(Identifier identifier, int x, int y, Text text, int color) {
 		super(identifier, x, y);
-		this.client = MinecraftClient.getInstance();
+		this.client = Minecraft.getInstance();
 		this.text = text;
 		this.color = color;
 	}
@@ -77,6 +77,6 @@ public class TextHudComponent extends HudComponent {
 
 	@Override
 	public void render(GuiGraphics graphics, DeltaTracker deltaTracker) {
-		graphics.drawShadowedText(this.client.textRenderer, this.text, this.x, this.y, this.color);
+		graphics.drawShadowedText(this.client.font, this.text, this.x, this.y, this.color);
 	}
 }

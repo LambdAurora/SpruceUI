@@ -15,8 +15,8 @@ import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.EmptyBorder;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Text;
+import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -40,7 +40,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	private int baseX;
 	//private final int                         maxHeight;
 	private Text text;
-	private List<OrderedText> lines;
+	private List<FormattedCharSequence> lines;
 	private Text tooltip;
 	private boolean centered;
 	private Border border = EmptyBorder.EMPTY_BORDER;
@@ -86,9 +86,9 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	 */
 	public void setText(Text text) {
 		this.text = text;
-		this.lines = this.client.textRenderer.wrapLines(text, this.maxWidth);
+		this.lines = this.client.font.wrapLines(text, this.maxWidth);
 
-		int width = this.lines.stream().mapToInt(this.client.textRenderer::getWidth).max().orElse(this.maxWidth);
+		int width = this.lines.stream().mapToInt(this.client.font::width).max().orElse(this.maxWidth);
 		if (width > this.maxWidth) {
 			width = this.maxWidth;
 		}
@@ -99,7 +99,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 			this.position.setRelativeX(this.baseX);
 		}
 		this.width = width;
-		this.height = this.lines.size() * this.client.textRenderer.fontHeight + 2;
+		this.height = this.lines.size() * this.client.font.lineHeight + 2;
 	}
 
 	/**
@@ -174,16 +174,15 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 		int y = this.getY() + 2;
 		for (var it = this.lines.iterator(); it.hasNext(); y += 9) {
 			var line = it.next();
-			int x = this.centered ? (this.getInnerX() + this.maxWidth / 2) - this.client.textRenderer.getWidth(line) / 2
-					: this.getInnerX();
-			graphics.drawText(this.client.textRenderer, line, x, y, 10526880, true);
+			int x = this.centered ? (this.getInnerX() + this.maxWidth / 2) - this.client.font.width(line) / 2 : this.getInnerX();
+			graphics.drawText(this.client.font, line, x, y, 10526880, true);
 		}
 
 		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
 
 		if (this.tooltip != null) {
 			if (!this.tooltip.getString().isEmpty()) {
-				var wrappedTooltipText = this.client.textRenderer.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
+				var wrappedTooltipText = this.client.font.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
 				if (this.hovered)
 					Tooltip.create(mouseX, mouseY, wrappedTooltipText).queue();
 				else if (this.focused)

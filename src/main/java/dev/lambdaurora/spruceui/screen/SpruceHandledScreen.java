@@ -15,14 +15,14 @@ import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.util.ScissorManager;
 import dev.lambdaurora.spruceui.widget.SpruceElement;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Text;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.function.BooleanSupplier;
@@ -36,27 +36,27 @@ import java.util.function.Supplier;
  * @version 5.0.0
  * @since 3.3.0
  */
-public abstract class SpruceHandledScreen<T extends ScreenHandler> extends HandledScreen<T> implements SprucePositioned, SpruceElement {
+public abstract class SpruceHandledScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements SprucePositioned, SpruceElement {
 	protected double scaleFactor;
 
-	public SpruceHandledScreen(T handler, PlayerInventory inventory, Text title) {
+	public SpruceHandledScreen(T handler, Inventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
 
 	@Override
-	public void setFocusedChild(Element focused) {
+	public void setFocused(GuiEventListener focused) {
 		var old = this.getFocused();
 		if (old == focused) return;
 		if (old instanceof SpruceWidget)
 			((SpruceWidget) old).setFocused(false);
-		super.setFocusedChild(focused);
+		super.setFocused(focused);
 		if (focused instanceof SpruceWidget)
 			((SpruceWidget) focused).setFocused(true);
 	}
 
 	@Override
 	protected void init() {
-		this.scaleFactor = this.client.getWindow().getScaleFactor();
+		this.scaleFactor = this.client.getWindow().getGuiScale();
 	}
 
 	/* Input */
@@ -86,24 +86,24 @@ public abstract class SpruceHandledScreen<T extends ScreenHandler> extends Handl
 
 			var iterator = children.listIterator(next);
 			BooleanSupplier hasNext = direction.isLookingForward() ? iterator::hasNext : iterator::hasPrevious;
-			Supplier<Element> nextGetter = direction.isLookingForward() ? iterator::next : iterator::previous;
+			Supplier<GuiEventListener> nextGetter = direction.isLookingForward() ? iterator::next : iterator::previous;
 
-			Element nextElement;
+			GuiEventListener nextElement;
 			do {
 				if (!hasNext.getAsBoolean()) {
-					this.setFocusedChild(null);
+					this.setFocused(null);
 					return false;
 				}
 
 				nextElement = nextGetter.get();
 			} while (!this.tryNavigating(nextElement, direction, tab));
 
-			this.setFocusedChild(nextElement);
+			this.setFocused(nextElement);
 		}
 		return true;
 	}
 
-	private boolean tryNavigating(Element element, NavigationDirection direction, boolean tab) {
+	private boolean tryNavigating(GuiEventListener element, NavigationDirection direction, boolean tab) {
 		if (element instanceof SpruceElement) {
 			return ((SpruceElement) element).onNavigation(direction, tab);
 		}
@@ -128,7 +128,7 @@ public abstract class SpruceHandledScreen<T extends ScreenHandler> extends Handl
 
 	public void renderWidgets(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		for (var element : this.children()) {
-			if (element instanceof Drawable drawable)
+			if (element instanceof Renderable drawable)
 				drawable.render(graphics, mouseX, mouseY, delta);
 		}
 	}

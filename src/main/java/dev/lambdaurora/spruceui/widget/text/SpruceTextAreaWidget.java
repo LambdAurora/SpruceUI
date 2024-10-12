@@ -11,23 +11,18 @@ package dev.lambdaurora.spruceui.widget.text;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferRenderer;
-import com.mojang.blaze3d.vertex.Tessellator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormats;
+import com.mojang.blaze3d.vertex.*;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.util.MultilineText;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.text.Text;
-import net.minecraft.unmapped.C_fpcijbbg;
-import net.minecraft.util.ChatUtil;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Text;
+import net.minecraft.util.StringUtil;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -43,7 +38,7 @@ import java.util.List;
  * @since 1.6.3
  */
 public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
-	private final TextRenderer textRenderer;
+	private final Font font;
 	private final MultilineText lines;
 	private final Cursor cursor = new Cursor(true);
 	private final Selection selection = new Selection();
@@ -52,8 +47,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 
 	public SpruceTextAreaWidget(Position position, int width, int height, Text title) {
 		super(position, width, height, title);
-		this.textRenderer = this.client.textRenderer;
-		this.displayedLines = this.getInnerHeight() / this.textRenderer.fontHeight;
+		this.font = this.client.font;
+		this.displayedLines = this.getInnerHeight() / this.font.lineHeight;
 		this.lines = new MultilineText(this.getInnerWidth());
 		this.cursor.toStart();
 		this.sanitize();
@@ -288,7 +283,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	}
 
 	protected boolean doesLineOccupyFullSpace(String cursorLine) {
-		return this.textRenderer.getWidth(cursorLine) >= this.getInnerWidth();
+		return this.font.width(cursorLine) >= this.getInnerWidth();
 	}
 
 	@Override
@@ -321,7 +316,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 
 	@Override
 	protected boolean onCharTyped(char chr, int keyCode) {
-		if (!this.isEditorActive() || !ChatUtil.method_57175(chr))
+		if (!this.isEditorActive() || !StringUtil.isAllowedChatCharacter(chr))
 			return false;
 
 		if (this.isEditable()) {
@@ -340,12 +335,12 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 			this.selection.selectAll();
 			return true;
 		} else if (Screen.isPaste(keyCode)) {
-			this.write(MinecraftClient.getInstance().keyboard.getClipboard());
+			this.write(this.client.keyboardHandler.getClipboard());
 			return true;
 		} else if (Screen.isCopy(keyCode) || Screen.isCut(keyCode)) {
 			var selected = this.selection.getSelectedText();
 			if (!selected.isEmpty())
-				MinecraftClient.getInstance().keyboard.setClipboard(selected);
+				this.client.keyboardHandler.setClipboard(selected);
 			if (Screen.isCut(keyCode) && this.isEditable()) {
 				this.selection.erase();
 				this.sanitize();
@@ -353,45 +348,39 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 			return true;
 		}
 
-		switch (keyCode) {
-			case GLFW.GLFW_KEY_RIGHT:
-				return this.onSelectionUpdate(this.cursor::moveRight);
-			case GLFW.GLFW_KEY_LEFT:
-				return this.onSelectionUpdate(this.cursor::moveLeft);
-			case GLFW.GLFW_KEY_UP:
-				return this.onSelectionUpdate(this.cursor::moveUp);
-			case GLFW.GLFW_KEY_DOWN:
-				return this.onSelectionUpdate(this.cursor::moveDown);
-			case GLFW.GLFW_KEY_END:
-				return this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toEnd : this.cursor::toRowEnd);
-			case GLFW.GLFW_KEY_HOME:
-				return this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toStart : this.cursor::toLineStart);
-			case GLFW.GLFW_KEY_PAGE_UP:
-				return this.onSelectionUpdate(() -> this.cursor.moveVertical(-this.cursor.row));
-			case GLFW.GLFW_KEY_PAGE_DOWN:
-				return this.onSelectionUpdate(() -> this.cursor.moveVertical(this.lines.size() - this.cursor.row));
-			case GLFW.GLFW_KEY_ENTER:
-			case GLFW.GLFW_KEY_KP_ENTER:
+		return switch (keyCode) {
+			case GLFW.GLFW_KEY_RIGHT -> this.onSelectionUpdate(this.cursor::moveRight);
+			case GLFW.GLFW_KEY_LEFT -> this.onSelectionUpdate(this.cursor::moveLeft);
+			case GLFW.GLFW_KEY_UP -> this.onSelectionUpdate(this.cursor::moveUp);
+			case GLFW.GLFW_KEY_DOWN -> this.onSelectionUpdate(this.cursor::moveDown);
+			case GLFW.GLFW_KEY_END -> this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toEnd : this.cursor::toRowEnd);
+			case GLFW.GLFW_KEY_HOME -> this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toStart : this.cursor::toLineStart);
+			case GLFW.GLFW_KEY_PAGE_UP -> this.onSelectionUpdate(() -> this.cursor.moveVertical(-this.cursor.row));
+			case GLFW.GLFW_KEY_PAGE_DOWN -> this.onSelectionUpdate(() -> this.cursor.moveVertical(this.lines.size() - this.cursor.row));
+			case GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER -> {
 				if (this.isEditable())
 					this.insertCharacter('\n');
-				return true;
-			case GLFW.GLFW_KEY_BACKSPACE:
+				yield true;
+			}
+			case GLFW.GLFW_KEY_BACKSPACE -> {
 				if (this.isEditable())
 					this.eraseCharacter();
-				return true;
-			case GLFW.GLFW_KEY_DELETE:
+				yield true;
+			}
+			case GLFW.GLFW_KEY_DELETE -> {
 				if (this.isEditable())
 					this.removeCharacterForward();
-				return true;
-			case GLFW.GLFW_KEY_D:
+				yield true;
+			}
+			case GLFW.GLFW_KEY_D -> {
 				if (Screen.hasControlDown() && this.isEditable() && !this.lines.isEmpty()) {
 					this.lines.remove(this.cursor.row);
 					this.sanitize();
 				}
-				return true;
-			default:
-				return false;
-		}
+				yield true;
+			}
+			default -> false;
+		};
 	}
 
 	private boolean onSelectionUpdate(Runnable action) {
@@ -421,7 +410,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 			this.onSelectionUpdate(() -> {
 				this.cursor.row = row;
 
-				this.cursor.lastColumn = this.cursor.column = this.textRenderer.trimToWidth(this.lines.get(row), x).length();
+				this.cursor.lastColumn = this.cursor.column = this.font.plainSubstrByWidth(this.lines.get(row), x).length();
 			});
 
 			return true;
@@ -472,10 +461,10 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 				continue;
 			if (line.endsWith("\n")) line = line.substring(0, line.length() - 1);
 
-			graphics.drawShadowedText(this.textRenderer, Text.literal(line), textX, lineY, textColor);
+			graphics.drawShadowedText(this.font, Text.literal(line), textX, lineY, textColor);
 			this.drawSelection(graphics, line, lineY, row);
 
-			lineY += this.textRenderer.fontHeight;
+			lineY += this.font.lineHeight;
 		}
 	}
 
@@ -507,27 +496,27 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		if (startIndex >= line.length() || startIndex == endIndex)
 			return;
 
-		int x = this.getX() + 4 + this.textRenderer.getWidth(line.substring(0, startIndex));
+		int x = this.getX() + 4 + this.font.width(line.substring(0, startIndex));
 		var selected = line.substring(startIndex, endIndex);
 
-		int x2 = x + this.textRenderer.getWidth(selected);
-		int y2 = lineY + this.textRenderer.fontHeight;
+		int x2 = x + this.font.width(selected);
+		int y2 = lineY + this.font.lineHeight;
 
 		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.method_60827(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
+		var buffer = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
 		RenderSystem.enableColorLogicOp();
 		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
 		RenderSystem.setShader(GameRenderer::getPositionShader);
 		RenderSystem.setShaderColor(0.0f, 0.0f, 1.0f, 1.0f);
-		buffer.method_22912(x, y2, 0.f);
-		buffer.method_22912(x2, y2, 0.f);
-		buffer.method_22912(x2, lineY, 0.f);
-		buffer.method_22912(x, lineY, 0.f);
-		C_fpcijbbg builtBuffer = buffer.method_60794();
+		buffer.addVertex(x, y2, 0.f);
+		buffer.addVertex(x2, y2, 0.f);
+		buffer.addVertex(x2, lineY, 0.f);
+		buffer.addVertex(x, lineY, 0.f);
+		MeshData builtBuffer = buffer.build();
 		if (builtBuffer != null) {
-			BufferRenderer.drawWithShader(builtBuffer);
+			BufferUploader.drawWithShader(builtBuffer);
 		}
-		tessellator.method_60828();
+		tessellator.clear();
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		RenderSystem.disableColorLogicOp();
 	}
@@ -541,7 +530,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		if (!this.isFocused())
 			return;
 		if (this.lines.isEmpty()) {
-			graphics.drawShadowedText(this.textRenderer, Text.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
+			graphics.drawShadowedText(this.font, Text.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
 			return;
 		}
 
@@ -549,13 +538,13 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 
 		int actualRow = this.cursor.row - firstLine;
 		String cursorLine = this.lines.get(this.cursor.row);
-		int cursorX = this.getX() + 4 + this.textRenderer.getWidth(cursorLine.substring(0, this.cursor.column));
-		int cursorY = this.getY() + 4 + actualRow * this.textRenderer.fontHeight;
+		int cursorX = this.getX() + 4 + this.font.width(cursorLine.substring(0, this.cursor.column));
+		int cursorY = this.getY() + 4 + actualRow * this.font.lineHeight;
 
 		if (this.cursor.row < this.lines.size() - 1 || this.cursor.column < cursorLine.length() || this.doesLineOccupyFullSpace(cursorLine))
 			graphics.fill(cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
 		else
-			graphics.drawShadowedText(this.textRenderer, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
+			graphics.drawShadowedText(this.font, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
 	}
 
 	/**

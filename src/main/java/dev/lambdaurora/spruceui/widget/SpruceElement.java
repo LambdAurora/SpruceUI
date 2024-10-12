@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
-import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 
 /**
  * Represents an element with navigation and controller input implementation.
@@ -19,7 +19,7 @@ import net.minecraft.client.gui.Element;
  * @version 3.0.0
  * @since 2.0.0
  */
-public interface SpruceElement extends Element {
+public interface SpruceElement extends GuiEventListener {
 	/**
 	 * Called when navigating in the menu.
 	 *

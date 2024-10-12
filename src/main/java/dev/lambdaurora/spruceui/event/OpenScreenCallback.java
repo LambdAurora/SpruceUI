@@ -10,8 +10,8 @@
 package dev.lambdaurora.spruceui.event;
 
 import net.fabricmc.fabric.api.event.Event;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -26,5 +26,5 @@ public interface OpenScreenCallback {
 	Event<OpenScreenCallback> PRE = EventUtil.makeOpenScreenEvent();
 	Event<OpenScreenCallback> EVENT = EventUtil.makeOpenScreenEvent();
 
-	void apply(MinecraftClient client, @Nullable Screen screen);
+	void apply(Minecraft client, @Nullable Screen screen);
 }

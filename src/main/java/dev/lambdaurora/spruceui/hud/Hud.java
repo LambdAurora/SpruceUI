@@ -11,11 +11,10 @@ package dev.lambdaurora.spruceui.hud;
 
 import com.google.common.collect.ImmutableList;
 import dev.lambdaurora.spruceui.util.Identifiable;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.render.DeltaTracker;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ public abstract class Hud implements Identifiable {
 
 	public Hud(@NotNull Identifier id) {
 		this.identifier = id;
-		this.translationKey = this.identifier.getNamespace() + ".hud." + this.identifier.getPath()
+		this.translationKey = this.identifier.namespace() + ".hud." + this.identifier.path()
 				.replace('/', '.');
 	}
 
@@ -68,8 +67,8 @@ public abstract class Hud implements Identifiable {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 		if (enabled) {
-			MinecraftClient client = MinecraftClient.getInstance();
-			this.init(client, client.getWindow().getScaledWidth(), client.getWindow().getScaledHeight());
+			var client = Minecraft.getInstance();
+			this.init(client, client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight());
 		}
 	}
 
@@ -91,7 +90,7 @@ public abstract class Hud implements Identifiable {
 		this.visible = visible;
 	}
 
-	public void init(@NotNull MinecraftClient client, int screenWidth, int screenHeight) {
+	public void init(@NotNull Minecraft client, int screenWidth, int screenHeight) {
 		this.components.clear();
 	}
 
