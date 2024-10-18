@@ -76,3 +76,7 @@
 - Added `TexturedBorder` for textured borders.
 - Updated widget textures to match the new sprite system.
 - Removed `ScissorManager` in favor of `GuiGraphics` scissor handling.
+
+### 6.0.1
+
+- Fixed bad Minecraft version range.
