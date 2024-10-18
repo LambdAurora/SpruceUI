@@ -28,7 +28,7 @@ group = project.property("maven_group") as String
 base.archivesName.set(project.property("archives_base_name") as String)
 
 val mcVersion = project.property("minecraft_version") as String
-version = "${project.property("mod_version")}+${mcVersion}"
+version = project.property("mod_version") as String
 
 val targetJavaVersion = 21
 
@@ -171,7 +171,6 @@ dependencies {
 	modLocalRuntime("com.terraformersmc:modmenu:${project.property("modmenu_version")}") {
 		isTransitive = false
 	}
-	modLocalRuntime(fabricApi.module("fabric-key-binding-api-v1", project.property("fabric_api_version") as String))
 
 	"testmodImplementation"(sourceSets.main.get().output)
 }

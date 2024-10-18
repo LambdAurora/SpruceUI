@@ -9,9 +9,6 @@
 
 package dev.lambdaurora.spruceui.widget.text;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
@@ -20,7 +17,7 @@ import dev.lambdaurora.spruceui.util.MultilineText;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.StringUtil;
 import net.minecraft.util.math.MathHelper;
@@ -34,7 +31,7 @@ import java.util.List;
  * Represents a text area widget.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 6.0.0
  * @since 1.6.3
  */
 public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
@@ -502,23 +499,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		int x2 = x + this.font.width(selected);
 		int y2 = lineY + this.font.lineHeight;
 
-		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
-		RenderSystem.enableColorLogicOp();
-		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
-		RenderSystem.setShader(GameRenderer::getPositionShader);
-		RenderSystem.setShaderColor(0.0f, 0.0f, 1.0f, 1.0f);
-		buffer.addVertex(x, y2, 0.f);
-		buffer.addVertex(x2, y2, 0.f);
-		buffer.addVertex(x2, lineY, 0.f);
-		buffer.addVertex(x, lineY, 0.f);
-		MeshData builtBuffer = buffer.build();
-		if (builtBuffer != null) {
-			BufferUploader.drawWithShader(builtBuffer);
-		}
-		tessellator.clear();
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		RenderSystem.disableColorLogicOp();
+		graphics.fill(RenderType.guiTextHighlight(), x, lineY, x2, y2, 0xff0000ff);
 	}
 
 	/**

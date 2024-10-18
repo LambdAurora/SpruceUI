@@ -12,7 +12,6 @@ package dev.lambdaurora.spruceui.screen;
 import dev.lambdaurora.spruceui.SprucePositioned;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
-import dev.lambdaurora.spruceui.util.ScissorManager;
 import dev.lambdaurora.spruceui.widget.SpruceElement;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.GuiGraphics;
@@ -37,8 +36,6 @@ import java.util.function.Supplier;
  * @since 3.3.0
  */
 public abstract class SpruceHandledScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements SprucePositioned, SpruceElement {
-	protected double scaleFactor;
-
 	public SpruceHandledScreen(T handler, Inventory inventory, Text title) {
 		super(handler, inventory, title);
 	}
@@ -52,11 +49,6 @@ public abstract class SpruceHandledScreen<T extends AbstractContainerMenu> exten
 		super.setFocused(focused);
 		if (focused instanceof SpruceWidget)
 			((SpruceWidget) focused).setFocused(true);
-	}
-
-	@Override
-	protected void init() {
-		this.scaleFactor = this.client.getWindow().getGuiScale();
 	}
 
 	/* Input */
@@ -115,12 +107,10 @@ public abstract class SpruceHandledScreen<T extends AbstractContainerMenu> exten
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		ScissorManager.pushScaleFactor(this.scaleFactor);
 		super.render(graphics, mouseX, mouseY, delta);
 		this.renderWidgets(graphics, mouseX, mouseY, delta);
 		this.renderTitle(graphics, mouseX, mouseY, delta);
 		Tooltip.renderAll(graphics);
-		ScissorManager.popScaleFactor();
 	}
 
 	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {

@@ -9,11 +9,11 @@
 
 package dev.lambdaurora.spruceui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -170,10 +170,13 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 
 	@Override
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		RenderSystem.setShaderColor(1.f, 1.f, 1.f, 1.f);
-
 		final Identifier texture = this.isFocusedOrHovered() ? SLIDER_HANDLE_HIGHLIGHTED : SLIDER_HANDLE;
-		graphics.drawGuiTexture(texture, this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(), 8, 20);
+		graphics.drawSprite(
+				RenderType::guiTextured,
+				texture,
+				this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(),
+				8, 20
+		);
 
 		if (!this.isMouseHovered() && this.inUse) {
 			this.inUse = false;

@@ -9,7 +9,6 @@
 
 package dev.lambdaurora.spruceui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
@@ -18,6 +17,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -30,7 +30,7 @@ import java.util.Optional;
  * Represents a button-like widget.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 6.0.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget implements Tooltipable {
@@ -44,7 +44,9 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	 * @see net.minecraft.client.gui.components.AbstractButton#SPRITES
 	 */
 	protected static final WidgetSprites BUTTON_TEXTURES = new WidgetSprites(
-			Identifier.ofDefault("widget/button"), Identifier.ofDefault("widget/button_disabled"), Identifier.ofDefault("widget/button_highlighted")
+			Identifier.ofDefault("widget/button"),
+			Identifier.ofDefault("widget/button_disabled"),
+			Identifier.ofDefault("widget/button_highlighted")
 	);
 
 	public AbstractSpruceButtonWidget(Position position, int width, int height, Text message) {
@@ -159,11 +161,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 
 	@Override
 	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.getAlpha());
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.enableDepthTest();
-		graphics.drawGuiTexture(this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+		graphics.drawSprite(RenderType::guiTextured, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
 
 	/* Narration */

@@ -110,7 +110,7 @@ public class SpruceUITest implements ClientModInitializer {
 					Minecraft client = Minecraft.getInstance();
 					SystemToast toast = SystemToast.multiline(client, SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
 							Text.literal("Action button pressed!"), Text.literal("I'm a result of the action"));
-					client.getToasts().addToast(toast);
+					client.getToastManager().addToast(toast);
 				},
 				Text.literal("Represents an option with a simple action.\n"
 						+ "It's used like a normal button and a press callback."));

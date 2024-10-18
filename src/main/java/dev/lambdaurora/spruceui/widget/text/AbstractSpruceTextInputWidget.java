@@ -13,7 +13,7 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.SimpleColorBackground;
 import dev.lambdaurora.spruceui.border.Border;
-import dev.lambdaurora.spruceui.border.SimpleBorder;
+import dev.lambdaurora.spruceui.border.TexturedBorder;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
@@ -25,13 +25,13 @@ import net.minecraft.network.chat.Text;
  * Represents a text input widget.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 6.0.0
  * @since 2.1.0
  */
 public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
 	private final Text title;
 	private Background background = new SimpleColorBackground(ColorUtil.BLACK);
-	private Border border = new SimpleBorder(1, -6250336, ColorUtil.WHITE);
+	private Border border = TexturedBorder.SIMPLE;
 
 	private int editableColor = ColorUtil.TEXT_COLOR;
 	private int uneditableColor = ColorUtil.UNEDITABLE_COLOR;

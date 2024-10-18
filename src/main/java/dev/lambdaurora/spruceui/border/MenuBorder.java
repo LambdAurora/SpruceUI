@@ -14,6 +14,7 @@ import dev.lambdaurora.spruceui.SpruceTextures;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.Identifier;
 
 /**
@@ -47,15 +48,25 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 				width -= THICKNESS;
 			}
 
-			graphics.drawTexture(topTexture,
-					widget.getX(), widget.getY(), 0, 0, width, THICKNESS, 32, THICKNESS
+			graphics.drawTexture(
+					RenderType::guiTextured,
+					topTexture,
+					widget.getX(), widget.getY(),
+					0, 0,
+					width, THICKNESS,
+					32, THICKNESS
 			);
 		}
 
 		if (this.top && this.right) {
 			Identifier cornerTexture = CLIENT.level == null ? SpruceTextures.MENU_TOP_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_TOP_RIGHT_BORDER;
-			graphics.drawTexture(cornerTexture,
-					widget.getEndX() - THICKNESS, widget.getY(), 0, 0, THICKNESS, THICKNESS, THICKNESS, THICKNESS
+			graphics.drawTexture(
+					RenderType::guiTextured,
+					cornerTexture,
+					widget.getEndX() - THICKNESS, widget.getY(),
+					0, 0,
+					THICKNESS, THICKNESS,
+					THICKNESS, THICKNESS
 			);
 		}
 
@@ -74,16 +85,25 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 				height -= THICKNESS;
 			}
 
-			graphics.drawTexture(rightTexture,
-					widget.getEndX() - THICKNESS, y, 0, 0, THICKNESS, height, THICKNESS, 32
+			graphics.drawTexture(
+					RenderType::guiTextured, rightTexture,
+					widget.getEndX() - THICKNESS, y,
+					0, 0,
+					THICKNESS, height,
+					THICKNESS, 32
 			);
 		}
 
 		if (this.bottom && this.right) {
 			Identifier cornerTexture = CLIENT.level == null
 					? SpruceTextures.MENU_BOTTOM_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_BOTTOM_RIGHT_BORDER;
-			graphics.drawTexture(cornerTexture,
-					widget.getEndX() - THICKNESS, widget.getEndY() - THICKNESS, 0, 0, THICKNESS, THICKNESS, THICKNESS, THICKNESS
+			graphics.drawTexture(
+					RenderType::guiTextured,
+					cornerTexture,
+					widget.getEndX() - THICKNESS, widget.getEndY() - THICKNESS,
+					0, 0,
+					THICKNESS, THICKNESS,
+					THICKNESS, THICKNESS
 			);
 		}
 
@@ -96,8 +116,13 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 				width -= THICKNESS;
 			}
 
-			graphics.drawTexture(bottomTexture,
-					widget.getX(), widget.getEndY() - THICKNESS, 0, 0, width, THICKNESS, 32, THICKNESS
+			graphics.drawTexture(
+					RenderType::guiTextured,
+					bottomTexture,
+					widget.getX(), widget.getEndY() - THICKNESS,
+					0, 0,
+					width, THICKNESS,
+					32, THICKNESS
 			);
 		}
 

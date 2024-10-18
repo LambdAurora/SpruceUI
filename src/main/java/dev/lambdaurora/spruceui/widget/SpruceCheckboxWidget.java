@@ -9,10 +9,11 @@
 
 package dev.lambdaurora.spruceui.widget;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.SpruceUI;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
@@ -22,11 +23,16 @@ import net.minecraft.util.math.MathHelper;
  * Represents a checkbox widget.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 6.0.0
  * @since 1.0.0
  */
 public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
-	private static final Identifier TEXTURE = Identifier.of("spruceui", "textures/gui/checkbox.png");
+	public static final WidgetSprites BACKGROUND_TEXTURE = new WidgetSprites(
+			Identifier.ofDefault("widget/checkbox"),
+			Identifier.ofDefault("widget/checkbox_highlighted")
+	);
+	public static final Identifier CHECKED_TEXTURE = SpruceUI.id("widget/checkbox/checked");
+	public static final Identifier CROSSED_TEXTURE = SpruceUI.id("widget/checkbox/crossed");
 	private boolean showCross = false;
 	private boolean colored = false;
 
@@ -86,25 +92,20 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		RenderSystem.enableDepthTest();
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		float[] oldColor = RenderSystem.getShaderColor();
-		float oldRed = oldColor[0], oldGreen = oldColor[1], oldBlue = oldColor[2], oldAlpha = oldColor[3];
-
 		if (this.getValue()) {
-			if (this.colored)
-				RenderSystem.setShaderColor(0.f, 1.f, 0.f, this.alpha);
-			graphics.drawTexture(TEXTURE, this.getX(), this.getY(), 0.f, 40.f, this.getHeight(), this.getHeight(), 64, 64);
+			graphics.drawSprite(
+					RenderType::guiTextured, CHECKED_TEXTURE,
+					this.getX(), this.getY(),
+					this.getHeight(), this.getHeight(),
+					this.colored ? 0xff00ff00 : -1
+			);
 		} else if (this.showCross) {
-			if (this.colored)
-				RenderSystem.setShaderColor(1.f, 0.f, 0.f, this.alpha);
-			graphics.drawTexture(TEXTURE, this.getX(), this.getY(), 0.f, 20.f, this.getHeight(), this.getHeight(), 64, 64);
-		}
-
-		if (this.colored) {
-			RenderSystem.setShaderColor(oldRed, oldGreen, oldBlue, oldAlpha);
+			graphics.drawSprite(
+					RenderType::guiTextured, CROSSED_TEXTURE,
+					this.getX(), this.getY(),
+					this.getHeight(), this.getHeight(),
+					this.colored ? 0xffff0000 : -1
+			);
 		}
 
 		if (this.showMessage) {
@@ -116,13 +117,11 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		RenderSystem.enableDepthTest();
-		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.alpha);
-		RenderSystem.setShaderTexture(0, TEXTURE);
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		graphics.drawTexture(TEXTURE, this.getX(), this.getY(), this.isFocusedOrHovered() ? 20.f : 0.f, 0.f, this.getHeight(), this.getHeight(), 64, 64);
+		graphics.drawSprite(
+				RenderType::guiTextured, BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
+				this.getX(), this.getY(),
+				this.getHeight(), this.getHeight()
+		);
 	}
 
 	/* Narration */

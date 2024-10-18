@@ -9,9 +9,9 @@
 
 package dev.lambdaurora.spruceui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
 
@@ -73,10 +73,8 @@ public class SpruceTexturedButtonWidget extends SpruceButtonWidget {
 			v += this.hoveredVOffset;
 		}
 
-		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.getAlpha());
-		RenderSystem.setShaderTexture(0, this.texture);
-		RenderSystem.enableDepthTest();
-		graphics.drawTexture(this.texture,
+		graphics.drawTexture(
+				RenderType::guiTextured, this.texture,
 				this.getX(), this.getY(),
 				this.u, v,
 				this.getWidth(), this.getHeight(),

@@ -9,14 +9,14 @@
 
 package dev.lambdaurora.spruceui.widget;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
+import dev.lambdaurora.spruceui.SpruceUI;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Text;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,11 +24,22 @@ import org.jetbrains.annotations.Nullable;
  * Represents a checkbox widget.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 6.0.0
  * @since 1.0.0
  */
 public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
-	private static final Identifier TEXTURE = Identifier.of("spruceui", "textures/gui/toggle_switch.png");
+	public static final WidgetSprites BACKGROUND_TEXTURE = new WidgetSprites(
+			SpruceUI.id("widget/toggle_switch/background"),
+			SpruceUI.id("widget/toggle_switch/background_highlighted")
+	);
+	public static final WidgetSprites ON_TEXTURE = new WidgetSprites(
+			SpruceUI.id("widget/toggle_switch/on"),
+			SpruceUI.id("widget/toggle_switch/on_highlighted")
+	);
+	public static final WidgetSprites OFF_TEXTURE = new WidgetSprites(
+			SpruceUI.id("widget/toggle_switch/off"),
+			SpruceUI.id("widget/toggle_switch/off_highlighted")
+	);
 
 	public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value) {
 		super(position, width, height, message, value);
@@ -53,13 +64,11 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		RenderSystem.enableDepthTest();
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		graphics.drawTexture(TEXTURE, this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
-				this.getValue() ? 50.f : 32.f, this.isFocusedOrHovered() ? 18.f : 0.f,
-				18, 18, 68, 36);
+		graphics.drawSprite(
+				RenderType::guiTextured, (this.getValue() ? ON_TEXTURE : OFF_TEXTURE).get(this.isActive(), this.isFocusedOrHovered()),
+				this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
+				18, 18
+		);
 
 		if (this.showMessage) {
 			var message = Language.getInstance().getVisualOrder(
@@ -72,14 +81,11 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		RenderSystem.enableDepthTest();
-		RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.alpha);
-		RenderSystem.setShaderTexture(0, TEXTURE);
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		graphics.drawTexture(TEXTURE, this.getX(), this.getY() + (this.getHeight() / 2 - 9),
-				0.f, this.isFocusedOrHovered() ? 18.f : 0.f, 32, 18, 68, 36);
+		graphics.drawSprite(
+				RenderType::guiTextured, BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
+				this.getX(), this.getY() + (this.getHeight() / 2 - 9),
+				32, 18
+		);
 	}
 
 	/* Narration */

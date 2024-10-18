@@ -9,9 +9,6 @@
 
 package dev.lambdaurora.spruceui.widget.text;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
@@ -22,7 +19,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
@@ -41,7 +38,7 @@ import java.util.function.Predicate;
  * Represents a text field widget.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 6.0.0
  * @since 2.1.0
  */
 public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget implements Tooltipable {
@@ -439,16 +436,17 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 
 		graphics.drawShadowedText(this.client.font, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
 				x, y, textColor);
-		this.drawSelection(displayedText, y);
+		this.drawSelection(graphics, displayedText, y);
 	}
 
 	/**
 	 * Draws the selection over the text.
 	 *
+	 * @param graphics the GUI graphics instance to render with
 	 * @param line the current line
 	 * @param lineY the line Y-coordinates
 	 */
-	protected void drawSelection(String line, int lineY) {
+	protected void drawSelection(GuiGraphics graphics, String line, int lineY) {
 		if (!this.isFocused() || !this.selection.active)
 			return;
 
@@ -464,22 +462,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		int x2 = x + this.client.font.width(selected);
 		int y2 = lineY + this.client.font.lineHeight;
 
-		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
-		RenderSystem.enableColorLogicOp();
-		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
-		RenderSystem.setShader(GameRenderer::getPositionShader);
-		RenderSystem.setShaderColor(0.f, 0.f, 255.f, 255.f);
-		buffer.addVertex(x, y2, 0.f);
-		buffer.addVertex(x2, y2, 0.f);
-		buffer.addVertex(x2, lineY, 0.f);
-		buffer.addVertex(x, lineY, 0.f);
-		MeshData builtBuffer = buffer.build();
-		if (builtBuffer != null) {
-			BufferUploader.drawWithShader(builtBuffer);
-		}
-		tessellator.clear();
-		RenderSystem.disableColorLogicOp();
+		graphics.fill(RenderType.guiTextHighlight(), x, lineY, x2, y2, 0xff0000ff);
 	}
 
 	/**

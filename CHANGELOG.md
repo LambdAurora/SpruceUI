@@ -69,3 +69,10 @@
 
 - Updated to Minecraft 1.20.6 ([#51](https://github.com/LambdAurora/SpruceUI/pull/51)).
 - Added `MenuBackground` and `MenuBorder` to adapt to Minecraft's new GUI design.
+
+## 6.0.0
+
+- Updated to Minecraft 1.21.2.
+- Added `TexturedBorder` for textured borders.
+- Updated widget textures to match the new sprite system.
+- Removed `ScissorManager` in favor of `GuiGraphics` scissor handling.

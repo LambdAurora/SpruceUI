@@ -19,7 +19,6 @@ import dev.lambdaurora.spruceui.background.MenuBackground;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.MenuBorder;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
-import dev.lambdaurora.spruceui.util.ScissorManager;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidgetWithBorder;
 import dev.lambdaurora.spruceui.widget.WithBackground;
@@ -28,7 +27,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -43,7 +42,7 @@ import java.util.List;
  *
  * @param <E> the type of entry
  * @author LambdAurora
- * @version 5.1.0
+ * @version 6.0.0
  * @since 2.0.0
  */
 public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E>
@@ -333,12 +332,11 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		int right = this.getEndInnerBorderedX();
 		int top = this.getInnerBorderedY();
 		int bottom = this.getEndInnerBorderedY();
-		int width = this.getInnerBorderedWidth();
 		int height = this.getInnerBorderedHeight();
 
-		ScissorManager.push(left, top, width, height);
+		graphics.enableScissor(left, top, right, bottom);
 		this.entries.forEach(e -> e.render(graphics, mouseX, mouseY, delta));
-		ScissorManager.pop();
+		graphics.disableScissor();
 
 		RenderSystem.enableBlend();
 		var tessellator = Tessellator.getInstance();
@@ -349,7 +347,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 					GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
 					GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE
 			);
-			RenderSystem.setShader(GameRenderer::getPositionColorShader);
+			RenderSystem.setShader(CoreShaders.POSITION_COLOR);
 			// TOP
 			buffer.addVertex(left, top + 4, 0).color(0, 0, 0, 0);
 			buffer.addVertex(right, top + 4, 0).color(0, 0, 0, 0);
@@ -403,7 +401,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		int y = this.getInnerBorderedY();
 		int endY = this.getEndInnerBorderedY();
 
-		RenderSystem.setShader(GameRenderer::getPositionColorShader);
+		RenderSystem.setShader(CoreShaders.POSITION_COLOR);
 		buffer.addVertex(scrollbarX, endY, 0.0f).color(0, 0, 0, 255);
 		buffer.addVertex(scrollbarEndX, endY, 0.0f).color(0, 0, 0, 255);
 		buffer.addVertex(scrollbarEndX, y, 0.0f).color(0, 0, 0, 255);
