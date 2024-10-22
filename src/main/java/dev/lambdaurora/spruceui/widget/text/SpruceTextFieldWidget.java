@@ -38,7 +38,7 @@ import java.util.function.Predicate;
  * Represents a text field widget.
  *
  * @author LambdAurora
- * @version 6.0.0
+ * @version 6.1.0
  * @since 2.1.0
  */
 public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget implements Tooltipable {
@@ -85,7 +85,11 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	private long lastTick;
 
 	public SpruceTextFieldWidget(Position position, int width, int height, Text title) {
-		super(position, width, height, title);
+		this(position, width, height, title, null);
+	}
+
+	public SpruceTextFieldWidget(Position position, int width, int height, Text title, Text placeholder) {
+		super(position, width, height, title, placeholder);
 		this.cursor.toStart();
 		this.sanitize();
 
@@ -93,6 +97,10 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		};
 		this.textPredicate = Objects::nonNull;
 		this.renderTextProvider = (input, firstCharacterIndex) -> FormattedCharSequence.forward(input, Style.EMPTY);
+	}
+
+	public static SpruceTextFieldWidgetBuilder builder(Position position, int width, int height) {
+		return new SpruceTextFieldWidgetBuilder(position, width, height);
 	}
 
 	@Override
@@ -230,6 +238,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	private void eraseCharacter() {
 		if (this.selection.erase()) {
 			this.sanitize();
+			this.onChanged();
 			return;
 		}
 
@@ -250,6 +259,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	private void removeCharacterForward() {
 		if (this.selection.erase()) {
 			this.sanitize();
+			this.onChanged();
 			return;
 		}
 
@@ -430,12 +440,22 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		int textColor = this.getTextColor();
 		int x = this.getX() + 4;
 		int y = this.getY() + this.getHeight() / 2 - 4;
+		var placeholder = this.getPlaceholder();
 
-		var displayedText = this.client.font.plainSubstrByWidth(this.text.substring(this.firstCharacterIndex),
-				this.getInnerWidth());
+		if (this.text.isEmpty() && placeholder != null) {
+			graphics.drawShadowedText(this.client.font, placeholder, x, y, textColor);
+			return;
+		}
 
-		graphics.drawShadowedText(this.client.font, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
-				x, y, textColor);
+		var displayedText = this.client.font.plainSubstrByWidth(
+				this.text.substring(this.firstCharacterIndex),
+				this.getInnerWidth()
+		);
+
+		graphics.drawShadowedText(
+				this.client.font, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
+				x, y, textColor
+		);
 		this.drawSelection(graphics, displayedText, y);
 	}
 

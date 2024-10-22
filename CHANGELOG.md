@@ -80,3 +80,10 @@
 ### 6.0.1
 
 - Fixed bad Minecraft version range.
+
+## 6.1.0
+
+- Added a way to use `SpruceToggleBooleanOption` without text.
+- Added placeholder to `SpruceTextFieldWidget` and `SpruceTextAreaWidget`.
+- Improved `SpruceTabbedWidget` construction and management.
+- Fixed change listener not triggering when deleting a selection in `SpruceTextFieldWidget` and `SpruceTextAreaWidget`.

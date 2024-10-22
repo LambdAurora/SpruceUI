@@ -31,17 +31,31 @@ import java.util.List;
  * Represents a container widget with tabs.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 6.1.0
  * @since 2.0.0
  */
 public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget> {
-	private final Text title;
+	private final List<FormattedCharSequence> title;
 	private final SideTabList list;
 	private final Position anchor;
 	private boolean isLeft = false;
 
 	public SpruceTabbedWidget(Position position, int width, int height, @Nullable Text title) {
-		this(position, width, height, title, Math.max(100, width / 8), title != null ? 20 : 0);
+		this(position, width, height, title, Math.max(100, width / 8));
+	}
+
+	public SpruceTabbedWidget(Position position, int width, int height, @Nullable Text title, int sideWidth) {
+		super(position, SpruceWidget.class);
+		this.width = width;
+		this.height = height;
+		this.title = title != null ? this.client.font.wrapLines(title, sideWidth - 8) : null;
+		int sideTopOffset = title == null ? 0 : 6 + (this.title.size() * this.client.font.lineHeight + 4);
+		this.list = new SideTabList(
+				Position.of(position, 0, sideTopOffset),
+				sideWidth,
+				height - sideTopOffset
+		);
+		this.anchor = Position.of(this, this.list.getWidth(), 0);
 	}
 
 	public SpruceTabbedWidget(Position position, int width, int height, @Nullable Text title, int sideWidth,
@@ -49,8 +63,12 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		super(position, SpruceWidget.class);
 		this.width = width;
 		this.height = height;
-		this.title = title;
-		this.list = new SideTabList(Position.of(position, 0, sideTopOffset), sideWidth, height - sideTopOffset);
+		this.title = title != null ? this.client.font.wrapLines(title, sideWidth - 8) : null;
+		this.list = new SideTabList(
+				Position.of(position, 0, sideTopOffset),
+				sideWidth,
+				height - sideTopOffset
+		);
 		this.anchor = Position.of(this, this.list.getWidth(), 0);
 	}
 
@@ -154,8 +172,11 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	@Override
 	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.title != null) {
-			graphics.drawCenteredShadowedText(this.client.font, this.title, this.getX() + this.list.getWidth() / 2,
-					this.getY() + 6, 0xffffffff);
+			int y = this.getY() + 6;
+			for (var it = this.title.iterator(); it.hasNext(); y += 9) {
+				var line = it.next();
+				graphics.drawCenteredShadowedText(this.client.font, line, this.getX() + this.list.getWidth() / 2, y, 0xffffff);
+			}
 		}
 		this.list.render(graphics, mouseX, mouseY, delta);
 		if (this.list.getCurrentTab() != null)

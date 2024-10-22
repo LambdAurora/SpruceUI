@@ -24,12 +24,19 @@ import java.util.function.Supplier;
  * Works the as {@link SpruceBooleanOption} but uses a toggle switch instead.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 6.1.0
  * @since 2.0.0
  */
 public class SpruceToggleBooleanOption extends SpruceBooleanOption {
-	public SpruceToggleBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip) {
+	private final boolean showMessage;
+
+	public SpruceToggleBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip, boolean showMessage) {
 		super(key, getter, setter, tooltip, false);
+		this.showMessage = showMessage;
+	}
+
+	public SpruceToggleBooleanOption(String key, Supplier<Boolean> getter, Consumer<Boolean> setter, @Nullable Text tooltip) {
+		this(key, getter, setter, tooltip, true);
 	}
 
 	@Override
@@ -37,7 +44,8 @@ public class SpruceToggleBooleanOption extends SpruceBooleanOption {
 		var button = new SpruceToggleSwitch(position, width, 20, this.getDisplayText(), (btn, newValue) -> {
 			this.set();
 			btn.setMessage(this.getDisplayText());
-		}, this.get());
+			this.getOptionTooltip().ifPresent(btn::setTooltip);
+		}, this.get(), this.showMessage);
 		this.getOptionTooltip().ifPresent(button::setTooltip);
 		return button;
 	}

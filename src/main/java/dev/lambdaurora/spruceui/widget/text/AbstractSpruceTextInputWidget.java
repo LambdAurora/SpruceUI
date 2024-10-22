@@ -20,27 +20,34 @@ import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Text;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a text input widget.
  *
  * @author LambdAurora
- * @version 6.0.0
+ * @version 6.1.0
  * @since 2.1.0
  */
 public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
 	private final Text title;
 	private Background background = new SimpleColorBackground(ColorUtil.BLACK);
 	private Border border = TexturedBorder.SIMPLE;
+	private Text placeholder;
 
 	private int editableColor = ColorUtil.TEXT_COLOR;
 	private int uneditableColor = ColorUtil.UNEDITABLE_COLOR;
 
 	public AbstractSpruceTextInputWidget(Position position, int width, int height, Text title) {
+		this(position, width, height, title, null);
+	}
+
+	public AbstractSpruceTextInputWidget(Position position, int width, int height, Text title, Text placeholder) {
 		super(position);
 		this.width = width;
 		this.height = height;
 		this.title = title;
+		this.placeholder = placeholder;
 	}
 
 	/**
@@ -64,6 +71,24 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
 	 */
 	public Text getTitle() {
 		return this.title;
+	}
+
+	/**
+	 * Returns the placeholder of this text input widget.
+	 *
+	 * @return the placeholder
+	 */
+	public @Nullable Text getPlaceholder() {
+		return this.placeholder;
+	}
+
+	/**
+	 * Sets the placeholder of this text input widget.
+	 *
+	 * @param placeholder the placeholder
+	 */
+	public void setPlaceholder(Text placeholder) {
+		this.placeholder = placeholder;
 	}
 
 	/**

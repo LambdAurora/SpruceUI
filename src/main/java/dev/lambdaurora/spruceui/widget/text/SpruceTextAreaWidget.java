@@ -31,7 +31,7 @@ import java.util.List;
  * Represents a text area widget.
  *
  * @author LambdAurora
- * @version 6.0.0
+ * @version 6.1.0
  * @since 1.6.3
  */
 public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
@@ -43,7 +43,11 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	private int displayedLines;
 
 	public SpruceTextAreaWidget(Position position, int width, int height, Text title) {
-		super(position, width, height, title);
+		this(position, width, height, title, null);
+	}
+
+	public SpruceTextAreaWidget(Position position, int width, int height, Text title, Text placeholder) {
+		super(position, width, height, title, placeholder);
 		this.font = this.client.font;
 		this.displayedLines = this.getInnerHeight() / this.font.lineHeight;
 		this.lines = new MultilineText(this.getInnerWidth());
@@ -450,8 +454,14 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 
 		int textColor = this.getTextColor();
 		int textX = this.getX() + 4;
-
 		int lineY = this.getY() + 4;
+		var placeholder = this.getPlaceholder();
+
+		if (this.getText().isEmpty() && placeholder != null) {
+			graphics.drawShadowedText(this.client.font, placeholder, textX, lineY, textColor);
+			return;
+		}
+
 		for (int row = this.firstLine; row < this.firstLine + length; row++) {
 			var line = this.lines.get(row);
 			if (line == null)
