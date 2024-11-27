@@ -19,7 +19,7 @@ import java.util.regex.Pattern
 
 plugins {
 	id("fabric-loom").version("1.8.+")
-	id("dev.yumi.gradle.licenser").version("1.1.+")
+	id("dev.yumi.gradle.licenser").version("2.0.+")
 	`java-library`
 	`maven-publish`
 }
@@ -205,6 +205,7 @@ tasks.jar {
 
 loom {
 	runtimeOnlyLog4j = true
+	accessWidenerPath = file("src/main/resources/spruceui.accesswidener")
 	runs {
 		register("testmodClient") {
 			client()

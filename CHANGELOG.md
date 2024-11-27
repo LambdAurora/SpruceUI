@@ -87,3 +87,10 @@
 - Added placeholder to `SpruceTextFieldWidget` and `SpruceTextAreaWidget`.
 - Improved `SpruceTabbedWidget` construction and management.
 - Fixed change listener not triggering when deleting a selection in `SpruceTextFieldWidget` and `SpruceTextAreaWidget`.
+
+## 6.2.0
+
+- Added upside-down English translations ([#57](https://github.com/LambdAurora/SpruceUI/pull/57)).
+- Made button texts scrolling like in modern Minecraft buttons.
+- Improved handling of long titles in `SpruceSeparatorWidget`.
+- Improved scrollbar refocus when entries change in `SpruceEntryListWidget`.

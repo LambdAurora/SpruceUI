@@ -170,6 +170,13 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 	}
 
 	/**
+	 * Refocuses the scroll of this list.
+	 */
+	public void refocusScroll() {
+		this.setScrollAmount(this.getScrollAmount());
+	}
+
+	/**
 	 * Returns the max scroll. The scroll amount can't go past this maximum.
 	 *
 	 * @return the max scroll
@@ -190,6 +197,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 	protected final void clearEntries() {
 		this.setFocused(null);
 		this.entries.clear();
+		this.refocusScroll();
 	}
 
 	protected void replaceEntries(Collection<E> newEntries) {
@@ -199,6 +207,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		if (!newEntries.contains(oldFocused)) {
 			this.setFocused(null);
 		}
+		this.refocusScroll();
 	}
 
 	protected @Nullable E getEntry(int index) {

@@ -1,0 +1,4 @@
+accessWidener v2 named
+
+transitive-accessible method net/minecraft/client/gui/components/AbstractWidget renderScrollingString (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Text;IIIII)V
+transitive-accessible method net/minecraft/client/gui/components/AbstractWidget renderScrollingString (Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Text;IIIIII)V

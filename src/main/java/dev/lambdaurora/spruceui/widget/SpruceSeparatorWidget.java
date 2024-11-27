@@ -15,8 +15,10 @@ import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Text;
+import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,6 +30,7 @@ import java.util.Optional;
  */
 public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Tooltipable {
 	private Text title;
+	private List<FormattedCharSequence> titleToRender = List.of();
 	private Text tooltip;
 	private int tooltipTicks;
 	private long lastTick;
@@ -35,8 +38,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 	public SpruceSeparatorWidget(Position position, int width, @Nullable Text title) {
 		super(position);
 		this.width = width;
-		this.height = 9;
-		this.title = title;
+		this.setTitle(title);
 	}
 
 	@Deprecated
@@ -53,6 +55,21 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 		return Optional.ofNullable(this.title);
 	}
 
+	protected int getTitleWidth() {
+		if (this.titleToRender.isEmpty()) {
+			return 0;
+		}
+
+		int max = this.getWidth() - 8;
+		int width = 0;
+
+		for (var line : this.titleToRender) {
+			width = Math.max(width, this.client.font.width(line));
+		}
+
+		return Math.min(width, max);
+	}
+
 	/**
 	 * Sets the title of this separator widget.
 	 *
@@ -60,6 +77,18 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 	 */
 	public void setTitle(@Nullable Text title) {
 		this.title = title;
+
+		if (this.title != null) {
+			this.titleToRender = this.client.font.wrapLines(this.title, this.getWidth() - 8);
+		} else {
+			this.titleToRender = List.of();
+		}
+
+		this.height = this.client.font.lineHeight;
+
+		for (int i = 1; i < this.titleToRender.size(); i++) {
+			this.height += 2 + this.client.font.lineHeight;
+		}
 	}
 
 	@Override
@@ -83,16 +112,22 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 
 	@Override
 	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		int lineY = this.getY() + this.getHeight() / 2 - 1;
+
 		if (this.title != null) {
-			int titleWidth = this.client.font.width(this.title);
+			int titleWidth = this.getTitleWidth();
 			int titleX = this.getX() + (this.getWidth() / 2 - titleWidth / 2);
-			if (this.width > titleWidth) {
-				graphics.fill(this.getX(), this.getY() + 4, titleX - 5, this.getY() + 6, ColorUtil.TEXT_COLOR);
-				graphics.fill(titleX + titleWidth + 5, this.getY() + 4, this.getX() + this.getWidth(), this.getY() + 6, ColorUtil.TEXT_COLOR);
+			graphics.fill(this.getX(), lineY, titleX - 5, lineY + 2, ColorUtil.TEXT_COLOR);
+			graphics.fill(titleX + titleWidth + 5, lineY, this.getX() + this.getWidth(), lineY + 2, ColorUtil.TEXT_COLOR);
+
+			int y = this.getY();
+			for (var line : this.titleToRender) {
+				int lineX = this.getX() + (this.getWidth() / 2 - this.client.font.width(line) / 2);
+				graphics.drawShadowedText(this.client.font, line, lineX, y, ColorUtil.WHITE);
+				y += 2 + this.client.font.lineHeight;
 			}
-			graphics.drawShadowedText(this.client.font, this.title, titleX, this.getY(), ColorUtil.WHITE);
 		} else {
-			graphics.fill(this.getX(), this.getY() + 4, this.getX() + this.getWidth(), this.getY() + 6, ColorUtil.TEXT_COLOR);
+			graphics.fill(this.getX(), lineY, this.getX() + this.getWidth(), lineY + 2, ColorUtil.TEXT_COLOR);
 		}
 
 		Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks, i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);

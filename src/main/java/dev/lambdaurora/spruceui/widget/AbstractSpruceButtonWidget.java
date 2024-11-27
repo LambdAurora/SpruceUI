@@ -14,6 +14,7 @@ import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -154,9 +155,17 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int color = this.active ? 16777215 : 10526880;
-		graphics.drawCenteredShadowedText(this.client.font, this.getMessage(),
-				this.getX() + this.getWidth() / 2, this.getY() + (this.getHeight() - 8) / 2,
-				color | MathHelper.ceil(this.alpha * 255.0F) << 24);
+		this.renderText(graphics, color | MathHelper.ceil(this.alpha * 255.0F) << 24);
+	}
+
+	protected void renderText(GuiGraphics graphics, int color) {
+		int margin = 2;
+		int startX = this.getX() + margin;
+		int endX = this.getX() + this.getWidth() - margin;
+		AbstractWidget.renderScrollingString(
+				graphics, this.client.font, this.getMessage(),
+				startX, this.getY(), endX, this.getY() + this.getHeight(), color
+		);
 	}
 
 	@Override
