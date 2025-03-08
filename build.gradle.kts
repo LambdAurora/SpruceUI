@@ -19,7 +19,7 @@ import java.util.regex.Pattern
 
 plugins {
 	id("fabric-loom").version("1.8.+")
-	id("dev.yumi.gradle.licenser").version("2.0.+")
+	id("dev.yumi.gradle.licenser").version("2.1.+")
 	`java-library`
 	`maven-publish`
 }
@@ -193,13 +193,15 @@ tasks.processResources {
 	inputs.property("version", project.version)
 
 	filesMatching("fabric.mod.json") {
-		expand("version" to project.version)
+		expand("version" to inputs.properties["version"])
 	}
 }
 
 tasks.jar {
+	inputs.property("archivesName", base.archivesName)
+
 	from("LICENSE") {
-		rename { "${it}_${base.archivesName.get()}" }
+		rename { "${it}_${inputs.properties["archivesName"]}" }
 	}
 }
 
@@ -214,7 +216,7 @@ loom {
 	}
 }
 
-val testmodJar = tasks.create<Jar>("testmodJar") {
+val testmodJar = tasks.register<Jar>("testmodJar") {
 	this.group = "build"
 	this.from(testmod.output)
 	this.archiveClassifier = "testmod-dev"
@@ -223,8 +225,8 @@ val testmodJar = tasks.create<Jar>("testmodJar") {
 
 val remapTestmodJar = tasks.register<RemapJarTask>("remapTestmodJar") {
 	this.group = "build"
-	this.dependsOn(testmodJar)
-	this.inputFile.set(testmodJar.archiveFile)
+	this.dependsOn(testmodJar.get())
+	this.inputFile.set(testmodJar.get().archiveFile)
 	this.classpath.from(testmod.compileClasspath)
 	this.archiveClassifier = "testmod"
 }
