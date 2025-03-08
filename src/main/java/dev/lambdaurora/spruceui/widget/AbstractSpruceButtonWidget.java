@@ -170,7 +170,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 
 	@Override
 	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawSprite(RenderType::guiTextured, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+		graphics.drawGuiTexture(this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
 
 	/* Narration */

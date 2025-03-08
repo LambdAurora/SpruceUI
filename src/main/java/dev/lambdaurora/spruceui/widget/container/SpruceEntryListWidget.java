@@ -27,7 +27,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -356,7 +356,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 					GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
 					GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE
 			);
-			RenderSystem.setShader(CoreShaders.POSITION_COLOR);
+			RenderSystem.setShader(GameRenderer::getPositionColorShader);
 			// TOP
 			buffer.addVertex(left, top + 4, 0).color(0, 0, 0, 0);
 			buffer.addVertex(right, top + 4, 0).color(0, 0, 0, 0);
@@ -410,7 +410,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		int y = this.getInnerBorderedY();
 		int endY = this.getEndInnerBorderedY();
 
-		RenderSystem.setShader(CoreShaders.POSITION_COLOR);
+		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 		buffer.addVertex(scrollbarX, endY, 0.0f).color(0, 0, 0, 255);
 		buffer.addVertex(scrollbarEndX, endY, 0.0f).color(0, 0, 0, 255);
 		buffer.addVertex(scrollbarEndX, y, 0.0f).color(0, 0, 0, 255);

@@ -30,8 +30,8 @@ public record TexturedBorder(WidgetSprites sprites) implements Border {
 
 	@Override
 	public void render(GuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
-		graphics.drawSprite(
-				RenderType::guiTextured, this.sprites.get(widget.isActive(), widget.isFocusedOrHovered()),
+		graphics.drawGuiTexture(
+				this.sprites.get(widget.isActive(), widget.isFocusedOrHovered()),
 				widget.getX(), widget.getY(),
 				widget.getWidth(), widget.getHeight()
 		);

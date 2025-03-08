@@ -171,8 +171,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	@Override
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		final Identifier texture = this.isFocusedOrHovered() ? SLIDER_HANDLE_HIGHLIGHTED : SLIDER_HANDLE;
-		graphics.drawSprite(
-				RenderType::guiTextured,
+		graphics.drawGuiTexture(
 				texture,
 				this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(),
 				8, 20

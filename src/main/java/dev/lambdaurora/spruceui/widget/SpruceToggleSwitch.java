@@ -14,7 +14,6 @@ import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.SpruceUI;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
@@ -64,8 +63,8 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawSprite(
-				RenderType::guiTextured, (this.getValue() ? ON_TEXTURE : OFF_TEXTURE).get(this.isActive(), this.isFocusedOrHovered()),
+		graphics.drawGuiTexture(
+				(this.getValue() ? ON_TEXTURE : OFF_TEXTURE).get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
 				18, 18
 		);
@@ -81,8 +80,8 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawSprite(
-				RenderType::guiTextured, BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
+		graphics.drawGuiTexture(
+				BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX(), this.getY() + (this.getHeight() / 2 - 9),
 				32, 18
 		);

@@ -9,11 +9,11 @@
 
 package dev.lambdaurora.spruceui.widget;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceUI;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
@@ -92,20 +92,27 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		float[] oldColor = RenderSystem.getShaderColor();
+		float oldRed = oldColor[0], oldGreen = oldColor[1], oldBlue = oldColor[2], oldAlpha = oldColor[3];
+
 		if (this.getValue()) {
-			graphics.drawSprite(
-					RenderType::guiTextured, CHECKED_TEXTURE,
+			RenderSystem.setShaderColor(0.f, 1.f, 0.f, this.alpha);
+			graphics.drawGuiTexture(
+					CHECKED_TEXTURE,
 					this.getX(), this.getY(),
-					this.getHeight(), this.getHeight(),
-					this.colored ? 0xff00ff00 : -1
+					this.getHeight(), this.getHeight()
 			);
 		} else if (this.showCross) {
-			graphics.drawSprite(
-					RenderType::guiTextured, CROSSED_TEXTURE,
+			RenderSystem.setShaderColor(1.f, 0.f, 0.f, this.alpha);
+			graphics.drawGuiTexture(
+					CROSSED_TEXTURE,
 					this.getX(), this.getY(),
-					this.getHeight(), this.getHeight(),
-					this.colored ? 0xffff0000 : -1
+					this.getHeight(), this.getHeight()
 			);
+		}
+
+		if (this.colored) {
+			RenderSystem.setShaderColor(oldRed, oldGreen, oldBlue, oldAlpha);
 		}
 
 		if (this.showMessage) {
@@ -117,8 +124,8 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawSprite(
-				RenderType::guiTextured, BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
+		graphics.drawGuiTexture(
+				BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX(), this.getY(),
 				this.getHeight(), this.getHeight()
 		);

@@ -18,7 +18,7 @@ import java.nio.file.Path
 import java.util.regex.Pattern
 
 plugins {
-	id("fabric-loom").version("1.8.+")
+	id("fabric-loom").version("1.10.+")
 	id("dev.yumi.gradle.licenser").version("2.1.+")
 	`java-library`
 	`maven-publish`

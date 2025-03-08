@@ -9,6 +9,7 @@
 
 package dev.lambdaurora.spruceui.background;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.SpruceTextures;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBorder;
@@ -51,13 +52,15 @@ public record MenuBackground(Identifier texture, Identifier inWorldTexture) impl
 			height -= border.getTop() + border.getBottom();
 		}
 
+		RenderSystem.enableBlend();
 		Identifier identifier = CLIENT.level == null ? this.inWorldTexture : this.texture;
 		graphics.drawTexture(
-				RenderType::guiTextured, identifier,
+				identifier,
 				x, y,
 				0, 0,
 				width, height,
 				16, 16
 		);
+		RenderSystem.disableBlend();
 	}
 }

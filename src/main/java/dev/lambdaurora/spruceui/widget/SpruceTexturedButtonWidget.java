@@ -74,7 +74,7 @@ public class SpruceTexturedButtonWidget extends SpruceButtonWidget {
 		}
 
 		graphics.drawTexture(
-				RenderType::guiTextured, this.texture,
+				this.texture,
 				this.getX(), this.getY(),
 				this.u, v,
 				this.getWidth(), this.getHeight(),

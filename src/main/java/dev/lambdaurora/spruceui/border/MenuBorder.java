@@ -14,7 +14,6 @@ import dev.lambdaurora.spruceui.SpruceTextures;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.Identifier;
 
 /**
@@ -49,7 +48,6 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 			}
 
 			graphics.drawTexture(
-					RenderType::guiTextured,
 					topTexture,
 					widget.getX(), widget.getY(),
 					0, 0,
@@ -61,7 +59,6 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 		if (this.top && this.right) {
 			Identifier cornerTexture = CLIENT.level == null ? SpruceTextures.MENU_TOP_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_TOP_RIGHT_BORDER;
 			graphics.drawTexture(
-					RenderType::guiTextured,
 					cornerTexture,
 					widget.getEndX() - THICKNESS, widget.getY(),
 					0, 0,
@@ -86,7 +83,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 			}
 
 			graphics.drawTexture(
-					RenderType::guiTextured, rightTexture,
+					rightTexture,
 					widget.getEndX() - THICKNESS, y,
 					0, 0,
 					THICKNESS, height,
@@ -98,7 +95,6 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 			Identifier cornerTexture = CLIENT.level == null
 					? SpruceTextures.MENU_BOTTOM_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_BOTTOM_RIGHT_BORDER;
 			graphics.drawTexture(
-					RenderType::guiTextured,
 					cornerTexture,
 					widget.getEndX() - THICKNESS, widget.getEndY() - THICKNESS,
 					0, 0,
@@ -117,7 +113,6 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 			}
 
 			graphics.drawTexture(
-					RenderType::guiTextured,
 					bottomTexture,
 					widget.getX(), widget.getEndY() - THICKNESS,
 					0, 0,

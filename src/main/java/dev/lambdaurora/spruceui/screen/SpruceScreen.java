@@ -32,6 +32,13 @@ import java.util.function.Supplier;
  * @since 2.0.0
  */
 public abstract class SpruceScreen extends Screen implements SprucePositioned, SpruceElement {
+	/**
+	 * @deprecated Was only used for ease of use of {@link dev.lambdaurora.spruceui.util.ScissorManager},
+	 * whose usage should be replaced with {@link GuiGraphics}'s scissor handling instead.
+	 */
+	@Deprecated(forRemoval = true)
+	protected double scaleFactor;
+
 	protected SpruceScreen(Text title) {
 		super(title);
 	}
@@ -45,6 +52,11 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 		super.setFocused(focused);
 		if (focused instanceof SpruceWidget)
 			focused.setFocused(true);
+	}
+
+	@Override
+	protected void init() {
+		this.scaleFactor = this.client.getWindow().getGuiScale();
 	}
 
 	/* Input */
