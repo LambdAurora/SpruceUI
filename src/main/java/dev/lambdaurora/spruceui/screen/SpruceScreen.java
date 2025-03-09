@@ -114,7 +114,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.renderBackground(graphics, mouseX, mouseY, delta);
+		this.renderBackground(graphics);
 		this.renderWidgets(graphics, mouseX, mouseY, delta);
 		this.renderTitle(graphics, mouseX, mouseY, delta);
 		Tooltip.renderAll(graphics);

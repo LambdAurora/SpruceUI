@@ -10,7 +10,6 @@
 package dev.lambdaurora.spruceui.hud;
 
 import dev.lambdaurora.spruceui.util.Identifiable;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +66,7 @@ public abstract class HudComponent implements Identifiable {
 	 * @param deltaTracker Progress for linearly interpolating between the previous and current game state.
 	 * @see #isEnabled()
 	 */
-	public abstract void render(GuiGraphics graphics, DeltaTracker deltaTracker);
+	public abstract void render(GuiGraphics graphics, float deltaTracker);
 
 	/**
 	 * Updates the HUD each tick if enabled and has tick updates.

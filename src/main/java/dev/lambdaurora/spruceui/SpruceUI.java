@@ -9,7 +9,11 @@
 
 package dev.lambdaurora.spruceui;
 
+import dev.lambdaurora.spruceui.resources.GuiSpriteManager;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.io.ResourceType;
 
 /**
  * Contains common constants from SpruceUI.
@@ -18,7 +22,7 @@ import net.minecraft.resources.Identifier;
  * @version 6.0.0
  * @since 6.0.0
  */
-public final class SpruceUI {
+public final class SpruceUI implements ClientModInitializer {
 	/**
 	 * The namespace of SpruceUI, whose value is {@value}.
 	 */
@@ -30,10 +34,11 @@ public final class SpruceUI {
 	 * @param path the path
 	 */
 	public static Identifier id(String path) {
-		return Identifier.of(NAMESPACE, path);
+		return new Identifier(NAMESPACE, path);
 	}
 
-	private SpruceUI() {
-		throw new UnsupportedOperationException("SpruceUi only contains static definitions.");
+	@Override
+	public void onInitializeClient() {
+		ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(GuiSpriteManager.get());
 	}
 }

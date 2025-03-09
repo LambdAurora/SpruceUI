@@ -9,13 +9,13 @@
 
 package dev.lambdaurora.spruceui.widget;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Text;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.function.Consumer;
@@ -34,10 +34,6 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	private double multiplier;
 	private String sign;
 	private boolean inUse = false;
-
-	private static final Identifier SLIDER = Identifier.ofDefault("widget/slider");
-	private static final Identifier SLIDER_HANDLE = Identifier.ofDefault("widget/slider_handle");
-	private static final Identifier SLIDER_HANDLE_HIGHLIGHTED = Identifier.ofDefault("widget/slider_handle_highlighted");
 
 	public SpruceSliderWidget(Position position, int width, int height, Text message, double value, Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
 		super(position, width, height, message);
@@ -164,17 +160,24 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	/* Rendering */
 
 	@Override
-	protected Identifier getTexture() {
-		return SLIDER;
+	protected int getVOffset() {
+		return 0;
 	}
 
 	@Override
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		final Identifier texture = this.isFocusedOrHovered() ? SLIDER_HANDLE_HIGHLIGHTED : SLIDER_HANDLE;
-		graphics.drawGuiTexture(
-				texture,
+		RenderSystem.setShaderColor(1.f, 1.f, 1.f, 1.f);
+		RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_TEXTURE);
+		int vOffset = (this.isFocusedOrHovered() ? 2 : 1) * 20;
+		graphics.drawTexture(AbstractWidget.WIDGETS_TEXTURE,
 				this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(),
-				8, 20
+				0, 46 + vOffset,
+				4, 20
+		);
+		graphics.drawTexture(AbstractWidget.WIDGETS_TEXTURE,
+				this.getX() + (int) (this.value * (double) (this.getWidth() - 8)) + 4, this.getY(),
+				196, 46 + vOffset,
+				4, 20
 		);
 
 		if (!this.isMouseHovered() && this.inUse) {

@@ -49,7 +49,7 @@ public final class RenderUtil {
 	public static void renderBackgroundTexture(int x, int y, int width, int height, float vOffset,
 			int red, int green, int blue, int alpha) {
 		var tessellator = Tessellator.getInstance();
-		var bufferBuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+		var bufferBuilder = tessellator.getBuilder();
 		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 		RenderSystem.setShaderColor(1.f, 1.f, 1.f, 1.f);
 		RenderSystem.setShaderTexture(0, SpruceTextures.LEGACY_OPTIONS_BACKGROUND);
@@ -57,23 +57,24 @@ public final class RenderUtil {
 		int right = x + width;
 		int bottom = y + height;
 
+		bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 		bufferBuilder.addVertex(x, bottom, 0)
 				.uv(0, bottom / 32.f + vOffset)
-				.color(red, green, blue, alpha);
+				.color(red, green, blue, alpha)
+				.endVertex();
 		bufferBuilder.addVertex(right, bottom, 0)
 				.uv(right / 32.f, bottom / 32.f + vOffset)
-				.color(red, green, blue, alpha);
+				.color(red, green, blue, alpha)
+				.endVertex();
 		bufferBuilder.addVertex(right, y, 0)
 				.uv(right / 32.f, y / 32.f + vOffset)
-				.color(red, green, blue, alpha);
+				.color(red, green, blue, alpha)
+				.endVertex();
 		bufferBuilder.addVertex(x, y, 0)
 				.uv(0, y / 32.f + vOffset)
-				.color(red, green, blue, alpha);
-		MeshData builtBuffer = bufferBuilder.build();
-		if (builtBuffer != null) {
-			BufferUploader.drawWithShader(builtBuffer);
-		}
-		tessellator.clear();
+				.color(red, green, blue, alpha)
+				.endVertex();
+		tessellator.end();
 	}
 
 	/**
@@ -92,30 +93,25 @@ public final class RenderUtil {
 	@Deprecated(forRemoval = true)
 	public static void renderSelectionBox(int x, int y, int width, int height, int red, int green, int blue, int alpha) {
 		var tessellator = Tessellator.getInstance();
-		var bufferBuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+		var bufferBuilder = tessellator.getBuilder();
 
 		int top = y + height;
 		int right = x + width;
 
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 		RenderSystem.setShaderColor(red / 255.f, green / 255.f, blue / 255.f, alpha / 255.f);
-		bufferBuilder.addVertex(x, top, 0);
-		bufferBuilder.addVertex(right, top, 0);
-		bufferBuilder.addVertex(right, y, 0);
-		bufferBuilder.addVertex(x, y, 0);
-		var builtBuffer = bufferBuilder.build();
-		if (builtBuffer != null) {
-			BufferUploader.drawWithShader(builtBuffer);
-		}
+		bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+		bufferBuilder.addVertex(x, top, 0).endVertex();
+		bufferBuilder.addVertex(right, top, 0).endVertex();
+		bufferBuilder.addVertex(right, y, 0).endVertex();
+		bufferBuilder.addVertex(x, y, 0).endVertex();
+		tessellator.end();
 		RenderSystem.setShaderColor(0, 0, 0, 1.f);
-		bufferBuilder.addVertex(x + 1, top - 1, 0);
-		bufferBuilder.addVertex(right - 1, top - 1, 0);
-		bufferBuilder.addVertex(right - 1, y + 1, 0);
-		bufferBuilder.addVertex(x + 1, y + 1, 0);
-		builtBuffer = bufferBuilder.build();
-		if (builtBuffer != null) {
-			BufferUploader.drawWithShader(builtBuffer);
-		}
-		tessellator.clear();
+		bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+		bufferBuilder.addVertex(x + 1, top - 1, 0).endVertex();
+		bufferBuilder.addVertex(right - 1, top - 1, 0).endVertex();
+		bufferBuilder.addVertex(right - 1, y + 1, 0).endVertex();
+		bufferBuilder.addVertex(x + 1, y + 1, 0).endVertex();
+		tessellator.end();
 	}
 }

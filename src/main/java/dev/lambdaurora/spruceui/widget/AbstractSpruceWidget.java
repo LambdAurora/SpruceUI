@@ -171,10 +171,28 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 		return false;
 	}
 
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
+		return this.mouseScrolled(mouseX, mouseY, 0, amount);
+	}
+
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 		if (this.isActive() && this.isVisible() && this.isMouseOver(mouseX, mouseY)) {
-			return this.onMouseScroll(mouseX, mouseY, scrollX, scrollY);
+			// Handle retro-compat.
+			if (!this.onMouseScroll(mouseX, mouseY, scrollY)) {
+				return this.onMouseScroll(mouseX, mouseY, scrollX, scrollY);
+			} else {
+				return true;
+			}
 		}
+		return false;
+	}
+
+	/**
+	 * @deprecated Please use {@link #onMouseScroll(double, double, double, double)} instead.
+	 */
+	@Deprecated(forRemoval = true)
+	protected boolean onMouseScroll(double mouseX, double mouseY, double amount) {
 		return false;
 	}
 

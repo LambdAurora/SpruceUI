@@ -9,16 +9,16 @@
 
 package dev.lambdaurora.spruceui.widget;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
+import dev.lambdaurora.spruceui.resources.GuiSpriteManager;
 import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -40,15 +40,6 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	private int tooltipTicks;
 	private long lastTick;
 	protected float alpha = 1.f;
-
-	/**
-	 * @see net.minecraft.client.gui.components.AbstractButton#SPRITES
-	 */
-	protected static final WidgetSprites BUTTON_TEXTURES = new WidgetSprites(
-			Identifier.ofDefault("widget/button"),
-			Identifier.ofDefault("widget/button_disabled"),
-			Identifier.ofDefault("widget/button_highlighted")
-	);
 
 	public AbstractSpruceButtonWidget(Position position, int width, int height, Text message) {
 		super(position);
@@ -142,7 +133,13 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	/* Rendering */
 
 	protected Identifier getTexture() {
-		return BUTTON_TEXTURES.get(this.isActive(), this.isFocusedOrHovered());
+		return null;
+	}
+
+	protected int getVOffset() {
+		if (!this.isActive())
+			return 0;
+		return this.isFocusedOrHovered() ? 2 : 1;
 	}
 
 	@Override
@@ -170,7 +167,56 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 
 	@Override
 	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawGuiTexture(this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+		var texture = this.getTexture();
+
+		if (texture != null) {
+			GuiSpriteManager.get().drawSprite(
+					graphics, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight()
+			);
+		} else {
+			RenderSystem.setShaderColor(1.f, 1.f, 1.f, this.getAlpha());
+			RenderSystem.setShaderTexture(0, AbstractWidget.WIDGETS_TEXTURE);
+			RenderSystem.enableBlend();
+			RenderSystem.defaultBlendFunc();
+			RenderSystem.enableDepthTest();
+			int v = 46 + this.getVOffset() * 20;
+			if (this.getWidth() / 2 < 200) {
+				graphics.drawTexture(AbstractWidget.WIDGETS_TEXTURE,
+						this.getX(), this.getY(),
+						0, v,
+						this.getWidth() / 2, this.getHeight());
+				graphics.drawTexture(AbstractWidget.WIDGETS_TEXTURE,
+						this.getX() + this.getWidth() / 2, this.getY(),
+						200 - this.getWidth() / 2, v,
+						this.getWidth() / 2, this.getHeight());
+			} else {
+				int middleWidth = this.getWidth() - 100;
+				graphics.drawTexture(AbstractWidget.WIDGETS_TEXTURE,
+						this.getX(), this.getY(),
+						0, v,
+						50, this.getHeight());
+
+				int x;
+				for (x = 50; x < middleWidth; x += 100) {
+					graphics.drawTexture(AbstractWidget.WIDGETS_TEXTURE,
+							this.getX() + x, this.getY(),
+							50, v,
+							100, this.getHeight());
+				}
+
+				if (x - middleWidth > 0) {
+					graphics.drawTexture(AbstractWidget.WIDGETS_TEXTURE,
+							this.getX() + x, this.getY(),
+							50, v,
+							x - middleWidth, this.getHeight());
+				}
+
+				graphics.drawTexture(AbstractWidget.WIDGETS_TEXTURE,
+						this.getX() + this.getWidth() - 50, this.getY(),
+						150, v,
+						50, this.getHeight());
+			}
+		}
 	}
 
 	/* Narration */

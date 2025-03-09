@@ -30,7 +30,7 @@ base.archivesName.set(project.property("archives_base_name") as String)
 val mcVersion = project.property("minecraft_version") as String
 version = project.property("mod_version") as String
 
-val targetJavaVersion = 21
+val targetJavaVersion = 17
 
 val fabricModules = setOf(
 	"fabric-api-base",

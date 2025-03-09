@@ -11,7 +11,6 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
 

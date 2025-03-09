@@ -10,10 +10,10 @@
 package dev.lambdaurora.spruceui.border;
 
 import dev.lambdaurora.spruceui.SpruceTextures;
+import dev.lambdaurora.spruceui.resources.GuiSpriteManager;
+import dev.lambdaurora.spruceui.util.WidgetSprites;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.client.renderer.RenderType;
 
 /**
  * Represents a textured border to draw around a widget.
@@ -30,7 +30,7 @@ public record TexturedBorder(WidgetSprites sprites) implements Border {
 
 	@Override
 	public void render(GuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
-		graphics.drawGuiTexture(
+		GuiSpriteManager.get().drawSprite(graphics,
 				this.sprites.get(widget.isActive(), widget.isFocusedOrHovered()),
 				widget.getX(), widget.getY(),
 				widget.getWidth(), widget.getHeight()

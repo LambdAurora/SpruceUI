@@ -12,8 +12,9 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.SpruceUI;
+import dev.lambdaurora.spruceui.resources.GuiSpriteManager;
+import dev.lambdaurora.spruceui.util.WidgetSprites;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
@@ -28,16 +29,16 @@ import org.jetbrains.annotations.Nullable;
  */
 public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 	public static final WidgetSprites BACKGROUND_TEXTURE = new WidgetSprites(
-			SpruceUI.id("widget/toggle_switch/background"),
-			SpruceUI.id("widget/toggle_switch/background_highlighted")
+			SpruceUI.id("textures/gui/sprites/widget/toggle_switch/background.png"),
+			SpruceUI.id("textures/gui/sprites/widget/toggle_switch/background_highlighted.png")
 	);
 	public static final WidgetSprites ON_TEXTURE = new WidgetSprites(
-			SpruceUI.id("widget/toggle_switch/on"),
-			SpruceUI.id("widget/toggle_switch/on_highlighted")
+			SpruceUI.id("textures/gui/sprites/widget/toggle_switch/on.png"),
+			SpruceUI.id("textures/gui/sprites/widget/toggle_switch/on_highlighted.png")
 	);
 	public static final WidgetSprites OFF_TEXTURE = new WidgetSprites(
-			SpruceUI.id("widget/toggle_switch/off"),
-			SpruceUI.id("widget/toggle_switch/off_highlighted")
+			SpruceUI.id("textures/gui/sprites/widget/toggle_switch/off.png"),
+			SpruceUI.id("textures/gui/sprites/widget/toggle_switch/off_highlighted.png")
 	);
 
 	public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value) {
@@ -63,7 +64,7 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawGuiTexture(
+		GuiSpriteManager.get().drawSprite(graphics,
 				(this.getValue() ? ON_TEXTURE : OFF_TEXTURE).get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
 				18, 18
@@ -80,7 +81,7 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 
 	@Override
 	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawGuiTexture(
+		GuiSpriteManager.get().drawSprite(graphics,
 				BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX(), this.getY() + (this.getHeight() / 2 - 9),
 				32, 18
