@@ -28,7 +28,10 @@ import java.util.Optional;
  * @author LambdAurora
  * @version 3.2.0
  * @since 1.2.0
+ * @deprecated Please use Fabric API's HUD rendering APIs.
  */
+@SuppressWarnings("removal")
+@Deprecated(forRemoval = true)
 public class HudManager {
 	private static final Map<Identifier, Hud> HUDS = new Object2ObjectOpenHashMap<>();
 

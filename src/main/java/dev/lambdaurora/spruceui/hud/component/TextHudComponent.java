@@ -22,7 +22,10 @@ import net.minecraft.resources.Identifier;
  * @author LambdAurora
  * @version 5.0.0
  * @since 1.3.5
+ * @deprecated Please use Fabric API's HUD rendering APIs.
  */
+@SuppressWarnings("removal")
+@Deprecated(forRemoval = true)
 public class TextHudComponent extends HudComponent {
 	protected Minecraft client;
 	protected Text text;

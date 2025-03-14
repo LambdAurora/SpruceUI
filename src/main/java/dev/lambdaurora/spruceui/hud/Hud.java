@@ -27,7 +27,10 @@ import java.util.function.Predicate;
  * @author LambdAurora
  * @version 5.0.0
  * @since 1.2.0
+ * @deprecated Please use Fabric API's HUD rendering APIs.
  */
+@SuppressWarnings("removal")
+@Deprecated(forRemoval = true)
 public abstract class Hud implements Identifiable {
 	protected final Identifier identifier;
 	protected final List<HudComponent> components = new ArrayList<>();
