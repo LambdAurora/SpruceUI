@@ -95,6 +95,10 @@
 - Improved handling of long titles in `SpruceSeparatorWidget`.
 - Improved scrollbar refocus when entries change in `SpruceEntryListWidget`.
 
-## 6.2.1
+### 6.2.1
 
 - Added Hindi translations ([#59](https://github.com/LambdAurora/SpruceUI/pull/59)).
+
+### 6.2.2
+
+- Fixed a severe silent build error.
