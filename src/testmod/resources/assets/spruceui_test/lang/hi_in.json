@@ -1,0 +1,12 @@
+{
+  "spruceui_test.option.action": "सरल क्रिया विकल्प",
+  "spruceui_test.option.boolean": "बूलियन विकल्प",
+  "spruceui_test.option.checkbox": "चेकबॉक्स विकल्प",
+  "spruceui_test.option.cycling": "साइकिल विकल्प",
+  "spruceui_test.option.double": "दोहरा विकल्प",
+  "spruceui_test.option.double_input": "दोहरा इनपुट विकल्प",
+  "spruceui_test.option.float_input": "फ़्लोट इनपुट विकल्प",
+  "spruceui_test.option.int_input": "पूर्णांक इनपुट विकल्प",
+  "spruceui_test.option.separator": "सेपरेटर",
+  "spruceui_test.option.toggle_switch": "स्विच विकल्प टॉगल करें"
+}
