@@ -1,0 +1,12 @@
+{
+  "spruceui.reset": "रीसेट",
+  "spruceui.gui.unbind": "अनबाइंड",
+  "spruceui.narrator.separator": "%s विभाजक",
+  "spruceui.narration.toggle_switch": "टॉगल स्विच: %s, स्थिति %s के साथ",
+  "spruceui.options.generic": "%s: %s",
+  "spruceui.options.generic.fancy": "रोचक",
+  "spruceui.options.generic.fast": "तेज़",
+  "spruceui.options.generic.fastest": "सबसे तेज़",
+  "spruceui.options.generic.simple": "सरल",
+  "spruceui.widget.separator": "विभाजक"
+}
