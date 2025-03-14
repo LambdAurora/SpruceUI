@@ -21,7 +21,9 @@ import org.jetbrains.annotations.NotNull;
  * @author LambdAurora
  * @version 5.0.0
  * @since 1.2.0
+ * @deprecated Please use Fabric API's HUD rendering APIs.
  */
+@Deprecated(forRemoval = true)
 public abstract class HudComponent implements Identifiable {
 	protected final Identifier identifier;
 	protected boolean enabled = true;
