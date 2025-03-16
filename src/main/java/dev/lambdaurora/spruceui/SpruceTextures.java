@@ -49,4 +49,8 @@ public final class SpruceTextures {
 	public static final Identifier INWORLD_MENU_BOTTOM_RIGHT_BORDER = SpruceUI.id("textures/gui/inworld_bottom_right_border_separator.png");
 	public static final Identifier MENU_BOTTOM_BORDER = Screen.FOOTER_SEPARATOR;
 	public static final Identifier INWORLD_MENU_BOTTOM_BORDER = Screen.INWORLD_FOOTER_SEPARATOR;
+
+	/* Scroller */
+	public static final Identifier SCROLLER = Identifier.ofDefault("widget/scroller");
+	public static final Identifier SCROLLER_BACKGROUND = Identifier.ofDefault("widget/scroller_background");
 }

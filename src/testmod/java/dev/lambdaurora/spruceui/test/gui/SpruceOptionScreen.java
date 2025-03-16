@@ -11,6 +11,7 @@ package dev.lambdaurora.spruceui.test.gui;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
+import dev.lambdaurora.spruceui.background.DirtTexturedBackground;
 import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.test.SpruceUITest;

@@ -9,7 +9,6 @@
 
 package dev.lambdaurora.spruceui.border;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.lambdaurora.spruceui.SpruceTextures;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.Minecraft;
@@ -25,7 +24,7 @@ import net.minecraft.resources.Identifier;
  * @param bottom {@code true} if a bottom border is present, or {@code false} otherwise
  * @param left {@code true} if a left border is present, or {@code false} otherwise
  * @author LambdAurora
- * @version 5.1.0
+ * @version 7.0.0
  * @since 5.1.0
  */
 public record MenuBorder(boolean top, boolean right, boolean bottom, boolean left) implements Border {
@@ -37,8 +36,6 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 
 	@Override
 	public void render(GuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
-		RenderSystem.enableBlend();
-
 		if (this.top) {
 			Identifier topTexture = CLIENT.level == null ? SpruceTextures.MENU_TOP_BORDER : SpruceTextures.INWORLD_MENU_TOP_BORDER;
 
@@ -125,8 +122,6 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 					32, THICKNESS
 			);
 		}
-
-		RenderSystem.disableBlend();
 	}
 
 	@Override

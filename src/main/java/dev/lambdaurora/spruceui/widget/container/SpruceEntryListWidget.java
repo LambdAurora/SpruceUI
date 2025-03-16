@@ -10,10 +10,8 @@
 package dev.lambdaurora.spruceui.widget.container;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.SpruceTextures;
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.MenuBackground;
 import dev.lambdaurora.spruceui.border.Border;
@@ -27,7 +25,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -42,7 +40,7 @@ import java.util.List;
  *
  * @param <E> the type of entry
  * @author LambdAurora
- * @version 6.0.0
+ * @version 7.0.0
  * @since 2.0.0
  */
 public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E>
@@ -187,6 +185,13 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 
 	protected int getScrollbarPositionX() {
 		return this.getEndInnerBorderedX() - 6;
+	}
+
+	/**
+	 * {@return {@code true} if the scrollbar is visible, or {@code false} otherwise}
+	 */
+	public boolean isScrollbarVisible() {
+		return this.getMaxScroll() > 0;
 	}
 
 	@Override
@@ -335,99 +340,68 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 
 	@Override
 	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		int scrollbarPositionX = this.getScrollbarPositionX();
-		int scrollBarEnd = scrollbarPositionX + 6;
 		int left = this.getInnerBorderedX();
 		int right = this.getEndInnerBorderedX();
 		int top = this.getInnerBorderedY();
 		int bottom = this.getEndInnerBorderedY();
-		int height = this.getInnerBorderedHeight();
 
 		graphics.enableScissor(left, top, right, bottom);
 		this.entries.forEach(e -> e.render(graphics, mouseX, mouseY, delta));
 		graphics.disableScissor();
 
-		RenderSystem.enableBlend();
-		var tessellator = Tessellator.getInstance();
-		var buffer = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 		// Render the transition thingy.
 		if (this.shouldRenderTransition()) {
-			RenderSystem.blendFuncSeparate(
-					GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA,
-					GlStateManager.SourceFactor.ZERO, GlStateManager.DestFactor.ONE
-			);
-			RenderSystem.setShader(CoreShaders.POSITION_COLOR);
-			// TOP
-			buffer.addVertex(left, top + 4, 0).color(0, 0, 0, 0);
-			buffer.addVertex(right, top + 4, 0).color(0, 0, 0, 0);
-			buffer.addVertex(right, top, 0).color(0, 0, 0, 255);
-			buffer.addVertex(left, top, 0).color(0, 0, 0, 255);
-			// RIGHT
-			buffer.addVertex(right - 4, bottom, 0).color(0, 0, 0, 0);
-			buffer.addVertex(right, bottom, 0).color(0, 0, 0, 255);
-			buffer.addVertex(right, top, 0).color(0, 0, 0, 255);
-			buffer.addVertex(right - 4, top, 0).color(0, 0, 0, 0);
-			// BOTTOM
-			buffer.addVertex(left, bottom, 0).color(0, 0, 0, 255);
-			buffer.addVertex(right, bottom, 0).color(0, 0, 0, 255);
-			buffer.addVertex(right, bottom - 4, 0).color(0, 0, 0, 0);
-			buffer.addVertex(left, bottom - 4, 0).color(0, 0, 0, 0);
-			// LEFT
-			buffer.addVertex(left, bottom, 0).color(0, 0, 0, 255);
-			buffer.addVertex(left + 4, bottom, 0).color(0, 0, 0, 0);
-			buffer.addVertex(left + 4, top, 0).color(0, 0, 0, 0);
-			buffer.addVertex(left, top, 0).color(0, 0, 0, 255);
-			MeshData builtBuffer = buffer.build();
-			if (builtBuffer != null) {
-				BufferUploader.drawWithShader(builtBuffer);
-			}
-			tessellator.clear();
+			graphics.drawSpecial(multiBufferSource -> {
+				var buffer = multiBufferSource.getBuffer(RenderType.gui());
+
+				// TOP
+				buffer.addVertex(left, top + 4, 0).color(0, 0, 0, 0);
+				buffer.addVertex(right, top + 4, 0).color(0, 0, 0, 0);
+				buffer.addVertex(right, top, 0).color(0, 0, 0, 255);
+				buffer.addVertex(left, top, 0).color(0, 0, 0, 255);
+				// RIGHT
+				buffer.addVertex(right - 4, bottom, 0).color(0, 0, 0, 0);
+				buffer.addVertex(right, bottom, 0).color(0, 0, 0, 255);
+				buffer.addVertex(right, top, 0).color(0, 0, 0, 255);
+				buffer.addVertex(right - 4, top, 0).color(0, 0, 0, 0);
+				// BOTTOM
+				buffer.addVertex(left, bottom, 0).color(0, 0, 0, 255);
+				buffer.addVertex(right, bottom, 0).color(0, 0, 0, 255);
+				buffer.addVertex(right, bottom - 4, 0).color(0, 0, 0, 0);
+				buffer.addVertex(left, bottom - 4, 0).color(0, 0, 0, 0);
+				// LEFT
+				buffer.addVertex(left, bottom, 0).color(0, 0, 0, 255);
+				buffer.addVertex(left + 4, bottom, 0).color(0, 0, 0, 0);
+				buffer.addVertex(left + 4, top, 0).color(0, 0, 0, 0);
+				buffer.addVertex(left, top, 0).color(0, 0, 0, 255);
+			});
 		}
 
 		// Scrollbar
-		int maxScroll = this.getMaxScroll();
-		if (maxScroll > 0) {
-			int scrollbarHeight = (int) ((float) (height * height) / (float) this.getMaxPosition());
-			scrollbarHeight = MathHelper.clamp(scrollbarHeight, 32, height - 8);
-			int scrollbarY = (int) this.getScrollAmount() * (height - scrollbarHeight) / maxScroll + top;
+		this.renderScrollbar(graphics);
+
+		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
+	}
+
+	protected void renderScrollbar(GuiGraphics graphics) {
+		if (this.isScrollbarVisible()) {
+			int top = this.getInnerBorderedY();
+			int height = this.getInnerBorderedHeight();
+			int scrollbarX = this.getScrollbarPositionX();
+			int scrollerHeight = (int) ((float) (height * height) / (float) this.getMaxPosition());
+			scrollerHeight = MathHelper.clamp(scrollerHeight, 32, height - 8);
+			int scrollbarY = (int) this.getScrollAmount() * (height - scrollerHeight) / this.getMaxScroll() + top;
 			if (scrollbarY < top) {
 				scrollbarY = top;
 			}
 
-			this.renderScrollbar(tessellator, buffer, scrollbarPositionX, scrollBarEnd, scrollbarY, scrollbarHeight);
+			graphics.drawSprite(RenderType::guiTextured, SpruceTextures.SCROLLER_BACKGROUND,
+					scrollbarX, top, 6, this.getInnerBorderedHeight()
+			);
+			graphics.drawSprite(RenderType::guiTextured, SpruceTextures.SCROLLER,
+					scrollbarX, scrollbarY, 6, scrollerHeight
+			);
 		}
-
-		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
-
-		RenderSystem.disableBlend();
-	}
-
-	protected void renderScrollbar(
-			Tessellator tessellator, BufferBuilder buffer,
-			int scrollbarX, int scrollbarEndX,
-			int scrollbarY, int scrollbarHeight
-	) {
-		int y = this.getInnerBorderedY();
-		int endY = this.getEndInnerBorderedY();
-
-		RenderSystem.setShader(CoreShaders.POSITION_COLOR);
-		buffer.addVertex(scrollbarX, endY, 0.0f).color(0, 0, 0, 255);
-		buffer.addVertex(scrollbarEndX, endY, 0.0f).color(0, 0, 0, 255);
-		buffer.addVertex(scrollbarEndX, y, 0.0f).color(0, 0, 0, 255);
-		buffer.addVertex(scrollbarX, y, 0.0f).color(0, 0, 0, 255);
-		buffer.addVertex(scrollbarX, scrollbarY + scrollbarHeight, 0.0f).color(128, 128, 128, 255);
-		buffer.addVertex(scrollbarEndX, scrollbarY + scrollbarHeight, 0.0f).color(128, 128, 128, 255);
-		buffer.addVertex(scrollbarEndX, scrollbarY, 0.0f).color(128, 128, 128, 255);
-		buffer.addVertex(scrollbarX, scrollbarY, 0.0f).color(128, 128, 128, 255);
-		buffer.addVertex(scrollbarX, scrollbarY + scrollbarHeight - 1, 0.0f).color(192, 192, 192, 255);
-		buffer.addVertex(scrollbarEndX - 1, scrollbarY + scrollbarHeight - 1, 0.0f).color(192, 192, 192, 255);
-		buffer.addVertex(scrollbarEndX - 1, scrollbarY, 0.0f).color(192, 192, 192, 255);
-		buffer.addVertex(scrollbarX, scrollbarY, 0.0f).color(192, 192, 192, 255);
-		MeshData builtBuffer = buffer.build();
-		if (builtBuffer != null) {
-			BufferUploader.drawWithShader(builtBuffer);
-		}
-		tessellator.clear();
 	}
 
 	/* Narration */

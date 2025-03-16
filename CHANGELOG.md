@@ -102,3 +102,9 @@
 ### 6.2.2
 
 - Fixed a severe silent build error.
+
+## 7.0.0
+
+- Updated to Minecraft 1.21.5.
+- Removed HUD-related APIs in favor of Fabric API's own HUD APIs.
+- List widgets now use the proper scrollbar sprites.

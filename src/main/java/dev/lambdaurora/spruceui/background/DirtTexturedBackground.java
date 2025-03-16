@@ -19,8 +19,10 @@ public record DirtTexturedBackground(int red, int green, int blue, int alpha) im
 
 	@Override
 	public void render(GuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
-		RenderUtil.renderBackgroundTexture(widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight(),
-				vOffset / 32.f, this.red, this.green, this.blue, this.alpha);
+		RenderUtil.renderBackgroundTexture(graphics,
+				widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight(),
+				vOffset / 32.f, this.red, this.green, this.blue, this.alpha
+		);
 	}
 
 	@Override
