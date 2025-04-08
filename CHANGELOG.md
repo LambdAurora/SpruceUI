@@ -98,3 +98,7 @@
 ## 6.2.1
 
 - Added Hindi translations ([#59](https://github.com/LambdAurora/SpruceUI/pull/59)).
+
+## 6.2.2
+
+- Added support for NeoForge.

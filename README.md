@@ -39,7 +39,25 @@ dependencies {
 And this to your `gradle.properties`:
 
 ```properties
-spruceui_version=6.2.1+1.21
+spruceui_version=6.2.2+1.21
 ```
 
 It will JAR-in-JAR SpruceUI so users of your mod don't need to download it separately!
+
+#### For NeoForge
+
+Defining the dependency on NeoForge is slightly different:
+
+```kotlin
+dependencies {
+	val spruceui = implementation("dev.lambdaurora:spruceui:${project.spruceui_version}") {
+		capabilities {
+			requireCapability("dev.lambdaurora:spruceui-mojmap")
+		}
+	}
+
+	jarJar(spruceui) {
+		jarJar.pin(it, "[6.2.2,7.0.0)")
+	}
+}
+```
