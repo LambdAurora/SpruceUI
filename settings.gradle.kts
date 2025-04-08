@@ -1,3 +1,5 @@
+rootProject.name = "spruceui"
+
 pluginManagement {
 	repositories {
 		gradlePluginPortal()
@@ -12,4 +14,5 @@ pluginManagement {
 	}
 }
 
-rootProject.name = "spruceui"
+includeBuild("build_logic")
+include(":moj_xplat")

@@ -102,3 +102,7 @@
 ### 6.2.2
 
 - Fixed a severe silent build error.
+
+### 6.2.3
+
+- Added support for NeoForge.
