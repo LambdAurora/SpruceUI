@@ -108,3 +108,7 @@
 - Updated to Minecraft 1.21.5.
 - Removed HUD-related APIs in favor of Fabric API's own HUD APIs.
 - List widgets now use the proper scrollbar sprites.
+
+### 7.0.1
+
+- Added support for NeoForge.

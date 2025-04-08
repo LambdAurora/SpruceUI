@@ -1,20 +1,14 @@
 import net.fabricmc.loom.task.RemapJarTask
+import spruceui.Constants
 
 plugins {
-	id("fabric-loom").version("1.10.+")
-	id("dev.lambdaurora.mcdev").version("1.0.+")
+	id("spruceui-common")
 	id("dev.yumi.gradle.licenser").version("2.1.+")
 	`java-library`
 	`maven-publish`
 }
 
-group = project.property("maven_group") as String
-base.archivesName.set(project.property("archives_base_name") as String)
-
-val mcVersion = project.property("minecraft_version") as String
-version = project.property("mod_version") as String
-
-val targetJavaVersion = 21
+base.archivesName.set(Constants.NAMESPACE)
 
 val fabricModules = setOf(
 	"fabric-api-base",
@@ -30,6 +24,35 @@ val testmod: SourceSet by sourceSets.creating {
 	this.runtimeClasspath += sourceSets.main.get().runtimeClasspath
 }
 
+lambdamcdev.manifests {
+	fmj {
+		withName(Constants.PRETTY_NAME)
+		withDescription(Constants.DESCRIPTION)
+		withAuthors(Constants.AUTHORS)
+		withContact {
+			it.withHomepage(Constants.PROJECT_LINK)
+				.withSources(Constants.SOURCES_LINK)
+				.withIssues(Constants.ISSUES_LINK)
+		}
+		withLicense(Constants.LICENSE)
+		withIcon("assets/${Constants.NAMESPACE}/icon.png")
+		withEnvironment("client")
+		withEntrypoints("client", "dev.lambdaurora.spruceui.hud.HudManager::initialize")
+		withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
+		withDepend("minecraft", "~1.21 <1.21.2-")
+		withDepend("fabric-resource-loader-v0", ">=0.4.7")
+		withDepend("java", ">=${Constants.JAVA_VERSION}")
+		withAccessWidener("spruceui.accesswidener")
+		withMixins("spruceui.mixins.json")
+
+		withModMenu {
+			it.withBadges("library")
+				.withDiscord("https://discord.lambdaurora.dev/")
+				.withLink("modmenu.bluesky", "https://bsky.app/profile/lambdaurora.dev")
+		}
+	}
+}
+
 repositories {
 	mavenLocal()
 	maven {
@@ -43,47 +66,38 @@ repositories {
 }
 
 dependencies {
-	minecraft("com.mojang:minecraft:${mcVersion}")
 	@Suppress("UnstableApiUsage")
 	mappings(lambdamcdev.layered {
 		officialMojangMappings()
 		// Parchment is currently broken when used with the hacked mojmap layer due to remapping shenanigans.
 		//parchment("org.parchmentmc.data:parchment-${mcVersion}:${project.property("parchment_mappings")}@zip")
-		mappings("dev.lambdaurora:yalmm:${mcVersion}+build.${project.property("yalmm_mappings")}")
+		mappings("dev.lambdaurora:yalmm:${Constants.mcVersion()}+build.${libs.versions.mappings.yalmm.get()}")
 	})
-	modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
+	modImplementation(libs.fabric.loader)
 
-	fabricModules.stream().map { fabricApi.module(it, project.property("fabric_api_version") as String) }.forEach {
+	fabricModules.stream().map { fabricApi.module(it, libs.versions.fabric.api.get()) }.forEach {
 		modImplementation(it)
 	}
 
-	modLocalRuntime("com.terraformersmc:modmenu:${project.property("modmenu_version")}") {
+	modLocalRuntime(libs.modmenu) {
 		isTransitive = false
 	}
 
 	"testmodImplementation"(sourceSets.main.get().output)
 }
 
-java {
-	sourceCompatibility = JavaVersion.toVersion(targetJavaVersion)
-	targetCompatibility = JavaVersion.toVersion(targetJavaVersion)
+val mojmap by sourceSets.creating {}
 
-	withSourcesJar()
+java {
+	registerFeature("mojmap") {
+		usingSourceSet(mojmap)
+		withSourcesJar()
+	}
 }
 
 tasks.withType<JavaCompile>().configureEach {
-	options.encoding = "UTF-8"
 	options.isDeprecation = true
 	options.isIncremental = true
-	options.release.set(targetJavaVersion)
-}
-
-tasks.processResources {
-	inputs.property("version", project.version)
-
-	filesMatching("fabric.mod.json") {
-		expand("version" to inputs.properties["version"])
-	}
 }
 
 tasks.jar {
@@ -131,8 +145,8 @@ publishing {
 			from(components["java"])
 
 			pom {
-				name.set("SpruceUI")
-				description.set("A Minecraft mod API which adds some GUI utilities.")
+				name.set(Constants.PRETTY_NAME)
+				description.set(Constants.DESCRIPTION)
 			}
 		}
 	}
