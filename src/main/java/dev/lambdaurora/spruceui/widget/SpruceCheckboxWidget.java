@@ -96,14 +96,16 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 		float oldRed = oldColor[0], oldGreen = oldColor[1], oldBlue = oldColor[2], oldAlpha = oldColor[3];
 
 		if (this.getValue()) {
-			RenderSystem.setShaderColor(0.f, 1.f, 0.f, this.alpha);
+			if (this.colored)
+				RenderSystem.setShaderColor(0.f, 1.f, 0.f, this.alpha);
 			graphics.drawGuiTexture(
 					CHECKED_TEXTURE,
 					this.getX(), this.getY(),
 					this.getHeight(), this.getHeight()
 			);
 		} else if (this.showCross) {
-			RenderSystem.setShaderColor(1.f, 0.f, 0.f, this.alpha);
+			if (this.colored)
+				RenderSystem.setShaderColor(1.f, 0.f, 0.f, this.alpha);
 			graphics.drawGuiTexture(
 					CROSSED_TEXTURE,
 					this.getX(), this.getY(),

@@ -102,3 +102,7 @@
 ## 6.2.2
 
 - Added support for NeoForge.
+
+## 6.2.3
+
+- Fixed color state leak in the checkbox widget.
