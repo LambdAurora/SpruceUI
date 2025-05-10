@@ -24,32 +24,39 @@ val testmod: SourceSet by sourceSets.creating {
 	this.runtimeClasspath += sourceSets.main.get().runtimeClasspath
 }
 
-lambdamcdev.manifests {
-	fmj {
-		withName(Constants.PRETTY_NAME)
-		withDescription(Constants.DESCRIPTION)
-		withAuthors(Constants.AUTHORS)
-		withContact {
-			it.withHomepage(Constants.PROJECT_LINK)
-				.withSources(Constants.SOURCES_LINK)
-				.withIssues(Constants.ISSUES_LINK)
-		}
-		withLicense(Constants.LICENSE)
-		withIcon("assets/${Constants.NAMESPACE}/icon.png")
-		withEnvironment("client")
-		withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
-		withDepend("minecraft", "~1.21.5- <1.21.6-")
-		withDepend("fabric-resource-loader-v0", ">=0.4.7")
-		withDepend("java", ">=${Constants.JAVA_VERSION}")
-		withAccessWidener("spruceui.accesswidener")
-		withMixins("spruceui.mixins.json")
+lambdamcdev {
+	manifests {
+		fmj {
+			withName(Constants.PRETTY_NAME)
+			withDescription(Constants.DESCRIPTION)
+			withAuthors(Constants.AUTHORS)
+			withContact {
+				it.withHomepage(Constants.PROJECT_LINK)
+					.withSources(Constants.SOURCES_LINK)
+					.withIssues(Constants.ISSUES_LINK)
+			}
+			withLicense(Constants.LICENSE)
+			withIcon("assets/${Constants.NAMESPACE}/icon.png")
+			withEnvironment("client")
+			withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
+			withDepend("minecraft", "~1.21.5- <1.21.6-")
+			withDepend("fabric-resource-loader-v0", ">=0.4.7")
+			withDepend("java", ">=${Constants.JAVA_VERSION}")
+			withDepend("yumi-commons-core", "^${libs.versions.yumi.commons.get()}")
+			withDepend("yumi-commons-collections", "^${libs.versions.yumi.commons.get()}")
+			withDepend("yumi-commons-event", "^${libs.versions.yumi.commons.get()}")
+			withAccessWidener("spruceui.accesswidener")
+			withMixins("spruceui.mixins.json")
 
-		withModMenu {
-			it.withBadges("library")
-				.withDiscord("https://discord.lambdaurora.dev/")
-				.withLink("modmenu.bluesky", "https://bsky.app/profile/lambdaurora.dev")
+			withModMenu {
+				it.withBadges("library")
+					.withDiscord("https://discord.lambdaurora.dev/")
+					.withLink("modmenu.bluesky", "https://bsky.app/profile/lambdaurora.dev")
+			}
 		}
 	}
+
+	setupJarJarCompat()
 }
 
 repositories {
@@ -74,6 +81,12 @@ dependencies {
 	})
 	modImplementation(libs.fabric.loader)
 
+	api(libs.yumi.commons.event) {
+		// Exclude Minecraft and loader-provided libraries.
+		exclude(group = "org.slf4j")
+		exclude(group = "org.ow2.asm")
+	}
+
 	fabricModules.stream().map { fabricApi.module(it, libs.versions.fabric.api.get()) }.forEach {
 		modImplementation(it)
 	}
@@ -83,6 +96,10 @@ dependencies {
 	}
 
 	"testmodImplementation"(sourceSets.main.get().output)
+
+	include(libs.yumi.commons.core)
+	include(libs.yumi.commons.collections)
+	include(libs.yumi.commons.event)
 }
 
 val mojmap by sourceSets.creating {}

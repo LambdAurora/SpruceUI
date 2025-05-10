@@ -20,9 +20,6 @@
       "dev.lambdaurora.spruceui.test.SpruceUITest"
     ]
   },
-  "mixins": [
-    "spruceui.test.mixins.json"
-  ],
   "depends": {
     "fabricloader": "*",
     "minecraft": "*",

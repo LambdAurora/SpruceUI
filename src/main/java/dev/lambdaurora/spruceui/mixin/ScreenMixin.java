@@ -1,0 +1,114 @@
+/*
+ * Copyright © 2025 LambdAurora <email@lambdaurora.dev>
+ *
+ * This file is part of SpruceUI.
+ *
+ * Licensed under the MIT license. For more information,
+ * see the LICENSE file.
+ */
+
+package dev.lambdaurora.spruceui.mixin;
+
+import dev.lambdaurora.spruceui.event.ScreenEvents;
+import dev.yumi.commons.event.ContextualizedEvent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.resources.Identifier;
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Mixin(Screen.class)
+public abstract class ScreenMixin {
+	@Unique
+	private final ContextualizedEvent<Identifier, ScreenEvents.BeforeInit, Screen> spruceui$beforeInit
+			= ScreenEvents.BEFORE_INIT.forContext(this.$self());
+	@Unique
+	private final ContextualizedEvent<Identifier, ScreenEvents.AfterInit, Screen> spruceui$afterInit
+			= ScreenEvents.AFTER_INIT.forContext(this.$self());
+	@Unique
+	@SuppressWarnings("unused") // The reference MUST be kept alive until the Screen dies.
+	private ContextualizedEvent<Identifier, ScreenEvents.Remove, Screen> spruceui$removeEvent
+			= ScreenEvents.REMOVE.forContext(this.$self());
+
+	@Shadow
+	protected abstract <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget);
+
+	public ScreenMixin() {
+	}
+
+	@Inject(
+			method = "init(Lnet/minecraft/client/Minecraft;II)V",
+			at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screens/Screen;initialized:Z", ordinal = 0)
+	)
+	public void spruceui$beforeInit(Minecraft client, int width, int height, CallbackInfo ci) {
+		this.spruceui$handleBeforeInit(client, width, height);
+	}
+
+	@Inject(method = "init(Lnet/minecraft/client/Minecraft;II)V", at = @At("TAIL"))
+	public void spruceui$afterInit(Minecraft client, int width, int height, CallbackInfo ci) {
+		this.spruceui$afterInit.invoker().afterInitScreen(this.spruceui$createInitContext(client, width, height));
+	}
+
+	@Inject(
+			method = "resize",
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;repositionElements()V")
+	)
+	private void beforeResizeScreen(Minecraft client, int width, int height, CallbackInfo ci) {
+		this.spruceui$handleBeforeInit(client, width, height);
+	}
+
+	@Inject(method = "resize", at = @At("TAIL"))
+	private void afterResizeScreen(Minecraft client, int width, int height, CallbackInfo ci) {
+		this.spruceui$afterInit.invoker().afterInitScreen(this.spruceui$createInitContext(client, width, height));
+	}
+
+	@Unique
+	private void spruceui$handleBeforeInit(Minecraft client, int width, int height) {
+		this.spruceui$removeEvent = ScreenEvents.REMOVE.forContext(this.$self(), true);
+
+		this.spruceui$beforeInit.invoker().beforeInitScreen(client, this.$self(), width, height);
+	}
+
+	@Unique
+	private ScreenEvents.ScreenInitContext spruceui$createInitContext(Minecraft client, int width, int height) {
+		return new ScreenEvents.ScreenInitContext() {
+			@Override
+			public @NotNull Minecraft client() {
+				return client;
+			}
+
+			@Override
+			public @NotNull Screen screen() {
+				return $self();
+			}
+
+			@Override
+			public int scaledWidth() {
+				return width;
+			}
+
+			@Override
+			public int scaledHeight() {
+				return height;
+			}
+
+			@Override
+			public <T extends GuiEventListener & Renderable & NarratableEntry> @NotNull T addRenderableWidget(@NotNull T widget) {
+				return ScreenMixin.this.addRenderableWidget(widget);
+			}
+		};
+	}
+
+	@Unique
+	private Screen $self() {
+		return (Screen) (Object) this;
+	}
+}

@@ -11,7 +11,9 @@ package dev.lambdaurora.spruceui.test;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
+import dev.lambdaurora.spruceui.event.ScreenEvents;
 import dev.lambdaurora.spruceui.option.*;
+import dev.lambdaurora.spruceui.test.gui.SpruceMainMenuScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
@@ -19,6 +21,7 @@ import dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
@@ -133,6 +136,19 @@ public class SpruceUITest implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		INSTANCE = this;
+
+		ScreenEvents.AFTER_INIT.register(context -> {
+			context.addRenderableWidget(
+					new SpruceButtonWidget(
+							Position.of(0, 0), 150, 20, Text.literal("SpruceUI Test Menu"),
+							btn -> context.client().setScreen(new SpruceMainMenuScreen(context.screen()))
+					).asVanilla()
+			);
+
+			ScreenEvents.REMOVE.forContext(context.screen()).register(lol -> {
+				System.out.println("bye bye title screen");
+			});
+		}, screen -> screen instanceof TitleScreen);
 	}
 
 	public SpruceOptionListWidget buildOptionList(Position position, int width, int height) {

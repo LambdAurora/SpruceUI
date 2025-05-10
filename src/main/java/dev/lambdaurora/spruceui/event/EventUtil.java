@@ -9,17 +9,24 @@
 
 package dev.lambdaurora.spruceui.event;
 
+import dev.lambdaurora.spruceui.SpruceUI;
+import dev.yumi.commons.event.EventManager;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.resources.Identifier;
+import org.jetbrains.annotations.ApiStatus;
 
 /**
  * Represents a set of utilities for SpruceUI's events.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 8.0.0
  * @since 1.4.0
  */
-public final class EventUtil {
+@ApiStatus.Internal
+final class EventUtil {
+	static final EventManager<Identifier> EVENT_MANAGER = new EventManager<>(SpruceUI.id("default"), Identifier::parse);
+
 	private EventUtil() {
 		throw new UnsupportedOperationException("EventUtil is a singleton.");
 	}
@@ -30,16 +37,5 @@ public final class EventUtil {
 				event.apply(client, screen);
 			}
 		});
-	}
-
-	/**
-	 * Registers a full open screen event.
-	 *
-	 * @param pre Pre open screen callback.
-	 * @param post Post open screen callback.
-	 */
-	public static void onOpenScreen(OpenScreenCallback pre, OpenScreenCallback post) {
-		OpenScreenCallback.PRE.register(pre);
-		OpenScreenCallback.EVENT.register(post);
 	}
 }
