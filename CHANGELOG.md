@@ -112,3 +112,7 @@
 ### 7.0.1
 
 - Added support for NeoForge.
+
+### 7.0.2
+
+- Fixed Minecraft version dependency constraint and other issues in FMJ.

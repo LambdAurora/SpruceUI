@@ -6,7 +6,7 @@ object Constants {
 	const val GROUP = "dev.lambdaurora"
 	const val NAMESPACE = "spruceui"
 	const val PRETTY_NAME = "SpruceUI"
-	const val VERSION = "7.0.1"
+	const val VERSION = "7.0.2"
 	const val JAVA_VERSION = 21
 
 	const val DESCRIPTION = "Just a Minecraft GUI library."
