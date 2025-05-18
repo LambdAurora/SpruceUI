@@ -17,12 +17,19 @@ lambdamcdev.manifests {
 		rootProject.lambdamcdev.manifests.fmj().get().derive(::Nmt)
 			.withBlurIcon(false)
 			.withLoaderVersion("[2,)")
+			.withMixins("spruceui.mixins.json")
 			.withDepend("minecraft", "[" + libs.versions.minecraft.get() + ",)")
 	)
 }
 
 dependencies {
 	mappings(loom.officialMojangMappings())
+}
+
+loom {
+	mixin {
+		useLegacyMixinAp = false
+	}
 }
 
 val baseProject = rootProject
@@ -84,15 +91,31 @@ val xplatTransformSourcesJar by tasks.registering(XplatTransformJar::class) {
 	archiveClassifier = "sources"
 }
 
-tasks.build.configure {
-	dependsOn(xplatTransformJar)
-	dependsOn(xplatTransformSourcesJar)
-}
-
 // Add the remapped sources artifact
 baseProject.configurations["mojmapSourcesElements"].artifacts.removeIf {
 	true
 }
 baseProject.artifacts.add("mojmapSourcesElements", xplatTransformSourcesJar) {
 	classifier = "mojmap-sources"
+}
+
+val remapTestmodJar by tasks.registering(RemapJarTask::class) {
+	val remapTask = baseProject.tasks.named("remapJar", RemapJarTask::class)
+	val remapTestmodTask = baseProject.tasks.named("remapTestmodJar", RemapJarTask::class)
+
+	dependsOn(remapTask, remapTestmodTask)
+
+	classpath.setFrom(
+		(loom as LoomGradleExtension).getMinecraftJarsCollection(MappingsNamespace.INTERMEDIARY),
+		remapTask
+	)
+	inputFile.convention(remapTestmodTask.flatMap { it.archiveFile })
+	archiveClassifier = "preprocessed"
+	sourceNamespace = "intermediary"
+	targetNamespace = "named"
+	archiveClassifier = "testmod"
+}
+
+tasks.build.configure {
+	dependsOn(xplatTransformJar, xplatTransformSourcesJar, remapTestmodJar)
 }

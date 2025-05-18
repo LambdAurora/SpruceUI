@@ -34,6 +34,6 @@ public final class SpruceUI {
 	}
 
 	private SpruceUI() {
-		throw new UnsupportedOperationException("SpruceUi only contains static definitions.");
+		throw new UnsupportedOperationException("SpruceUI only contains static definitions.");
 	}
 }

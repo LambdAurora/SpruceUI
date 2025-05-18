@@ -69,6 +69,14 @@ repositories {
 		name = "Gegy"
 		url = uri("https://maven.gegy.dev/releases/")
 	}
+	maven {
+		name = "NeoForge"
+		url = uri("https://maven.neoforged.net/")
+		content {
+			includeGroupByRegex("net\\.neoforged.*")
+			includeGroupByRegex("cpw\\.mods.*")
+		}
+	}
 }
 
 dependencies {
@@ -95,6 +103,7 @@ dependencies {
 		isTransitive = false
 	}
 
+	"testmodCompileOnly"(libs.neoforge.loader)
 	"testmodImplementation"(sourceSets.main.get().output)
 
 	include(libs.yumi.commons.core)

@@ -10,7 +10,6 @@
 package dev.lambdaurora.spruceui.screen;
 
 import dev.lambdaurora.spruceui.SprucePositioned;
-import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.widget.SpruceElement;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
@@ -28,7 +27,7 @@ import java.util.function.Supplier;
  * Represents a screen.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 8.0.0
  * @since 2.0.0
  */
 public abstract class SpruceScreen extends Screen implements SprucePositioned, SpruceElement {
@@ -105,7 +104,6 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 		this.renderBackground(graphics, mouseX, mouseY, delta);
 		this.renderWidgets(graphics, mouseX, mouseY, delta);
 		this.renderTitle(graphics, mouseX, mouseY, delta);
-		Tooltip.renderAll(graphics);
 	}
 
 	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {

@@ -1,12 +1,13 @@
 {
-  "required": true,
-  "package": "dev.lambdaurora.spruceui.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "client": [
-    "MinecraftClientMixin",
-    "ScreenMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+	"required": true,
+	"package": "dev.lambdaurora.spruceui.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"GameRendererMixin",
+		"MinecraftClientMixin",
+		"ScreenMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

@@ -27,14 +27,10 @@ abstract class XplatTransformJar @Inject constructor() : Jar() {
 	private fun copyJar(inputJar: Path, outFs: FileSystem) {
 		FileSystems.newFileSystem(inputJar).use { inFs ->
 			val excludeFiles = listOf(
-				inFs.getPath("fabric.mod.json"),
-				inFs.getPath("spruceui.mixins.json"),
-				inFs.getPath("spruceui-refmap.json"),
+				inFs.getPath("/fabric.mod.json"),
+				inFs.getPath("/spruceui-refmap.json"),
 			)
-			val excludeDirs = listOf(
-				inFs.getPath("dev/lambdaurora/spruceui/mixin"),
-				inFs.getPath("dev/lambdaurora/spruceui/event")
-			)
+			val excludeDirs = listOf<Path>()
 
 			inFs.rootDirectories.forEach { root ->
 				Files.walkFileTree(root, object : SimpleFileVisitor<Path>() {

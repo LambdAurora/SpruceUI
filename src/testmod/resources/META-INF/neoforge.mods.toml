@@ -1,0 +1,26 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/LambdAurora/SpruceUI/issues"
+
+[[mods]]
+modId = "spruceui_test"
+version = "1.0.0"
+displayName = "SpruceUI - Test"
+description = "Testmod for SpruceUI"
+authors = "LambdAurora"
+displayURL = "https://github.com/LambdAurora/SpruceUI"
+issueTrackerURL = "https://github.com/LambdAurora/SpruceUI/issues"
+
+[[dependencies.spruceui_test]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.5,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.spruceui_test]]
+modId = "spruceui"
+type = "required"
+ordering = "NONE"
+side = "CLIENT"

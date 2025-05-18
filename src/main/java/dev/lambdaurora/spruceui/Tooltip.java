@@ -10,6 +10,7 @@
 package dev.lambdaurora.spruceui;
 
 import com.google.common.collect.Queues;
+import dev.lambdaurora.spruceui.event.ScreenEvents;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -27,7 +28,7 @@ import java.util.function.LongConsumer;
  * Represents a tooltip.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 8.0.0
  * @since 1.0.0
  */
 public class Tooltip implements SprucePositioned {
@@ -166,5 +167,13 @@ public class Tooltip implements SprucePositioned {
 			while ((tooltip = TOOLTIPS.poll()) != null)
 				tooltip.render(graphics);
 		}
+	}
+
+	static {
+		var tooltipPhase = SpruceUI.id("tooltip");
+		ScreenEvents.AFTER_RENDER.addPhaseOrdering(ScreenEvents.AFTER_RENDER.defaultPhaseId(), tooltipPhase);
+		ScreenEvents.AFTER_RENDER.register(tooltipPhase,
+				(screen, graphics, mouseX, mouseY, tickDelta) -> renderAll(graphics)
+		);
 	}
 }

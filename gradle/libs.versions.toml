@@ -1,11 +1,12 @@
 [versions]
 minecraft = "1.21.5"
 fabric-loader = "0.16.10"
+neoforge-loader = "7.0.11"
 fabric-api = "0.119.5+1.21.5"
 mappings-yalmm = "14"
 modmenu="14.0.0-rc.2"
 
-yumi-commons = "1.0.0-alpha.10"
+yumi-commons = "1.0.0-alpha.11"
 
 # Gradle
 gradle-licenser = "2.1.+"
@@ -15,6 +16,7 @@ gradle-lambdamcdev = "1.2.+"
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+neoforge-loader = { module = "net.neoforged.fancymodloader:loader", version.ref = "neoforge-loader" }
 fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 

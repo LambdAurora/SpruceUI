@@ -11,8 +11,6 @@ package dev.lambdaurora.spruceui.event;
 
 import dev.lambdaurora.spruceui.SpruceUI;
 import dev.yumi.commons.event.EventManager;
-import net.fabricmc.fabric.api.event.Event;
-import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -29,13 +27,5 @@ final class EventUtil {
 
 	private EventUtil() {
 		throw new UnsupportedOperationException("EventUtil is a singleton.");
-	}
-
-	static Event<OpenScreenCallback> makeOpenScreenEvent() {
-		return EventFactory.createArrayBacked(OpenScreenCallback.class, listeners -> (client, screen) -> {
-			for (var event : listeners) {
-				event.apply(client, screen);
-			}
-		});
 	}
 }

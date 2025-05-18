@@ -28,15 +28,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Screen.class)
 public abstract class ScreenMixin {
 	@Unique
-	private final ContextualizedEvent<Identifier, ScreenEvents.BeforeInit, Screen> spruceui$beforeInit
+	private final ContextualizedEvent<Identifier, ScreenEvents.BeforeInit, Screen> spruceui$beforeInitEvent
 			= ScreenEvents.BEFORE_INIT.forContext(this.$self());
 	@Unique
-	private final ContextualizedEvent<Identifier, ScreenEvents.AfterInit, Screen> spruceui$afterInit
+	private final ContextualizedEvent<Identifier, ScreenEvents.AfterInit, Screen> spruceui$afterInitEvent
 			= ScreenEvents.AFTER_INIT.forContext(this.$self());
 	@Unique
 	@SuppressWarnings("unused") // The reference MUST be kept alive until the Screen dies.
 	private ContextualizedEvent<Identifier, ScreenEvents.Remove, Screen> spruceui$removeEvent
 			= ScreenEvents.REMOVE.forContext(this.$self());
+	@Unique
+	@SuppressWarnings("unused") // The reference MUST be kept alive until the Screen dies.
+	private ContextualizedEvent<Identifier, ScreenEvents.BeforeRender, Screen> spruceui$beforeRenderEvent
+			= ScreenEvents.BEFORE_RENDER.forContext(this.$self());
+	@Unique
+	@SuppressWarnings("unused") // The reference MUST be kept alive until the Screen dies.
+	private ContextualizedEvent<Identifier, ScreenEvents.AfterRender, Screen> spruceui$afterRenderEvent
+			= ScreenEvents.AFTER_RENDER.forContext(this.$self());
 
 	@Shadow
 	protected abstract <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget);
@@ -54,27 +62,29 @@ public abstract class ScreenMixin {
 
 	@Inject(method = "init(Lnet/minecraft/client/Minecraft;II)V", at = @At("TAIL"))
 	public void spruceui$afterInit(Minecraft client, int width, int height, CallbackInfo ci) {
-		this.spruceui$afterInit.invoker().afterInitScreen(this.spruceui$createInitContext(client, width, height));
+		this.spruceui$afterInitEvent.invoker().afterInitScreen(this.spruceui$createInitContext(client, width, height));
 	}
 
 	@Inject(
 			method = "resize",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;repositionElements()V")
 	)
-	private void beforeResizeScreen(Minecraft client, int width, int height, CallbackInfo ci) {
+	private void spruceui$beforeResizeScreen(Minecraft client, int width, int height, CallbackInfo ci) {
 		this.spruceui$handleBeforeInit(client, width, height);
 	}
 
 	@Inject(method = "resize", at = @At("TAIL"))
-	private void afterResizeScreen(Minecraft client, int width, int height, CallbackInfo ci) {
-		this.spruceui$afterInit.invoker().afterInitScreen(this.spruceui$createInitContext(client, width, height));
+	private void spruceui$afterResizeScreen(Minecraft client, int width, int height, CallbackInfo ci) {
+		this.spruceui$afterInitEvent.invoker().afterInitScreen(this.spruceui$createInitContext(client, width, height));
 	}
 
 	@Unique
 	private void spruceui$handleBeforeInit(Minecraft client, int width, int height) {
 		this.spruceui$removeEvent = ScreenEvents.REMOVE.forContext(this.$self(), true);
+		this.spruceui$beforeRenderEvent = ScreenEvents.BEFORE_RENDER.forContext(this.$self(), true);
+		this.spruceui$afterRenderEvent = ScreenEvents.AFTER_RENDER.forContext(this.$self(), true);
 
-		this.spruceui$beforeInit.invoker().beforeInitScreen(client, this.$self(), width, height);
+		this.spruceui$beforeInitEvent.invoker().beforeInitScreen(client, this.$self(), width, height);
 	}
 
 	@Unique

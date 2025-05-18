@@ -18,12 +18,13 @@ import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
-import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -33,7 +34,10 @@ import java.util.function.Consumer;
  *
  * @author LambdAurora
  */
-public class SpruceUITest implements ClientModInitializer {
+public final class SpruceUITest {
+	public static final String NAMESPACE = "spruceui_test";
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpruceUITest.class);
+
 	private static SpruceUITest INSTANCE;
 
 	private final SpruceOption booleanOption;
@@ -59,6 +63,8 @@ public class SpruceUITest implements ClientModInitializer {
 	public Consumer<SpruceButtonWidget> resetConsumer;
 
 	public SpruceUITest() {
+		INSTANCE = this;
+
 		this.booleanOption = new SpruceBooleanOption("spruceui_test.option.boolean",
 				() -> this.aBoolean,
 				newValue -> this.aBoolean = newValue,
@@ -133,9 +139,8 @@ public class SpruceUITest implements ClientModInitializer {
 				+ "You have to manage screen re-initialization and reset logic yourself."));
 	}
 
-	@Override
-	public void onInitializeClient() {
-		INSTANCE = this;
+	public void initialize() {
+		LOGGER.info("Initializing SpruceUI test mod...");
 
 		ScreenEvents.AFTER_INIT.register(context -> {
 			context.addRenderableWidget(
@@ -145,10 +150,18 @@ public class SpruceUITest implements ClientModInitializer {
 					).asVanilla()
 			);
 
-			ScreenEvents.REMOVE.forContext(context.screen()).register(lol -> {
-				System.out.println("bye bye title screen");
+			ScreenEvents.REMOVE.forContext(context.screen()).register(screen -> {
+				LOGGER.info("bye bye title screen");
 			});
-		}, screen -> screen instanceof TitleScreen);
+
+			ScreenEvents.AFTER_RENDER.forContext(context.screen()).register(
+					(screen, graphics, mouseX, mouseY, tickDelta) -> {
+						var text = "Greetings from SpruceUI";
+						var width = screen.getFont().width(text);
+						graphics.drawShadowedText(screen.getFont(), text, screen.width - width - 2, 2, 0xffffffff);
+					}
+			);
+		}, TitleScreen.class::isInstance);
 	}
 
 	public SpruceOptionListWidget buildOptionList(Position position, int width, int height) {
