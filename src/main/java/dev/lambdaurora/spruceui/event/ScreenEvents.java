@@ -53,6 +53,12 @@ public final class ScreenEvents {
 	public static final FilteredEvent<Identifier, AfterRender, Screen> AFTER_RENDER
 			= EventUtil.EVENT_MANAGER.createFiltered(AfterRender.class, Screen.class);
 
+	public static final FilteredEvent<Identifier, BeforeTick, Screen> BEFORE_TICK
+			= EventUtil.EVENT_MANAGER.createFiltered(BeforeTick.class, Screen.class);
+
+	public static final FilteredEvent<Identifier, AfterTick, Screen> AFTER_TICK
+			= EventUtil.EVENT_MANAGER.createFiltered(AfterTick.class, Screen.class);
+
 	@FunctionalInterface
 	public interface BeforeInit {
 		void beforeInitScreen(
@@ -87,15 +93,47 @@ public final class ScreenEvents {
 		);
 	}
 
+	@FunctionalInterface
+	public interface BeforeTick {
+		void onBeforeTickScreen(@NotNull Screen screen);
+	}
+
+	@FunctionalInterface
+	public interface AfterTick {
+		void onAfterTickScreen(@NotNull Screen screen);
+	}
+
+	/**
+	 * Represents the context of a screen that is being initialized.
+	 */
 	public interface ScreenInitContext {
+		/**
+		 * {@return the Minecraft client instance}
+		 */
 		@NotNull Minecraft client();
 
+		/**
+		 * {@return the screen that's being initialized}
+		 */
 		@NotNull Screen screen();
 
+		/**
+		 * {@return the scaled width of the screen}
+		 */
 		int scaledWidth();
 
+		/**
+		 * {@return the scaled height of the screen}
+		 */
 		int scaledHeight();
 
+		/**
+		 * Adds the given renderable widget to the screen.
+		 *
+		 * @param widget the widget to add
+		 * @return the widget that has been added
+		 * @param <T> the type of the widget
+		 */
 		@NotNull <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(
 				@NotNull T widget
 		);

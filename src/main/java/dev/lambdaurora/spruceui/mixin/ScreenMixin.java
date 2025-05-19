@@ -45,6 +45,14 @@ public abstract class ScreenMixin {
 	@SuppressWarnings("unused") // The reference MUST be kept alive until the Screen dies.
 	private ContextualizedEvent<Identifier, ScreenEvents.AfterRender, Screen> spruceui$afterRenderEvent
 			= ScreenEvents.AFTER_RENDER.forContext(this.$self());
+	@Unique
+	@SuppressWarnings("unused") // The reference MUST be kept alive until the Screen dies.
+	private ContextualizedEvent<Identifier, ScreenEvents.BeforeTick, Screen> spruceui$beforeTickEvent
+			= ScreenEvents.BEFORE_TICK.forContext(this.$self());
+	@Unique
+	@SuppressWarnings("unused") // The reference MUST be kept alive until the Screen dies.
+	private ContextualizedEvent<Identifier, ScreenEvents.AfterTick, Screen> spruceui$afterTickEvent
+			= ScreenEvents.AFTER_TICK.forContext(this.$self());
 
 	@Shadow
 	protected abstract <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget);
@@ -83,6 +91,8 @@ public abstract class ScreenMixin {
 		this.spruceui$removeEvent = ScreenEvents.REMOVE.forContext(this.$self(), true);
 		this.spruceui$beforeRenderEvent = ScreenEvents.BEFORE_RENDER.forContext(this.$self(), true);
 		this.spruceui$afterRenderEvent = ScreenEvents.AFTER_RENDER.forContext(this.$self(), true);
+		this.spruceui$beforeTickEvent = ScreenEvents.BEFORE_TICK.forContext(this.$self(), true);
+		this.spruceui$afterTickEvent = ScreenEvents.AFTER_TICK.forContext(this.$self(), true);
 
 		this.spruceui$beforeInitEvent.invoker().beforeInitScreen(client, this.$self(), width, height);
 	}

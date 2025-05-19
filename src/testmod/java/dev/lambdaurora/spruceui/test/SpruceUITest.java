@@ -153,15 +153,31 @@ public final class SpruceUITest {
 			ScreenEvents.REMOVE.forContext(context.screen()).register(screen -> {
 				LOGGER.info("bye bye title screen");
 			});
+		}, TitleScreen.class::isInstance);
+
+		ScreenEvents.AFTER_INIT.register(context -> {
+			final int[] tick = new int[]{0};
+
+			ScreenEvents.BEFORE_TICK.forContext(context.screen()).register(screen -> {
+				tick[0]++;
+			});
 
 			ScreenEvents.AFTER_RENDER.forContext(context.screen()).register(
 					(screen, graphics, mouseX, mouseY, tickDelta) -> {
 						var text = "Greetings from SpruceUI";
-						var width = screen.getFont().width(text);
+						int width = screen.getFont().width(text);
 						graphics.drawShadowedText(screen.getFont(), text, screen.width - width - 2, 2, 0xffffffff);
+
+						var tickText = String.valueOf(tick[0]);
+						int tickWidth = screen.getFont().width(tickText);
+						graphics.drawShadowedText(
+								screen.getFont(), tickText,
+								screen.width - tickWidth - 2, 4 + screen.getFont().lineHeight,
+								0xffffffff
+						);
 					}
 			);
-		}, TitleScreen.class::isInstance);
+		}, screen -> !screen.getClass().getPackageName().contains("spruceui"));
 	}
 
 	public SpruceOptionListWidget buildOptionList(Position position, int width, int height) {
