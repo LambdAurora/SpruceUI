@@ -40,7 +40,8 @@ tasks.remapJar {
 
 	classpath.setFrom((loom as LoomGradleExtension).getMinecraftJarsCollection(MappingsNamespace.INTERMEDIARY))
 	inputFile.convention(remapJar.flatMap { it.archiveFile })
-	archiveClassifier = "preprocessed"
+	destinationDirectory.set(layout.buildDirectory.map { it.dir("devlibs") })
+	archiveClassifier = "intermediary"
 	sourceNamespace = "intermediary"
 	targetNamespace = "named"
 }

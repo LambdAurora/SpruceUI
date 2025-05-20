@@ -19,6 +19,15 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Holds events related to {@linkplain Screen screens}.
+ * <p>
+ * Most, if not all, events are {@linkplain FilteredEvent filtered events},
+ * this mean they can match a specific instance of a screen,
+ * to do so the main entrypoint is going to be when a screen is being initialized ({@link #BEFORE_INIT} or {@link #AFTER_INIT}),
+ * and other events can be registered within the callback of the initialization events
+ * using {@link FilteredEvent#forContext(Object)}.
+ */
 public final class ScreenEvents {
 	/**
 	 * An event that is called before {@linkplain Screen#init(Minecraft, int, int) a screen is initialized} to its default state.
@@ -47,20 +56,51 @@ public final class ScreenEvents {
 			Remove.class, Screen.class
 	);
 
+	/**
+	 * An event that is called before a screen is rendered.
+	 *
+	 * @see #AFTER_RENDER
+	 */
 	public static final FilteredEvent<Identifier, BeforeRender, Screen> BEFORE_RENDER
 			= EventUtil.EVENT_MANAGER.createFiltered(BeforeRender.class, Screen.class);
 
+	/**
+	 * An event that is called after a screen is rendered.
+	 *
+	 * @see #BEFORE_RENDER
+	 */
 	public static final FilteredEvent<Identifier, AfterRender, Screen> AFTER_RENDER
 			= EventUtil.EVENT_MANAGER.createFiltered(AfterRender.class, Screen.class);
 
+	/**
+	 * An event that is called before a screen is ticked.
+	 *
+	 * @see #AFTER_TICK
+	 */
 	public static final FilteredEvent<Identifier, BeforeTick, Screen> BEFORE_TICK
 			= EventUtil.EVENT_MANAGER.createFiltered(BeforeTick.class, Screen.class);
 
+	/**
+	 * An event that is called after a screen is ticked.
+	 *
+	 * @see #BEFORE_TICK
+	 */
 	public static final FilteredEvent<Identifier, AfterTick, Screen> AFTER_TICK
 			= EventUtil.EVENT_MANAGER.createFiltered(AfterTick.class, Screen.class);
 
+	/**
+	 * Represents the callback interface of the {@linkplain ScreenEvents#BEFORE_INIT before screen initialization event}.
+	 */
 	@FunctionalInterface
 	public interface BeforeInit {
+		/**
+		 * Called before the given screen has initialized.
+		 *
+		 * @param client the Minecraft client instance
+		 * @param screen the screen which is being initialized
+		 * @param scaledWidth the scaled width of the screen
+		 * @param scaledHeight the scaled height of the screen
+		 */
 		void beforeInitScreen(
 				@NotNull Minecraft client,
 				@NotNull Screen screen,
@@ -69,37 +109,93 @@ public final class ScreenEvents {
 		);
 	}
 
+	/**
+	 * Represents the callback interface of the {@linkplain ScreenEvents#AFTER_INIT after screen initialization event}.
+	 */
 	@FunctionalInterface
 	public interface AfterInit {
+		/**
+		 * Called after the given screen has initialized.
+		 *
+		 * @param context the initialization context
+		 */
 		void afterInitScreen(@NotNull ScreenInitContext context);
 	}
 
+	/**
+	 * Represents the callback interface of the {@linkplain ScreenEvents#REMOVE screen removal event}.
+	 */
 	@FunctionalInterface
 	public interface Remove {
+		/**
+		 * Called when the given screen has been removed.
+		 *
+		 * @param screen the screen which has been removed
+		 */
 		void onRemoveScreen(@NotNull Screen screen);
 	}
 
+	/**
+	 * Represents the callback interface of the {@linkplain ScreenEvents#BEFORE_RENDER before screen render event}.
+	 */
 	@FunctionalInterface
 	public interface BeforeRender {
+		/**
+		 * Called before the given screen has rendered.
+		 *
+		 * @param screen the screen which is rendering
+		 * @param graphics the graphics
+		 * @param mouseX the mouse X-coordinate
+		 * @param mouseY the mouse Y-coordinate
+		 * @param tickDelta the tick delta
+		 */
 		void onBeforeRenderScreen(
 				@NotNull Screen screen, @NotNull GuiGraphics graphics, int mouseX, int mouseY, float tickDelta
 		);
 	}
 
+	/**
+	 * Represents the callback interface of the {@linkplain ScreenEvents#AFTER_RENDER after screen render event}.
+	 */
 	@FunctionalInterface
 	public interface AfterRender {
+		/**
+		 * Called after the given screen has rendered.
+		 *
+		 * @param screen the screen which rendered
+		 * @param graphics the graphics
+		 * @param mouseX the mouse X-coordinate
+		 * @param mouseY the mouse Y-coordinate
+		 * @param tickDelta the tick delta
+		 */
 		void onAfterRenderScreen(
 				@NotNull Screen screen, @NotNull GuiGraphics graphics, int mouseX, int mouseY, float tickDelta
 		);
 	}
 
+	/**
+	 * Represents the callback interface of the {@linkplain ScreenEvents#BEFORE_TICK before screen tick event}.
+	 */
 	@FunctionalInterface
 	public interface BeforeTick {
+		/**
+		 * Called before the given screen has ticked.
+		 *
+		 * @param screen the screen which is ticking
+		 */
 		void onBeforeTickScreen(@NotNull Screen screen);
 	}
 
+	/**
+	 * Represents the callback interface of the {@linkplain ScreenEvents#AFTER_TICK after screen tick event}.
+	 */
 	@FunctionalInterface
 	public interface AfterTick {
+		/**
+		 * Called after the given screen has ticked.
+		 *
+		 * @param screen the screen which ticked
+		 */
 		void onAfterTickScreen(@NotNull Screen screen);
 	}
 
@@ -132,10 +228,10 @@ public final class ScreenEvents {
 		 *
 		 * @param widget the widget to add
 		 * @return the widget that has been added
-		 * @param <T> the type of the widget
+		 * @param <E> the type of the widget
 		 */
-		@NotNull <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(
-				@NotNull T widget
+		@NotNull <E extends GuiEventListener & Renderable & NarratableEntry> E addRenderableWidget(
+				@NotNull E widget
 		);
 	}
 }
