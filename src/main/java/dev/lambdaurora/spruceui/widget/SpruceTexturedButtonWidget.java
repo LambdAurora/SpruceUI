@@ -10,8 +10,8 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
 
@@ -19,7 +19,7 @@ import net.minecraft.resources.Identifier;
  * Represents a textured button widget.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 8.0.0
  * @since 2.0.0
  */
 public class SpruceTexturedButtonWidget extends SpruceButtonWidget {
@@ -61,20 +61,20 @@ public class SpruceTexturedButtonWidget extends SpruceButtonWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.showMessage)
 			super.renderButton(graphics, mouseX, mouseY, delta);
 	}
 
 	@Override
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int v = this.v;
 		if (this.isFocusedOrHovered()) {
 			v += this.hoveredVOffset;
 		}
 
 		graphics.drawTexture(
-				RenderType::guiTextured, this.texture,
+				RenderPipelines.GUI_TEXTURED, this.texture,
 				this.getX(), this.getY(),
 				this.u, v,
 				this.getWidth(), this.getHeight(),

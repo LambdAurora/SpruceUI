@@ -11,9 +11,9 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceUI;
-import net.minecraft.client.gui.GuiGraphics;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
@@ -23,7 +23,7 @@ import net.minecraft.util.math.MathHelper;
  * Represents a checkbox widget.
  *
  * @author LambdAurora
- * @version 6.0.0
+ * @version 8.0.0
  * @since 1.0.0
  */
 public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
@@ -91,17 +91,17 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.getValue()) {
 			graphics.drawSprite(
-					RenderType::guiTextured, CHECKED_TEXTURE,
+					RenderPipelines.GUI_TEXTURED, CHECKED_TEXTURE,
 					this.getX(), this.getY(),
 					this.getHeight(), this.getHeight(),
 					this.colored ? 0xff00ff00 : -1
 			);
 		} else if (this.showCross) {
 			graphics.drawSprite(
-					RenderType::guiTextured, CROSSED_TEXTURE,
+					RenderPipelines.GUI_TEXTURED, CROSSED_TEXTURE,
 					this.getX(), this.getY(),
 					this.getHeight(), this.getHeight(),
 					this.colored ? 0xffff0000 : -1
@@ -109,16 +109,20 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 		}
 
 		if (this.showMessage) {
-			var message = Language.getInstance().getVisualOrder(this.client.font.substrByWidth(this.getMessage(), this.getWidth() - this.getHeight() - 4));
-			graphics.drawShadowedText(this.client.font, message, this.getX() + this.getHeight() + 4, this.getY() + (this.getHeight() - 8) / 2,
-					14737632 | MathHelper.ceil(this.alpha * 255.0F) << 24);
+			var message = Language.getInstance().getVisualOrder(
+					this.client.font.substrByWidth(this.getMessage(), this.getWidth() - this.getHeight() - 4)
+			);
+			graphics.drawShadowedText(this.client.font, message,
+					this.getX() + this.getHeight() + 4, this.getY() + (this.getHeight() - 8) / 2,
+					0xe0e0e0 | MathHelper.ceil(this.alpha * 255.0F) << 24
+			);
 		}
 	}
 
 	@Override
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		graphics.drawSprite(
-				RenderType::guiTextured, BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
+				RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX(), this.getY(),
 				this.getHeight(), this.getHeight()
 		);

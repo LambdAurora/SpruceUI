@@ -17,7 +17,7 @@ import org.lwjgl.glfw.GLFW;
  * Represents a pressable button widget.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 8.0.0
  * @since 2.0.0
  */
 public abstract class AbstractSprucePressableButtonWidget extends AbstractSpruceButtonWidget {

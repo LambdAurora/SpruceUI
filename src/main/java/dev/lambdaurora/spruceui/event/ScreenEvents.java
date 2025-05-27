@@ -9,9 +9,9 @@
 
 package dev.lambdaurora.spruceui.event;
 
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.yumi.commons.event.FilteredEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -150,7 +150,7 @@ public final class ScreenEvents {
 		 * @param tickDelta the tick delta
 		 */
 		void onBeforeRenderScreen(
-				@NotNull Screen screen, @NotNull GuiGraphics graphics, int mouseX, int mouseY, float tickDelta
+				@NotNull Screen screen, @NotNull SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta
 		);
 	}
 
@@ -169,7 +169,7 @@ public final class ScreenEvents {
 		 * @param tickDelta the tick delta
 		 */
 		void onAfterRenderScreen(
-				@NotNull Screen screen, @NotNull GuiGraphics graphics, int mouseX, int mouseY, float tickDelta
+				@NotNull Screen screen, @NotNull SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta
 		);
 	}
 

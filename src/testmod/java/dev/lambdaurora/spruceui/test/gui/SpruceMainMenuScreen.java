@@ -13,7 +13,7 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import dev.lambdaurora.spruceui.widget.SpruceLabelWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
@@ -35,6 +35,8 @@ public class SpruceMainMenuScreen extends SpruceScreen {
 	protected void init() {
 		super.init();
 
+		this.addRenderableOnly(new SpruceLabelWidget(Position.of(this.width / 2, 8), this.title, this.width, true));
+
 		int startY = this.height / 4 + 48;
 		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, Text.literal("Option Test"),
 				btn -> this.client.setScreen(new SpruceOptionScreen(this))));
@@ -46,10 +48,5 @@ public class SpruceMainMenuScreen extends SpruceScreen {
 		// Add done button.
 		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
 				btn -> this.client.setScreen(this.parent)));
-	}
-
-	@Override
-	public void renderTitle(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-		guiGraphics.drawCenteredShadowedText(this.font, this.title, this.width / 2, 8, 16777215);
 	}
 }

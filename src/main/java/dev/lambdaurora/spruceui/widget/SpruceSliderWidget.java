@@ -12,8 +12,8 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -24,7 +24,7 @@ import java.util.function.Consumer;
  * Represents a slider widget.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 8.0.0
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements Tooltipable {
@@ -169,10 +169,10 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	}
 
 	@Override
-	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		final Identifier texture = this.isFocusedOrHovered() ? SLIDER_HANDLE_HIGHLIGHTED : SLIDER_HANDLE;
 		graphics.drawSprite(
-				RenderType::guiTextured,
+				RenderPipelines.GUI_TEXTURED,
 				texture,
 				this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(),
 				8, 20

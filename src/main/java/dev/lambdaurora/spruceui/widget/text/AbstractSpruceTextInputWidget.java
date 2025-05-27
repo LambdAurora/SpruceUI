@@ -14,11 +14,11 @@ import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.SimpleColorBackground;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.TexturedBorder;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
@@ -196,12 +196,12 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
 	}
 
 	@Override
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
 	}
 

@@ -11,6 +11,7 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -252,7 +253,11 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	/* Rendering */
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public final void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.render(new SpruceGuiGraphics(graphics), mouseX, mouseY, delta);
+	}
+
+	public void render(@NotNull SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.isVisible()) {
 			this.hovered = mouseX >= this.getX() && mouseY >= this.getY()
 					&& mouseX < this.getX() + this.getWidth() && mouseY < this.getY() + this.getHeight();
@@ -280,7 +285,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * @param mouseY the mouse Y-coordinate
 	 * @param delta the tick delta
 	 */
-	protected abstract void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta);
+	protected abstract void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta);
 
 	/**
 	 * Renders the background of the widget.
@@ -290,7 +295,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * @param mouseY the mouse Y-coordinate
 	 * @param delta the tick delta
 	 */
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 	}
 
 	/* Sound */

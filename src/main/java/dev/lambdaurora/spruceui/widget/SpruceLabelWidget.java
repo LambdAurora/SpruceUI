@@ -14,7 +14,7 @@ import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.EmptyBorder;
-import net.minecraft.client.gui.GuiGraphics;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 8.0.0
  * @since 1.0.0
  */
 public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipable, WithBorder {
@@ -170,12 +170,12 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int y = this.getY() + 2;
 		for (var it = this.lines.iterator(); it.hasNext(); y += 9) {
 			var line = it.next();
 			int x = this.centered ? (this.getInnerX() + this.maxWidth / 2) - this.client.font.width(line) / 2 : this.getInnerX();
-			graphics.drawText(this.client.font, line, x, y, 10526880, true);
+			graphics.drawShadowedText(this.client.font, line, x, y, 0xffa0a0a0);
 		}
 
 		this.getBorder().render(graphics, this, mouseX, mouseY, delta);

@@ -12,6 +12,7 @@ package dev.lambdaurora.spruceui.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.lambdaurora.spruceui.event.ScreenEvents;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -40,10 +41,12 @@ public class GameRendererMixin {
 	private void spruceui$onRenderScreen(
 			Screen currentScreen, GuiGraphics graphics, int mouseX, int mouseY, float tickDelta, Operation<Void> operation
 	) {
+		var sprucedGraphics = SpruceGuiGraphics.of(graphics);
+
 		ScreenEvents.BEFORE_RENDER.forContext(currentScreen).invoker()
-				.onBeforeRenderScreen(currentScreen, graphics, mouseX, mouseY, tickDelta);
+				.onBeforeRenderScreen(currentScreen, sprucedGraphics, mouseX, mouseY, tickDelta);
 		operation.call(currentScreen, graphics, mouseX, mouseY, tickDelta);
 		ScreenEvents.AFTER_RENDER.forContext(currentScreen).invoker()
-				.onAfterRenderScreen(currentScreen, graphics, mouseX, mouseY, tickDelta);
+				.onAfterRenderScreen(currentScreen, sprucedGraphics, mouseX, mouseY, tickDelta);
 	}
 }

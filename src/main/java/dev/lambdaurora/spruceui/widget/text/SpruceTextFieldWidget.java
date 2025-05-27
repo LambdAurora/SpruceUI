@@ -13,13 +13,13 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.Util;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
@@ -38,7 +38,7 @@ import java.util.function.Predicate;
  * Represents a text field widget.
  *
  * @author LambdAurora
- * @version 6.1.0
+ * @version 8.0.0
  * @since 2.1.0
  */
 public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget implements Tooltipable {
@@ -417,7 +417,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		super.renderWidget(graphics, mouseX, mouseY, delta);
 
 		this.drawText(graphics);
@@ -436,7 +436,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	 *
 	 * @param graphics The GUI graphics instance to render with
 	 */
-	protected void drawText(GuiGraphics graphics) {
+	protected void drawText(SpruceGuiGraphics graphics) {
 		int textColor = this.getTextColor();
 		int x = this.getX() + 4;
 		int y = this.getY() + this.getHeight() / 2 - 4;
@@ -466,7 +466,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	 * @param line the current line
 	 * @param lineY the line Y-coordinates
 	 */
-	protected void drawSelection(GuiGraphics graphics, String line, int lineY) {
+	protected void drawSelection(SpruceGuiGraphics graphics, String line, int lineY) {
 		if (!this.isFocused() || !this.selection.active)
 			return;
 
@@ -482,7 +482,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		int x2 = x + this.client.font.width(selected);
 		int y2 = lineY + this.client.font.lineHeight;
 
-		graphics.fill(RenderType.guiTextHighlight(), x, lineY, x2, y2, 0xff0000ff);
+		graphics.fill(RenderPipelines.GUI_TEXT_HIGHLIGHT, x, lineY, x2, y2, 0xff0000ff);
 	}
 
 	/**
@@ -490,7 +490,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	 *
 	 * @param graphics The GUI graphics instance to render with
 	 */
-	protected void drawCursor(GuiGraphics graphics) {
+	protected void drawCursor(SpruceGuiGraphics graphics) {
 		if (!this.isFocused())
 			return;
 

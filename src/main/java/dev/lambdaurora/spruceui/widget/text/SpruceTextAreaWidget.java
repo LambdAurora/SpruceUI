@@ -12,12 +12,12 @@ package dev.lambdaurora.spruceui.widget.text;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.util.MultilineText;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.StringUtil;
 import net.minecraft.util.math.MathHelper;
@@ -31,7 +31,7 @@ import java.util.List;
  * Represents a text area widget.
  *
  * @author LambdAurora
- * @version 6.1.0
+ * @version 8.0.00
  * @since 1.6.3
  */
 public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
@@ -437,7 +437,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		super.renderWidget(graphics, mouseX, mouseY, delta);
 
 		this.drawText(graphics);
@@ -449,7 +449,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	 *
 	 * @param graphics the GUI graphics instance to render with
 	 */
-	protected void drawText(GuiGraphics graphics) {
+	protected void drawText(SpruceGuiGraphics graphics) {
 		int length = Math.min(this.lines.size(), this.displayedLines);
 
 		int textColor = this.getTextColor();
@@ -483,7 +483,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	 * @param lineY the line Y-coordinates
 	 * @param row the row number
 	 */
-	protected void drawSelection(GuiGraphics graphics, String line, int lineY, int row) {
+	protected void drawSelection(SpruceGuiGraphics graphics, String line, int lineY, int row) {
 		if (!this.isFocused())
 			return;
 		if (!this.selection.isRowSelected(row))
@@ -509,7 +509,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		int x2 = x + this.font.width(selected);
 		int y2 = lineY + this.font.lineHeight;
 
-		graphics.fill(RenderType.guiTextHighlight(), x, lineY, x2, y2, 0xff0000ff);
+		graphics.fill(RenderPipelines.GUI_TEXT_HIGHLIGHT, x, lineY, x2, y2, 0xff0000ff);
 	}
 
 	/**
@@ -517,7 +517,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	 *
 	 * @param graphics the GUI graphics instance to render with
 	 */
-	protected void drawCursor(GuiGraphics graphics) {
+	protected void drawCursor(SpruceGuiGraphics graphics) {
 		if (!this.isFocused())
 			return;
 		if (this.lines.isEmpty()) {

@@ -12,9 +12,9 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.SpruceUI;
-import net.minecraft.client.gui.GuiGraphics;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a checkbox widget.
  *
  * @author LambdAurora
- * @version 6.0.0
+ * @version 8.0.0
  * @since 1.0.0
  */
 public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
@@ -63,9 +63,9 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		graphics.drawSprite(
-				RenderType::guiTextured, (this.getValue() ? ON_TEXTURE : OFF_TEXTURE).get(this.isActive(), this.isFocusedOrHovered()),
+				RenderPipelines.GUI_TEXTURED, (this.getValue() ? ON_TEXTURE : OFF_TEXTURE).get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
 				18, 18
 		);
@@ -80,9 +80,9 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 	}
 
 	@Override
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		graphics.drawSprite(
-				RenderType::guiTextured, BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
+				RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX(), this.getY() + (this.getHeight() / 2 - 9),
 				32, 18
 		);

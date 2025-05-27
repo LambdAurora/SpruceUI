@@ -16,7 +16,7 @@ import net.minecraft.network.chat.Text;
  * Represents a pressable button that switches between two states which values are {@code true} and {@code false}.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 8.0.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceBooleanButtonWidget extends AbstractSprucePressableButtonWidget {

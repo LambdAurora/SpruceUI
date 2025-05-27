@@ -12,8 +12,8 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +25,7 @@ import java.util.Optional;
  * Represents a separator element.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 8.0.0
  * @since 1.0.1
  */
 public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Tooltipable {
@@ -111,7 +111,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int lineY = this.getY() + this.getHeight() / 2 - 1;
 
 		if (this.title != null) {

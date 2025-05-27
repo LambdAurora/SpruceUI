@@ -13,9 +13,9 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.navigation.NavigationUtils;
 import dev.lambdaurora.spruceui.option.SpruceOption;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Text;
@@ -31,7 +31,7 @@ import java.util.List;
  * A {@link SpruceOption} allows to have an easy control over the widgets present in the list.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 8.0.0
  * @since 2.0.0
  */
 public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionListWidget.OptionEntry> {
@@ -218,7 +218,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 		/* Rendering */
 
 		@Override
-		protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 			this.forEach(widget -> widget.render(graphics, mouseX, mouseY, delta));
 		}
 

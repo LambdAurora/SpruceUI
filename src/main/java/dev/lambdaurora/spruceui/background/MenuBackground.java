@@ -10,11 +10,11 @@
 package dev.lambdaurora.spruceui.background;
 
 import dev.lambdaurora.spruceui.SpruceTextures;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
 /**
@@ -23,7 +23,7 @@ import net.minecraft.resources.Identifier;
  * @param texture the texture used for the background
  * @param inWorldTexture the textured used for the background when playing in a world
  * @author LambdAurora
- * @version 6.0.0
+ * @version 8.0.0
  * @since 5.1.0
  */
 public record MenuBackground(Identifier texture, Identifier inWorldTexture) implements Background {
@@ -35,7 +35,7 @@ public record MenuBackground(Identifier texture, Identifier inWorldTexture) impl
 	);
 
 	@Override
-	public void render(GuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
+	public void render(SpruceGuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
 		int x = widget.getX();
 		int y = widget.getY();
 		int width = widget.getWidth();
@@ -53,7 +53,7 @@ public record MenuBackground(Identifier texture, Identifier inWorldTexture) impl
 
 		Identifier identifier = CLIENT.level == null ? this.inWorldTexture : this.texture;
 		graphics.drawTexture(
-				RenderType::guiTextured, identifier,
+				RenderPipelines.GUI_TEXTURED, identifier,
 				x, y,
 				0, 0,
 				width, height,

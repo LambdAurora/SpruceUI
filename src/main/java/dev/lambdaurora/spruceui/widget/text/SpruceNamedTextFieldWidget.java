@@ -12,11 +12,11 @@ package dev.lambdaurora.spruceui.widget.text;
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.FormattedCharSequence;
 
 import java.util.function.BiFunction;
@@ -27,7 +27,7 @@ import java.util.function.Predicate;
  * Represents a text field widget with a title on top.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 8.0.0
  * @since 2.1.0
  */
 public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
@@ -221,7 +221,7 @@ public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements 
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		graphics.drawShadowedText(this.client.font, this.getTextFieldWidget().getTitle(), this.getX() + 2, this.getY() + 2, ColorUtil.TEXT_COLOR);
 
 		this.getTextFieldWidget().render(graphics, mouseX, mouseY, delta);

@@ -10,10 +10,10 @@
 package dev.lambdaurora.spruceui.border;
 
 import dev.lambdaurora.spruceui.SpruceTextures;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
 /**
@@ -24,7 +24,7 @@ import net.minecraft.resources.Identifier;
  * @param bottom {@code true} if a bottom border is present, or {@code false} otherwise
  * @param left {@code true} if a left border is present, or {@code false} otherwise
  * @author LambdAurora
- * @version 7.0.0
+ * @version 8.0.0
  * @since 5.1.0
  */
 public record MenuBorder(boolean top, boolean right, boolean bottom, boolean left) implements Border {
@@ -35,9 +35,11 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 	public static final MenuBorder TAB_LIST = new MenuBorder(true, true, true, false);
 
 	@Override
-	public void render(GuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
+	public void render(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
 		if (this.top) {
-			Identifier topTexture = CLIENT.level == null ? SpruceTextures.MENU_TOP_BORDER : SpruceTextures.INWORLD_MENU_TOP_BORDER;
+			Identifier topTexture = CLIENT.level == null
+					? SpruceTextures.MENU_TOP_BORDER
+					: SpruceTextures.INWORLD_MENU_TOP_BORDER;
 
 			int width = widget.getWidth();
 
@@ -46,7 +48,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 			}
 
 			graphics.drawTexture(
-					RenderType::guiTextured,
+					RenderPipelines.GUI_TEXTURED,
 					topTexture,
 					widget.getX(), widget.getY(),
 					0, 0,
@@ -56,9 +58,11 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 		}
 
 		if (this.top && this.right) {
-			Identifier cornerTexture = CLIENT.level == null ? SpruceTextures.MENU_TOP_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_TOP_RIGHT_BORDER;
+			Identifier cornerTexture = CLIENT.level == null
+					? SpruceTextures.MENU_TOP_RIGHT_BORDER
+					: SpruceTextures.INWORLD_MENU_TOP_RIGHT_BORDER;
 			graphics.drawTexture(
-					RenderType::guiTextured,
+					RenderPipelines.GUI_TEXTURED,
 					cornerTexture,
 					widget.getEndX() - THICKNESS, widget.getY(),
 					0, 0,
@@ -68,7 +72,9 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 		}
 
 		if (this.right) {
-			Identifier rightTexture = CLIENT.level == null ? SpruceTextures.MENU_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_RIGHT_BORDER;
+			Identifier rightTexture = CLIENT.level == null
+					? SpruceTextures.MENU_RIGHT_BORDER
+					: SpruceTextures.INWORLD_MENU_RIGHT_BORDER;
 
 			int y = widget.getY();
 			int height = widget.getHeight();
@@ -83,7 +89,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 			}
 
 			graphics.drawTexture(
-					RenderType::guiTextured, rightTexture,
+					RenderPipelines.GUI_TEXTURED, rightTexture,
 					widget.getEndX() - THICKNESS, y,
 					0, 0,
 					THICKNESS, height,
@@ -95,7 +101,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 			Identifier cornerTexture = CLIENT.level == null
 					? SpruceTextures.MENU_BOTTOM_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_BOTTOM_RIGHT_BORDER;
 			graphics.drawTexture(
-					RenderType::guiTextured,
+					RenderPipelines.GUI_TEXTURED,
 					cornerTexture,
 					widget.getEndX() - THICKNESS, widget.getEndY() - THICKNESS,
 					0, 0,
@@ -105,7 +111,9 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 		}
 
 		if (this.bottom) {
-			Identifier bottomTexture = CLIENT.level == null ? SpruceTextures.MENU_BOTTOM_BORDER : SpruceTextures.INWORLD_MENU_BOTTOM_BORDER;
+			Identifier bottomTexture = CLIENT.level == null
+					? SpruceTextures.MENU_BOTTOM_BORDER
+					: SpruceTextures.INWORLD_MENU_BOTTOM_BORDER;
 
 			int width = widget.getWidth();
 
@@ -114,7 +122,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 			}
 
 			graphics.drawTexture(
-					RenderType::guiTextured,
+					RenderPipelines.GUI_TEXTURED,
 					bottomTexture,
 					widget.getX(), widget.getEndY() - THICKNESS,
 					0, 0,

@@ -11,13 +11,15 @@ package dev.lambdaurora.spruceui.screen;
 
 import dev.lambdaurora.spruceui.SprucePositioned;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.widget.SpruceElement;
+import dev.lambdaurora.spruceui.widget.SpruceRenderable;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Text;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.function.BooleanSupplier;
@@ -30,7 +32,7 @@ import java.util.function.Supplier;
  * @version 8.0.0
  * @since 2.0.0
  */
-public abstract class SpruceScreen extends Screen implements SprucePositioned, SpruceElement {
+public abstract class SpruceScreen extends Screen implements SprucePositioned, SpruceElement, SpruceRenderable {
 	protected SpruceScreen(Text title) {
 		super(title);
 	}
@@ -100,19 +102,16 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 	/* Render */
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.renderBackground(graphics, mouseX, mouseY, delta);
+	public final void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.render(SpruceGuiGraphics.of(graphics), mouseX, mouseY, delta);
+	}
+
+	@Override
+	public void render(@NotNull SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.renderWidgets(graphics, mouseX, mouseY, delta);
-		this.renderTitle(graphics, mouseX, mouseY, delta);
 	}
 
-	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-	}
-
-	public void renderWidgets(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		for (var element : this.children()) {
-			if (element instanceof Renderable drawable)
-				drawable.render(graphics, mouseX, mouseY, delta);
-		}
+	public void renderWidgets(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		super.render(graphics.vanilla(), mouseX, mouseY, delta);
 	}
 }

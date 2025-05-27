@@ -9,9 +9,7 @@
 
 package dev.lambdaurora.spruceui.util;
 
-import dev.lambdaurora.spruceui.SpruceTextures;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 
 public final class RenderUtil {
 	private RenderUtil() {
@@ -26,10 +24,10 @@ public final class RenderUtil {
 	 * @param width the width
 	 * @param height the height
 	 * @param vOffset the v offset
-	 * @see #renderBackgroundTexture(GuiGraphics, int, int, int, int, float, int, int, int, int)
+	 * @see #renderBackgroundTexture(SpruceGuiGraphics, int, int, int, int, float, int, int, int, int)
 	 */
 	public static void renderBackgroundTexture(
-			GuiGraphics graphics, int x, int y, int width, int height, float vOffset
+			SpruceGuiGraphics graphics, int x, int y, int width, int height, float vOffset
 	) {
 		renderBackgroundTexture(graphics, x, y, width, height, vOffset, 64, 64, 64, 255);
 	}
@@ -48,11 +46,11 @@ public final class RenderUtil {
 	 * @param alpha the alpha-component alpha value
 	 */
 	public static void renderBackgroundTexture(
-			GuiGraphics graphics,
+			SpruceGuiGraphics graphics,
 			int x, int y, int width, int height, float vOffset,
 			int red, int green, int blue, int alpha
 	) {
-		graphics.drawSpecial(multiBufferSource -> {
+		/*graphics.drawSpecial(multiBufferSource -> {
 			var buffer = multiBufferSource.getBuffer(RenderType.guiTextured(SpruceTextures.LEGACY_OPTIONS_BACKGROUND));
 
 			int right = x + width;
@@ -70,6 +68,6 @@ public final class RenderUtil {
 			buffer.addVertex(x, y, 0)
 					.uv(0, y / 32.f + vOffset)
 					.color(red, green, blue, alpha);
-		});
+		});*/
 	}
 }

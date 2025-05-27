@@ -9,15 +9,15 @@
 
 package dev.lambdaurora.spruceui.border;
 
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.GuiGraphics;
 
 /**
  * Represents a simple solid border to draw around a widget.
  *
  * @author LambdAurora
- * @version 6.0.0
+ * @version 8.0.0
  * @since 6.0.0
  */
 public final class SimpleBorder implements Border {
@@ -48,7 +48,7 @@ public final class SimpleBorder implements Border {
 	}
 
 	@Override
-	public void render(GuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
+	public void render(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
 		int x = widget.getX();
 		int y = widget.getY();
 		int right = x + widget.getWidth();

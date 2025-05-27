@@ -17,15 +17,15 @@ import dev.lambdaurora.spruceui.background.MenuBackground;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.MenuBorder;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidgetWithBorder;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +40,7 @@ import java.util.List;
  *
  * @param <E> the type of entry
  * @author LambdAurora
- * @version 7.0.0
+ * @version 8.0.0
  * @since 2.0.0
  */
 public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E>
@@ -334,12 +334,12 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 	/* Rendering */
 
 	@Override
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
 	}
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int left = this.getInnerBorderedX();
 		int right = this.getEndInnerBorderedX();
 		int top = this.getInnerBorderedY();
@@ -351,30 +351,13 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 
 		// Render the transition thingy.
 		if (this.shouldRenderTransition()) {
-			graphics.drawSpecial(multiBufferSource -> {
-				var buffer = multiBufferSource.getBuffer(RenderType.gui());
+			final int gradientStart = 0xff000000; // Black
+			final int gradientEnd = 0x00000000; // Transparent
 
-				// TOP
-				buffer.addVertex(left, top + 4, 0).color(0, 0, 0, 0);
-				buffer.addVertex(right, top + 4, 0).color(0, 0, 0, 0);
-				buffer.addVertex(right, top, 0).color(0, 0, 0, 255);
-				buffer.addVertex(left, top, 0).color(0, 0, 0, 255);
-				// RIGHT
-				buffer.addVertex(right - 4, bottom, 0).color(0, 0, 0, 0);
-				buffer.addVertex(right, bottom, 0).color(0, 0, 0, 255);
-				buffer.addVertex(right, top, 0).color(0, 0, 0, 255);
-				buffer.addVertex(right - 4, top, 0).color(0, 0, 0, 0);
-				// BOTTOM
-				buffer.addVertex(left, bottom, 0).color(0, 0, 0, 255);
-				buffer.addVertex(right, bottom, 0).color(0, 0, 0, 255);
-				buffer.addVertex(right, bottom - 4, 0).color(0, 0, 0, 0);
-				buffer.addVertex(left, bottom - 4, 0).color(0, 0, 0, 0);
-				// LEFT
-				buffer.addVertex(left, bottom, 0).color(0, 0, 0, 255);
-				buffer.addVertex(left + 4, bottom, 0).color(0, 0, 0, 0);
-				buffer.addVertex(left + 4, top, 0).color(0, 0, 0, 0);
-				buffer.addVertex(left, top, 0).color(0, 0, 0, 255);
-			});
+			graphics.fillGradient(left, top, right, top + 4, gradientStart, gradientStart, gradientEnd, gradientEnd);
+			graphics.fillGradient(right - 4, top, right, bottom, gradientEnd, gradientStart, gradientStart, gradientEnd);
+			graphics.fillGradient(left, bottom - 4, right, bottom, gradientEnd, gradientEnd, gradientStart, gradientStart);
+			graphics.fillGradient(left, top, left + 4, bottom, gradientStart, gradientEnd, gradientEnd, gradientStart);
 		}
 
 		// Scrollbar
@@ -383,7 +366,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
 	}
 
-	protected void renderScrollbar(GuiGraphics graphics) {
+	protected void renderScrollbar(SpruceGuiGraphics graphics) {
 		if (this.isScrollbarVisible()) {
 			int top = this.getInnerBorderedY();
 			int height = this.getInnerBorderedHeight();
@@ -395,10 +378,10 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 				scrollbarY = top;
 			}
 
-			graphics.drawSprite(RenderType::guiTextured, SpruceTextures.SCROLLER_BACKGROUND,
+			graphics.drawSprite(RenderPipelines.GUI_TEXTURED, SpruceTextures.SCROLLER_BACKGROUND,
 					scrollbarX, top, 6, this.getInnerBorderedHeight()
 			);
-			graphics.drawSprite(RenderType::guiTextured, SpruceTextures.SCROLLER,
+			graphics.drawSprite(RenderPipelines.GUI_TEXTURED, SpruceTextures.SCROLLER,
 					scrollbarX, scrollbarY, 6, scrollerHeight
 			);
 		}

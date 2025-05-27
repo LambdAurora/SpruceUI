@@ -14,13 +14,14 @@ import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.EmptyBackground;
 import dev.lambdaurora.spruceui.border.MenuBorder;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
+import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceSeparatorWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +32,7 @@ import java.util.List;
  * Represents a container widget with tabs.
  *
  * @author LambdAurora
- * @version 6.1.0
+ * @version 8.0.0
  * @since 2.0.0
  */
 public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget> {
@@ -170,12 +171,14 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	/* Render */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.title != null) {
 			int y = this.getY() + 6;
 			for (var it = this.title.iterator(); it.hasNext(); y += 9) {
 				var line = it.next();
-				graphics.drawCenteredShadowedText(this.client.font, line, this.getX() + this.list.getWidth() / 2, y, 0xffffff);
+				graphics.drawCenteredShadowedText(
+						this.client.font, line, this.getX() + this.list.getWidth() / 2, y, ColorUtil.WHITE
+				);
 			}
 		}
 		this.list.render(graphics, mouseX, mouseY, delta);
@@ -220,7 +223,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Rendering */
 
 		@Override
-		protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 			this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
 		}
 	}
@@ -275,23 +278,23 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Render */
 
 		@Override
-		protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 			int y = this.getY() + 4;
 			for (var it = this.title.iterator(); it.hasNext(); y += 9) {
 				var line = it.next();
-				graphics.drawText(this.client.font, line, this.getX() + 4, y, 0xffffff, false);
+				graphics.drawText(this.client.font, line, this.getX() + 4, y, ColorUtil.WHITE, false);
 			}
 			if (this.description != null) {
 				y += 4;
 				for (var it = this.description.iterator(); it.hasNext(); y += 9) {
 					var line = it.next();
-					graphics.drawText(this.client.font, line, this.getX() + 8, y, 0xffffff, false);
+					graphics.drawText(this.client.font, line, this.getX() + 8, y, ColorUtil.WHITE, false);
 				}
 			}
 		}
 
 		@Override
-		protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 			super.renderBackground(graphics, mouseX, mouseY, delta);
 			if (this.isFocused() && this.parent.isFocused())
 				graphics.fill(this.getX(), this.getY(),
@@ -351,7 +354,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Rendering */
 
 		@Override
-		protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 			this.separatorWidget.render(graphics, mouseX, mouseY, delta);
 		}
 

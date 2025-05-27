@@ -9,18 +9,18 @@
 
 package dev.lambdaurora.spruceui.border;
 
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.GuiGraphics;
 
 /**
  * Represents a border to draw around a widget.
  *
  * @author LambdAurora
- * @version 5.1.0
+ * @version 8.0.0
  * @since 2.0.0
  */
 public interface Border {
-	void render(GuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta);
+	void render(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta);
 
 	/**
 	 * Returns the thickness of the top border.

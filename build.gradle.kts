@@ -39,7 +39,7 @@ lambdamcdev {
 			withIcon("assets/${Constants.NAMESPACE}/icon.png")
 			withEnvironment("client")
 			withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
-			withDepend("minecraft", "~1.21.5- <1.21.6-")
+			withDepend("minecraft", "~1.21.6-")
 			withDepend("fabric-resource-loader-v0", ">=0.4.7")
 			withDepend("java", ">=${Constants.JAVA_VERSION}")
 			withDepend("yumi-commons-core", "^${libs.versions.yumi.commons.get()}")
@@ -99,9 +99,9 @@ dependencies {
 		modImplementation(it)
 	}
 
-	modLocalRuntime(libs.modmenu) {
+	/*modLocalRuntime(libs.modmenu) {
 		isTransitive = false
-	}
+	}*/
 
 	"testmodCompileOnly"(libs.neoforge.loader)
 	"testmodImplementation"(sourceSets.main.get().output)

@@ -18,10 +18,10 @@ import net.minecraft.client.gui.narration.NarratableEntry;
  * Represents a widget.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 8.0.0
  * @since 1.6.0
  */
-public interface SpruceWidget extends SprucePositioned, SpruceElement, NarratableEntry, Renderable {
+public interface SpruceWidget extends SprucePositioned, SpruceElement, NarratableEntry, SpruceRenderable {
 	/**
 	 * Returns the position of the widget.
 	 *

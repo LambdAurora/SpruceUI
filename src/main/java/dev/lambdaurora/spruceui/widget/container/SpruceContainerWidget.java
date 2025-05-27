@@ -14,10 +14,10 @@ import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.EmptyBackground;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.EmptyBorder;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
-import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * Represents a container widget.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 8.0.0
  * @since 2.0.0
  */
 public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidget> implements WithBackground, WithBorder {
@@ -78,13 +78,13 @@ public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidg
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.forEach(child -> child.render(graphics, mouseX, mouseY, delta));
 		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
 	}
 
 	@Override
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
 	}
 

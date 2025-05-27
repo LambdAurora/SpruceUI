@@ -14,6 +14,7 @@ import dev.lambdaurora.spruceui.event.ScreenEvents;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
@@ -89,7 +90,7 @@ public class Tooltip implements SprucePositioned {
 	 * @param graphics The GuiGraphics instance used to render.
 	 */
 	public void render(GuiGraphics graphics) {
-		graphics.drawTooltip(Minecraft.getInstance().font, this.tooltip, DefaultTooltipPositioner.INSTANCE, this.x, this.y);
+		graphics.renderTooltip(Minecraft.getInstance().font, this.tooltip.stream().map(ClientTooltipComponent::create).toList(), this.x, this.y, DefaultTooltipPositioner.INSTANCE, null);
 	}
 
 	/**
@@ -173,7 +174,7 @@ public class Tooltip implements SprucePositioned {
 		var tooltipPhase = SpruceUI.id("tooltip");
 		ScreenEvents.AFTER_RENDER.addPhaseOrdering(ScreenEvents.AFTER_RENDER.defaultPhaseId(), tooltipPhase);
 		ScreenEvents.AFTER_RENDER.register(tooltipPhase,
-				(screen, graphics, mouseX, mouseY, tickDelta) -> renderAll(graphics)
+				(screen, graphics, mouseX, mouseY, tickDelta) -> renderAll(graphics.vanilla())
 		);
 	}
 }

@@ -12,13 +12,13 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.Tooltip;
 import dev.lambdaurora.spruceui.Tooltipable;
+import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -31,7 +31,7 @@ import java.util.Optional;
  * Represents a button-like widget.
  *
  * @author LambdAurora
- * @version 6.0.0
+ * @version 8.0.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget implements Tooltipable {
@@ -146,31 +146,31 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	protected void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.renderButton(graphics, mouseX, mouseY, delta);
 		if (!this.dragging)
 			Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks,
 					i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
 	}
 
-	protected void renderButton(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int color = this.active ? 16777215 : 10526880;
 		this.renderText(graphics, color | MathHelper.ceil(this.alpha * 255.0F) << 24);
 	}
 
-	protected void renderText(GuiGraphics graphics, int color) {
+	protected void renderText(SpruceGuiGraphics graphics, int color) {
 		int margin = 2;
 		int startX = this.getX() + margin;
 		int endX = this.getX() + this.getWidth() - margin;
 		AbstractWidget.renderScrollingString(
-				graphics, this.client.font, this.getMessage(),
+				graphics.vanilla(), this.client.font, this.getMessage(),
 				startX, this.getY(), endX, this.getY() + this.getHeight(), color
 		);
 	}
 
 	@Override
-	protected void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawSprite(RenderType::guiTextured, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		graphics.drawSprite(RenderPipelines.GUI_TEXTURED, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
 
 	/* Narration */
