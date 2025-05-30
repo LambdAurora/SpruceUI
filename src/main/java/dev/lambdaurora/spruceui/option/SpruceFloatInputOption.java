@@ -10,14 +10,13 @@
 package dev.lambdaurora.spruceui.option;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
 import net.minecraft.TextFormatting;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -26,14 +25,17 @@ import java.util.function.Supplier;
  * Represents a float input option.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 8.0.0
  * @since 2.1.0
  */
 public class SpruceFloatInputOption extends SpruceOption {
 	private final Supplier<Float> getter;
 	private final Consumer<Float> setter;
 
-	public SpruceFloatInputOption(String key, Supplier<Float> getter, Consumer<Float> setter, @Nullable Text tooltip) {
+	public SpruceFloatInputOption(
+			String key, Supplier<Float> getter, Consumer<Float> setter,
+			TooltipData tooltip
+	) {
 		super(key);
 		this.getter = getter;
 		this.setter = setter;
@@ -62,7 +64,7 @@ public class SpruceFloatInputOption extends SpruceOption {
 			}
 			this.set(value);
 		});
-		this.getOptionTooltip().ifPresent(textField::setTooltip);
+		this.getTooltip().ifPresent(textField::setTooltip);
 		return new SpruceNamedTextFieldWidget(textField);
 	}
 
@@ -77,5 +79,26 @@ public class SpruceFloatInputOption extends SpruceOption {
 	 */
 	public float get() {
 		return this.getter.get();
+	}
+
+	public static class Builder extends SpruceOption.Builder<Builder, SpruceFloatInputOption> {
+		private final Supplier<Float> getter;
+		private final Consumer<Float> setter;
+
+		public Builder(String key, Supplier<Float> getter, Consumer<Float> setter) {
+			super(key);
+			this.getter = getter;
+			this.setter = setter;
+		}
+
+		@Override
+		protected Builder self() {
+			return this;
+		}
+
+		@Override
+		public SpruceFloatInputOption build() {
+			return new SpruceFloatInputOption(this.key, this.getter, this.setter, this.tooltip);
+		}
 	}
 }

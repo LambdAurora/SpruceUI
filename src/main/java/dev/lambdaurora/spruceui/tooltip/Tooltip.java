@@ -7,23 +7,29 @@
  * see the LICENSE file.
  */
 
-package dev.lambdaurora.spruceui;
+package dev.lambdaurora.spruceui.tooltip;
 
 import com.google.common.collect.Queues;
+import dev.lambdaurora.spruceui.SprucePositioned;
+import dev.lambdaurora.spruceui.SpruceUI;
 import dev.lambdaurora.spruceui.event.ScreenEvents;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.screens.inventory.tooltip.BelowOrAboveWidgetTooltipPositioner;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
-import net.minecraft.network.chat.FormattedText;
-import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Queue;
 import java.util.function.IntConsumer;
 import java.util.function.LongConsumer;
+import java.util.stream.Stream;
 
 /**
  * Represents a tooltip.
@@ -32,37 +38,21 @@ import java.util.function.LongConsumer;
  * @version 8.0.0
  * @since 1.0.0
  */
-public class Tooltip implements SprucePositioned {
+public final class Tooltip implements SprucePositioned {
 	private static final Queue<Tooltip> TOOLTIPS = Queues.newConcurrentLinkedQueue();
 	private static boolean delayed = false;
 	private final int x;
 	private final int y;
-	private final List<FormattedCharSequence> tooltip;
+	private final List<ClientTooltipComponent> components;
+	private final ClientTooltipPositioner positioner;
+	private final Identifier style;
 
-	public Tooltip(int x, int y, String tooltip, int parentWidth) {
-		this(x, y, FormattedText.of(tooltip), parentWidth);
-	}
-
-	public Tooltip(int x, int y, FormattedText tooltip, int parentWidth) {
-		this(x, y, Minecraft.getInstance().font.wrapLines(tooltip, Math.max(parentWidth * 2 / 3, 200)));
-	}
-
-	public Tooltip(int x, int y, List<FormattedCharSequence> tooltip) {
+	public Tooltip(int x, int y, List<ClientTooltipComponent> components, ClientTooltipPositioner positioner, @Nullable Identifier style) {
 		this.x = x;
 		this.y = y;
-		this.tooltip = tooltip;
-	}
-
-	public static Tooltip create(int x, int y, String tooltip, int parentWidth) {
-		return new Tooltip(x, y, tooltip, parentWidth);
-	}
-
-	public static Tooltip create(int x, int y, FormattedText tooltip, int parentWidth) {
-		return new Tooltip(x, y, tooltip, parentWidth);
-	}
-
-	public static Tooltip create(int x, int y, List<FormattedCharSequence> tooltip) {
-		return new Tooltip(x, y, tooltip);
+		this.components = components;
+		this.positioner = positioner;
+		this.style = style;
 	}
 
 	@Override
@@ -76,21 +66,12 @@ public class Tooltip implements SprucePositioned {
 	}
 
 	/**
-	 * Returns whether the tooltip should render or not.
-	 *
-	 * @return {@code true} if the tooltip should render, else {@code false}
-	 */
-	public boolean shouldRender() {
-		return !this.tooltip.isEmpty();
-	}
-
-	/**
 	 * Renders the tooltip.
 	 *
 	 * @param graphics The GuiGraphics instance used to render.
 	 */
 	public void render(GuiGraphics graphics) {
-		graphics.renderTooltip(Minecraft.getInstance().font, this.tooltip.stream().map(ClientTooltipComponent::create).toList(), this.x, this.y, DefaultTooltipPositioner.INSTANCE, null);
+		graphics.renderTooltip(Minecraft.getInstance().font, this.components, this.x, this.y, this.positioner, this.style);
 	}
 
 	/**
@@ -119,28 +100,47 @@ public class Tooltip implements SprucePositioned {
 			LongConsumer lastTickSetter
 	) {
 		if (widget.isVisible()) {
-			widget.getTooltip().ifPresent(tooltip -> {
-				long currentRender = System.currentTimeMillis();
-				if (lastTick != 0) {
-					if (currentRender - lastTick >= 20) {
-						tooltipTicksSetter.accept(tooltipTicks + 1);
-						lastTickSetter.accept(currentRender);
-					}
-				} else lastTickSetter.accept(currentRender);
+			var tooltip = widget.getTooltip();
 
-				if (!widget.isFocused() && !widget.isMouseHovered())
-					tooltipTicksSetter.accept(0);
+			if (tooltip.isEmpty()) return;
 
-				if (!tooltip.getString().isEmpty() && tooltipTicks >= 45) {
-					var wrappedTooltipText = Minecraft.getInstance().font.wrapLines(tooltip, Math.max(widget.getWidth() * 2 / 3, 200));
-					if (widget.isMouseHovered())
-						create(mouseX, mouseY, wrappedTooltipText).queue();
-					else if (widget.isFocused())
-						create(widget.getX() - 12, widget.getY() + widget.getHeight() + 16,
-								wrappedTooltipText)
-								.queue();
+			long currentRender = System.currentTimeMillis();
+			if (lastTick != 0) {
+				if (currentRender - lastTick >= 20) {
+					tooltipTicksSetter.accept(tooltipTicks + 1);
+					lastTickSetter.accept(currentRender);
 				}
-			});
+			} else lastTickSetter.accept(currentRender);
+
+			if (!widget.isFocused() && !widget.isMouseHovered())
+				tooltipTicksSetter.accept(0);
+
+			if (tooltipTicks < 45) return;
+
+			var tooltipComponents = tooltip.tooltip().stream()
+					.flatMap(entry -> {
+						if (entry instanceof TooltipData.TextEntry(var text)) {
+							var wrappedTooltipText = Minecraft.getInstance().font.wrapLines(text, Math.max(widget.getWidth() * 2 / 3, 200));
+							return wrappedTooltipText.stream()
+									.map(ClientTooltipComponent::create);
+						} else {
+							return Stream.of(entry.toComponent());
+						}
+					}).toList();
+
+			if (widget.isMouseHovered())
+				new Tooltip(mouseX, mouseY, tooltipComponents, DefaultTooltipPositioner.INSTANCE, tooltip.style())
+						.queue();
+			else if (widget.isFocused())
+				new Tooltip(
+						widget.getX() - 12, widget.getY() + widget.getHeight() + 16,
+						tooltipComponents,
+						new BelowOrAboveWidgetTooltipPositioner(
+								new ScreenRectangle(widget.getScreenPosition(), widget.getWidth(), widget.getHeight())
+						),
+						tooltip.style()
+				)
+						.queue();
 		}
 	}
 

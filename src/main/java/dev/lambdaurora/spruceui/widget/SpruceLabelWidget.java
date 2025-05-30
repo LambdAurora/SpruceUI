@@ -10,13 +10,15 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.Tooltip;
-import dev.lambdaurora.spruceui.Tooltipable;
+import dev.lambdaurora.spruceui.tooltip.Tooltip;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
+import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.EmptyBorder;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -41,7 +43,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	//private final int                         maxHeight;
 	private Text text;
 	private List<FormattedCharSequence> lines;
-	private Text tooltip;
+	private TooltipData tooltip = TooltipData.EMPTY;
 	private boolean centered;
 	private Border border = EmptyBorder.EMPTY_BORDER;
 
@@ -121,12 +123,12 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	}
 
 	@Override
-	public Optional<Text> getTooltip() {
-		return Optional.ofNullable(this.tooltip);
+	public @NotNull TooltipData getTooltip() {
+		return this.tooltip;
 	}
 
 	@Override
-	public void setTooltip(@Nullable Text tooltip) {
+	public void setTooltip(@NotNull TooltipData tooltip) {
 		this.tooltip = tooltip;
 	}
 
@@ -180,7 +182,8 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 
 		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
 
-		if (this.tooltip != null) {
+		// TODO: FIGURE OUT THIS THING
+		/*if (this.tooltip != null) {
 			if (!this.tooltip.getString().isEmpty()) {
 				var wrappedTooltipText = this.client.font.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
 				if (this.hovered)
@@ -188,7 +191,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 				else if (this.focused)
 					Tooltip.create(this.getX() - 12, this.getY(), wrappedTooltipText).queue();
 			}
-		}
+		}*/
 	}
 
 	/* Narration */

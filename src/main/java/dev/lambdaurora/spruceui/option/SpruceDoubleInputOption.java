@@ -10,14 +10,13 @@
 package dev.lambdaurora.spruceui.option;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
 import net.minecraft.TextFormatting;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -26,14 +25,17 @@ import java.util.function.Supplier;
  * Represents a double input option.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 8.0.0
  * @since 2.1.0
  */
 public class SpruceDoubleInputOption extends SpruceOption {
 	private final Supplier<Double> getter;
 	private final Consumer<Double> setter;
 
-	public SpruceDoubleInputOption(String key, Supplier<Double> getter, Consumer<Double> setter, @Nullable Text tooltip) {
+	public SpruceDoubleInputOption(
+			String key, Supplier<Double> getter, Consumer<Double> setter,
+			TooltipData tooltip
+	) {
 		super(key);
 		this.getter = getter;
 		this.setter = setter;
@@ -62,7 +64,7 @@ public class SpruceDoubleInputOption extends SpruceOption {
 			}
 			this.set(value);
 		});
-		this.getOptionTooltip().ifPresent(textField::setTooltip);
+		this.getTooltip().ifPresent(textField::setTooltip);
 		return new SpruceNamedTextFieldWidget(textField);
 	}
 
@@ -77,5 +79,26 @@ public class SpruceDoubleInputOption extends SpruceOption {
 	 */
 	public double get() {
 		return this.getter.get();
+	}
+
+	public static class Builder extends SpruceOption.Builder<Builder, SpruceDoubleInputOption> {
+		private final Supplier<Double> getter;
+		private final Consumer<Double> setter;
+
+		public Builder(String key, Supplier<Double> getter, Consumer<Double> setter) {
+			super(key);
+			this.getter = getter;
+			this.setter = setter;
+		}
+
+		@Override
+		protected Builder self() {
+			return this;
+		}
+
+		@Override
+		public SpruceDoubleInputOption build() {
+			return new SpruceDoubleInputOption(this.key, this.getter, this.setter, this.tooltip);
+		}
 	}
 }

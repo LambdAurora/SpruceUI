@@ -10,10 +10,10 @@
 package dev.lambdaurora.spruceui.option;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
-import net.minecraft.network.chat.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
@@ -24,7 +24,7 @@ import java.util.function.Supplier;
  * Represents a string option.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 8.0.0
  * @since 2.1.0
  */
 public class SpruceStringOption extends SpruceOption {
@@ -32,7 +32,11 @@ public class SpruceStringOption extends SpruceOption {
 	private final Consumer<String> setter;
 	private final @Nullable Predicate<String> predicate;
 
-	public SpruceStringOption(String key, Supplier<String> getter, Consumer<String> setter, @Nullable Predicate<String> predicate, @Nullable Text tooltip) {
+	public SpruceStringOption(
+			String key, Supplier<String> getter, Consumer<String> setter,
+			@Nullable Predicate<String> predicate,
+			TooltipData tooltip
+	) {
 		super(key);
 		this.getter = getter;
 		this.setter = setter;
@@ -47,7 +51,7 @@ public class SpruceStringOption extends SpruceOption {
 		if (this.predicate != null)
 			textField.setTextPredicate(this.predicate);
 		textField.setChangedListener(this::set);
-		this.getOptionTooltip().ifPresent(textField::setTooltip);
+		this.getTooltip().ifPresent(textField::setTooltip);
 		return new SpruceNamedTextFieldWidget(textField);
 	}
 
@@ -62,5 +66,32 @@ public class SpruceStringOption extends SpruceOption {
 	 */
 	public String get() {
 		return this.getter.get();
+	}
+
+	public static class Builder extends SpruceOption.Builder<Builder, SpruceStringOption> {
+		private final Supplier<String> getter;
+		private final Consumer<String> setter;
+		private Predicate<String> predicate;
+
+		public Builder(String key, Supplier<String> getter, Consumer<String> setter) {
+			super(key);
+			this.getter = getter;
+			this.setter = setter;
+		}
+
+		public Builder predicate(Predicate<String> predicate) {
+			this.predicate = predicate;
+			return this;
+		}
+
+		@Override
+		protected Builder self() {
+			return this;
+		}
+
+		@Override
+		public SpruceStringOption build() {
+			return new SpruceStringOption(this.key, this.getter, this.setter, this.predicate, this.tooltip);
+		}
 	}
 }

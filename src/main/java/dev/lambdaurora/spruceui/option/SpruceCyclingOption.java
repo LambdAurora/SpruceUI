@@ -10,10 +10,10 @@
 package dev.lambdaurora.spruceui.option;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -24,14 +24,17 @@ import java.util.function.Function;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 8.0.0
  * @since 1.0.0
  */
 public class SpruceCyclingOption extends SpruceOption {
 	private final Consumer<Integer> setter;
 	private final Function<SpruceCyclingOption, Text> messageProvider;
 
-	public SpruceCyclingOption(String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Text> messageProvider, @Nullable Text tooltip) {
+	public SpruceCyclingOption(
+			String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Text> messageProvider,
+			TooltipData tooltip
+	) {
 		super(key);
 		this.setter = setter;
 		this.messageProvider = messageProvider;
@@ -53,7 +56,7 @@ public class SpruceCyclingOption extends SpruceOption {
 			this.cycle(1);
 			btn.setMessage(this.getMessage());
 		});
-		this.getOptionTooltip().ifPresent(button::setTooltip);
+		this.getTooltip().ifPresent(button::setTooltip);
 		return button;
 	}
 
@@ -64,5 +67,28 @@ public class SpruceCyclingOption extends SpruceOption {
 	 */
 	public Text getMessage() {
 		return this.messageProvider.apply(this);
+	}
+
+	public static class Builder extends SpruceOption.Builder<Builder, SpruceCyclingOption> {
+		private final Consumer<Integer> setter;
+		private final Function<SpruceCyclingOption, Text> messageProvider;
+
+		public Builder(
+				String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Text> messageProvider
+		) {
+			super(key);
+			this.setter = setter;
+			this.messageProvider = messageProvider;
+		}
+
+		@Override
+		protected Builder self() {
+			return this;
+		}
+
+		@Override
+		public SpruceCyclingOption build() {
+			return new SpruceCyclingOption(this.key, this.setter, this.messageProvider, this.tooltip);
+		}
 	}
 }

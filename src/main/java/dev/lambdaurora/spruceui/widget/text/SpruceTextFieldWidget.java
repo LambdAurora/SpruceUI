@@ -10,13 +10,13 @@
 package dev.lambdaurora.spruceui.widget.text;
 
 import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.Tooltip;
-import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.navigation.NavigationDirection;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
+import dev.lambdaurora.spruceui.tooltip.Tooltip;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
+import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.Util;
-import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -25,11 +25,10 @@ import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.StringUtil;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -73,7 +72,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	private final Cursor cursor = new Cursor(true);
 	private final Selection selection = new Selection();
 	private String text = "";
-	private Text tooltip;
+	private TooltipData tooltip = TooltipData.EMPTY;
 
 	private Consumer<String> changedListener;
 	private Predicate<String> textPredicate;
@@ -121,12 +120,12 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	}
 
 	@Override
-	public Optional<Text> getTooltip() {
-		return Optional.ofNullable(this.tooltip);
+	public @NotNull TooltipData getTooltip() {
+		return this.tooltip;
 	}
 
 	@Override
-	public void setTooltip(@Nullable Text tooltip) {
+	public void setTooltip(@NotNull TooltipData tooltip) {
 		this.tooltip = tooltip;
 	}
 
@@ -520,7 +519,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	@Override
 	public void updateNarration(NarrationElementOutput builder) {
 		super.updateNarration(builder);
-		this.getTooltip().ifPresent(text -> builder.add(NarratedElementType.HINT, text));
+		this.tooltip.updateNarration(builder);
 	}
 
 	/**

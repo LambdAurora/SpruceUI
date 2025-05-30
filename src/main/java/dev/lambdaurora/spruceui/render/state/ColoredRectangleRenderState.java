@@ -83,10 +83,10 @@ public record ColoredRectangleRenderState(
 
 	@Nullable
 	private static ScreenRectangle getBounds(
-			int startX, int startY, int endX, int endY, Matrix3x2f pos, @Nullable ScreenRectangle scissorArea
+			int startX, int startY, int endX, int endY, Matrix3x2f pose, @Nullable ScreenRectangle scissorArea
 	) {
 		var defaultBounds = new ScreenRectangle(startX, startY, endX - startX, endY - startY)
-				.transformMaxBounds(pos);
+				.transformMaxBounds(pose);
 		return scissorArea != null ? scissorArea.intersection(defaultBounds) : defaultBounds;
 	}
 }

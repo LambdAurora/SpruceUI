@@ -10,11 +10,11 @@
 package dev.lambdaurora.spruceui.option;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.option.SpruceOptionSliderWidget;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,7 +26,7 @@ import java.util.function.Supplier;
  * Works the same as the vanilla one but can provide a tooltip.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 8.0.0
  * @since 1.0.0
  */
 public class SpruceDoubleOption extends SpruceOption {
@@ -37,7 +37,11 @@ public class SpruceDoubleOption extends SpruceOption {
 	private final Consumer<Double> setter;
 	private final Function<SpruceDoubleOption, Text> displayStringGetter;
 
-	public SpruceDoubleOption(String key, double min, double max, float step, Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Text> displayStringGetter, @Nullable Text tooltip) {
+	public SpruceDoubleOption(
+			String key, double min, double max, float step,
+			Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Text> displayStringGetter,
+			TooltipData tooltip
+	) {
 		super(key);
 		this.min = min;
 		this.max = max;
@@ -51,7 +55,7 @@ public class SpruceDoubleOption extends SpruceOption {
 	@Override
 	public SpruceWidget createWidget(Position position, int width) {
 		var slider = new SpruceOptionSliderWidget(position, width, 20, this);
-		this.getOptionTooltip().ifPresent(slider::setTooltip);
+		this.getTooltip().ifPresent(slider::setTooltip);
 		return slider;
 	}
 
@@ -103,5 +107,41 @@ public class SpruceDoubleOption extends SpruceOption {
 	 */
 	public Text getDisplayString() {
 		return this.displayStringGetter.apply(this);
+	}
+
+	public static class Builder extends SpruceOption.Builder<Builder, SpruceDoubleOption> {
+		protected final float step;
+		protected final double min;
+		protected double max;
+		private final Supplier<Double> getter;
+		private final Consumer<Double> setter;
+		private final Function<SpruceDoubleOption, Text> displayStringGetter;
+
+		public Builder(
+				String key, double min, double max, float step,
+				Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Text> displayStringGetter
+		) {
+			super(key);
+			this.min = min;
+			this.max = max;
+			this.step = step;
+			this.getter = getter;
+			this.setter = setter;
+			this.displayStringGetter = displayStringGetter;
+		}
+
+		@Override
+		protected Builder self() {
+			return this;
+		}
+
+		@Override
+		public SpruceDoubleOption build() {
+			return new SpruceDoubleOption(
+					this.key, this.min, this.max, this.step,
+					this.getter, this.setter, this.displayStringGetter,
+					this.tooltip
+			);
+		}
 	}
 }

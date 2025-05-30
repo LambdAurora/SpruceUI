@@ -10,6 +10,8 @@
 package dev.lambdaurora.spruceui.option;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.tooltip.Tooltip;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.util.SpruceUtil;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
@@ -27,14 +29,17 @@ import java.util.function.Supplier;
  * Represents an integer input option.
  *
  * @author LambdAurora
- * @version 3.2.1
+ * @version 8.0.0
  * @since 2.1.0
  */
 public class SpruceIntegerInputOption extends SpruceOption {
 	private final Supplier<Integer> getter;
 	private final Consumer<Integer> setter;
 
-	public SpruceIntegerInputOption(String key, Supplier<Integer> getter, Consumer<Integer> setter, @Nullable Text tooltip) {
+	public SpruceIntegerInputOption(
+			String key, Supplier<Integer> getter, Consumer<Integer> setter,
+			TooltipData tooltip
+	) {
 		super(key);
 		this.getter = getter;
 		this.setter = setter;
@@ -58,7 +63,7 @@ public class SpruceIntegerInputOption extends SpruceOption {
 			int value = SpruceUtil.parseIntFromString(input);
 			this.set(value);
 		});
-		this.getOptionTooltip().ifPresent(textField::setTooltip);
+		this.getTooltip().ifPresent(textField::setTooltip);
 		return new SpruceNamedTextFieldWidget(textField);
 	}
 
@@ -73,5 +78,26 @@ public class SpruceIntegerInputOption extends SpruceOption {
 	 */
 	public int get() {
 		return this.getter.get();
+	}
+
+	public static class Builder extends SpruceOption.Builder<Builder, SpruceIntegerInputOption> {
+		private final Supplier<Integer> getter;
+		private final Consumer<Integer> setter;
+
+		public Builder(String key, Supplier<Integer> getter, Consumer<Integer> setter) {
+			super(key);
+			this.getter = getter;
+			this.setter = setter;
+		}
+
+		@Override
+		protected Builder self() {
+			return this;
+		}
+
+		@Override
+		public SpruceIntegerInputOption build() {
+			return new SpruceIntegerInputOption(this.key, this.getter, this.setter, this.tooltip);
+		}
 	}
 }

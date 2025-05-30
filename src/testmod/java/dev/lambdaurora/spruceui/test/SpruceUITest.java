@@ -12,21 +12,31 @@ package dev.lambdaurora.spruceui.test;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.event.ScreenEvents;
-import dev.lambdaurora.spruceui.option.*;
+import dev.lambdaurora.spruceui.option.SpruceOption;
+import dev.lambdaurora.spruceui.option.SpruceSeparatorOption;
+import dev.lambdaurora.spruceui.option.SpruceSimpleActionOption;
 import dev.lambdaurora.spruceui.test.gui.SpruceMainMenuScreen;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
+import net.minecraft.TextFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientActivePlayersTooltip;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientBundleTooltip;
 import net.minecraft.network.chat.Text;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.BundleContents;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -65,53 +75,92 @@ public final class SpruceUITest {
 	public SpruceUITest() {
 		INSTANCE = this;
 
-		this.booleanOption = new SpruceBooleanOption("spruceui_test.option.boolean",
-				() -> this.aBoolean,
-				newValue -> this.aBoolean = newValue,
-				Text.literal("Represents a boolean option, can either be true or false.\n" +
-						"The option value can be colored."),
-				true);
-		this.checkboxOption = new SpruceCheckboxBooleanOption("spruceui_test.option.checkbox",
-				() -> this.checkboxBoolean,
-				newValue -> this.checkboxBoolean = newValue,
-				Text.literal("Represents a boolean option as a checkbox, can either be true or false.\n"
-						+ "It's another implementation of `SpruceBooleanOption` internally."),
-				true);
-		this.toggleSwitchOption = new SpruceToggleBooleanOption("spruceui_test.option.toggle_switch",
-				() -> this.toggleBoolean,
-				newValue -> this.toggleBoolean = newValue,
-				Text.literal("Represents a boolean option as a toggle switch, can either be true or false.\n"
-						+ "It's another implementation of `SpruceBooleanOption` internally."));
+		this.booleanOption = SpruceOption.booleanBuilder("spruceui_test.option.boolean",
+						() -> this.aBoolean,
+						newValue -> this.aBoolean = newValue
+				).tooltip(
+						TooltipData.builder()
+								.text(
+										"Represents a boolean option, can either be true or false.",
+										"The option value can be colored"
+								)
+								.build()
+				)
+				.colored()
+				.build();
+		this.checkboxOption = SpruceOption.checkboxBuilder("spruceui_test.option.checkbox",
+						() -> this.checkboxBoolean,
+						newValue -> this.checkboxBoolean = newValue
+				).tooltip(
+						TooltipData.builder()
+								.text(
+										Text.literal("Represents a boolean option as a checkbox, can either be true or false."),
+										Text.literal("It's another implementation of ")
+												.append(Text.literal("`SpruceBooleanOption`").withStyle(TextFormatting.ITALIC))
+												.append(" internally.")
+								)
+								.build()
+				)
+				.colored()
+				.build();
+		this.toggleSwitchOption = SpruceOption.toggleBuilder("spruceui_test.option.toggle_switch",
+						() -> this.toggleBoolean,
+						newValue -> this.toggleBoolean = newValue
+				).tooltip(TooltipData.builder()
+						.text(
+								Text.literal("Represents a boolean option as a toggle switch, can either be true or false."),
+								Text.literal("It's another implementation of ")
+										.append(Text.literal("`SpruceBooleanOption`").withStyle(TextFormatting.ITALIC))
+										.append(" internally.")
+						)
+						.build()
+				)
+				.build();
 
-		this.separatorOption = new SpruceSeparatorOption("spruceui_test.option.separator", true, null);
+		this.separatorOption = new SpruceSeparatorOption("spruceui_test.option.separator", true, TooltipData.EMPTY);
 
-		this.doubleOption = new SpruceDoubleOption("spruceui_test.option.double",
-				0.0, 50.0, 1.f,
-				() -> this.aDouble,
-				newValue -> this.aDouble = newValue,
-				option -> option.getDisplayText(Text.literal(String.valueOf(this.aDouble))),
-				Text.literal("Represents an option with a floating point value.\n"
-						+ "There is a minimum, a maximum and a step.\n"
-						+ "There is also a lambda for the display text as you can integrate a suffix/prefix like \"%\" or anything else."));
+		this.doubleOption = SpruceOption.doubleBuilder("spruceui_test.option.double",
+						0.0, 50.0, 1.f,
+						() -> this.aDouble,
+						newValue -> this.aDouble = newValue,
+						option -> option.getDisplayText(Text.literal(String.valueOf(this.aDouble)))
+				).tooltip(TooltipData.builder()
+						.text(
+								"Represents an option with a floating point value.",
+								"There is a minimum, a maximum and a step.",
+								"There is also a lambda for the display text as you can integrate a suffix/prefix like \"%\" or anything else."
+						)
+						.build()
+				)
+				.build();
 
-		this.cyclingOption = new SpruceCyclingOption("spruceui_test.option.cycling",
-				amount -> this.cyclingValue = this.cyclingValue.next(),
-				option -> option.getDisplayText(this.cyclingValue.getText()),
-				Text.literal("Represents a cycling option.\n"
-						+ "Each press will cycle the value between some pre-defined values."));
+		this.cyclingOption = SpruceOption.cyclingBuilder("spruceui_test.option.cycling",
+						amount -> this.cyclingValue = this.cyclingValue.next(),
+						option -> option.getDisplayText(this.cyclingValue.getText())
+				).tooltip(TooltipData.builder()
+						.text(
+								"Represents a cycling option",
+								"Each press will cycle the value between some pre-defined values."
+						)
+						.build()
+				)
+				.build();
 
-		this.intInputOption = new SpruceIntegerInputOption("spruceui_test.option.int_input",
-				() -> this.anInt,
-				value -> this.anInt = value,
-				Text.literal("Represents an option with an integer value as text."));
-		this.floatInputOption = new SpruceFloatInputOption("spruceui_test.option.float_input",
-				() -> this.aFloat,
-				value -> this.aFloat = value,
-				Text.literal("Represents an option with a float value as text."));
-		this.doubleInputOption = new SpruceDoubleInputOption("spruceui_test.option.double_input",
-				() -> this.anInputDouble,
-				value -> this.anInputDouble = value,
-				Text.literal("Represents an option with a double value as text."));
+		this.intInputOption = SpruceOption.intInputBuilder("spruceui_test.option.int_input",
+						() -> this.anInt,
+						value -> this.anInt = value
+				).tooltip(Text.literal("Represents an option with an integer value as text."))
+				.build();
+		this.floatInputOption = SpruceOption.floatInputBuilder("spruceui_test.option.float_input",
+						() -> this.aFloat,
+						value -> this.aFloat = value
+				).tooltip(Text.literal("Represents an option with a float value as text."))
+				.build();
+		this.doubleInputOption = SpruceOption.doubleInputBuilder("spruceui_test.option.double_input",
+						() -> this.anInputDouble,
+						value -> this.anInputDouble = value
+				).tooltip(Text.literal("Represents an option with a double value as text."))
+				.build();
 
 		// Choose whatever action this option should do.
 		this.actionOption = SpruceSimpleActionOption.of("spruceui_test.option.action",
@@ -121,22 +170,40 @@ public final class SpruceUITest {
 							Text.literal("Action button pressed!"), Text.literal("I'm a result of the action"));
 					client.getToastManager().addToast(toast);
 				},
-				Text.literal("Represents an option with a simple action.\n"
-						+ "It's used like a normal button and a press callback."));
+				TooltipData.builder()
+						.component(
+								new ClientBundleTooltip(
+										new BundleContents(
+												List.of(new ItemStack(Items.POPPY))
+										)
+								)
+						)
+						.text(
+								"Represents an option with a simple action.",
+								"It's used like a normal button and a press callback."
+						)
+						.build()
+		);
 
 		// Reset option to reset values.
 		this.resetOption = SpruceSimpleActionOption.reset(btn -> {
-			this.aBoolean = false;
-			this.checkboxBoolean = false;
-			this.aDouble = 0.0;
-			this.cyclingValue = TestEnum.FIRST;
+					this.aBoolean = false;
+					this.checkboxBoolean = false;
+					this.aDouble = 0.0;
+					this.cyclingValue = TestEnum.FIRST;
 
-			// Re-initialize the screen to update all the values.
-			if (this.resetConsumer != null)
-				this.resetConsumer.accept(btn);
-		}, Text.literal("Represents a reset option.\n"
-				+ "The option title is already defined and translated in several languages.\n"
-				+ "You have to manage screen re-initialization and reset logic yourself."));
+					// Re-initialize the screen to update all the values.
+					if (this.resetConsumer != null)
+						this.resetConsumer.accept(btn);
+				},
+				TooltipData.builder()
+						.text(
+								"Represents a reset option.",
+								"The option title is already defined and translated in several languages.",
+								"You have to manage screen re-initialization and reset logic yourself."
+						)
+						.build()
+		);
 	}
 
 	public void initialize() {

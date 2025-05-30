@@ -10,9 +10,10 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.Tooltip;
-import dev.lambdaurora.spruceui.Tooltipable;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
+import dev.lambdaurora.spruceui.tooltip.Tooltip;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
+import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -22,10 +23,9 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
-
-import java.util.Optional;
 
 /**
  * Represents a button-like widget.
@@ -36,7 +36,7 @@ import java.util.Optional;
  */
 public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget implements Tooltipable {
 	private Text message;
-	private Text tooltip;
+	private TooltipData tooltip = TooltipData.EMPTY;
 	private int tooltipTicks;
 	private long lastTick;
 	protected float alpha = 1.f;
@@ -84,12 +84,12 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	public Optional<Text> getTooltip() {
-		return Optional.ofNullable(this.tooltip);
+	public @NotNull TooltipData getTooltip() {
+		return this.tooltip;
 	}
 
 	@Override
-	public void setTooltip(@Nullable Text tooltip) {
+	public void setTooltip(@NotNull TooltipData tooltip) {
 		this.tooltip = tooltip;
 	}
 
@@ -195,6 +195,6 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 			if (this.isFocused()) builder.add(NarratedElementType.USAGE, this.getNarrationFocusedUsageMessage());
 			else builder.add(NarratedElementType.USAGE, this.getNarrationHoveredUsageMessage());
 		}
-		this.getTooltip().ifPresent(text -> builder.add(NarratedElementType.HINT, text));
+		this.tooltip.updateNarration(builder);
 	}
 }

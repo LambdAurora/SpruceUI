@@ -10,12 +10,14 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.Tooltip;
-import dev.lambdaurora.spruceui.Tooltipable;
+import dev.lambdaurora.spruceui.tooltip.Tooltip;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
+import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -31,7 +33,7 @@ import java.util.Optional;
 public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Tooltipable {
 	private Text title;
 	private List<FormattedCharSequence> titleToRender = List.of();
-	private Text tooltip;
+	private TooltipData tooltip = TooltipData.EMPTY;
 	private int tooltipTicks;
 	private long lastTick;
 
@@ -92,12 +94,12 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 	}
 
 	@Override
-	public Optional<Text> getTooltip() {
-		return Optional.ofNullable(this.tooltip);
+	public @NotNull TooltipData getTooltip() {
+		return this.tooltip;
 	}
 
 	@Override
-	public void setTooltip(@Nullable Text tooltip) {
+	public void setTooltip(@NotNull TooltipData tooltip) {
 		this.tooltip = tooltip;
 	}
 
@@ -105,7 +107,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 
 	@Override
 	public boolean requiresCursor() {
-		return this.tooltip == null;
+		return this.tooltip.isEmpty();
 	}
 
 	/* Rendering */

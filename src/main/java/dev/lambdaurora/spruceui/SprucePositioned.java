@@ -9,29 +9,31 @@
 
 package dev.lambdaurora.spruceui;
 
+import net.minecraft.client.gui.navigation.ScreenPosition;
+
 /**
- * Generic interface representing an object that provides a screen position.
+ * Represents an object that provides a screen position.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 8.0.0
  * @since 1.4.0
  */
 public interface SprucePositioned {
 	/**
-	 * Returns the X coordinate.
-	 *
-	 * @return the X coordinate
+	 * {@return the X coordinate}
 	 */
 	default int getX() {
 		return 0;
 	}
 
 	/**
-	 * Returns the Y coordinate.
-	 *
-	 * @return the Y coordinate
+	 * {@return the Y coordinate}
 	 */
 	default int getY() {
 		return 0;
+	}
+
+	default ScreenPosition getScreenPosition() {
+		return new ScreenPosition(this.getX(), this.getY());
 	}
 }
