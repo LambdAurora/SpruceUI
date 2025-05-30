@@ -1,3 +1,12 @@
+/*
+ * Copyright © 2025 LambdAurora <email@lambdaurora.dev>
+ *
+ * This file is part of SpruceUI.
+ *
+ * Licensed under the MIT license. For more information,
+ * see the LICENSE file.
+ */
+
 package dev.lambdaurora.spruceui.tooltip;
 
 import net.minecraft.client.gui.narration.NarratedElementType;
