@@ -10,7 +10,6 @@
 package dev.lambdaurora.spruceui.option;
 
 import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.tooltip.Tooltip;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.util.SpruceUtil;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
@@ -18,9 +17,7 @@ import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
 import net.minecraft.TextFormatting;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;

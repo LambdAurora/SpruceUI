@@ -11,7 +11,6 @@ package dev.lambdaurora.spruceui.background;
 
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.GuiGraphics;
 
 /**
  * Represents an empty background.

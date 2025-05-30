@@ -25,7 +25,6 @@ import net.minecraft.TextFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.screens.TitleScreen;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientActivePlayersTooltip;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientBundleTooltip;
 import net.minecraft.network.chat.Text;
 import net.minecraft.world.item.ItemStack;

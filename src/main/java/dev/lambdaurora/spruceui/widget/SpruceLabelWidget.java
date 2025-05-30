@@ -10,20 +10,17 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.tooltip.Tooltip;
-import dev.lambdaurora.spruceui.tooltip.TooltipData;
-import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.EmptyBorder;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
+import dev.lambdaurora.spruceui.tooltip.TooltipData;
+import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**

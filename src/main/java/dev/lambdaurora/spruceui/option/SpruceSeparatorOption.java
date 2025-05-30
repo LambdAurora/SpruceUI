@@ -14,7 +14,6 @@ import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceSeparatorWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a separator option.
