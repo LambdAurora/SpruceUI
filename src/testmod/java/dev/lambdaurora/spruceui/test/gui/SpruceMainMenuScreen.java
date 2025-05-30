@@ -10,6 +10,7 @@
 package dev.lambdaurora.spruceui.test.gui;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.SpruceTextAlignment;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
@@ -35,7 +36,7 @@ public class SpruceMainMenuScreen extends SpruceScreen {
 	protected void init() {
 		super.init();
 
-		this.addRenderableOnly(new SpruceLabelWidget(Position.of(this.width / 2, 8), this.title, this.width, true));
+		this.addRenderableOnly(new SpruceLabelWidget(Position.of(0, 8), this.title, this.width, SpruceTextAlignment.CENTER));
 
 		int startY = this.height / 4 + 48;
 		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, Text.literal("Option Test"),

@@ -10,11 +10,14 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.SpruceTextAlignment;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.EmptyBorder;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
+import dev.lambdaurora.spruceui.tooltip.Tooltip;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.tooltip.Tooltipable;
+import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
@@ -34,31 +37,44 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	public static final Consumer<SpruceLabelWidget> DEFAULT_ACTION = label -> {
 	};
 
-	private final Consumer<SpruceLabelWidget> action;
-	private final int maxWidth;
-	private int baseX;
-	//private final int                         maxHeight;
 	private Text text;
 	private List<FormattedCharSequence> lines;
+	private SpruceTextAlignment alignment;
+	private int color = ColorUtil.WHITE;
+	private int maxWidth;
+	private final Consumer<SpruceLabelWidget> action;
+	private int baseX;
+	//private final int                         maxHeight;
+
 	private TooltipData tooltip = TooltipData.EMPTY;
-	private boolean centered;
 	private Border border = EmptyBorder.EMPTY_BORDER;
 
-	public SpruceLabelWidget(Position position, Text text, int maxWidth, Consumer<SpruceLabelWidget> action, boolean centered) {
+	private int tooltipTicks;
+	private long lastTick;
+
+	public SpruceLabelWidget(
+			Position position, Text text, int maxWidth, Consumer<SpruceLabelWidget> action,
+			SpruceTextAlignment alignment
+	) {
 		super(position);
+		this.alignment = alignment;
 		this.maxWidth = maxWidth;
 		this.baseX = position.getRelativeX();
 		this.action = action;
-		this.centered = centered;
 		this.setText(text);
 	}
 
-	public SpruceLabelWidget(Position position, Text text, int maxWidth, Consumer<SpruceLabelWidget> action) {
-		this(position, text, maxWidth, action, false);
+	public SpruceLabelWidget(
+			Position position, Text text, int maxWidth, Consumer<SpruceLabelWidget> action
+	) {
+		this(position, text, maxWidth, action, SpruceTextAlignment.LEFT);
 	}
 
-	public SpruceLabelWidget(Position position, Text text, int maxWidth, boolean centered) {
-		this(position, text, maxWidth, DEFAULT_ACTION, centered);
+	public SpruceLabelWidget(
+			Position position, Text text, int maxWidth,
+			SpruceTextAlignment alignment
+	) {
+		this(position, text, maxWidth, DEFAULT_ACTION, alignment);
 	}
 
 	public SpruceLabelWidget(Position position, Text text, int maxWidth) {
@@ -107,16 +123,39 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	 * @return {@code true} if this label is centered, else {@code false}
 	 */
 	public boolean isCentered() {
-		return this.centered;
+		return this.alignment == SpruceTextAlignment.CENTER;
 	}
 
 	/**
-	 * Sets whether this label is centered or not.
-	 *
-	 * @param centered {@code true} if this label is centered, else {@code false}
+	 * {@return the text alignment of this label}
 	 */
-	public void setCentered(boolean centered) {
-		this.centered = centered;
+	public SpruceTextAlignment getAlignment() {
+		return this.alignment;
+	}
+
+	/**
+	 * Sets this label's text alignment.
+	 *
+	 * @param alignment the text alignment of this label
+	 */
+	public void setAlignment(SpruceTextAlignment alignment) {
+		this.alignment = alignment;
+	}
+
+	/**
+	 * {@return the ARGB text color of this label}
+	 */
+	public int getColor() {
+		return this.color;
+	}
+
+	/**
+	 * Sets the text color of this label
+	 *
+	 * @param color the ARGB color
+	 */
+	public void setColor(int color) {
+		this.color = color;
 	}
 
 	@Override
@@ -173,22 +212,20 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 		int y = this.getY() + 2;
 		for (var it = this.lines.iterator(); it.hasNext(); y += 9) {
 			var line = it.next();
-			int x = this.centered ? (this.getInnerX() + this.maxWidth / 2) - this.client.font.width(line) / 2 : this.getInnerX();
-			graphics.drawShadowedText(this.client.font, line, x, y, 0xffa0a0a0);
+			int x = switch (this.alignment) {
+				case LEFT -> this.getInnerX();
+				case CENTER -> (this.getInnerX() + this.maxWidth / 2) - this.client.font.width(line) / 2;
+				case RIGHT -> this.getInnerX() + this.maxWidth - this.client.font.width(line);
+			};
+			graphics.drawShadowedText(this.client.font, line, x, y, this.color);
 		}
 
 		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
 
-		// TODO: FIGURE OUT THIS THING
-		/*if (this.tooltip != null) {
-			if (!this.tooltip.getString().isEmpty()) {
-				var wrappedTooltipText = this.client.font.wrapLines(this.tooltip, Math.max(this.width / 2, 200));
-				if (this.hovered)
-					Tooltip.create(mouseX, mouseY, wrappedTooltipText).queue();
-				else if (this.focused)
-					Tooltip.create(this.getX() - 12, this.getY(), wrappedTooltipText).queue();
-			}
-		}*/
+		if (!this.dragging) {
+			Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks,
+					i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
+		}
 	}
 
 	/* Narration */

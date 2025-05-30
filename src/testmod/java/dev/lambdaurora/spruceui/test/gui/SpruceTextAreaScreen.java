@@ -10,6 +10,7 @@
 package dev.lambdaurora.spruceui.test.gui;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.SpruceTextAlignment;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.test.SpruceUITest;
 import dev.lambdaurora.spruceui.widget.SpruceLabelWidget;
@@ -36,7 +37,10 @@ public class SpruceTextAreaScreen extends SpruceScreen {
 	protected void init() {
 		super.init();
 
-		this.addRenderableOnly(new SpruceLabelWidget(Position.of(this.width / 2, 8), this.title, this.width, true));
+		this.addRenderableOnly(new SpruceLabelWidget(
+				Position.of(0, 8), this.title, this.width,
+				SpruceTextAlignment.CENTER
+		));
 
 		var containerWidget =
 				SpruceUITest.buildTextAreaContainer(Position.of(this, 0, 50), this.width, this.height - 50,

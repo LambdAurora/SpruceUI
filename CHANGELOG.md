@@ -116,3 +116,15 @@
 ### 7.0.2
 
 - Fixed Minecraft version dependency constraint and other issues in FMJ.
+
+## 8.0.0
+
+- Added screen-related events.
+  - Events are similar to Fabric API's screen events.
+  - Events are now usable in a multi-loader context.
+- Added `SpruceGuiGraphics` wrapper around `GuiGraphics` to add an extended feature set.
+  - SpruceUI-managed renderables now use `SpruceGuiGraphics` instead.
+- Removed `OpenScreenCallback` event.
+- Updated to Minecraft 1.21.6.
+- Reworked the tooltip system to be closer to Vanilla's and allow more flexibility.
+- Reworked the label widget to be more flexible.

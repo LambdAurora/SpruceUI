@@ -10,6 +10,7 @@
 package dev.lambdaurora.spruceui.test.gui;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.SpruceTextAlignment;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
@@ -45,7 +46,7 @@ public class SpruceOptionScreen extends SpruceScreen {
 	protected void init() {
 		super.init();
 
-		this.addRenderableOnly(new SpruceLabelWidget(Position.of(this.width / 2, 8), this.title, this.width, true));
+		this.addRenderableOnly(new SpruceLabelWidget(Position.of(0, 8), this.title, this.width, SpruceTextAlignment.CENTER));
 
 		// Button list.
 		//this.list = new ButtonListWidget(this.client, this.width, this.height, 43, this.height - 29 - this.getTextHeight(), 25);

@@ -10,6 +10,7 @@
 package dev.lambdaurora.spruceui.test.gui;
 
 import dev.lambdaurora.spruceui.Position;
+import dev.lambdaurora.spruceui.SpruceTextAlignment;
 import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.test.SpruceUITest;
@@ -41,12 +42,18 @@ public class SpruceTabbedTestScreen extends SpruceScreen {
 			container.addChildren((containerWidth, containerHeight, widgetAdder) -> {
 				widgetAdder.accept(new SpruceLabelWidget(Position.of(0, 16),
 						Text.literal("Hello World!").withStyle(TextFormatting.WHITE),
-						containerWidth, true));
+						containerWidth, SpruceTextAlignment.CENTER)
+				);
 				widgetAdder.accept(new SpruceLabelWidget(Position.of(0, 48),
 						Text.literal("This is a tabbed widget. You can switch tabs by using the list on the left.\n" +
 										"It also allows quite a good controller support and arrow key navigation.")
 								.withStyle(TextFormatting.WHITE),
-						containerWidth, true));
+						containerWidth, SpruceTextAlignment.CENTER)
+				);
+				widgetAdder.accept(new SpruceLabelWidget(Position.of(0, 92),
+						Text.literal("Right-aligned text").withStyle(TextFormatting.WHITE),
+						containerWidth, SpruceTextAlignment.RIGHT
+				));
 			});
 			return container;
 		});
