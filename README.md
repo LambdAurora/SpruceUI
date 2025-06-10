@@ -39,7 +39,7 @@ dependencies {
 And this to your `gradle.properties`:
 
 ```properties
-spruceui_version=7.0.1+1.21.5
+spruceui_version=7.0.2+1.21.5
 ```
 
 It will JAR-in-JAR SpruceUI so users of your mod don't need to download it separately!
