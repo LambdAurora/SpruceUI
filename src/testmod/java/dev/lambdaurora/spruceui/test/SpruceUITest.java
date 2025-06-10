@@ -16,7 +16,9 @@ import dev.lambdaurora.spruceui.option.SpruceOption;
 import dev.lambdaurora.spruceui.option.SpruceSeparatorOption;
 import dev.lambdaurora.spruceui.option.SpruceSimpleActionOption;
 import dev.lambdaurora.spruceui.test.gui.SpruceMainMenuScreen;
+import dev.lambdaurora.spruceui.test.gui.tooltip.CheckboxTooltipComponent;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
+import dev.lambdaurora.spruceui.tooltip.components.ClientThumbnailTooltipComponent;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
@@ -92,12 +94,14 @@ public final class SpruceUITest {
 						newValue -> this.checkboxBoolean = newValue
 				).tooltip(
 						TooltipData.builder()
-								.text(
-										Text.literal("Represents a boolean option as a checkbox, can either be true or false."),
-										Text.literal("It's another implementation of ")
+								.component(new ClientThumbnailTooltipComponent(
+										new CheckboxTooltipComponent(),
+										Text.literal("Represents a boolean option as a checkbox, can either be true or false.")
+												.append("\n")
+												.append("It's another implementation of ")
 												.append(Text.literal("`SpruceBooleanOption`").withStyle(TextFormatting.ITALIC))
 												.append(" internally.")
-								)
+								))
 								.build()
 				)
 				.colored()

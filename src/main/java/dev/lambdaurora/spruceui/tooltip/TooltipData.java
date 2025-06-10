@@ -9,6 +9,8 @@
 
 package dev.lambdaurora.spruceui.tooltip;
 
+import dev.lambdaurora.spruceui.tooltip.components.ClientSpriteTooltipComponent;
+import dev.lambdaurora.spruceui.tooltip.components.ClientTextTooltipComponent;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.narration.NarrationSupplier;
@@ -76,13 +78,23 @@ public record TooltipData(
 		@NotNull ClientTooltipComponent toComponent();
 	}
 
+	/**
+	 * Represents a tooltip text entry.
+	 *
+	 * @param text the text of this entry
+	 */
 	public record TextEntry(@NotNull Text text) implements Entry {
 		@Override
 		public @NotNull ClientTooltipComponent toComponent() {
-			return ClientTooltipComponent.create(this.text.getVisualOrderText());
+			return new ClientTextTooltipComponent(this.text.getVisualOrderText());
 		}
 	}
 
+	/**
+	 * Represents a tooltip component entry.
+	 *
+	 * @param component the component
+	 */
 	public record ComponentEntry(@NotNull ClientTooltipComponent component) implements Entry {
 		@Override
 		public @NotNull ClientTooltipComponent toComponent() {
@@ -121,6 +133,10 @@ public record TooltipData(
 		public Builder text(@NotNull Text text) {
 			this.entries.add(new TextEntry(text));
 			return this;
+		}
+
+		public Builder sprite(@NotNull Identifier spriteId, int width, int height) {
+			return this.component(new ClientSpriteTooltipComponent(spriteId, width, height));
 		}
 
 		public Builder component(@NotNull ClientTooltipComponent component) {

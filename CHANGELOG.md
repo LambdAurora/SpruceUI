@@ -127,4 +127,5 @@
 - Removed `OpenScreenCallback` event.
 - Updated to Minecraft 1.21.6.
 - Reworked the tooltip system to be closer to Vanilla's and allow more flexibility.
+  - Added custom client tooltip components including a sprite tooltip component, a thumbnail tooltip component, etc.
 - Reworked the label widget to be more flexible.

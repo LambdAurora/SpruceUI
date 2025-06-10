@@ -13,6 +13,7 @@ import com.google.common.collect.Queues;
 import dev.lambdaurora.spruceui.SprucePositioned;
 import dev.lambdaurora.spruceui.SpruceUI;
 import dev.lambdaurora.spruceui.event.ScreenEvents;
+import dev.lambdaurora.spruceui.tooltip.components.SpruceClientTooltipComponent;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -117,14 +118,22 @@ public final class Tooltip implements SprucePositioned {
 
 			if (tooltipTicks < 45) return;
 
+			int recommendedMaxWidth = Math.max(widget.getWidth() * 2 / 3, 200);
+
 			var tooltipComponents = tooltip.tooltip().stream()
 					.flatMap(entry -> {
 						if (entry instanceof TooltipData.TextEntry(var text)) {
-							var wrappedTooltipText = Minecraft.getInstance().font.wrapLines(text, Math.max(widget.getWidth() * 2 / 3, 200));
+							var wrappedTooltipText = Minecraft.getInstance().font.wrapLines(text, recommendedMaxWidth);
 							return wrappedTooltipText.stream()
 									.map(ClientTooltipComponent::create);
 						} else {
-							return Stream.of(entry.toComponent());
+							var component = entry.toComponent();
+
+							if (component instanceof SpruceClientTooltipComponent spruceTooltipComponent) {
+								return Stream.of(spruceTooltipComponent.withMaxWidth(recommendedMaxWidth));
+							} else {
+								return Stream.of(entry.toComponent());
+							}
 						}
 					}).toList();
 
