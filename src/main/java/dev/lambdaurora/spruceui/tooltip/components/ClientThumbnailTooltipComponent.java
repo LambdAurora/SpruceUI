@@ -26,6 +26,7 @@ import java.util.OptionalInt;
  *
  * @param thumbnailComponent the tooltip component that is displayed as a thumbnail
  * @param text the text to surround the thumbnail
+ * @param allowExtraTextBelow {@code true} if an extra text can be placed below, or {@code false} if all text should be on the side
  * @param maxWidth the maximum width of this tooltip component
  * @author LambdAurora
  * @version 8.0.0
@@ -34,13 +35,21 @@ import java.util.OptionalInt;
 public record ClientThumbnailTooltipComponent(
 		SpruceClientTooltipComponent thumbnailComponent,
 		FormattedText text,
+		boolean allowExtraTextBelow,
 		OptionalInt maxWidth
 ) implements SpruceClientTooltipComponent {
 	public ClientThumbnailTooltipComponent(
 			SpruceClientTooltipComponent thumbnailComponent,
-			FormattedText text
+			FormattedText text,
+			boolean allowExtraTextBelow
 	) {
-		this(thumbnailComponent, text, OptionalInt.empty());
+		this(thumbnailComponent, text, allowExtraTextBelow, OptionalInt.empty());
+	}
+
+	public ClientThumbnailTooltipComponent(
+			SpruceClientTooltipComponent thumbnailComponent, FormattedText text
+	) {
+		this(thumbnailComponent, text, false);
 	}
 
 	@Override
@@ -89,6 +98,7 @@ public record ClientThumbnailTooltipComponent(
 		return new ClientThumbnailTooltipComponent(
 				this.thumbnailComponent,
 				this.text,
+				this.allowExtraTextBelow,
 				OptionalInt.of(maxWidth)
 		);
 	}
@@ -123,7 +133,7 @@ public record ClientThumbnailTooltipComponent(
 		for (int i = 0; i < sideLines.size(); i++) {
 			sideTextHeight += font.lineHeight + 1;
 
-			if (thumbnailHeight < sideTextHeight) {
+			if (thumbnailHeight < sideTextHeight && this.allowExtraTextBelow) {
 				if (i + 1 < sideLines.size()) {
 					belowLines = sideLines.subList(i + 1, sideLines.size());
 				}

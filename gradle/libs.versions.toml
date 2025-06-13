@@ -1,9 +1,9 @@
 [versions]
-minecraft = "1.21.6-pre3"
+minecraft = "1.21.6-rc1"
 fabric-loader = "0.16.14"
 neoforge-loader = "7.0.11"
-fabric-api = "0.125.2+1.21.6"
-mappings-yalmm = "11"
+fabric-api = "0.126.1+1.21.6"
+mappings-yalmm = "12"
 modmenu="14.0.0-rc.2"
 
 yumi-commons = "1.0.0-alpha.12"
