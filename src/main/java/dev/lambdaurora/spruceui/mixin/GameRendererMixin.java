@@ -16,12 +16,14 @@ import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
-	@SuppressWarnings({"UnresolvedMixinReference", "MixinAnnotationTarget"})
+	@SuppressWarnings({"MixinAnnotationTarget"})
+	@Dynamic
 	@WrapOperation(
 			method = "render",
 			at = {
