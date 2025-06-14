@@ -1,11 +1,9 @@
 {
 	"required": true,
-	"package": "dev.lambdaurora.spruceui.mixin",
+	"package": "dev.lambdaurora.spruceui.mixin.fabric",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
-		"GuiGraphicsMixin",
-		"MinecraftClientMixin",
-		"ScreenMixin"
+		"GameRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

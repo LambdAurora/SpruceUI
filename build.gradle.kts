@@ -46,7 +46,7 @@ lambdamcdev {
 			withDepend("yumi-commons-collections", "^${libs.versions.yumi.commons.get()}")
 			withDepend("yumi-commons-event", "^${libs.versions.yumi.commons.get()}")
 			withAccessWidener("spruceui.accesswidener")
-			withMixins("spruceui.mixins.json")
+			withMixins("spruceui.mixins.json", "spruceui.fabric.mixins.json")
 
 			withModMenu {
 				it.withBadges("library")
