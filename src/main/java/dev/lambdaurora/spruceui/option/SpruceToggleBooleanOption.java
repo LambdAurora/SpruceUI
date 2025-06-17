@@ -14,6 +14,7 @@ import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceToggleSwitch;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.network.chat.Text;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -32,7 +33,7 @@ public class SpruceToggleBooleanOption extends SpruceBooleanOption {
 
 	public SpruceToggleBooleanOption(
 			String key, Supplier<Boolean> getter, Consumer<Boolean> setter,
-			TooltipData tooltip, boolean showMessage
+			@NotNull TooltipData tooltip, boolean showMessage
 	) {
 		super(key, getter, setter, tooltip, false);
 		this.showMessage = showMessage;
@@ -40,7 +41,7 @@ public class SpruceToggleBooleanOption extends SpruceBooleanOption {
 
 	public SpruceToggleBooleanOption(
 			String key, Supplier<Boolean> getter, Consumer<Boolean> setter,
-			TooltipData tooltip
+			@NotNull TooltipData tooltip
 	) {
 		this(key, getter, setter, tooltip, true);
 	}

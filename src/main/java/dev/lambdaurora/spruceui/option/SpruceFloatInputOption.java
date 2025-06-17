@@ -17,6 +17,7 @@ import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
 import net.minecraft.TextFormatting;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -34,7 +35,7 @@ public class SpruceFloatInputOption extends SpruceOption {
 
 	public SpruceFloatInputOption(
 			String key, Supplier<Float> getter, Consumer<Float> setter,
-			TooltipData tooltip
+			@NotNull TooltipData tooltip
 	) {
 		super(key);
 		this.getter = getter;

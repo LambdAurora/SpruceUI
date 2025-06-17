@@ -18,6 +18,7 @@ import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
 import net.minecraft.TextFormatting;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -35,7 +36,7 @@ public class SpruceIntegerInputOption extends SpruceOption {
 
 	public SpruceIntegerInputOption(
 			String key, Supplier<Integer> getter, Consumer<Integer> setter,
-			TooltipData tooltip
+			@NotNull TooltipData tooltip
 	) {
 		super(key);
 		this.getter = getter;

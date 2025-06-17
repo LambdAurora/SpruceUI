@@ -126,6 +126,10 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 
 	@Override
 	public void setTooltip(@NotNull TooltipData tooltip) {
+		Objects.requireNonNull(
+				tooltip,
+				"Tooltip cannot be null, the absence of a tooltip is represented by TooltipData.EMPTY."
+		);
 		this.tooltip = tooltip;
 	}
 

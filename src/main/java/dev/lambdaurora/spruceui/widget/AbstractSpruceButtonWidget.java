@@ -27,6 +27,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.Objects;
+
 /**
  * Represents a button-like widget.
  *
@@ -90,6 +92,10 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 
 	@Override
 	public void setTooltip(@NotNull TooltipData tooltip) {
+		Objects.requireNonNull(
+				tooltip,
+				"Tooltip cannot be null, the absence of a tooltip is represented by TooltipData.EMPTY."
+		);
 		this.tooltip = tooltip;
 	}
 

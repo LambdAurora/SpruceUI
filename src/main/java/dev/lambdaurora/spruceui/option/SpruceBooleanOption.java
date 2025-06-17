@@ -16,6 +16,7 @@ import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.TextFormatting;
 import net.minecraft.network.chat.Text;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -36,14 +37,14 @@ public class SpruceBooleanOption extends SpruceOption {
 
 	public SpruceBooleanOption(
 			String key, Supplier<Boolean> getter, Consumer<Boolean> setter,
-			TooltipData tooltip
+			@NotNull TooltipData tooltip
 	) {
 		this(key, getter, setter, tooltip, false);
 	}
 
 	public SpruceBooleanOption(
 			String key, Supplier<Boolean> getter, Consumer<Boolean> setter,
-			TooltipData tooltip, boolean colored
+			@NotNull TooltipData tooltip, boolean colored
 	) {
 		super(key);
 		this.getter = getter;

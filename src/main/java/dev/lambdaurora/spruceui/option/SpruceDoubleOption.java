@@ -15,6 +15,7 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.option.SpruceOptionSliderWidget;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -40,7 +41,7 @@ public class SpruceDoubleOption extends SpruceOption {
 	public SpruceDoubleOption(
 			String key, double min, double max, float step,
 			Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Text> displayStringGetter,
-			TooltipData tooltip
+			@NotNull TooltipData tooltip
 	) {
 		super(key);
 		this.min = min;

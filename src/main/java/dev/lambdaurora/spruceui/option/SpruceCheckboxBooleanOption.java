@@ -14,6 +14,7 @@ import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceCheckboxWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.network.chat.Text;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -30,14 +31,14 @@ import java.util.function.Supplier;
 public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
 	public SpruceCheckboxBooleanOption(
 			String key, Supplier<Boolean> getter, Consumer<Boolean> setter,
-			TooltipData tooltip
+			@NotNull TooltipData tooltip
 	) {
 		super(key, getter, setter, tooltip);
 	}
 
 	public SpruceCheckboxBooleanOption(
 			String key, Supplier<Boolean> getter, Consumer<Boolean> setter,
-			TooltipData tooltip, boolean colored
+			@NotNull TooltipData tooltip, boolean colored
 	) {
 		super(key, getter, setter, tooltip, colored);
 	}

@@ -16,6 +16,7 @@ import dev.lambdaurora.spruceui.widget.SpruceTexturedButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents an option with a simple action.
@@ -30,7 +31,7 @@ public final class SpruceSimpleActionOption extends SpruceOption {
 
 	public SpruceSimpleActionOption(
 			String key, ButtonFactory buttonFactory, SpruceButtonWidget.PressAction action,
-			TooltipData tooltip
+			@NotNull TooltipData tooltip
 	) {
 		super(key);
 		this.buttonFactory = buttonFactory;
@@ -61,7 +62,7 @@ public final class SpruceSimpleActionOption extends SpruceOption {
 	}
 
 	public static SpruceSimpleActionOption of(
-			String key, SpruceButtonWidget.PressAction action, TooltipData tooltip
+			String key, SpruceButtonWidget.PressAction action, @NotNull TooltipData tooltip
 	) {
 		return new SpruceSimpleActionOption(key,
 				(position, width, message, action1) -> new SpruceButtonWidget(
@@ -76,7 +77,7 @@ public final class SpruceSimpleActionOption extends SpruceOption {
 	}
 
 	public static SpruceSimpleActionOption reset(
-			SpruceButtonWidget.PressAction action, TooltipData tooltip
+			SpruceButtonWidget.PressAction action, @NotNull TooltipData tooltip
 	) {
 		return new SpruceSimpleActionOption("spruceui.reset",
 				(position, width, message, action1) -> new SpruceButtonWidget(
@@ -95,7 +96,7 @@ public final class SpruceSimpleActionOption extends SpruceOption {
 
 	public static SpruceSimpleActionOption textured(
 			String key, SpruceButtonWidget.PressAction action,
-			int u, int v, int hoveredVOffset, Identifier texture, TooltipData tooltip
+			int u, int v, int hoveredVOffset, Identifier texture, @NotNull TooltipData tooltip
 	) {
 		return new SpruceSimpleActionOption(key,
 				(position, width, message, action1) -> new SpruceTexturedButtonWidget(
@@ -114,7 +115,7 @@ public final class SpruceSimpleActionOption extends SpruceOption {
 
 	public static SpruceSimpleActionOption textured(
 			String key, SpruceButtonWidget.PressAction action,
-			int u, int v, int hoveredVOffset, Identifier texture, int textureWidth, int textureHeight, TooltipData tooltip
+			int u, int v, int hoveredVOffset, Identifier texture, int textureWidth, int textureHeight, @NotNull TooltipData tooltip
 	) {
 		return new SpruceSimpleActionOption(key,
 				(position, width, message, action1) ->
@@ -138,7 +139,7 @@ public final class SpruceSimpleActionOption extends SpruceOption {
 	public static SpruceSimpleActionOption texturedWithMessage(
 			String key, SpruceButtonWidget.PressAction action,
 			int u, int v, int hoveredVOffset, Identifier texture, int textureWidth, int textureHeight,
-			TooltipData tooltip
+			@NotNull TooltipData tooltip
 	) {
 		return new SpruceSimpleActionOption(key,
 				(position, width, message, action1) ->
