@@ -17,7 +17,7 @@ lambdamcdev.manifests {
 		rootProject.lambdamcdev.manifests.fmj().get().derive(::Nmt)
 			.withBlurIcon(false)
 			.withLoaderVersion("[2,)")
-			.withMixins("spruceui.mixins.json", "spruceui.neoforge.mixins.json")
+			.withMixins("spruceui.mixins.json")
 			.withDepend("minecraft", "[" + libs.versions.minecraft.get() + ",)")
 	)
 }

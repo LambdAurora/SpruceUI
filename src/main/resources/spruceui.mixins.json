@@ -3,6 +3,7 @@
 	"package": "dev.lambdaurora.spruceui.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
+		"GameRendererMixin",
 		"GuiGraphicsMixin",
 		"MinecraftClientMixin",
 		"ScreenMixin"
