@@ -99,9 +99,9 @@ dependencies {
 		modImplementation(it)
 	}
 
-	/*modLocalRuntime(libs.modmenu) {
+	modLocalRuntime(libs.modmenu) {
 		isTransitive = false
-	}*/
+	}
 
 	"testmodCompileOnly"(libs.neoforge.loader)
 	"testmodImplementation"(sourceSets.main.get().output)
