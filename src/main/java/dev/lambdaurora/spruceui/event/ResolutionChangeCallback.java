@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.event;
 
 import dev.yumi.commons.event.Event;
-import dev.yumi.mc.core.api.YumiMods;
+import dev.yumi.mc.core.api.YumiEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 
@@ -23,7 +23,7 @@ import net.minecraft.resources.Identifier;
  */
 @FunctionalInterface
 public interface ResolutionChangeCallback {
-	Event<Identifier, ResolutionChangeCallback> EVENT = YumiMods.EVENTS.create(ResolutionChangeCallback.class);
+	Event<Identifier, ResolutionChangeCallback> EVENT = YumiEvents.EVENTS.create(ResolutionChangeCallback.class);
 
 	void apply(Minecraft client);
 }

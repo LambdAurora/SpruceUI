@@ -7,7 +7,7 @@ mappings-yalmm = "2"
 modmenu="15.0.0-beta.1"
 
 yumi-commons = "1.0.0-alpha.12"
-yumi-mc-foundation = "1.0.0-alpha.5+1.21.1"
+yumi-mc-foundation = "1.0.0-alpha.6+1.21.1"
 
 # Gradle
 gradle-licenser = "2.1.+"

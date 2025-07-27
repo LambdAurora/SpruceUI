@@ -132,7 +132,11 @@
 
 ### 8.0.1
 
-- Switched to [Yumi Minecraft Foundation Library] for event management.
-  - The Yumi Commons libraries are no longer Jar-in-Jar in SpruceUI, instead consumer mods should Jar-in-Jar [Yumi Minecraft Foundation Library] directly.
+- Switched to [Yumi Minecraft Libraries: Foundation] for event management.
+  - The Yumi Commons libraries are no longer Jar-in-Jar in SpruceUI, instead consumer mods should Jar-in-Jar [Yumi Minecraft Libraries: Foundation] directly.
 
-[Yumi Minecraft Foundation Library]: https://github.com/YumiProject/yumi-minecraft-foundation-library "Yumi Minecraft Foundation Library page"
+### 8.0.2
+
+- Updated [Yumi Minecraft Libraries: Foundation].
+
+[Yumi Minecraft Libraries: Foundation]: https://github.com/YumiProject/yumi-minecraft-foundation-library "Yumi Minecraft Foundation Library page"
