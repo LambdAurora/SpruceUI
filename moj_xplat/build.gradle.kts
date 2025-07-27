@@ -19,6 +19,7 @@ lambdamcdev.manifests {
 			.withLoaderVersion("[2,)")
 			.withMixins("spruceui.mixins.json")
 			.withDepend("minecraft", "[" + libs.versions.minecraft.get() + ",)")
+			.withDepend("yumi_mc_core", "[${libs.versions.yumi.mc.foundation.get()},)")
 	)
 }
 

@@ -42,9 +42,7 @@ lambdamcdev {
 			withDepend("minecraft", "~1.21.6-")
 			withDepend("fabric-resource-loader-v0", ">=0.4.7")
 			withDepend("java", ">=${Constants.JAVA_VERSION}")
-			withDepend("yumi-commons-core", "^${libs.versions.yumi.commons.get()}")
-			withDepend("yumi-commons-collections", "^${libs.versions.yumi.commons.get()}")
-			withDepend("yumi-commons-event", "^${libs.versions.yumi.commons.get()}")
+			withDepend("yumi_mc_core", "^${libs.versions.yumi.mc.foundation.get()}")
 			withAccessWidener("spruceui.accesswidener")
 			withMixins("spruceui.mixins.json")
 
@@ -81,7 +79,7 @@ repositories {
 
 dependencies {
 	@Suppress("UnstableApiUsage")
-	mappings(lambdamcdev.layered {
+	mappings(loom.layered {
 		officialMojangMappings()
 		// Parchment is currently broken when used with the hacked mojmap layer due to remapping shenanigans.
 		//parchment("org.parchmentmc.data:parchment-${mcVersion}:${project.property("parchment_mappings")}@zip")
@@ -89,10 +87,14 @@ dependencies {
 	})
 	modImplementation(libs.fabric.loader)
 
-	api(libs.yumi.commons.event) {
+	api(libs.yumi.commons) {
 		// Exclude Minecraft and loader-provided libraries.
 		exclude(group = "org.slf4j")
 		exclude(group = "org.ow2.asm")
+	}
+	modApi(libs.yumi.mc.foundation) {
+		// Exclude Minecraft and loader-provided libraries.
+		exclude(group = "dev.yumi.commons")
 	}
 
 	fabricModules.stream().map { fabricApi.module(it, libs.versions.fabric.api.get()) }.forEach {
@@ -105,10 +107,6 @@ dependencies {
 
 	"testmodCompileOnly"(libs.neoforge.loader)
 	"testmodImplementation"(sourceSets.main.get().output)
-
-	include(libs.yumi.commons.core)
-	include(libs.yumi.commons.collections)
-	include(libs.yumi.commons.event)
 }
 
 val mojmap by sourceSets.creating {}

@@ -129,3 +129,10 @@
 - Reworked the tooltip system to be closer to Vanilla's and allow more flexibility.
   - Added custom client tooltip components including a sprite tooltip component, a thumbnail tooltip component, etc.
 - Reworked the label widget to be more flexible.
+
+### 8.0.1
+
+- Switched to [Yumi Minecraft Foundation Library] for event management.
+  - The Yumi Commons libraries are no longer Jar-in-Jar in SpruceUI, instead consumer mods should Jar-in-Jar [Yumi Minecraft Foundation Library] directly.
+
+[Yumi Minecraft Foundation Library]: https://github.com/YumiProject/yumi-minecraft-foundation-library "Yumi Minecraft Foundation Library page"

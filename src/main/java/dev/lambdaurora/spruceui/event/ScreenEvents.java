@@ -11,6 +11,7 @@ package dev.lambdaurora.spruceui.event;
 
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.yumi.commons.event.FilteredEvent;
+import dev.yumi.mc.core.api.YumiMods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -32,14 +33,14 @@ public final class ScreenEvents {
 	/**
 	 * An event that is called before {@linkplain Screen#init(Minecraft, int, int) a screen is initialized} to its default state.
 	 */
-	public static final FilteredEvent<Identifier, BeforeInit, Screen> BEFORE_INIT = EventUtil.EVENT_MANAGER.createFiltered(
+	public static final FilteredEvent<Identifier, BeforeInit, Screen> BEFORE_INIT = YumiMods.EVENTS.createFiltered(
 			BeforeInit.class, Screen.class
 	);
 
 	/**
 	 * An event that is called after {@linkplain Screen#init(Minecraft, int, int) a screen is initialized} to its default state.
 	 */
-	public static final FilteredEvent<Identifier, AfterInit, Screen> AFTER_INIT = EventUtil.EVENT_MANAGER.createFiltered(
+	public static final FilteredEvent<Identifier, AfterInit, Screen> AFTER_INIT = YumiMods.EVENTS.createFiltered(
 			AfterInit.class, Screen.class
 	);
 
@@ -52,7 +53,7 @@ public final class ScreenEvents {
 	 * @implNote This event may precede initialization events {@link ScreenEvents#BEFORE_INIT}
 	 * but there is no guarantee that event will be called immediately afterward.
 	 */
-	public static final FilteredEvent<Identifier, Remove, Screen> REMOVE = EventUtil.EVENT_MANAGER.createFiltered(
+	public static final FilteredEvent<Identifier, Remove, Screen> REMOVE = YumiMods.EVENTS.createFiltered(
 			Remove.class, Screen.class
 	);
 
@@ -62,7 +63,7 @@ public final class ScreenEvents {
 	 * @see #AFTER_RENDER
 	 */
 	public static final FilteredEvent<Identifier, BeforeRender, Screen> BEFORE_RENDER
-			= EventUtil.EVENT_MANAGER.createFiltered(BeforeRender.class, Screen.class);
+			= YumiMods.EVENTS.createFiltered(BeforeRender.class, Screen.class);
 
 	/**
 	 * An event that is called after a screen is rendered.
@@ -70,7 +71,7 @@ public final class ScreenEvents {
 	 * @see #BEFORE_RENDER
 	 */
 	public static final FilteredEvent<Identifier, AfterRender, Screen> AFTER_RENDER
-			= EventUtil.EVENT_MANAGER.createFiltered(AfterRender.class, Screen.class);
+			= YumiMods.EVENTS.createFiltered(AfterRender.class, Screen.class);
 
 	/**
 	 * An event that is called before a screen is ticked.
@@ -78,7 +79,7 @@ public final class ScreenEvents {
 	 * @see #AFTER_TICK
 	 */
 	public static final FilteredEvent<Identifier, BeforeTick, Screen> BEFORE_TICK
-			= EventUtil.EVENT_MANAGER.createFiltered(BeforeTick.class, Screen.class);
+			= YumiMods.EVENTS.createFiltered(BeforeTick.class, Screen.class);
 
 	/**
 	 * An event that is called after a screen is ticked.
@@ -86,7 +87,7 @@ public final class ScreenEvents {
 	 * @see #BEFORE_TICK
 	 */
 	public static final FilteredEvent<Identifier, AfterTick, Screen> AFTER_TICK
-			= EventUtil.EVENT_MANAGER.createFiltered(AfterTick.class, Screen.class);
+			= YumiMods.EVENTS.createFiltered(AfterTick.class, Screen.class);
 
 	/**
 	 * Represents the callback interface of the {@linkplain ScreenEvents#BEFORE_INIT before screen initialization event}.

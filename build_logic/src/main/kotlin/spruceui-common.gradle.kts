@@ -36,3 +36,10 @@ tasks.withType<JavaCompile>().configureEach {
 
 	options.release.set(Constants.JAVA_VERSION)
 }
+
+loom {
+	@Suppress("UnstableApiUsage")
+	mixin {
+		useLegacyMixinAp = false
+	}
+}

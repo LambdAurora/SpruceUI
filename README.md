@@ -23,23 +23,24 @@ Add this to your `build.gradle` in addition of the base Fabric mod `build.gradle
 
 ```groovy
 repositories {
-    maven {
-        name = "Gegy"
-        url = uri("https://maven.gegy.dev")
-    }
+	maven {
+		name = "Gegy"
+		url = uri("https://maven.gegy.dev")
+	}
 }
 
 dependencies {
-    /* Fabric definitions */
+	/* Fabric definitions */
 
-    include(modImplementation("dev.lambdaurora:spruceui:${project.spruceui_version}"))
+	include(modImplementation("dev.lambdaurora:spruceui:${project.spruceui_version}"))
+	include("dev.yumi.mc.core:yumi-mc-foundation:1.0.0-alpha.5+1.21.1")
 }
 ```
 
 And this to your `gradle.properties`:
 
 ```properties
-spruceui_version=8.0.0+1.21.6
+spruceui_version=8.0.1+1.21.6
 ```
 
 It will JAR-in-JAR SpruceUI so users of your mod don't need to download it separately!
@@ -56,6 +57,11 @@ dependencies {
 		}
 	}
 
+	jarJar("dev.yumi.mc.core:yumi-mc-foundation:1.0.0-alpha.5+1.21.1") {
+		capabilities {
+			requireCapability("dev.yumi.mc.core:yumi-mc-foundation-mojmap")
+		}
+	}
 	jarJar(spruceui) {
 		jarJar.pin(it, "[8.0.0,9.0.0)")
 	}
