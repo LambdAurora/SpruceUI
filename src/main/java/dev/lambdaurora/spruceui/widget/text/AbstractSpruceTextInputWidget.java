@@ -9,6 +9,7 @@
 
 package dev.lambdaurora.spruceui.widget.text;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.SimpleColorBackground;
@@ -19,17 +20,21 @@ import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
+import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.network.chat.Text;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a text input widget.
  *
  * @author LambdAurora
- * @version 6.1.0
+ * @version 9.0.0
  * @since 2.1.0
  */
-public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
+public abstract class AbstractSpruceTextInputWidget<C extends AbstractSpruceTextInputWidget.Cursor<C>>
+		extends AbstractSpruceWidget
+		implements WithBackground, WithBorder {
 	private final Text title;
 	private Background background = new SimpleColorBackground(ColorUtil.BLACK);
 	private Border border = TexturedBorder.SIMPLE;
@@ -189,8 +194,39 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
 	 */
 	protected abstract void sanitize();
 
+	/**
+	 * Returns whether this text area is editable or not.
+	 *
+	 * @return {@code true} if editable, or {@code false} otherwise
+	 */
+	public boolean isEditable() {
+		return this.isActive();
+	}
+
 	public boolean isEditorActive() {
 		return this.isActive() && this.isFocused();
+	}
+
+	/* Logic */
+
+	protected abstract C cursor();
+
+	protected abstract Selection selection();
+
+	protected abstract void insertCharacter(String character);
+
+	/* Input Handling */
+
+	@Override
+	protected boolean onCharTyped(@NotNull CharacterEvent event) {
+		if (!this.isEditorActive() || !event.isAllowedChatCharacter())
+			return false;
+
+		if (this.isEditable()) {
+			this.insertCharacter(event.codepointAsString());
+			this.selection().cancel();
+		}
+		return true;
 	}
 
 	/* Rendering */
@@ -198,6 +234,10 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
 	@Override
 	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
+
+		if (this.isMouseHovered()) {
+			graphics.requestCursor(this.isEditable() ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED);
+		}
 	}
 
 	@Override
@@ -210,5 +250,86 @@ public abstract class AbstractSpruceTextInputWidget extends AbstractSpruceWidget
 	@Override
 	protected Text getNarrationMessage() {
 		return Text.translatable("gui.narrate.editBox", this.getTitle(), this.getText());
+	}
+
+	protected interface Cursor<C extends Cursor<C>> {
+		void toStart();
+
+		void toEnd();
+
+		void copy(C cursor);
+	}
+
+	/**
+	 * Represents a text selection.
+	 */
+	protected abstract class Selection {
+		protected final C anchor;
+		protected final C follower;
+		protected boolean active = false;
+
+		protected Selection(C anchor, C follower) {
+			this.anchor = anchor;
+			this.follower = follower;
+		}
+
+		/**
+		 * Cancels the selection.
+		 */
+		public void cancel() {
+			this.anchor.toStart();
+			this.follower.toStart();
+			this.active = false;
+		}
+
+		/**
+		 * Selects all.
+		 */
+		public void selectAll() {
+			this.anchor.toStart();
+			cursor().toEnd();
+			this.follower.copy(cursor());
+			this.active = true;
+		}
+
+		public void startSelection() {
+			this.anchor.copy(cursor());
+			this.follower.copy(cursor());
+			this.active = true;
+		}
+
+		public void tryStartSelection(boolean hasShiftDown) {
+			if (!this.active && hasShiftDown) {
+				this.startSelection();
+			}
+		}
+
+		public void moveToCursor(boolean hasShiftDown) {
+			if (!this.active)
+				return;
+
+			if (hasShiftDown) {
+				this.follower.copy(cursor());
+			} else {
+				this.cancel();
+			}
+		}
+
+		public C getStart() {
+			return this.isInverted() ? this.follower : this.anchor;
+		}
+
+		public C getEnd() {
+			return this.isInverted() ? this.anchor : this.follower;
+		}
+
+		protected abstract boolean isInverted();
+
+		/**
+		 * Gets the selected text.
+		 *
+		 * @return the selected text, if no text is selected the return value is an empty string
+		 */
+		public abstract String getSelectedText();
 	}
 }

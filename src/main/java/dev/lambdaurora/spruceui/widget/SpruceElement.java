@@ -9,28 +9,29 @@
 
 package dev.lambdaurora.spruceui.widget;
 
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.navigation.ScreenAxis;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents an element with navigation and controller input implementation.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 9.0.0
  * @since 2.0.0
  */
 public interface SpruceElement extends GuiEventListener {
 	/**
 	 * Called when navigating in the menu.
 	 *
-	 * @param direction direction of navigation
-	 * @param tab {@code true} if the navigation was triggered by the tab key, else {@code false}
+	 * @param event the navigation event
 	 * @return {@code true} if success, else {@code false}
 	 */
-	default boolean onNavigation(NavigationDirection direction, boolean tab) {
+	default boolean onNavigation(@NotNull NavigationEvent event) {
 		if (this.requiresCursor()) return false;
-		if (direction.isVertical()) {
-			this.setFocused(direction == NavigationDirection.DOWN);
+		if (event.direction().getAxis() == ScreenAxis.VERTICAL) {
+			this.setFocused(event.isLookingForward());
 			return true;
 		}
 		return false;

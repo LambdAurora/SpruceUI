@@ -18,6 +18,7 @@ import dev.lambdaurora.spruceui.tooltip.Tooltip;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.util.ColorUtil;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +32,7 @@ import java.util.function.Consumer;
  * Represents a label widget.
  *
  * @author LambdAurora
- * @version 8.0.0
+ * @version 9.0.0
  * @since 1.0.0
  */
 public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipable, WithBorder {
@@ -200,8 +201,8 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	/* Input */
 
 	@Override
-	protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-		if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
+	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+		if (event.button() == GLFW.GLFW_MOUSE_BUTTON_1) {
 			if (this.hovered) {
 				this.onPress();
 				return true;

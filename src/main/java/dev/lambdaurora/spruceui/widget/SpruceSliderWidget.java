@@ -10,13 +10,15 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.tooltip.Tooltipable;
+import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -24,7 +26,7 @@ import java.util.function.Consumer;
  * Represents a slider widget.
  *
  * @author LambdAurora
- * @version 8.0.0
+ * @version 9.0.0
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements Tooltipable {
@@ -125,14 +127,14 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(NavigationDirection direction, boolean tab) {
-		if (direction.isHorizontal() && !tab) {
-			if (direction.isLookingForward() && this.value < 1 || this.value > 0) {
-				this.setValue(this.getValue() + (direction.isLookingForward() ? (1 / this.multiplier) : -(1 / this.multiplier)));
+	public boolean onNavigation(@NotNull NavigationEvent event) {
+		if (event.direction().getAxis() == ScreenAxis.HORIZONTAL && !event.tab()) {
+			if (event.isLookingForward() && this.value < 1 || this.value > 0) {
+				this.setValue(this.getValue() + (event.isLookingForward() ? (1 / this.multiplier) : -(1 / this.multiplier)));
 				return true;
 			}
 		}
-		return super.onNavigation(direction, tab);
+		return super.onNavigation(event);
 	}
 
 	/* Input */

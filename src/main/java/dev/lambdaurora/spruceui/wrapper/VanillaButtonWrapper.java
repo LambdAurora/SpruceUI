@@ -9,7 +9,7 @@
 
 package dev.lambdaurora.spruceui.wrapper;
 
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceElement;
 import net.fabricmc.api.EnvType;
@@ -17,12 +17,15 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a vanilla button wrapper for SpruceUI's own button widgets.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 9.0.0
  * @since 2.0.0
  */
 @Environment(EnvType.CLIENT)
@@ -41,37 +44,37 @@ public class VanillaButtonWrapper extends AbstractWidget implements SpruceElemen
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		return this.widget.mouseClicked(mouseX, mouseY, button);
+	public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean doubleClick) {
+		return this.widget.mouseClicked(event, doubleClick);
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		return this.widget.mouseReleased(mouseX, mouseY, button);
+	public boolean mouseReleased(@NotNull MouseButtonEvent event) {
+		return this.widget.mouseReleased(event);
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		return this.widget.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	public boolean mouseDragged(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+		return this.widget.mouseDragged(event, deltaX, deltaY);
 	}
 
 	@Override
-	public boolean onNavigation(NavigationDirection direction, boolean tab) {
-		return this.widget.onNavigation(direction, tab);
+	public boolean onNavigation(@NotNull NavigationEvent event) {
+		return this.widget.onNavigation(event);
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		return this.widget.keyPressed(keyCode, scanCode, modifiers);
+	public boolean keyPressed(@NotNull KeyEvent event) {
+		return this.widget.keyPressed(event);
 	}
 
 	@Override
-	public boolean keyReleased(final int keyCode, final int scanCode, final int modifiers) {
-		return this.widget.keyReleased(keyCode, scanCode, modifiers);
+	public boolean keyReleased(@NotNull KeyEvent event) {
+		return this.widget.keyReleased(event);
 	}
 
 	@Override
-	public NarrationPriority narrationPriority() {
+	public @NotNull NarrationPriority narrationPriority() {
 		return this.widget.narrationPriority();
 	}
 

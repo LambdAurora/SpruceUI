@@ -10,13 +10,16 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Text;
 import net.minecraft.sounds.SoundEvents;
@@ -27,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a widget.
  *
  * @author LambdAurora
- * @version 5.0.0
+ * @version 9.0.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceWidget implements SpruceWidget {
@@ -121,7 +124,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(NavigationDirection direction, boolean tab) {
+	public boolean onNavigation(@NotNull NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 		if (this.isVisible() && this.isActive()) {
 			this.setFocused(!this.isFocused());
@@ -133,34 +136,34 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	/* Input */
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (!this.isActive() || !this.isVisible() || !this.isMouseOver(mouseX, mouseY))
+	public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean doubleClick) {
+		if (!this.isActive() || !this.isVisible() || !this.isMouseOver(event.x(), event.y()))
 			return false;
 
-		return this.onMouseClick(mouseX, mouseY, button);
+		return this.onMouseClick(event, doubleClick);
 	}
 
-	protected boolean onMouseClick(double mouseX, double mouseY, int button) {
+	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
 		return false;
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		boolean result = this.onMouseRelease(mouseX, mouseY, button);
+	public boolean mouseReleased(@NotNull MouseButtonEvent event) {
+		boolean result = this.onMouseRelease(event);
 		if (result) this.dragging = false;
 		return result;
 	}
 
-	protected boolean onMouseRelease(double mouseX, double mouseY, int button) {
+	protected boolean onMouseRelease(@NotNull MouseButtonEvent event) {
 		return false;
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+	public boolean mouseDragged(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
 		if (!this.isActive() || !this.isVisible())
 			return false;
 
-		boolean result = this.onMouseDrag(mouseX, mouseY, button, deltaX, deltaY);
+		boolean result = this.onMouseDrag(event, deltaX, deltaY);
 		if (result) {
 			this.dragging = true;
 			this.lastDrag = Util.getMillis();
@@ -168,7 +171,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 		return result;
 	}
 
-	protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+	protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
 		return false;
 	}
 
@@ -184,9 +187,9 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+	public boolean keyPressed(@NotNull KeyEvent event) {
 		if (this.isActive() && this.isVisible()) {
-			return this.onKeyPress(keyCode, scanCode, modifiers);
+			return this.onKeyPress(event);
 		}
 		return false;
 	}
@@ -194,20 +197,17 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	/**
 	 * Handles the key press event.
 	 *
-	 * @param keyCode the named key code of the event as described in the {@link org.lwjgl.glfw.GLFW GLFW} class
-	 * @param scanCode the unique/platform-specific scan code of the keyboard input
-	 * @param modifiers a GLFW bitfield describing the modifier keys that are held down
-	 * (see <a href="https://www.glfw.org/docs/3.3/group__mods.html">GLFW Modifier key flags</a>})
+	 * @param event the key event
 	 * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
 	 */
-	protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
+	protected boolean onKeyPress(@NotNull KeyEvent event) {
 		return false;
 	}
 
 	@Override
-	public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+	public boolean keyReleased(@NotNull KeyEvent event) {
 		if (this.isActive() && this.isVisible()) {
-			return this.onKeyRelease(keyCode, scanCode, modifiers);
+			return this.onKeyRelease(event);
 		}
 		return false;
 	}
@@ -217,22 +217,19 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * <p>
 	 * The key code is identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW} class.
 	 *
-	 * @param keyCode the named key code of the event as described in the {@link org.lwjgl.glfw.GLFW GLFW} class
-	 * @param scanCode the unique/platform-specific scan code of the keyboard input
-	 * @param modifiers a GLFW bitfield describing the modifier keys that are held down
-	 * (see <a href="https://www.glfw.org/docs/3.3/group__mods.html">GLFW Modifier key flags</a>)
+	 * @param event the key event
 	 * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
 	 * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
 	 * @see org.lwjgl.glfw.GLFWKeyCallbackI#invoke(long, int, int, int, int)
 	 */
-	protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers) {
+	protected boolean onKeyRelease(@NotNull KeyEvent event) {
 		return false;
 	}
 
 	@Override
-	public boolean charTyped(char chr, int keyCode) {
+	public boolean charTyped(@NotNull CharacterEvent event) {
 		if (this.isActive() && this.isVisible()) {
-			return this.onCharTyped(chr, keyCode);
+			return this.onCharTyped(event);
 		}
 		return false;
 	}
@@ -242,11 +239,10 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * <p>
 	 * The key code is identified by the constants in {@link org.lwjgl.glfw.GLFW GLFW} class.
 	 *
-	 * @param chr the captured character
-	 * @param keyCode the associated key code
+	 * @param event the character input event
 	 * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
 	 */
-	protected boolean onCharTyped(char chr, int keyCode) {
+	protected boolean onCharTyped(@NotNull CharacterEvent event) {
 		return false;
 	}
 

@@ -29,7 +29,7 @@ public class GameRendererMixin {
 			at = {
 					@At(
 							value = "INVOKE",
-							target = "Lnet/minecraft/client/gui/screens/Screen;renderWithTooltip(Lnet/minecraft/client/gui/GuiGraphics;IIF)V"
+							target = "Lnet/minecraft/client/gui/screens/Screen;renderWithTooltipAndSubtitles(Lnet/minecraft/client/gui/GuiGraphics;IIF)V"
 					),
 					@At(
 							value = "INVOKE",

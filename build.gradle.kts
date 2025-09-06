@@ -39,9 +39,9 @@ lambdamcdev {
 			withIcon("assets/${Constants.NAMESPACE}/icon.png")
 			withEnvironment("client")
 			withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
-			withDepend("minecraft", "~1.21.6-")
+			withDepend("minecraft", "~1.21.9-")
 			withDepend("fabric-resource-loader-v0", ">=0.4.7")
-			withDepend("java", ">=${Constants.JAVA_VERSION}")
+			withDepend("java", ">=${project.property("java_version")}")
 			withDepend("yumi_mc_core", "^${libs.versions.yumi.mc.foundation.get()}")
 			withAccessWidener("spruceui.accesswidener")
 			withMixins("spruceui.mixins.json")
@@ -87,23 +87,19 @@ dependencies {
 	})
 	modImplementation(libs.fabric.loader)
 
-	api(libs.yumi.commons) {
+	modApi(libs.yumi.mc.foundation) {
 		// Exclude Minecraft and loader-provided libraries.
 		exclude(group = "org.slf4j")
 		exclude(group = "org.ow2.asm")
-	}
-	modApi(libs.yumi.mc.foundation) {
-		// Exclude Minecraft and loader-provided libraries.
-		exclude(group = "dev.yumi.commons")
 	}
 
 	fabricModules.stream().map { fabricApi.module(it, libs.versions.fabric.api.get()) }.forEach {
 		modImplementation(it)
 	}
 
-	modLocalRuntime(libs.modmenu) {
+	/*modLocalRuntime(libs.modmenu) {
 		isTransitive = false
-	}
+	}*/
 
 	"testmodCompileOnly"(libs.neoforge.loader)
 	"testmodImplementation"(sourceSets.main.get().output)

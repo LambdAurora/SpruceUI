@@ -10,6 +10,7 @@
 package dev.lambdaurora.spruceui.render;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.platform.cursor.CursorType;
 import dev.lambdaurora.spruceui.impl.GuiGraphicsAccessor;
 import dev.lambdaurora.spruceui.render.state.ColoredRectangleRenderState;
 import net.minecraft.client.gui.Font;
@@ -270,5 +271,9 @@ public final class SpruceGuiGraphics {
 
 	public void submitGuiElement(@NotNull GuiElementRenderState state) {
 		this.accessor().spruceui$getGuiRenderState().submitGuiElement(state);
+	}
+
+	public void requestCursor(CursorType pendingCursor) {
+		this.wrapped.requestCursor(pendingCursor);
 	}
 }

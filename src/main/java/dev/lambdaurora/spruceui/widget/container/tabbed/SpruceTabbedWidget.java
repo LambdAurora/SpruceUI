@@ -9,11 +9,13 @@
 
 package dev.lambdaurora.spruceui.widget.container.tabbed;
 
+import com.mojang.blaze3d.platform.cursor.CursorType;
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.EmptyBackground;
 import dev.lambdaurora.spruceui.border.MenuBorder;
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
@@ -22,8 +24,11 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
+import net.minecraft.client.gui.navigation.ScreenAxis;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -32,7 +37,7 @@ import java.util.List;
  * Represents a container widget with tabs.
  *
  * @author LambdAurora
- * @version 8.0.0
+ * @version 9.0.0
  * @since 2.0.0
  */
 public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget> {
@@ -130,24 +135,24 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(NavigationDirection direction, boolean tab) {
+	public boolean onNavigation(@NotNull NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 
 		if (this.list.getCurrentTab() == null)
-			return super.onNavigation(direction, tab);
+			return super.onNavigation(event);
 
-		if (tab) {
-			boolean result = this.list.getCurrentTab().container.onNavigation(direction, tab);
+		if (event.tab()) {
+			boolean result = this.list.getCurrentTab().container.onNavigation(event);
 			this.setFocused(this.list.getCurrentTab().container.isFocused() ? this.list.getCurrentTab().container : null);
 			return result;
 		}
 
-		if (direction.isHorizontal()) {
-			if (direction == NavigationDirection.RIGHT) {
-				if (this.list.getCurrentTab().container.onNavigation(direction, tab))
+		if (event.direction().getAxis() == ScreenAxis.HORIZONTAL) {
+			if (event.isLookingForward()) {
+				if (this.list.getCurrentTab().container.onNavigation(event))
 					this.setFocused(this.list.getCurrentTab().container);
 			} else if (this.getFocused() != this.list) {
-				boolean result = this.list.getCurrentTab().container.onNavigation(direction, tab);
+				boolean result = this.list.getCurrentTab().container.onNavigation(event);
 				if (!result)
 					this.setFocused(this.list);
 			}
@@ -164,7 +169,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 				this.setFocused(this.isLeft ? this.list : this.list.getCurrentTab().container);
 			}
 
-			return this.getFocused().onNavigation(direction, tab);
+			return this.getFocused().onNavigation(event);
 		}
 	}
 
@@ -266,8 +271,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Input */
 
 		@Override
-		protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-			if (button == 0) {
+		protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+			if (event.button() == 0) {
 				this.playDownSound();
 				this.parent.setSelected(this);
 				return true;
@@ -290,6 +295,10 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 					var line = it.next();
 					graphics.drawText(this.client.font, line, this.getX() + 8, y, ColorUtil.WHITE, false);
 				}
+			}
+
+			if (this.isMouseHovered()) {
+				graphics.requestCursor(CursorTypes.POINTING_HAND);
 			}
 		}
 
@@ -347,8 +356,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Navigation */
 
 		@Override
-		public boolean onNavigation(NavigationDirection direction, boolean tab) {
-			return this.separatorWidget.onNavigation(direction, tab);
+		public boolean onNavigation(@NotNull NavigationEvent event) {
+			return this.separatorWidget.onNavigation(event);
 		}
 
 		/* Rendering */
@@ -464,10 +473,10 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Navigation */
 
 		@Override
-		public boolean onNavigation(NavigationDirection direction, boolean tab) {
+		public boolean onNavigation(@NotNull NavigationEvent event) {
 			if (this.requiresCursor()) return false;
 			var old = this.getFocused();
-			boolean result = super.onNavigation(direction, tab);
+			boolean result = super.onNavigation(event);
 			var focused = this.getFocused();
 			if (result && old != focused && focused instanceof TabEntry tabEntry) {
 				this.setSelected(tabEntry);

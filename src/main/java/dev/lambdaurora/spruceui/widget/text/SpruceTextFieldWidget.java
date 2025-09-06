@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.widget.text;
 
 import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.tooltip.Tooltip;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
@@ -18,12 +18,13 @@ import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.Util;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.navigation.ScreenAxis;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.util.StringUtil;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
@@ -37,10 +38,10 @@ import java.util.function.Predicate;
  * Represents a text field widget.
  *
  * @author LambdAurora
- * @version 8.0.0
+ * @version 9.0.0
  * @since 2.1.0
  */
-public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget implements Tooltipable {
+public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceTextFieldWidget.Cursor> implements Tooltipable {
 	public static final Predicate<String> INTEGER_INPUT_PREDICATE = input -> {
 		if (input.isEmpty() || input.equals("-")) return true;
 		try {
@@ -158,6 +159,16 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	}
 
 	@Override
+	protected Cursor cursor() {
+		return this.cursor;
+	}
+
+	@Override
+	protected AbstractSpruceTextInputWidget<Cursor>.Selection selection() {
+		return this.selection;
+	}
+
+	@Override
 	public void setCursorToStart() {
 		this.cursor.toStart();
 	}
@@ -200,23 +211,24 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		this.editingTime = Util.getMillis() + 5000L;
 	}
 
-	private boolean onSelectionUpdate(Runnable action) {
-		this.selection.tryStartSelection();
+	private boolean onSelectionUpdate(Runnable action, boolean hasShiftDown) {
+		this.selection.tryStartSelection(hasShiftDown);
 		action.run();
-		this.selection.moveToCursor();
+		this.selection.moveToCursor(hasShiftDown);
 		this.sanitize();
 		return true;
 	}
 
-	private void insertCharacter(char character) {
+	@Override
+	protected void insertCharacter(String character) {
 		if (this.getText().isEmpty()) {
-			this.setText(String.valueOf(character));
+			this.setText(character);
 			return;
 		} else {
 			this.selection.erase();
 		}
 
-		if (character == '\n') {
+		if (character.equals("\n")) {
 			return;
 		}
 
@@ -322,63 +334,51 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(NavigationDirection direction, boolean tab) {
+	public boolean onNavigation(@NotNull NavigationEvent event) {
 		if (this.requiresCursor()) return false;
-		if (!tab && direction.isHorizontal()) {
+		if (!event.tab() && event.direction().getAxis() == ScreenAxis.HORIZONTAL) {
 			this.setFocused(true);
-			boolean result = switch (direction) {
-				case RIGHT -> this.onSelectionUpdate(this.cursor::moveRight);
-				case LEFT -> this.onSelectionUpdate(this.cursor::moveLeft);
+			boolean result = switch (event.direction()) {
+				case RIGHT -> this.onSelectionUpdate(this.cursor::moveRight, event.hasShiftDown());
+				case LEFT -> this.onSelectionUpdate(this.cursor::moveLeft, event.hasShiftDown());
 				default -> false;
 			};
 			if (result)
 				return true;
 		}
-		return super.onNavigation(direction, tab);
+		return super.onNavigation(event);
 	}
 
 	/* Input */
 
 	@Override
-	protected boolean onCharTyped(char chr, int keyCode) {
-		if (!this.isEditorActive() || !StringUtil.isAllowedChatCharacter(chr))
-			return false;
-
-		if (this.isActive()) {
-			this.insertCharacter(chr);
-			this.selection.cancel();
-		}
-		return true;
-	}
-
-	@Override
-	protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
+	protected boolean onKeyPress(@NotNull KeyEvent event) {
 		if (!this.isEditorActive())
 			return false;
 
-		if (Screen.isSelectAll(keyCode)) {
+		if (event.isSelectAll()) {
 			this.selection.selectAll();
 			this.sanitize();
 			return true;
-		} else if (Screen.isPaste(keyCode)) {
+		} else if (event.isPaste()) {
 			this.write(this.client.keyboardHandler.getClipboard());
 			return true;
-		} else if (Screen.isCopy(keyCode) || Screen.isCut(keyCode)) {
+		} else if (event.isCopy() || event.isCut()) {
 			var selected = this.selection.getSelectedText();
 			if (!selected.isEmpty())
 				this.client.keyboardHandler.setClipboard(selected);
-			if (Screen.isCut(keyCode)) {
+			if (event.isCut()) {
 				this.selection.erase();
 				this.sanitize();
 			}
 			return true;
 		}
 
-		return switch (keyCode) {
-			case GLFW.GLFW_KEY_RIGHT -> this.onSelectionUpdate(this.cursor::moveRight);
-			case GLFW.GLFW_KEY_LEFT -> this.onSelectionUpdate(this.cursor::moveLeft);
-			case GLFW.GLFW_KEY_END -> this.onSelectionUpdate(this.cursor::toEnd);
-			case GLFW.GLFW_KEY_HOME -> this.onSelectionUpdate(this.cursor::toStart);
+		return switch (event.key()) {
+			case GLFW.GLFW_KEY_RIGHT -> this.onSelectionUpdate(this.cursor::moveRight, event.hasShiftDown());
+			case GLFW.GLFW_KEY_LEFT -> this.onSelectionUpdate(this.cursor::moveLeft, event.hasShiftDown());
+			case GLFW.GLFW_KEY_END -> this.onSelectionUpdate(this.cursor::toEnd, event.hasShiftDown());
+			case GLFW.GLFW_KEY_HOME -> this.onSelectionUpdate(this.cursor::toStart, event.hasShiftDown());
 			case GLFW.GLFW_KEY_BACKSPACE -> {
 				this.eraseCharacter();
 				yield true;
@@ -388,7 +388,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 				yield true;
 			}
 			case GLFW.GLFW_KEY_D -> {
-				if (Screen.hasControlDown() && !this.text.isEmpty()) {
+				if (event.hasControlDown() && !this.text.isEmpty()) {
 					this.setText("");
 				}
 				yield true;
@@ -398,9 +398,9 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	}
 
 	@Override
-	protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-		if (button == 0) {
-			int x = MathHelper.floor(mouseX) - this.getX() - 4;
+	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+		if (event.button() == 0) {
+			int x = MathHelper.floor(event.x()) - this.getX() - 4;
 
 			this.setFocused(true);
 
@@ -409,7 +409,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 						this.getInnerWidth());
 				this.cursor.lastColumn = this.cursor.column = this.firstCharacterIndex
 						+ this.client.font.plainSubstrByWidth(displayedText, x).length();
-			});
+			}, event.hasShiftDown());
 
 			return true;
 		}
@@ -529,10 +529,10 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	/**
 	 * Represents a cursor.
 	 *
-	 * @version 3.0.0
+	 * @version 9.0.0
 	 * @since 2.1.0
 	 */
-	public class Cursor {
+	public class Cursor implements AbstractSpruceTextInputWidget.Cursor<Cursor> {
 		boolean main;
 		int column = 0;
 		private int lastColumn = 0;
@@ -541,6 +541,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 			this.main = main;
 		}
 
+		@Override
 		public void toStart() {
 			this.lastColumn = this.column = 0;
 		}
@@ -570,6 +571,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 			}
 		}
 
+		@Override
 		public void toEnd() {
 			this.lastColumn = this.column = text.length();
 		}
@@ -579,7 +581,8 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 		 *
 		 * @param cursor the other cursor
 		 */
-		public void copy(SpruceTextFieldWidget.Cursor cursor) {
+		@Override
+		public void copy(Cursor cursor) {
 			this.lastColumn = this.column = cursor.column;
 		}
 
@@ -624,54 +627,12 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 	/**
 	 * Represents a selection.
 	 *
-	 * @version 3.0.0
+	 * @version 9.0.0
 	 * @since 2.1.0
 	 */
-	public class Selection {
-		private final Cursor anchor = new Cursor(false);
-		private final Cursor follower = new Cursor(false);
-		private boolean active = false;
-
-		/**
-		 * Selects all.
-		 */
-		public void selectAll() {
-			this.anchor.toStart();
-			cursor.toEnd();
-			this.follower.copy(cursor);
-			this.active = true;
-		}
-
-		/**
-		 * Cancels the selection.
-		 */
-		public void cancel() {
-			this.anchor.toStart();
-			this.follower.toStart();
-			this.active = false;
-		}
-
-		public void tryStartSelection() {
-			if (!this.active && Screen.hasShiftDown()) {
-				this.startSelection();
-			}
-		}
-
-		public void startSelection() {
-			this.anchor.copy(cursor);
-			this.follower.copy(cursor);
-			this.active = true;
-		}
-
-		public void moveToCursor() {
-			if (!this.active)
-				return;
-
-			if (Screen.hasShiftDown()) {
-				this.follower.copy(cursor);
-			} else {
-				this.cancel();
-			}
+	public class Selection extends AbstractSpruceTextInputWidget<Cursor>.Selection {
+		protected Selection() {
+			super(new Cursor(false), new Cursor(false));
 		}
 
 		/**
@@ -710,11 +671,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 			return true;
 		}
 
-		/**
-		 * Returns the selected text.
-		 *
-		 * @return the selected text, if no text is selected the return value is an empty string
-		 */
+		@Override
 		public String getSelectedText() {
 			if (!this.active)
 				return "";
@@ -728,15 +685,8 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget impleme
 			return getText().substring(start.getPosition(), end.getPosition());
 		}
 
-		public Cursor getStart() {
-			return this.isInverted() ? this.follower : this.anchor;
-		}
-
-		public Cursor getEnd() {
-			return this.isInverted() ? this.anchor : this.follower;
-		}
-
-		private boolean isInverted() {
+		@Override
+		protected boolean isInverted() {
 			return this.anchor.column > this.follower.column;
 		}
 	}

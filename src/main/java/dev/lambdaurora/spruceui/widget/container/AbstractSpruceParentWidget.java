@@ -10,10 +10,14 @@
 package dev.lambdaurora.spruceui.widget.container;
 
 import dev.lambdaurora.spruceui.Position;
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.navigation.NavigationUtils;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -22,7 +26,7 @@ import org.lwjgl.glfw.GLFW;
  *
  * @param <E> the type of children widgets
  * @author LambdAurora
- * @version 3.3.0
+ * @version 9.0.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends AbstractSpruceWidget implements SpruceParentWidget<E> {
@@ -68,9 +72,9 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(NavigationDirection direction, boolean tab) {
+	public boolean onNavigation(@NotNull NavigationEvent event) {
 		if (this.requiresCursor()) return false;
-		boolean result = NavigationUtils.tryNavigate(direction, tab, this.children(), this.focused, this::setFocused, false);
+		boolean result = NavigationUtils.tryNavigate(event, this.children(), this.focused, this::setFocused, false);
 		if (result)
 			this.setFocused(true);
 		return result;
@@ -79,7 +83,7 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 	/* Input */
 
 	@Override
-	protected boolean onMouseClick(double mouseX, double mouseY, int button) {
+	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
 		var it = this.iterator();
 
 		E element;
@@ -89,10 +93,10 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 			}
 
 			element = it.next();
-		} while (!element.mouseClicked(mouseX, mouseY, button));
+		} while (!element.mouseClicked(event, doubleClick));
 
 		this.setFocused(element);
-		if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
+		if (event.button() == GLFW.GLFW_MOUSE_BUTTON_1) {
 			this.setDragging(true);
 		}
 
@@ -100,15 +104,17 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 	}
 
 	@Override
-	protected boolean onMouseRelease(double mouseX, double mouseY, int button) {
+	protected boolean onMouseRelease(@NotNull MouseButtonEvent event) {
 		this.setDragging(false);
-		return this.hoveredElement(mouseX, mouseY).filter(element -> element.mouseReleased(mouseX, mouseY, button)).isPresent();
+		return this.hoveredElement(event.x(), event.y())
+				.filter(element -> element.mouseReleased(event))
+				.isPresent();
 	}
 
 	@Override
-	protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		return this.getFocused() != null && this.isDragging() && button == GLFW.GLFW_MOUSE_BUTTON_1
-				&& this.getFocused().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+		return this.getFocused() != null && this.isDragging() && event.button() == GLFW.GLFW_MOUSE_BUTTON_1
+				&& this.getFocused().mouseDragged(event, deltaX, deltaY);
 	}
 
 	@Override
@@ -117,17 +123,17 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 	}
 
 	@Override
-	protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
-		return this.getFocused() != null && this.getFocused().keyPressed(keyCode, scanCode, modifiers);
+	protected boolean onKeyPress(@NotNull KeyEvent event) {
+		return this.getFocused() != null && this.getFocused().keyPressed(event);
 	}
 
 	@Override
-	protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers) {
-		return this.getFocused() != null && this.getFocused().keyReleased(keyCode, scanCode, modifiers);
+	protected boolean onKeyRelease(@NotNull KeyEvent event) {
+		return this.getFocused() != null && this.getFocused().keyReleased(event);
 	}
 
 	@Override
-	protected boolean onCharTyped(char chr, int keyCode) {
-		return this.getFocused() != null && this.getFocused().charTyped(chr, keyCode);
+	protected boolean onCharTyped(@NotNull CharacterEvent event) {
+		return this.getFocused() != null && this.getFocused().charTyped(event);
 	}
 }

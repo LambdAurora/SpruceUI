@@ -11,16 +11,17 @@ package dev.lambdaurora.spruceui.widget.text;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.border.Border;
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.util.MultilineText;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Text;
-import net.minecraft.util.StringUtil;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -31,10 +32,10 @@ import java.util.List;
  * Represents a text area widget.
  *
  * @author LambdAurora
- * @version 8.0.00
+ * @version 9.0.0
  * @since 1.6.3
  */
-public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
+public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTextAreaWidget.Cursor> {
 	private final Font font;
 	private final MultilineText lines;
 	private final Cursor cursor = new Cursor(true);
@@ -96,15 +97,6 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	}
 
 	/**
-	 * Returns whether this text area is editable or not.
-	 *
-	 * @return {@code true} if editable, else {@code false}
-	 */
-	public boolean isEditable() {
-		return this.isActive();
-	}
-
-	/**
 	 * Sets whether this text area is editable or not.
 	 *
 	 * @param editable state of editable
@@ -135,6 +127,16 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	}
 
 	@Override
+	protected Cursor cursor() {
+		return this.cursor;
+	}
+
+	@Override
+	protected AbstractSpruceTextInputWidget<Cursor>.Selection selection() {
+		return this.selection;
+	}
+
+	@Override
 	public void setCursorToStart() {
 		this.cursor.toStart();
 	}
@@ -144,7 +146,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		this.cursor.toEnd();
 	}
 
-	private void insertCharacter(char character) {
+	@Override
+	protected void insertCharacter(String character) {
 		if (this.lines.isEmpty()) {
 			this.lines.add(String.valueOf(character));
 			this.setCursorToStart();
@@ -153,7 +156,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 			this.selection.erase();
 		}
 
-		if (character == '\n') {
+		if (character.equals("\n")) {
 			String line;
 			if (this.cursor.row == this.lines.size() - 1 && (line = this.lines.get(this.cursor.row)) != null && this.cursor.column >= line.length() - 1) {
 				int currentRow = this.cursor.row;
@@ -179,7 +182,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		this.lines.clear();
 		this.lines.add(newText);
 
-		if (character == '\n') {
+		if (character.equals("\n")) {
 			this.cursor.moveRight();
 			//this.cursor.moveRight();
 		} else {
@@ -297,70 +300,58 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(NavigationDirection direction, boolean tab) {
+	public boolean onNavigation(@NotNull NavigationEvent event) {
 		if (this.requiresCursor()) return false;
-		if (!tab) {
+		if (!event.tab()) {
 			this.setFocused(true);
-			boolean result = switch (direction) {
-				case RIGHT -> this.onSelectionUpdate(this.cursor::moveRight);
-				case LEFT -> this.onSelectionUpdate(this.cursor::moveLeft);
-				case UP -> this.onSelectionUpdate(this.cursor::moveUp);
-				case DOWN -> this.onSelectionUpdate(this.cursor::moveDown);
+			boolean result = switch (event.direction()) {
+				case RIGHT -> this.onSelectionUpdate(this.cursor::moveRight, event.hasShiftDown());
+				case LEFT -> this.onSelectionUpdate(this.cursor::moveLeft, event.hasShiftDown());
+				case UP -> this.onSelectionUpdate(this.cursor::moveUp, event.hasShiftDown());
+				case DOWN -> this.onSelectionUpdate(this.cursor::moveDown, event.hasShiftDown());
 			};
 			if (result)
 				return true;
 		}
-		return super.onNavigation(direction, tab);
+		return super.onNavigation(event);
 	}
 
 	/* Input */
 
 	@Override
-	protected boolean onCharTyped(char chr, int keyCode) {
-		if (!this.isEditorActive() || !StringUtil.isAllowedChatCharacter(chr))
-			return false;
-
-		if (this.isEditable()) {
-			this.insertCharacter(chr);
-			this.selection.cancel();
-		}
-		return true;
-	}
-
-	@Override
-	protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
+	protected boolean onKeyPress(@NotNull KeyEvent event) {
 		if (!this.isEditorActive())
 			return false;
 
-		if (Screen.isSelectAll(keyCode)) {
+		if (event.isSelectAll()) {
 			this.selection.selectAll();
 			return true;
-		} else if (Screen.isPaste(keyCode)) {
+		} else if (event.isPaste()) {
 			this.write(this.client.keyboardHandler.getClipboard());
 			return true;
-		} else if (Screen.isCopy(keyCode) || Screen.isCut(keyCode)) {
+		} else if (event.isCopy() || event.isCut()) {
 			var selected = this.selection.getSelectedText();
 			if (!selected.isEmpty())
 				this.client.keyboardHandler.setClipboard(selected);
-			if (Screen.isCut(keyCode) && this.isEditable()) {
+			if (event.isCut() && this.isEditable()) {
 				this.selection.erase();
 				this.sanitize();
 			}
 			return true;
 		}
 
-		return switch (keyCode) {
-			case GLFW.GLFW_KEY_RIGHT -> this.onSelectionUpdate(this.cursor::moveRight);
-			case GLFW.GLFW_KEY_LEFT -> this.onSelectionUpdate(this.cursor::moveLeft);
-			case GLFW.GLFW_KEY_UP -> this.onSelectionUpdate(this.cursor::moveUp);
-			case GLFW.GLFW_KEY_DOWN -> this.onSelectionUpdate(this.cursor::moveDown);
-			case GLFW.GLFW_KEY_END -> this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toEnd : this.cursor::toRowEnd);
-			case GLFW.GLFW_KEY_HOME -> this.onSelectionUpdate(Screen.hasControlDown() ? this.cursor::toStart : this.cursor::toLineStart);
-			case GLFW.GLFW_KEY_PAGE_UP -> this.onSelectionUpdate(() -> this.cursor.moveVertical(-this.cursor.row));
-			case GLFW.GLFW_KEY_PAGE_DOWN -> this.onSelectionUpdate(() -> this.cursor.moveVertical(this.lines.size() - this.cursor.row));
+		return switch (event.key()) {
+			case GLFW.GLFW_KEY_RIGHT -> this.onSelectionUpdate(this.cursor::moveRight, event.hasShiftDown());
+			case GLFW.GLFW_KEY_LEFT -> this.onSelectionUpdate(this.cursor::moveLeft, event.hasShiftDown());
+			case GLFW.GLFW_KEY_UP -> this.onSelectionUpdate(this.cursor::moveUp, event.hasShiftDown());
+			case GLFW.GLFW_KEY_DOWN -> this.onSelectionUpdate(this.cursor::moveDown, event.hasShiftDown());
+			case GLFW.GLFW_KEY_END -> this.onSelectionUpdate(event.hasControlDown() ? this.cursor::toEnd : this.cursor::toRowEnd, event.hasShiftDown());
+			case GLFW.GLFW_KEY_HOME -> this.onSelectionUpdate(event.hasControlDown() ? this.cursor::toStart : this.cursor::toLineStart, event.hasShiftDown());
+			case GLFW.GLFW_KEY_PAGE_UP -> this.onSelectionUpdate(() -> this.cursor.moveVertical(-this.cursor.row), event.hasShiftDown());
+			case GLFW.GLFW_KEY_PAGE_DOWN -> this.onSelectionUpdate(() -> this.cursor.moveVertical(this.lines.size() - this.cursor.row), event.hasShiftDown());
 			case GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER -> {
 				if (this.isEditable())
-					this.insertCharacter('\n');
+					this.insertCharacter("\n");
 				yield true;
 			}
 			case GLFW.GLFW_KEY_BACKSPACE -> {
@@ -374,7 +365,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 				yield true;
 			}
 			case GLFW.GLFW_KEY_D -> {
-				if (Screen.hasControlDown() && this.isEditable() && !this.lines.isEmpty()) {
+				if (event.hasControlDown() && this.isEditable() && !this.lines.isEmpty()) {
 					this.lines.remove(this.cursor.row);
 					this.sanitize();
 				}
@@ -384,18 +375,18 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		};
 	}
 
-	private boolean onSelectionUpdate(Runnable action) {
-		this.selection.tryStartSelection();
+	private boolean onSelectionUpdate(Runnable action, boolean hasShiftDown) {
+		this.selection.tryStartSelection(hasShiftDown);
 		action.run();
-		this.selection.moveToCursor();
+		this.selection.moveToCursor(hasShiftDown);
 		return true;
 	}
 
 	@Override
-	protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-		if (button == 0) {
-			int x = MathHelper.floor(mouseX) - this.getX() - 4;
-			int y = MathHelper.floor(mouseY) - this.getY() - 4;
+	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+		if (event.button() == 0) {
+			int x = MathHelper.floor(event.x()) - this.getX() - 4;
+			int y = MathHelper.floor(event.y()) - this.getY() - 4;
 
 			this.setFocused(true);
 
@@ -412,7 +403,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 				this.cursor.row = row;
 
 				this.cursor.lastColumn = this.cursor.column = this.font.plainSubstrByWidth(this.lines.get(row), x).length();
-			});
+			}, event.hasShiftDown());
 
 			return true;
 		}
@@ -544,7 +535,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	 * @version 3.0.0
 	 * @since 1.6.3
 	 */
-	public class Cursor {
+	public class Cursor implements AbstractSpruceTextInputWidget.Cursor<Cursor> {
 		boolean main;
 		int row = 0;
 		int column = 0;
@@ -617,12 +608,14 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 			this.adjustFirstLine();
 		}
 
+		@Override
 		public void toStart() {
 			this.resetRow();
 			this.toLineStart();
 			this.adjustFirstLine();
 		}
 
+		@Override
 		public void toEnd() {
 			this.row = Math.max(0, lines.size() - 1);
 			String line = SpruceTextAreaWidget.this.lines.get(this.row);
@@ -650,6 +643,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		 *
 		 * @param cursor the other cursor
 		 */
+		@Override
 		public void copy(Cursor cursor) {
 			this.row = cursor.row;
 			this.lastColumn = this.column = cursor.column;
@@ -731,55 +725,13 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 	 * @version 3.0.0
 	 * @since 1.6.3
 	 */
-	public class Selection {
-		private final Cursor anchor = new Cursor(false);
-		private final Cursor follower = new Cursor(false);
-		private boolean active = false;
-
-		/**
-		 * Selects all.
-		 */
-		public void selectAll() {
-			this.anchor.toStart();
-			cursor.toEnd();
-			this.follower.copy(cursor);
-			this.active = true;
-		}
-
-		/**
-		 * Cancels the selection.
-		 */
-		public void cancel() {
-			this.anchor.toStart();
-			this.follower.toStart();
-			this.active = false;
-		}
-
-		public void tryStartSelection() {
-			if (!this.active && Screen.hasShiftDown()) {
-				this.startSelection();
-			}
-		}
-
-		public void startSelection() {
-			this.anchor.copy(cursor);
-			this.follower.copy(cursor);
-			this.active = true;
+	public class Selection extends AbstractSpruceTextInputWidget<Cursor>.Selection {
+		protected Selection() {
+			super(new Cursor(false), new Cursor(false));
 		}
 
 		public boolean isRowSelected(int row) {
 			return this.active && (this.getStart().row <= row && row <= this.getEnd().row);
-		}
-
-		public void moveToCursor() {
-			if (!this.active)
-				return;
-
-			if (Screen.hasShiftDown()) {
-				this.follower.copy(cursor);
-			} else {
-				this.cancel();
-			}
 		}
 
 		/**
@@ -836,6 +788,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 		 *
 		 * @return the selected text, if no text is selected the return value is an empty string
 		 */
+		@Override
 		public String getSelectedText() {
 			if (!this.active)
 				return "";
@@ -852,15 +805,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget {
 			return getText().substring(start.getPosition(), end.getPosition());
 		}
 
-		public Cursor getStart() {
-			return this.isInverted() ? this.follower : this.anchor;
-		}
-
-		public Cursor getEnd() {
-			return this.isInverted() ? this.anchor : this.follower;
-		}
-
-		private boolean isInverted() {
+		@Override
+		protected boolean isInverted() {
 			return this.anchor.row > this.follower.row
 					|| (this.anchor.row == this.follower.row && this.anchor.column > this.follower.column);
 		}

@@ -9,6 +9,7 @@
 
 package dev.lambdaurora.spruceui.widget;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.tooltip.Tooltip;
@@ -19,6 +20,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Text;
 import net.minecraft.resources.Identifier;
@@ -33,7 +35,7 @@ import java.util.Objects;
  * Represents a button-like widget.
  *
  * @author LambdAurora
- * @version 8.0.0
+ * @version 9.0.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget implements Tooltipable {
@@ -110,27 +112,27 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-		if (this.isValidClickButton(button)) {
-			this.onClick(mouseX, mouseY);
+	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+		if (this.isValidClickButton(event.button())) {
+			this.onClick(event.x(), event.y());
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public boolean onMouseRelease(double mouseX, double mouseY, int button) {
-		if (this.isValidClickButton(button)) {
-			this.onRelease(mouseX, mouseY);
+	public boolean onMouseRelease(@NotNull MouseButtonEvent event) {
+		if (this.isValidClickButton(event.button())) {
+			this.onRelease(event.x(), event.y());
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (this.isValidClickButton(button)) {
-			this.onDrag(mouseX, mouseY, deltaX, deltaY);
+	protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+		if (this.isValidClickButton(event.button())) {
+			this.onDrag(event.x(), event.y(), deltaX, deltaY);
 			return true;
 		}
 		return false;
@@ -154,6 +156,11 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	@Override
 	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.renderButton(graphics, mouseX, mouseY, delta);
+
+		if (this.isMouseHovered()) {
+			graphics.requestCursor(this.isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
+		}
+
 		if (!this.dragging)
 			Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks,
 					i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);

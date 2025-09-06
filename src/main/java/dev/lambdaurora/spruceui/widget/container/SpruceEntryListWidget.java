@@ -10,13 +10,14 @@
 package dev.lambdaurora.spruceui.widget.container;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.SpruceTextures;
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.background.MenuBackground;
 import dev.lambdaurora.spruceui.border.Border;
 import dev.lambdaurora.spruceui.border.MenuBorder;
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidgetWithBorder;
@@ -25,9 +26,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.navigation.ScreenAxis;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Text;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -40,7 +44,7 @@ import java.util.List;
  *
  * @param <E> the type of entry
  * @author LambdAurora
- * @version 8.0.0
+ * @version 9.0.0
  * @since 2.0.0
  */
 public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entry> extends AbstractSpruceParentWidget<E>
@@ -282,16 +286,20 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		entry.setVisibleInList(!(entry.getY() + entry.getHeight() < this.getY() || entry.getY() > this.getY() + this.getHeight()));
 	}
 
+	protected boolean isOverScrollbar(int mouseX, int mouseY) {
+		return mouseX >= this.getScrollbarPositionX() && mouseX < (this.getScrollbarPositionX() + 6) && this.isMouseOver(mouseX, mouseY);
+	}
+
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(NavigationDirection direction, boolean tab) {
+	public boolean onNavigation(@NotNull NavigationEvent event) {
 		if (this.requiresCursor()) return false;
-		if (direction.isHorizontal() && this.getFocused() != null) {
-			boolean result = this.getFocused().onNavigation(direction, tab);
+		if (event.direction().getAxis() == ScreenAxis.HORIZONTAL && this.getFocused() != null) {
+			boolean result = this.getFocused().onNavigation(event);
 			return !this.allowOutsideHorizontalNavigation || result;
 		}
-		boolean result = super.onNavigation(direction, tab);
+		boolean result = super.onNavigation(event);
 		if (result) this.ensureVisible(this.getFocused());
 		return result;
 	}
@@ -299,18 +307,18 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 	/* Input */
 
 	@Override
-	protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-		this.scrolling = button == GLFW.GLFW_MOUSE_BUTTON_1 && mouseX >= this.getScrollbarPositionX() && mouseX < (this.getScrollbarPositionX() + 6);
-		return super.onMouseClick(mouseX, mouseY, button) || this.scrolling;
+	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+		this.scrolling = event.button() == GLFW.GLFW_MOUSE_BUTTON_1 && event.x() >= this.getScrollbarPositionX() && event.x() < (this.getScrollbarPositionX() + 6);
+		return super.onMouseClick(event, doubleClick) || this.scrolling;
 	}
 
 	@Override
-	protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		if (super.onMouseDrag(mouseX, mouseY, button, deltaX, deltaY)) return true;
-		else if (button == GLFW.GLFW_MOUSE_BUTTON_1 && this.scrolling) {
-			if (mouseY < this.getY()) {
+	protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+		if (super.onMouseDrag(event, deltaX, deltaY)) return true;
+		else if (event.button() == GLFW.GLFW_MOUSE_BUTTON_1 && this.scrolling) {
+			if (event.y() < this.getY()) {
 				this.setScrollAmount(0);
-			} else if (mouseY > (this.getY() + this.getHeight())) {
+			} else if (event.y() > (this.getY() + this.getHeight())) {
 				this.setScrollAmount(this.getMaxScroll());
 			} else {
 				double d = Math.max(1, this.getMaxScroll());
@@ -361,12 +369,12 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		}
 
 		// Scrollbar
-		this.renderScrollbar(graphics);
+		this.renderScrollbar(graphics, mouseX, mouseY);
 
 		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
 	}
 
-	protected void renderScrollbar(SpruceGuiGraphics graphics) {
+	protected void renderScrollbar(SpruceGuiGraphics graphics, int mouseX, int mouseY) {
 		if (this.isScrollbarVisible()) {
 			int top = this.getInnerBorderedY();
 			int height = this.getInnerBorderedHeight();
@@ -384,6 +392,10 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 			graphics.drawSprite(RenderPipelines.GUI_TEXTURED, SpruceTextures.SCROLLER,
 					scrollbarX, scrollbarY, 6, scrollerHeight
 			);
+
+			if (this.isOverScrollbar(mouseX, mouseY)) {
+				graphics.requestCursor(this.scrolling ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
+			}
 		}
 	}
 

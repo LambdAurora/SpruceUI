@@ -39,7 +39,7 @@ import org.joml.Matrix3x2f;
  * @param scissorArea the scissor area
  * @param bounds the bounds of this rectangle
  *
- * @version 8.0.0
+ * @version 9.0.0
  * @since 8.0.0
  * @author LambdAurora
  */
@@ -74,11 +74,11 @@ public record ColoredRectangleRenderState(
 	}
 
 	@Override
-	public void buildVertices(VertexConsumer vertexConsumer, float z) {
-		vertexConsumer.addVertexWith2DPose(this.pose(), this.startX(), this.startY(), z).color(this.colorTopLeft());
-		vertexConsumer.addVertexWith2DPose(this.pose(), this.startX(), this.endY(), z).color(this.colorBottomLeft());
-		vertexConsumer.addVertexWith2DPose(this.pose(), this.endX(), this.endY(), z).color(this.colorBottomRight());
-		vertexConsumer.addVertexWith2DPose(this.pose(), this.endX(), this.startY(), z).color(this.colorTopRight());
+	public void buildVertices(VertexConsumer vertexConsumer) {
+		vertexConsumer.addVertexWith2DPose(this.pose(), this.startX(), this.startY()).color(this.colorTopLeft());
+		vertexConsumer.addVertexWith2DPose(this.pose(), this.startX(), this.endY()).color(this.colorBottomLeft());
+		vertexConsumer.addVertexWith2DPose(this.pose(), this.endX(), this.endY()).color(this.colorBottomRight());
+		vertexConsumer.addVertexWith2DPose(this.pose(), this.endX(), this.startY()).color(this.colorTopRight());
 	}
 
 	@Nullable

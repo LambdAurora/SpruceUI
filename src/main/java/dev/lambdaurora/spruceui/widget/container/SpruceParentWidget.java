@@ -9,9 +9,10 @@
 
 package dev.lambdaurora.spruceui.widget.container;
 
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.navigation.NavigationUtils;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -22,7 +23,7 @@ import java.util.Optional;
  * Represents a parent widget.
  *
  * @author LambdAurora
- * @version 3.3.0
+ * @version 9.0.0
  * @since 2.0.4
  */
 public interface SpruceParentWidget<E extends SpruceWidget> extends SpruceWidget, Iterable<E> {
@@ -77,9 +78,9 @@ public interface SpruceParentWidget<E extends SpruceWidget> extends SpruceWidget
 	/* Navigation */
 
 	@Override
-	default boolean onNavigation(NavigationDirection direction, boolean tab) {
+	default boolean onNavigation(@NotNull NavigationEvent event) {
 		if (this.requiresCursor()) return false;
-		boolean result = NavigationUtils.tryNavigate(direction, tab, this.children(), this.getFocused(), this::setFocused,
+		boolean result = NavigationUtils.tryNavigate(event, this.children(), this.getFocused(), this::setFocused,
 				false);
 		if (result)
 			this.setFocused(true);

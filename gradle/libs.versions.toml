@@ -1,13 +1,12 @@
 [versions]
-minecraft = "1.21.8"
-fabric-loader = "0.16.14"
+minecraft = "25w36b"
+fabric-loader = "0.17.2"
 neoforge-loader = "7.0.11"
-fabric-api = "0.130.0+1.21.8"
-mappings-yalmm = "3"
+fabric-api = "0.133.1+1.21.9"
+mappings-yalmm = "5"
 modmenu="15.0.0-beta.1"
 
-yumi-commons = "1.0.0-beta.1"
-yumi-mc-foundation = "1.0.0-alpha.7+1.21.1"
+yumi-mc-foundation = "1.0.0-alpha.9+1.21.1"
 
 # Gradle
 gradle-licenser = "2.1.+"
@@ -22,7 +21,6 @@ fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fab
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
 
 # Dependencies
-yumi-commons = { module = "dev.yumi.commons:yumi-commons", version.ref = "yumi-commons" }
 yumi-mc-foundation = { module = "dev.yumi.mc.core:yumi-mc-foundation", version.ref = "yumi-mc-foundation" }
 
 # Gradle

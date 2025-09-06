@@ -11,13 +11,17 @@ package dev.lambdaurora.spruceui.widget.text;
 
 import dev.lambdaurora.spruceui.background.Background;
 import dev.lambdaurora.spruceui.border.Border;
-import dev.lambdaurora.spruceui.navigation.NavigationDirection;
+import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.util.FormattedCharSequence;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -27,7 +31,7 @@ import java.util.function.Predicate;
  * Represents a text field widget with a title on top.
  *
  * @author LambdAurora
- * @version 8.0.0
+ * @version 9.0.0
  * @since 2.1.0
  */
 public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements WithBackground, WithBorder {
@@ -177,25 +181,25 @@ public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements 
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(NavigationDirection direction, boolean tab) {
-		return this.getTextFieldWidget().onNavigation(direction, tab);
+	public boolean onNavigation(@NotNull NavigationEvent event) {
+		return this.getTextFieldWidget().onNavigation(event);
 	}
 
 	/* Input */
 
 	@Override
-	protected boolean onMouseClick(double mouseX, double mouseY, int button) {
-		return this.getTextFieldWidget().mouseClicked(mouseX, mouseY, button);
+	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+		return this.getTextFieldWidget().mouseClicked(event, doubleClick);
 	}
 
 	@Override
-	protected boolean onMouseRelease(double mouseX, double mouseY, int button) {
-		return this.getTextFieldWidget().mouseReleased(mouseX, mouseY, button);
+	protected boolean onMouseRelease(@NotNull MouseButtonEvent event) {
+		return this.getTextFieldWidget().mouseReleased(event);
 	}
 
 	@Override
-	protected boolean onMouseDrag(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
-		return this.getTextFieldWidget().mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+	protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+		return this.getTextFieldWidget().mouseDragged(event, deltaX, deltaY);
 	}
 
 	@Override
@@ -204,18 +208,18 @@ public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements 
 	}
 
 	@Override
-	protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
-		return this.getTextFieldWidget().keyPressed(keyCode, scanCode, modifiers);
+	protected boolean onKeyPress(@NotNull KeyEvent event) {
+		return this.getTextFieldWidget().keyPressed(event);
 	}
 
 	@Override
-	protected boolean onKeyRelease(int keyCode, int scanCode, int modifiers) {
-		return this.getTextFieldWidget().keyReleased(keyCode, scanCode, modifiers);
+	protected boolean onKeyRelease(@NotNull KeyEvent event) {
+		return this.getTextFieldWidget().keyReleased(event);
 	}
 
 	@Override
-	protected boolean onCharTyped(char chr, int keyCode) {
-		return this.getTextFieldWidget().charTyped(chr, keyCode);
+	protected boolean onCharTyped(@NotNull CharacterEvent event) {
+		return this.getTextFieldWidget().charTyped(event);
 	}
 
 	/* Rendering */

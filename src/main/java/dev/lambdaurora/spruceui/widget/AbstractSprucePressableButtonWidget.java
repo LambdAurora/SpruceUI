@@ -10,14 +10,16 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Text;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 /**
  * Represents a pressable button widget.
  *
  * @author LambdAurora
- * @version 8.0.0
+ * @version 9.0.0
  * @since 2.0.0
  */
 public abstract class AbstractSprucePressableButtonWidget extends AbstractSpruceButtonWidget {
@@ -34,8 +36,11 @@ public abstract class AbstractSprucePressableButtonWidget extends AbstractSpruce
 	}
 
 	@Override
-	protected boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
-		if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER || keyCode == GLFW.GLFW_KEY_SPACE) {
+	protected boolean onKeyPress(@NotNull KeyEvent event) {
+		if (event.key() == GLFW.GLFW_KEY_ENTER
+				|| event.key() == GLFW.GLFW_KEY_KP_ENTER
+				|| event.key() == GLFW.GLFW_KEY_SPACE
+		) {
 			this.onPress();
 			this.playDownSound();
 			return true;

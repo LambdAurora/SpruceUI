@@ -3,11 +3,8 @@ package spruceui
 import org.gradle.accessors.dm.LibrariesForLibs
 
 object Constants {
-	const val GROUP = "dev.lambdaurora"
 	const val NAMESPACE = "spruceui"
 	const val PRETTY_NAME = "SpruceUI"
-	const val VERSION = "8.0.2"
-	const val JAVA_VERSION = 21
 
 	const val DESCRIPTION = "Just a Minecraft GUI library."
 

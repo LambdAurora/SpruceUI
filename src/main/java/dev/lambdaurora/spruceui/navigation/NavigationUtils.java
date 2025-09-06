@@ -20,7 +20,7 @@ import java.util.function.Supplier;
  * Utilities for handling navigation.
  *
  * @author LambdAurora
- * @version 3.0.0
+ * @version 9.0.0
  * @since 2.0.0
  */
 public final class NavigationUtils {
@@ -28,27 +28,27 @@ public final class NavigationUtils {
 		throw new UnsupportedOperationException("NavigationUtils only contains static definitions.");
 	}
 
-	public static <E extends SpruceWidget> boolean tryNavigate(NavigationDirection direction, boolean tab, List<E> children, E focused, Consumer<E> setFocused, boolean alwaysFocus) {
+	public static <E extends SpruceWidget> boolean tryNavigate(NavigationEvent event, List<E> children, E focused, Consumer<E> setFocused, boolean alwaysFocus) {
 		if (children.isEmpty())
 			return false;
-		if (!tab && alwaysFocus && focused != null) {
+		if (!event.tab() && alwaysFocus && focused != null) {
 			int i = children.indexOf(focused);
-			if ((!direction.isLookingForward() && i == 0) || (direction.isLookingForward() && i == children.size() - 1)) {
-				boolean result = focused.onNavigation(direction, false);
+			if ((!event.isLookingForward() && i == 0) || (event.isLookingForward() && i == children.size() - 1)) {
+				boolean result = focused.onNavigation(event);
 				focused.setFocused(true);
 				return result;
 			}
 		}
-		if (focused == null || !focused.onNavigation(direction, tab)) {
+		if (focused == null || !focused.onNavigation(event)) {
 			int i = children.indexOf(focused);
 			int next;
-			if (focused != null && i >= 0) next = i + (direction.isLookingForward() ? 1 : 0);
-			else if (direction.isLookingForward()) next = 0;
+			if (focused != null && i >= 0) next = i + (event.isLookingForward() ? 1 : 0);
+			else if (event.isLookingForward()) next = 0;
 			else next = children.size();
 
 			var iterator = children.listIterator(next);
-			BooleanSupplier hasNext = direction.isLookingForward() ? iterator::hasNext : iterator::hasPrevious;
-			Supplier<E> nextGetter = direction.isLookingForward() ? iterator::next : iterator::previous;
+			BooleanSupplier hasNext = event.isLookingForward() ? iterator::hasNext : iterator::hasPrevious;
+			Supplier<E> nextGetter = event.isLookingForward() ? iterator::next : iterator::previous;
 
 			E nextElement;
 			do {
@@ -58,7 +58,7 @@ public final class NavigationUtils {
 				}
 
 				nextElement = nextGetter.get();
-			} while (!nextElement.onNavigation(direction, tab));
+			} while (!nextElement.onNavigation(event));
 
 			setFocused.accept(nextElement);
 		}
