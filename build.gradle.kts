@@ -1,5 +1,10 @@
+import dev.lambdaurora.mcdev.api.manifest.Nmt
+import dev.lambdaurora.mcdev.task.GenerateNmtTask
+import net.fabricmc.loom.LoomGradleExtension
+import net.fabricmc.loom.api.mappings.layered.MappingsNamespace
 import net.fabricmc.loom.task.RemapJarTask
 import spruceui.Constants
+import spruceui.task.XplatTransformJar
 
 plugins {
 	id("spruceui-common")
@@ -24,31 +29,33 @@ val testmod: SourceSet by sourceSets.creating {
 	this.runtimeClasspath += sourceSets.main.get().runtimeClasspath
 }
 
-lambdamcdev.manifests {
-	fmj {
-		withName(Constants.PRETTY_NAME)
-		withDescription(Constants.DESCRIPTION)
-		withAuthors(Constants.AUTHORS)
-		withContact {
-			it.withHomepage(Constants.PROJECT_LINK)
-				.withSources(Constants.SOURCES_LINK)
-				.withIssues(Constants.ISSUES_LINK)
-		}
-		withLicense(Constants.LICENSE)
-		withIcon("assets/${Constants.NAMESPACE}/icon.png")
-		withEnvironment("client")
-		withEntrypoints("client", "dev.lambdaurora.spruceui.hud.HudManager::initialize")
-		withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
-		withDepend("minecraft", "~1.21 <1.21.2-")
-		withDepend("fabric-resource-loader-v0", ">=0.4.7")
-		withDepend("java", ">=${Constants.JAVA_VERSION}")
-		withAccessWidener("spruceui.accesswidener")
-		withMixins("spruceui.mixins.json")
+lambdamcdev {
+	manifests {
+		fmj {
+			withName(Constants.PRETTY_NAME)
+			withDescription(Constants.DESCRIPTION)
+			withAuthors(Constants.AUTHORS)
+			withContact {
+				it.withHomepage(Constants.PROJECT_LINK)
+					.withSources(Constants.SOURCES_LINK)
+					.withIssues(Constants.ISSUES_LINK)
+			}
+			withLicense(Constants.LICENSE)
+			withIcon("assets/${Constants.NAMESPACE}/icon.png")
+			withEnvironment("client")
+			withEntrypoints("client", "dev.lambdaurora.spruceui.hud.HudManager::initialize")
+			withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
+			withDepend("minecraft", "~1.21 <1.21.2-")
+			withDepend("fabric-resource-loader-v0", ">=0.4.7")
+			withDepend("java", ">=${project.property("java_version")}")
+			withAccessWidener("spruceui.accesswidener")
+			withMixins("spruceui.mixins.json")
 
-		withModMenu {
-			it.withBadges("library")
-				.withDiscord("https://discord.lambdaurora.dev/")
-				.withLink("modmenu.bluesky", "https://bsky.app/profile/lambdaurora.dev")
+			withModMenu {
+				it.withBadges("library")
+					.withDiscord("https://discord.lambdaurora.dev/")
+					.withLink("modmenu.bluesky", "https://bsky.app/profile/lambdaurora.dev")
+			}
 		}
 	}
 }
@@ -63,6 +70,11 @@ repositories {
 		name = "Gegy"
 		url = uri("https://maven.gegy.dev/releases/")
 	}
+}
+
+val mojmap = lambdamcdev.setupMojmapRemapping()
+configurations.getByName("mojmapApi") {
+	this.extendsFrom(configurations["api"])
 }
 
 dependencies {
@@ -84,15 +96,6 @@ dependencies {
 	}
 
 	"testmodImplementation"(sourceSets.main.get().output)
-}
-
-val mojmap by sourceSets.creating {}
-
-java {
-	registerFeature("mojmap") {
-		usingSourceSet(mojmap)
-		withSourcesJar()
-	}
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -133,6 +136,64 @@ val remapTestmodJar = tasks.register<RemapJarTask>("remapTestmodJar") {
 	this.archiveClassifier = "testmod"
 }
 tasks.build.get().dependsOn(remapTestmodJar)
+
+//region Mojmap
+val remapMojmap = mojmap.registerRemap(tasks.remapJar) {
+	this.destinationDirectory.set(layout.buildDirectory.map { it.dir("devlibs") })
+}
+
+val remapMojmapSourcesJar = mojmap.registerSourcesRemap(tasks.remapSourcesJar) {
+	this.classpath.from(configurations["minecraftClientLibraries"])
+	this.archiveClassifier = "preprocessed-mojmap-sources"
+}
+
+val nmtGeneration by tasks.registering(GenerateNmtTask::class) {
+	this.nmt = lambdamcdev.manifests.fmj().map {
+		it.derive(::Nmt)
+			.withBlurIcon(false)
+			.withLoaderVersion("[2,)")
+			.withMixins("spruceui.mixins.json")
+			.withDepend("minecraft", "[" + libs.versions.minecraft.get() + ",)")
+	}
+	this.outputDir = project.layout.buildDirectory.map { it.dir("generated/generated_neoforge_resources") }
+}
+
+val xplatTransformJar by tasks.registering(XplatTransformJar::class) {
+	dependsOn(remapMojmap, nmtGeneration)
+
+	inputJar.set(remapMojmap.flatMap { it.archiveFile })
+	from(nmtGeneration)
+	this.archiveClassifier = "mojmap"
+}
+mojmap.setJarArtifact(xplatTransformJar)
+
+val xplatTransformSourcesJar by tasks.registering(XplatTransformJar::class) {
+	dependsOn(remapMojmapSourcesJar, nmtGeneration)
+
+	inputJar.set(remapMojmapSourcesJar.flatMap { it.archiveFile })
+	from(nmtGeneration)
+	this.archiveClassifier = "mojmap-sources"
+}
+mojmap.setSourcesArtifact(xplatTransformSourcesJar)
+
+val remapTestmodMojmapJar = mojmap.registerRemap("remapTestmodJarToMojmap") {
+	dependsOn(remapTestmodJar)
+
+	classpath.setFrom(
+		(loom as LoomGradleExtension).getMinecraftJarsCollection(MappingsNamespace.INTERMEDIARY),
+		tasks.remapJar
+	)
+	inputFile.convention(remapTestmodJar.flatMap { it.archiveFile })
+	archiveClassifier = "preprocessed"
+	sourceNamespace = "intermediary"
+	targetNamespace = "named"
+	archiveClassifier = "testmod-mojmap"
+}
+
+tasks.build.configure {
+	dependsOn(xplatTransformJar, xplatTransformSourcesJar, remapTestmodMojmapJar)
+}
+//endregion
 
 license {
 	rule(file("HEADER"))
