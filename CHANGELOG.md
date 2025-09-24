@@ -116,3 +116,37 @@
 ### 7.0.2
 
 - Fixed Minecraft version dependency constraint and other issues in FMJ.
+
+### 7.0.3
+
+- Improved mojmap publication.
+- Updated [Yumi Minecraft Libraries: Foundation].
+
+## 8.0.0
+
+- Added screen-related events.
+  - Events are similar to Fabric API's screen events.
+  - Events are now usable in a multi-loader context.
+- Added `SpruceGuiGraphics` wrapper around `GuiGraphics` to add an extended feature set.
+  - SpruceUI-managed renderables now use `SpruceGuiGraphics` instead.
+- Removed `OpenScreenCallback` event.
+- Updated to Minecraft 1.21.6.
+- Reworked the tooltip system to be closer to Vanilla's and allow more flexibility.
+  - Added custom client tooltip components including a sprite tooltip component, a thumbnail tooltip component, etc.
+- Reworked the label widget to be more flexible.
+
+### 8.0.1
+
+- Switched to [Yumi Minecraft Libraries: Foundation] for event management.
+  - The Yumi Commons libraries are no longer Jar-in-Jar in SpruceUI, instead consumer mods should Jar-in-Jar [Yumi Minecraft Libraries: Foundation] directly.
+
+### 8.0.2
+
+- Updated [Yumi Minecraft Libraries: Foundation].
+
+### 8.0.3
+
+- Improved mojmap publication.
+- Updated [Yumi Minecraft Libraries: Foundation].
+
+[Yumi Minecraft Libraries: Foundation]: https://github.com/YumiProject/yumi-minecraft-foundation-library "Yumi Minecraft Foundation Library page"

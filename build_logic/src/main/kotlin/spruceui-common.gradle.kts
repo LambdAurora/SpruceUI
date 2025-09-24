@@ -12,9 +12,10 @@ plugins {
 val libs = the<LibrariesForLibs>()
 Constants.finalizeInit(libs)
 
-group = Constants.GROUP
-version = "${Constants.VERSION}+${McVersionLookup.getVersionTag(Constants.mcVersion())}"
+version = "${project.property("version")}+${McVersionLookup.getVersionTag(Constants.mcVersion())}"
 lambdamcdev.namespace = Constants.NAMESPACE
+
+val javaVersion = Integer.parseInt(project.property("java_version") as String)
 
 repositories {
 	mavenCentral()
@@ -25,8 +26,8 @@ dependencies {
 }
 
 java {
-	sourceCompatibility = JavaVersion.toVersion(Constants.JAVA_VERSION)
-	targetCompatibility = JavaVersion.toVersion(Constants.JAVA_VERSION)
+	sourceCompatibility = JavaVersion.toVersion(javaVersion)
+	targetCompatibility = JavaVersion.toVersion(javaVersion)
 
 	withSourcesJar()
 }
@@ -34,5 +35,5 @@ java {
 tasks.withType<JavaCompile>().configureEach {
 	options.encoding = "UTF-8"
 
-	options.release.set(Constants.JAVA_VERSION)
+	options.release.set(javaVersion)
 }
