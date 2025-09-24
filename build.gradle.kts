@@ -1,5 +1,11 @@
+import dev.lambdaurora.mcdev.api.MappingVariant
+import dev.lambdaurora.mcdev.api.manifest.Nmt
+import dev.lambdaurora.mcdev.task.GenerateNmtTask
+import net.fabricmc.loom.LoomGradleExtension
+import net.fabricmc.loom.api.mappings.layered.MappingsNamespace
 import net.fabricmc.loom.task.RemapJarTask
 import spruceui.Constants
+import spruceui.task.XplatTransformJar
 
 plugins {
 	id("spruceui-common")
@@ -41,7 +47,7 @@ lambdamcdev {
 			withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
 			withDepend("minecraft", "~1.21.6-")
 			withDepend("fabric-resource-loader-v0", ">=0.4.7")
-			withDepend("java", ">=${Constants.JAVA_VERSION}")
+			withDepend("java", ">=${project.property("java_version")}")
 			withDepend("yumi_mc_core", "^${libs.versions.yumi.mc.foundation.get()}")
 			withAccessWidener("spruceui.accesswidener")
 			withMixins("spruceui.mixins.json")
@@ -77,6 +83,11 @@ repositories {
 	}
 }
 
+val mojmap = lambdamcdev.setupMojmapRemapping()
+configurations.getByName("mojmapApi") {
+	this.extendsFrom(configurations["api"])
+}
+
 dependencies {
 	@Suppress("UnstableApiUsage")
 	mappings(loom.layered {
@@ -87,15 +98,7 @@ dependencies {
 	})
 	modImplementation(libs.fabric.loader)
 
-	api(libs.yumi.commons) {
-		// Exclude Minecraft and loader-provided libraries.
-		exclude(group = "org.slf4j")
-		exclude(group = "org.ow2.asm")
-	}
-	modApi(libs.yumi.mc.foundation) {
-		// Exclude Minecraft and loader-provided libraries.
-		exclude(group = "dev.yumi.commons")
-	}
+	modApi(libs.yumi.mc.foundation)
 
 	fabricModules.stream().map { fabricApi.module(it, libs.versions.fabric.api.get()) }.forEach {
 		modImplementation(it)
@@ -105,17 +108,14 @@ dependencies {
 		isTransitive = false
 	}
 
+	"mojmapApi"(libs.yumi.mc.foundation) {
+		attributes {
+			attribute(MappingVariant.ATTRIBUTE, objects.named(MappingVariant.MOJMAP))
+		}
+	}
+
 	"testmodCompileOnly"(libs.neoforge.loader)
 	"testmodImplementation"(sourceSets.main.get().output)
-}
-
-val mojmap by sourceSets.creating {}
-
-java {
-	registerFeature("mojmap") {
-		usingSourceSet(mojmap)
-		withSourcesJar()
-	}
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -156,6 +156,65 @@ val remapTestmodJar = tasks.register<RemapJarTask>("remapTestmodJar") {
 	this.archiveClassifier = "testmod"
 }
 tasks.build.get().dependsOn(remapTestmodJar)
+
+//region Mojmap
+val remapMojmap = mojmap.registerRemap(tasks.remapJar) {
+	this.destinationDirectory.set(layout.buildDirectory.map { it.dir("devlibs") })
+}
+
+val remapMojmapSourcesJar = mojmap.registerSourcesRemap(tasks.remapSourcesJar) {
+	this.classpath.from(configurations["minecraftClientLibraries"])
+	this.archiveClassifier = "preprocessed-mojmap-sources"
+}
+
+val nmtGeneration by tasks.registering(GenerateNmtTask::class) {
+	this.nmt = lambdamcdev.manifests.fmj().map {
+		it.derive(::Nmt)
+			.withBlurIcon(false)
+			.withLoaderVersion("[2,)")
+			.withMixins("spruceui.mixins.json")
+			.withDepend("minecraft", "[" + libs.versions.minecraft.get() + ",)")
+			.withDepend("yumi_mc_core", "[${libs.versions.yumi.mc.foundation.get()},)")
+	}
+	this.outputDir = project.layout.buildDirectory.map { it.dir("generated/generated_neoforge_resources") }
+}
+
+val xplatTransformJar by tasks.registering(XplatTransformJar::class) {
+	dependsOn(remapMojmap, nmtGeneration)
+
+	inputJar.set(remapMojmap.flatMap { it.archiveFile })
+	from(nmtGeneration)
+	this.archiveClassifier = "mojmap"
+}
+mojmap.setJarArtifact(xplatTransformJar)
+
+val xplatTransformSourcesJar by tasks.registering(XplatTransformJar::class) {
+	dependsOn(remapMojmapSourcesJar, nmtGeneration)
+
+	inputJar.set(remapMojmapSourcesJar.flatMap { it.archiveFile })
+	from(nmtGeneration)
+	this.archiveClassifier = "mojmap-sources"
+}
+mojmap.setSourcesArtifact(xplatTransformSourcesJar)
+
+val remapTestmodMojmapJar = mojmap.registerRemap("remapTestmodJarToMojmap") {
+	dependsOn(remapTestmodJar)
+
+	classpath.setFrom(
+		(loom as LoomGradleExtension).getMinecraftJarsCollection(MappingsNamespace.INTERMEDIARY),
+		tasks.remapJar
+	)
+	inputFile.convention(remapTestmodJar.flatMap { it.archiveFile })
+	archiveClassifier = "preprocessed"
+	sourceNamespace = "intermediary"
+	targetNamespace = "named"
+	archiveClassifier = "testmod-mojmap"
+}
+
+tasks.build.configure {
+	dependsOn(xplatTransformJar, xplatTransformSourcesJar, remapTestmodMojmapJar)
+}
+//endregion
 
 license {
 	rule(file("HEADER"))
