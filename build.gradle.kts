@@ -152,7 +152,6 @@ val nmtGeneration by tasks.registering(GenerateNmtTask::class) {
 		it.derive(::Nmt)
 			.withBlurIcon(false)
 			.withLoaderVersion("[2,)")
-			.withMixins("spruceui.mixins.json")
 			.withDepend("minecraft", "[" + libs.versions.minecraft.get() + ",)")
 	}
 	this.outputDir = project.layout.buildDirectory.map { it.dir("generated/generated_neoforge_resources") }

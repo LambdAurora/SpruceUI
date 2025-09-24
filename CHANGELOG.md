@@ -111,6 +111,10 @@
 
 - Improved mojmap publication.
 
+### 6.2.5
+
+- Fixed improperly stripped mixin in the mojmap artifact.
+
 ### 7.0.3
 
 - Improved mojmap publication.
