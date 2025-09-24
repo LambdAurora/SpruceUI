@@ -103,6 +103,10 @@
 
 - Fixed a severe silent build error.
 
+### 6.2.5
+
+- Fixed improperly stripped mixin in the mojmap artifact.
+
 ## 7.0.0
 
 - Updated to Minecraft 1.21.5.
@@ -125,6 +129,10 @@
 ### 7.0.4
 
 - Fixed Fabric files sneaking into the mojmap publication.
+
+### 7.0.5
+
+- Fixed improperly stripped mixin in the mojmap artifact.
 
 ## 8.0.0
 
