@@ -122,6 +122,10 @@
 - Improved mojmap publication.
 - Updated [Yumi Minecraft Libraries: Foundation].
 
+### 7.0.4
+
+- Fixed Fabric files sneaking into the mojmap publication.
+
 ## 8.0.0
 
 - Added screen-related events.
