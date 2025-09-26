@@ -33,14 +33,14 @@ dependencies {
 	/* Fabric definitions */
 
 	include(modImplementation("dev.lambdaurora:spruceui:${project.spruceui_version}"))
-	include("dev.yumi.mc.core:yumi-mc-foundation:1.0.0-alpha.5+1.21.1")
+	include("dev.yumi.mc.core:yumi-mc-foundation:1.0.0-alpha.15+1.21.1")
 }
 ```
 
 And this to your `gradle.properties`:
 
 ```properties
-spruceui_version=8.0.1+1.21.6
+spruceui_version=8.0.3+1.21.8
 ```
 
 It will JAR-in-JAR SpruceUI so users of your mod don't need to download it separately!
@@ -50,16 +50,18 @@ It will JAR-in-JAR SpruceUI so users of your mod don't need to download it separ
 Defining the dependency on NeoForge is slightly different:
 
 ```kotlin
+val mappingsAttribute = Attribute.of("net.minecraft.mappings", String::class)
+
 dependencies {
 	val spruceui = implementation("dev.lambdaurora:spruceui:${project.spruceui_version}") {
-		capabilities {
-			requireCapability("dev.lambdaurora:spruceui-mojmap")
+		attributes {
+			attribute(mappingsAttribute, "mojmap")
 		}
 	}
 
-	jarJar("dev.yumi.mc.core:yumi-mc-foundation:1.0.0-alpha.5+1.21.1") {
-		capabilities {
-			requireCapability("dev.yumi.mc.core:yumi-mc-foundation-mojmap")
+	jarJar("dev.yumi.mc.core:yumi-mc-foundation:1.0.0-alpha.15+1.21.1") {
+		attributes {
+			attribute(mappingsAttribute, "mojmap")
 		}
 	}
 	jarJar(spruceui) {

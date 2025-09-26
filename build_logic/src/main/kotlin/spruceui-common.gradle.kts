@@ -12,10 +12,10 @@ plugins {
 val libs = the<LibrariesForLibs>()
 Constants.finalizeInit(libs)
 
-version = "${project.property("mod_version")}+${McVersionLookup.getVersionTag(Constants.mcVersion())}"
+version = "${project.property("version")}+${McVersionLookup.getVersionTag(Constants.mcVersion())}"
 lambdamcdev.namespace = Constants.NAMESPACE
 
-val javaVersion = Integer.parseInt(project.property("java_version").toString())
+val javaVersion = Integer.parseInt(project.property("java_version") as String)
 
 repositories {
 	mavenCentral()

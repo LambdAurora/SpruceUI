@@ -15,4 +15,3 @@ pluginManagement {
 }
 
 includeBuild("build_logic")
-include(":moj_xplat")

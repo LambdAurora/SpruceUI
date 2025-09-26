@@ -6,12 +6,12 @@ fabric-api = "0.133.1+1.21.9"
 mappings-yalmm = "5"
 modmenu="15.0.0-beta.1"
 
-yumi-mc-foundation = "1.0.0-alpha.9+1.21.1"
+yumi-mc-foundation = "1.0.0-alpha.15+1.21.1"
 
 # Gradle
 gradle-licenser = "2.1.+"
 gradle-loom = "1.11.+"
-gradle-lambdamcdev = "1.3.+"
+gradle-lambdamcdev = "1.6.+"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
