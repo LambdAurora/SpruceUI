@@ -144,4 +144,11 @@
 - Improved mojmap publication.
 - Updated [Yumi Minecraft Libraries: Foundation].
 
+## 9.0.0
+
+- Updated to Minecraft 1.21.9.
+- Added `requestCursor` to `SpruceGuiGraphics`.
+- Improved navigation handling.
+- Abstracted text input widgets.
+
 [Yumi Minecraft Libraries: Foundation]: https://github.com/YumiProject/yumi-minecraft-foundation-library "Yumi Minecraft Foundation Library page"
