@@ -144,4 +144,8 @@
 - Improved mojmap publication.
 - Updated [Yumi Minecraft Libraries: Foundation].
 
+### 8.0.4
+
+- Adjusted the Minecraft dependency constraints on NeoForge.
+
 [Yumi Minecraft Libraries: Foundation]: https://github.com/YumiProject/yumi-minecraft-foundation-library "Yumi Minecraft Foundation Library page"
