@@ -18,6 +18,7 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -57,33 +58,37 @@ public abstract class ScreenMixin {
 	@Shadow
 	protected abstract <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget);
 
+	@Shadow
+	@Final
+	protected Minecraft client;
+
 	public ScreenMixin() {
 	}
 
 	@Inject(
-			method = "init(Lnet/minecraft/client/Minecraft;II)V",
+			method = "init(II)V",
 			at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screens/Screen;initialized:Z", ordinal = 0)
 	)
-	public void spruceui$beforeInit(Minecraft client, int width, int height, CallbackInfo ci) {
-		this.spruceui$handleBeforeInit(client, width, height);
+	public void spruceui$beforeInit(int width, int height, CallbackInfo ci) {
+		this.spruceui$handleBeforeInit(this.client, width, height);
 	}
 
-	@Inject(method = "init(Lnet/minecraft/client/Minecraft;II)V", at = @At("TAIL"))
-	public void spruceui$afterInit(Minecraft client, int width, int height, CallbackInfo ci) {
-		this.spruceui$afterInitEvent.invoker().afterInitScreen(this.spruceui$createInitContext(client, width, height));
+	@Inject(method = "init(II)V", at = @At("TAIL"))
+	public void spruceui$afterInit(int width, int height, CallbackInfo ci) {
+		this.spruceui$afterInitEvent.invoker().afterInitScreen(this.spruceui$createInitContext(this.client, width, height));
 	}
 
 	@Inject(
 			method = "resize",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;repositionElements()V")
 	)
-	private void spruceui$beforeResizeScreen(Minecraft client, int width, int height, CallbackInfo ci) {
-		this.spruceui$handleBeforeInit(client, width, height);
+	private void spruceui$beforeResizeScreen(int width, int height, CallbackInfo ci) {
+		this.spruceui$handleBeforeInit(this.client, width, height);
 	}
 
 	@Inject(method = "resize", at = @At("TAIL"))
-	private void spruceui$afterResizeScreen(Minecraft client, int width, int height, CallbackInfo ci) {
-		this.spruceui$afterInitEvent.invoker().afterInitScreen(this.spruceui$createInitContext(client, width, height));
+	private void spruceui$afterResizeScreen(int width, int height, CallbackInfo ci) {
+		this.spruceui$afterInitEvent.invoker().afterInitScreen(this.spruceui$createInitContext(this.client, width, height));
 	}
 
 	@Unique

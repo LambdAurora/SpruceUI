@@ -53,7 +53,7 @@ public class SpruceOptionScreen extends SpruceScreen {
 		this.list = SpruceUITest.get().buildOptionList(Position.of(0, 22), this.width, this.height - 35 - 22);
 		SpruceUITest.get().resetConsumer = btn -> {
 			// Re-initialize the screen to update all the values.
-			this.init(this.client, this.client.getWindow().getGuiScaledWidth(), this.client.getWindow().getGuiScaledHeight());
+			this.init(this.client.getWindow().getGuiScaledWidth(), this.client.getWindow().getGuiScaledHeight());
 		};
 
 		this.addRenderableWidget(this.list);

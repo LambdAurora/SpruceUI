@@ -1,6 +1,7 @@
 package spruceui.task
 
 import dev.lambdaurora.mcdev.api.AccessWidenerToTransformer
+import dev.lambdaurora.mcdev.util.ZipFix
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.InputFile
 import org.gradle.jvm.tasks.Jar
@@ -56,6 +57,8 @@ abstract class XplatTransformJar @Inject constructor() : Jar() {
 				})
 			}
 		}
+
+		ZipFix.makeZipReproducible(inputJar)
 	}
 
 	private fun generateAccessTransformer(fs: FileSystem) {

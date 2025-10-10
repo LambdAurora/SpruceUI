@@ -28,10 +28,10 @@ public class GuiGraphicsMixin implements GuiGraphicsAccessor {
 
 	@Shadow
 	@Final
-	private GuiGraphics.ScissorStack scissorStack;
+	public GuiGraphics.ScissorStack scissorStack;
 	@Shadow
 	@Final
-	private GuiRenderState guiRenderState;
+	public GuiRenderState guiRenderState;
 
 	@Override
 	public SpruceGuiGraphics spruceui$spruced() {
