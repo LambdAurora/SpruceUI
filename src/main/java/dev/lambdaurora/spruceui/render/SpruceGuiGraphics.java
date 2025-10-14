@@ -13,6 +13,7 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import dev.lambdaurora.spruceui.impl.GuiGraphicsAccessor;
 import dev.lambdaurora.spruceui.render.state.ColoredRectangleRenderState;
+import net.minecraft.client.gui.ActiveTextCollector;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.render.TextureSetup;
@@ -267,6 +268,16 @@ public final class SpruceGuiGraphics {
 			@NotNull Font font, @NotNull Text text, int centerX, int y, int color
 	) {
 		this.wrapped.drawCenteredShadowedText(font, text, centerX, y, color);
+	}
+
+	public ActiveTextCollector textRenderer(float alpha, GuiGraphics.HoveredTextEffects hoveredTextEffects) {
+		var collector = this.wrapped.textRenderer(hoveredTextEffects);
+		collector.defaultParameters(this.createDefaultTextParameters(alpha));
+		return collector;
+	}
+
+	private ActiveTextCollector.Parameters createDefaultTextParameters(float alpha) {
+		return new ActiveTextCollector.Parameters(new Matrix3x2f(this.wrapped.pose()), alpha, this.wrapped.scissorStack.peek());
 	}
 
 	public void submitGuiElement(@NotNull GuiElementRenderState state) {
