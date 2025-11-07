@@ -15,10 +15,9 @@ import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.util.Mth;
 
 import java.util.function.Consumer;
 
@@ -30,18 +29,18 @@ import java.util.function.Consumer;
  * @since 1.0.0
  */
 public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements Tooltipable {
-	private Text baseMessage;
+	private Component baseMessage;
 	protected double value;
 	private final Consumer<SpruceSliderWidget> applyConsumer;
 	private double multiplier;
 	private String sign;
 	private boolean inUse = false;
 
-	private static final Identifier SLIDER = Identifier.ofDefault("widget/slider");
-	private static final Identifier SLIDER_HANDLE = Identifier.ofDefault("widget/slider_handle");
-	private static final Identifier SLIDER_HANDLE_HIGHLIGHTED = Identifier.ofDefault("widget/slider_handle_highlighted");
+	private static final Identifier SLIDER = Identifier.withDefaultNamespace("widget/slider");
+	private static final Identifier SLIDER_HANDLE = Identifier.withDefaultNamespace("widget/slider_handle");
+	private static final Identifier SLIDER_HANDLE_HIGHLIGHTED = Identifier.withDefaultNamespace("widget/slider_handle_highlighted");
 
-	public SpruceSliderWidget(Position position, int width, int height, Text message, double value, Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
+	public SpruceSliderWidget(Position position, int width, int height, Component message, double value, Consumer<SpruceSliderWidget> applyConsumer, double multiplier, String sign) {
 		super(position, width, height, message);
 		this.value = value;
 		this.baseMessage = message;
@@ -51,7 +50,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 		this.updateMessage();
 	}
 
-	public SpruceSliderWidget(Position position, int width, int height, Text message, double progress, Consumer<SpruceSliderWidget> applyConsumer) {
+	public SpruceSliderWidget(Position position, int width, int height, Component message, double progress, Consumer<SpruceSliderWidget> applyConsumer) {
 		this(position, width, height, message, progress, applyConsumer, 100.0, "%");
 	}
 
@@ -71,7 +70,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	 */
 	private void setValue(double value) {
 		double oldValue = this.value;
-		this.value = MathHelper.clamp(value, 0.0D, 1.0D);
+		this.value = Mth.clamp(value, 0.0D, 1.0D);
 		if (oldValue != this.value) {
 			this.applyValue();
 		}
@@ -103,7 +102,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	 *
 	 * @return the base message of the slider
 	 */
-	public Text getBaseMessage() {
+	public Component getBaseMessage() {
 		return this.baseMessage;
 	}
 
@@ -112,7 +111,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	 *
 	 * @param baseMessage the base message of the slider
 	 */
-	public void setBaseMessage(Text baseMessage) {
+	public void setBaseMessage(Component baseMessage) {
 		this.baseMessage = baseMessage;
 	}
 
@@ -127,7 +126,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		if (event.direction().getAxis() == ScreenAxis.HORIZONTAL && !event.tab()) {
 			if (event.isLookingForward() && this.value < 1 || this.value > 0) {
 				this.setValue(this.getValue() + (event.isLookingForward() ? (1 / this.multiplier) : -(1 / this.multiplier)));
@@ -190,17 +189,17 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	/* Narration */
 
 	@Override
-	protected Text getNarrationMessage() {
-		return Text.translatable("gui.narrate.slider", this.getMessage());
+	protected Component getNarrationMessage() {
+		return Component.translatable("gui.narrate.slider", this.getMessage());
 	}
 
 	@Override
-	protected Text getNarrationFocusedUsageMessage() {
-		return Text.translatable("narration.slider.usage.focused");
+	protected Component getNarrationFocusedUsageMessage() {
+		return Component.translatable("narration.slider.usage.focused");
 	}
 
 	@Override
-	protected Text getNarrationHoveredUsageMessage() {
-		return Text.translatable("narration.slider.usage.hovered");
+	protected Component getNarrationHoveredUsageMessage() {
+		return Component.translatable("narration.slider.usage.hovered");
 	}
 }

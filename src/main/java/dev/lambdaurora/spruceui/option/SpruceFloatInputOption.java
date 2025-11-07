@@ -14,10 +14,9 @@ import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
-import net.minecraft.TextFormatting;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -35,7 +34,7 @@ public class SpruceFloatInputOption extends SpruceOption {
 
 	public SpruceFloatInputOption(
 			String key, Supplier<Float> getter, Consumer<Float> setter,
-			@NotNull TooltipData tooltip
+			TooltipData tooltip
 	) {
 		super(key);
 		this.getter = getter;
@@ -53,7 +52,7 @@ public class SpruceFloatInputOption extends SpruceOption {
 				Float.parseFloat(textField.getText());
 				return FormattedCharSequence.forward(displayedText, Style.EMPTY);
 			} catch (NumberFormatException e) {
-				return FormattedCharSequence.forward(displayedText, Style.EMPTY.withColor(TextFormatting.RED));
+				return FormattedCharSequence.forward(displayedText, Style.EMPTY.withColor(ChatFormatting.RED));
 			}
 		});
 		textField.setChangedListener(input -> {

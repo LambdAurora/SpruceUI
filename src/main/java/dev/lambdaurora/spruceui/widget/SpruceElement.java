@@ -12,7 +12,6 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.navigation.ScreenAxis;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents an element with navigation and controller input implementation.
@@ -28,7 +27,7 @@ public interface SpruceElement extends GuiEventListener {
 	 * @param event the navigation event
 	 * @return {@code true} if success, else {@code false}
 	 */
-	default boolean onNavigation(@NotNull NavigationEvent event) {
+	default boolean onNavigation(NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 		if (event.direction().getAxis() == ScreenAxis.VERTICAL) {
 			this.setFocused(event.isLookingForward());

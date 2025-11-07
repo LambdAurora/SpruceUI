@@ -22,11 +22,10 @@ import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.Mth;
+import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
@@ -39,7 +38,7 @@ import java.util.Objects;
  * @since 2.0.0
  */
 public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget implements Tooltipable {
-	private Text message;
+	private Component message;
 	private TooltipData tooltip = TooltipData.EMPTY;
 	private int tooltipTicks;
 	private long lastTick;
@@ -49,12 +48,12 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	 * @see net.minecraft.client.gui.components.AbstractButton#SPRITES
 	 */
 	protected static final WidgetSprites BUTTON_TEXTURES = new WidgetSprites(
-			Identifier.ofDefault("widget/button"),
-			Identifier.ofDefault("widget/button_disabled"),
-			Identifier.ofDefault("widget/button_highlighted")
+			Identifier.withDefaultNamespace("widget/button"),
+			Identifier.withDefaultNamespace("widget/button_disabled"),
+			Identifier.withDefaultNamespace("widget/button_highlighted")
 	);
 
-	public AbstractSpruceButtonWidget(Position position, int width, int height, Text message) {
+	public AbstractSpruceButtonWidget(Position position, int width, int height, Component message) {
 		super(position);
 		this.width = width;
 		this.height = height;
@@ -66,7 +65,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	 *
 	 * @return the message of this widget.
 	 */
-	public Text getMessage() {
+	public Component getMessage() {
 		return this.message;
 	}
 
@@ -75,7 +74,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	 *
 	 * @param message the message of this widget.
 	 */
-	public void setMessage(Text message) {
+	public void setMessage(Component message) {
 		this.message = message;
 	}
 
@@ -88,12 +87,12 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	public @NotNull TooltipData getTooltip() {
+	public TooltipData getTooltip() {
 		return this.tooltip;
 	}
 
 	@Override
-	public void setTooltip(@NotNull TooltipData tooltip) {
+	public void setTooltip(TooltipData tooltip) {
 		Objects.requireNonNull(
 				tooltip,
 				"Tooltip cannot be null, the absence of a tooltip is represented by TooltipData.EMPTY."
@@ -112,7 +111,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+	protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
 		if (this.isValidClickButton(event.button())) {
 			this.onClick(event.x(), event.y());
 			return true;
@@ -121,7 +120,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	public boolean onMouseRelease(@NotNull MouseButtonEvent event) {
+	public boolean onMouseRelease(MouseButtonEvent event) {
 		if (this.isValidClickButton(event.button())) {
 			this.onRelease(event.x(), event.y());
 			return true;
@@ -130,7 +129,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+	protected boolean onMouseDrag(MouseButtonEvent event, double deltaX, double deltaY) {
 		if (this.isValidClickButton(event.button())) {
 			this.onDrag(event.x(), event.y(), deltaX, deltaY);
 			return true;
@@ -168,7 +167,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 
 	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int color = this.active ? 16777215 : 10526880;
-		this.renderText(graphics, color | MathHelper.ceil(this.alpha * 255.0F) << 24);
+		this.renderText(graphics, color | Mth.ceil(this.alpha * 255.0F) << 24);
 	}
 
 	protected void renderText(SpruceGuiGraphics graphics, int color) {
@@ -189,16 +188,16 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	/* Narration */
 
 	@Override
-	protected @Nullable Text getNarrationMessage() {
-		return Text.translatable("gui.narrate.button", this.getMessage());
+	protected @Nullable Component getNarrationMessage() {
+		return Component.translatable("gui.narrate.button", this.getMessage());
 	}
 
-	protected Text getNarrationFocusedUsageMessage() {
-		return Text.translatable("narration.button.usage.focused");
+	protected Component getNarrationFocusedUsageMessage() {
+		return Component.translatable("narration.button.usage.focused");
 	}
 
-	protected Text getNarrationHoveredUsageMessage() {
-		return Text.translatable("narration.button.usage.hovered");
+	protected Component getNarrationHoveredUsageMessage() {
+		return Component.translatable("narration.button.usage.hovered");
 	}
 
 	@Override

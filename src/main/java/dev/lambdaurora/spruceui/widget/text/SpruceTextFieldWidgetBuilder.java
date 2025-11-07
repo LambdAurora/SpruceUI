@@ -10,8 +10,9 @@
 package dev.lambdaurora.spruceui.widget.text;
 
 import dev.lambdaurora.spruceui.Position;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -29,11 +30,11 @@ public class SpruceTextFieldWidgetBuilder {
 	private final Position position;
 	private final int width;
 	private final int height;
-	private Text title;
-	private Text placeholder;
-	private Consumer<String> onChange;
-	private Predicate<String> textPredicate;
-	private BiFunction<String, Integer, FormattedCharSequence> renderTextProvider;
+	private @Nullable Component title;
+	private @Nullable Component placeholder;
+	private @Nullable Consumer<String> onChange;
+	private @Nullable Predicate<String> textPredicate;
+	private @Nullable BiFunction<String, Integer, FormattedCharSequence> renderTextProvider;
 
 	public SpruceTextFieldWidgetBuilder(Position position, int width, int height) {
 		this.position = position;
@@ -41,7 +42,7 @@ public class SpruceTextFieldWidgetBuilder {
 		this.height = height;
 	}
 
-	public SpruceTextFieldWidgetBuilder title(Text title) {
+	public SpruceTextFieldWidgetBuilder title(Component title) {
 		this.title = title;
 		return this;
 	}
@@ -51,7 +52,7 @@ public class SpruceTextFieldWidgetBuilder {
 		return this;
 	}
 
-	public SpruceTextFieldWidgetBuilder placeholder(Text placeholder) {
+	public SpruceTextFieldWidgetBuilder placeholder(Component placeholder) {
 		this.placeholder = placeholder;
 		return this;
 	}

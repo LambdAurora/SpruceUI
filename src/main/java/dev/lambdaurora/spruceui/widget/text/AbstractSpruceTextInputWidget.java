@@ -21,9 +21,8 @@ import dev.lambdaurora.spruceui.widget.AbstractSpruceWidget;
 import dev.lambdaurora.spruceui.widget.WithBackground;
 import dev.lambdaurora.spruceui.widget.WithBorder;
 import net.minecraft.client.input.CharacterEvent;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a text input widget.
@@ -35,19 +34,19 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractSpruceTextInputWidget<C extends AbstractSpruceTextInputWidget.Cursor<C>>
 		extends AbstractSpruceWidget
 		implements WithBackground, WithBorder {
-	private final Text title;
+	private final Component title;
 	private Background background = new SimpleColorBackground(ColorUtil.BLACK);
 	private Border border = TexturedBorder.SIMPLE;
-	private Text placeholder;
+	private @Nullable Component placeholder;
 
 	private int editableColor = ColorUtil.TEXT_COLOR;
 	private int uneditableColor = ColorUtil.UNEDITABLE_COLOR;
 
-	public AbstractSpruceTextInputWidget(Position position, int width, int height, Text title) {
+	public AbstractSpruceTextInputWidget(Position position, int width, int height, Component title) {
 		this(position, width, height, title, null);
 	}
 
-	public AbstractSpruceTextInputWidget(Position position, int width, int height, Text title, Text placeholder) {
+	public AbstractSpruceTextInputWidget(Position position, int width, int height, Component title, @Nullable Component placeholder) {
 		super(position);
 		this.width = width;
 		this.height = height;
@@ -67,14 +66,14 @@ public abstract class AbstractSpruceTextInputWidget<C extends AbstractSpruceText
 	 *
 	 * @param text the text
 	 */
-	public abstract void setText(String text);
+	public abstract void setText(@Nullable String text);
 
 	/**
 	 * Returns the title of this text input widget.
 	 *
 	 * @return the title
 	 */
-	public Text getTitle() {
+	public Component getTitle() {
 		return this.title;
 	}
 
@@ -83,7 +82,7 @@ public abstract class AbstractSpruceTextInputWidget<C extends AbstractSpruceText
 	 *
 	 * @return the placeholder
 	 */
-	public @Nullable Text getPlaceholder() {
+	public @Nullable Component getPlaceholder() {
 		return this.placeholder;
 	}
 
@@ -92,7 +91,7 @@ public abstract class AbstractSpruceTextInputWidget<C extends AbstractSpruceText
 	 *
 	 * @param placeholder the placeholder
 	 */
-	public void setPlaceholder(Text placeholder) {
+	public void setPlaceholder(@Nullable Component placeholder) {
 		this.placeholder = placeholder;
 	}
 
@@ -218,7 +217,7 @@ public abstract class AbstractSpruceTextInputWidget<C extends AbstractSpruceText
 	/* Input Handling */
 
 	@Override
-	protected boolean onCharTyped(@NotNull CharacterEvent event) {
+	protected boolean onCharTyped(CharacterEvent event) {
 		if (!this.isEditorActive() || !event.isAllowedChatCharacter())
 			return false;
 
@@ -248,8 +247,8 @@ public abstract class AbstractSpruceTextInputWidget<C extends AbstractSpruceText
 	/* Narration */
 
 	@Override
-	protected Text getNarrationMessage() {
-		return Text.translatable("gui.narrate.editBox", this.getTitle(), this.getText());
+	protected Component getNarrationMessage() {
+		return Component.translatable("gui.narrate.editBox", this.getTitle(), this.getText());
 	}
 
 	protected interface Cursor<C extends Cursor<C>> {

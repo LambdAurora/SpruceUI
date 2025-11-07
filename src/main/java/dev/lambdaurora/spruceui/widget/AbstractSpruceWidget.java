@@ -12,7 +12,6 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarratedElementType;
@@ -21,10 +20,10 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.Util;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a widget.
@@ -87,7 +86,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	}
 
 	@Override
-	public @NotNull NarrationPriority narrationPriority() {
+	public NarrationPriority narrationPriority() {
 		if (this.focused) return NarrationPriority.FOCUSED;
 		else if (this.hovered) return NarrationPriority.HOVERED;
 		else return NarrationPriority.NONE;
@@ -124,7 +123,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 		if (this.isVisible() && this.isActive()) {
 			this.setFocused(!this.isFocused());
@@ -136,30 +135,30 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	/* Input */
 
 	@Override
-	public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean doubleClick) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (!this.isActive() || !this.isVisible() || !this.isMouseOver(event.x(), event.y()))
 			return false;
 
 		return this.onMouseClick(event, doubleClick);
 	}
 
-	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+	protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
 		return false;
 	}
 
 	@Override
-	public boolean mouseReleased(@NotNull MouseButtonEvent event) {
+	public boolean mouseReleased(MouseButtonEvent event) {
 		boolean result = this.onMouseRelease(event);
 		if (result) this.dragging = false;
 		return result;
 	}
 
-	protected boolean onMouseRelease(@NotNull MouseButtonEvent event) {
+	protected boolean onMouseRelease(MouseButtonEvent event) {
 		return false;
 	}
 
 	@Override
-	public boolean mouseDragged(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+	public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
 		if (!this.isActive() || !this.isVisible())
 			return false;
 
@@ -171,7 +170,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 		return result;
 	}
 
-	protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+	protected boolean onMouseDrag(MouseButtonEvent event, double deltaX, double deltaY) {
 		return false;
 	}
 
@@ -187,7 +186,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	}
 
 	@Override
-	public boolean keyPressed(@NotNull KeyEvent event) {
+	public boolean keyPressed(KeyEvent event) {
 		if (this.isActive() && this.isVisible()) {
 			return this.onKeyPress(event);
 		}
@@ -200,12 +199,12 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * @param event the key event
 	 * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
 	 */
-	protected boolean onKeyPress(@NotNull KeyEvent event) {
+	protected boolean onKeyPress(KeyEvent event) {
 		return false;
 	}
 
 	@Override
-	public boolean keyReleased(@NotNull KeyEvent event) {
+	public boolean keyReleased(KeyEvent event) {
 		if (this.isActive() && this.isVisible()) {
 			return this.onKeyRelease(event);
 		}
@@ -222,12 +221,12 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * @see org.lwjgl.glfw.GLFW#GLFW_KEY_Q
 	 * @see org.lwjgl.glfw.GLFWKeyCallbackI#invoke(long, int, int, int, int)
 	 */
-	protected boolean onKeyRelease(@NotNull KeyEvent event) {
+	protected boolean onKeyRelease(KeyEvent event) {
 		return false;
 	}
 
 	@Override
-	public boolean charTyped(@NotNull CharacterEvent event) {
+	public boolean charTyped(CharacterEvent event) {
 		if (this.isActive() && this.isVisible()) {
 			return this.onCharTyped(event);
 		}
@@ -242,18 +241,18 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * @param event the character input event
 	 * @return {@code true} to indicate that the event handling is successful/valid, else {@code false}
 	 */
-	protected boolean onCharTyped(@NotNull CharacterEvent event) {
+	protected boolean onCharTyped(CharacterEvent event) {
 		return false;
 	}
 
 	/* Rendering */
 
 	@Override
-	public final void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public final void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.render(new SpruceGuiGraphics(graphics), mouseX, mouseY, delta);
 	}
 
-	public void render(@NotNull SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void render(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.isVisible()) {
 			this.hovered = mouseX >= this.getX() && mouseY >= this.getY()
 					&& mouseX < this.getX() + this.getWidth() && mouseY < this.getY() + this.getHeight();
@@ -314,7 +313,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 *
 	 * @return the narration message if present
 	 */
-	protected @Nullable Text getNarrationMessage() {
+	protected @Nullable Component getNarrationMessage() {
 		return null;
 	}
 }

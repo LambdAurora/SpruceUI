@@ -12,7 +12,6 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents something that can be rendered.
@@ -33,7 +32,7 @@ public interface SpruceRenderable extends Renderable {
 	void render(SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta);
 
 	@Override
-	default void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float tickDelta) {
+	default void render(GuiGraphics graphics, int mouseX, int mouseY, float tickDelta) {
 		this.render(SpruceGuiGraphics.of(graphics), mouseX, mouseY, tickDelta);
 	}
 }

@@ -19,10 +19,10 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.KeyEvent;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -36,12 +36,12 @@ import java.util.function.Supplier;
  * @since 3.3.0
  */
 public abstract class SpruceHandledScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements SprucePositioned, SpruceElement {
-	public SpruceHandledScreen(T handler, Inventory inventory, Text title) {
+	public SpruceHandledScreen(T handler, Inventory inventory, Component title) {
 		super(handler, inventory, title);
 	}
 
 	@Override
-	public void setFocused(GuiEventListener focused) {
+	public void setFocused(@Nullable GuiEventListener focused) {
 		var old = this.getFocused();
 		if (old == focused) return;
 		if (old instanceof SpruceWidget)
@@ -54,7 +54,7 @@ public abstract class SpruceHandledScreen<T extends AbstractContainerMenu> exten
 	/* Input */
 
 	@Override
-	public boolean keyPressed(@NotNull KeyEvent event) {
+	public boolean keyPressed(KeyEvent event) {
 		return super.keyPressed(event) || NavigationEvent.fromKey(event.key(), event.hasShiftDown())
 				.map(this::onNavigation)
 				.orElse(false);
@@ -63,7 +63,7 @@ public abstract class SpruceHandledScreen<T extends AbstractContainerMenu> exten
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 		var focused = this.getFocused();
 		boolean isNonNull = focused != null;

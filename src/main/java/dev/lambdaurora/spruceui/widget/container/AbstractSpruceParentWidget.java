@@ -17,7 +17,6 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -72,7 +71,7 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 		boolean result = NavigationUtils.tryNavigate(event, this.children(), this.focused, this::setFocused, false);
 		if (result)
@@ -83,7 +82,7 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 	/* Input */
 
 	@Override
-	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+	protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
 		var it = this.iterator();
 
 		E element;
@@ -104,7 +103,7 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 	}
 
 	@Override
-	protected boolean onMouseRelease(@NotNull MouseButtonEvent event) {
+	protected boolean onMouseRelease(MouseButtonEvent event) {
 		this.setDragging(false);
 		return this.hoveredElement(event.x(), event.y())
 				.filter(element -> element.mouseReleased(event))
@@ -112,7 +111,7 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 	}
 
 	@Override
-	protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+	protected boolean onMouseDrag(MouseButtonEvent event, double deltaX, double deltaY) {
 		return this.getFocused() != null && this.isDragging() && event.button() == GLFW.GLFW_MOUSE_BUTTON_1
 				&& this.getFocused().mouseDragged(event, deltaX, deltaY);
 	}
@@ -123,17 +122,17 @@ public abstract class AbstractSpruceParentWidget<E extends SpruceWidget> extends
 	}
 
 	@Override
-	protected boolean onKeyPress(@NotNull KeyEvent event) {
+	protected boolean onKeyPress(KeyEvent event) {
 		return this.getFocused() != null && this.getFocused().keyPressed(event);
 	}
 
 	@Override
-	protected boolean onKeyRelease(@NotNull KeyEvent event) {
+	protected boolean onKeyRelease(KeyEvent event) {
 		return this.getFocused() != null && this.getFocused().keyReleased(event);
 	}
 
 	@Override
-	protected boolean onCharTyped(@NotNull CharacterEvent event) {
+	protected boolean onCharTyped(CharacterEvent event) {
 		return this.getFocused() != null && this.getFocused().charTyped(event);
 	}
 }

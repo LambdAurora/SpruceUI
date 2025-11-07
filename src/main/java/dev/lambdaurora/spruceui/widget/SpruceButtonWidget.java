@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 
 /**
  * Represents a button widget.
@@ -22,7 +22,7 @@ import net.minecraft.network.chat.Text;
 public class SpruceButtonWidget extends AbstractSprucePressableButtonWidget {
 	private final PressAction action;
 
-	public SpruceButtonWidget(Position position, int width, int height, Text message, PressAction action) {
+	public SpruceButtonWidget(Position position, int width, int height, Component message, PressAction action) {
 		super(position, width, height, message);
 		this.action = action;
 	}

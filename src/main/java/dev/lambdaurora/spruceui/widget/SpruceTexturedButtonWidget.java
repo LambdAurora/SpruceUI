@@ -12,7 +12,7 @@ package dev.lambdaurora.spruceui.widget;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
 /**
@@ -31,22 +31,22 @@ public class SpruceTexturedButtonWidget extends SpruceButtonWidget {
 	private final int textureHeight;
 	private final boolean showMessage;
 
-	public SpruceTexturedButtonWidget(Position position, int width, int height, Text message, PressAction action, int u, int v,
+	public SpruceTexturedButtonWidget(Position position, int width, int height, Component message, PressAction action, int u, int v,
 			int hoveredVOffset, Identifier texture) {
 		this(position, width, height, message, false, action, u, v, hoveredVOffset, texture);
 	}
 
-	public SpruceTexturedButtonWidget(Position position, int width, int height, Text message, boolean showMessage, PressAction action,
+	public SpruceTexturedButtonWidget(Position position, int width, int height, Component message, boolean showMessage, PressAction action,
 			int u, int v, int hoveredVOffset, Identifier texture) {
 		this(position, width, height, message, showMessage, action, u, v, hoveredVOffset, texture, 256, 256);
 	}
 
-	public SpruceTexturedButtonWidget(Position position, int width, int height, Text message, PressAction action,
+	public SpruceTexturedButtonWidget(Position position, int width, int height, Component message, PressAction action,
 			int u, int v, int hoveredVOffset, Identifier texture, int textureWidth, int textureHeight) {
 		this(position, width, height, message, false, action, u, v, hoveredVOffset, texture, textureWidth, textureHeight);
 	}
 
-	public SpruceTexturedButtonWidget(Position position, int width, int height, Text message, boolean showMessage, PressAction action,
+	public SpruceTexturedButtonWidget(Position position, int width, int height, Component message, boolean showMessage, PressAction action,
 			int u, int v, int hoveredVOffset, Identifier texture, int textureWidth, int textureHeight) {
 		super(position, width, height, message, action);
 		this.texture = texture;

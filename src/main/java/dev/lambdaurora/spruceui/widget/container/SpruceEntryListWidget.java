@@ -29,9 +29,8 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.network.chat.Text;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -163,7 +162,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 	 * @param amount the scroll amount
 	 */
 	public void setScrollAmount(double amount) {
-		this.scrollAmount = MathHelper.clamp(amount, 0, this.getMaxScroll());
+		this.scrollAmount = Mth.clamp(amount, 0, this.getMaxScroll());
 		this.anchor.setRelativeY((int) (this.anchorYOffset + this.getBorder().getThickness() - this.scrollAmount));
 
 		for (var entry : this.entries) {
@@ -293,7 +292,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 		if (event.direction().getAxis() == ScreenAxis.HORIZONTAL && this.getFocused() != null) {
 			boolean result = this.getFocused().onNavigation(event);
@@ -307,13 +306,13 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 	/* Input */
 
 	@Override
-	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+	protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
 		this.scrolling = event.button() == GLFW.GLFW_MOUSE_BUTTON_1 && event.x() >= this.getScrollbarPositionX() && event.x() < (this.getScrollbarPositionX() + 6);
 		return super.onMouseClick(event, doubleClick) || this.scrolling;
 	}
 
 	@Override
-	protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+	protected boolean onMouseDrag(MouseButtonEvent event, double deltaX, double deltaY) {
 		if (super.onMouseDrag(event, deltaX, deltaY)) return true;
 		else if (event.button() == GLFW.GLFW_MOUSE_BUTTON_1 && this.scrolling) {
 			if (event.y() < this.getY()) {
@@ -323,7 +322,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 			} else {
 				double d = Math.max(1, this.getMaxScroll());
 				int height = this.height;
-				int j = MathHelper.clamp((int) ((float) (height * height) / (float) this.getMaxPosition()), 32, height - 8);
+				int j = Mth.clamp((int) ((float) (height * height) / (float) this.getMaxPosition()), 32, height - 8);
 				double e = Math.max(1, d / (double) (height - j));
 				this.setScrollAmount(this.getScrollAmount() + deltaY * e);
 			}
@@ -380,7 +379,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 			int height = this.getInnerBorderedHeight();
 			int scrollbarX = this.getScrollbarPositionX();
 			int scrollerHeight = (int) ((float) (height * height) / (float) this.getMaxPosition());
-			scrollerHeight = MathHelper.clamp(scrollerHeight, 32, height - 8);
+			scrollerHeight = Mth.clamp(scrollerHeight, 32, height - 8);
 			int scrollbarY = (int) this.getScrollAmount() * (height - scrollerHeight) / this.getMaxScroll() + top;
 			if (scrollbarY < top) {
 				scrollbarY = top;
@@ -406,7 +405,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		if (list.size() > 1) {
 			int i = list.indexOf(entry);
 			if (i != -1) {
-				builder.add(NarratedElementType.POSITION, Text.translatable("narrator.position.list", i + 1, list.size()));
+				builder.add(NarratedElementType.POSITION, Component.translatable("narrator.position.list", i + 1, list.size()));
 			}
 		}
 	}

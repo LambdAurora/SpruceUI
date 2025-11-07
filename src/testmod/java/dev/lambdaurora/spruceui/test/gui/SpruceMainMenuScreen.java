@@ -16,8 +16,8 @@ import dev.lambdaurora.spruceui.screen.SpruceScreen;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceLabelWidget;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a screen to navigate to the different SpruceUI test screens.
@@ -28,7 +28,7 @@ public class SpruceMainMenuScreen extends SpruceScreen {
 	private final Screen parent;
 
 	public SpruceMainMenuScreen(@Nullable Screen parent) {
-		super(Text.literal("SpruceUI Test Main Menu"));
+		super(Component.literal("SpruceUI Test Main Menu"));
 		this.parent = parent;
 	}
 
@@ -39,15 +39,15 @@ public class SpruceMainMenuScreen extends SpruceScreen {
 		this.addRenderableOnly(new SpruceLabelWidget(Position.of(0, 8), this.title, this.width, SpruceTextAlignment.CENTER));
 
 		int startY = this.height / 4 + 48;
-		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, Text.literal("Option Test"),
-				btn -> this.client.setScreen(new SpruceOptionScreen(this))));
-		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Text.literal("Text Area Test"),
-				btn -> this.client.setScreen(new SpruceTextAreaScreen(this))));
-		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Text.literal("Tabbed Screen Test"),
-				btn -> this.client.setScreen(new SpruceTabbedTestScreen(this))));
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, Component.literal("Option Test"),
+				btn -> this.minecraft.setScreen(new SpruceOptionScreen(this))));
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Component.literal("Text Area Test"),
+				btn -> this.minecraft.setScreen(new SpruceTextAreaScreen(this))));
+		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Component.literal("Tabbed Screen Test"),
+				btn -> this.minecraft.setScreen(new SpruceTabbedTestScreen(this))));
 
 		// Add done button.
 		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
-				btn -> this.client.setScreen(this.parent)));
+				btn -> this.minecraft.setScreen(this.parent)));
 	}
 }

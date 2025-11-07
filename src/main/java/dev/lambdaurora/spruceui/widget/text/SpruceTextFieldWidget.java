@@ -16,17 +16,17 @@ import dev.lambdaurora.spruceui.tooltip.Tooltip;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.util.ColorUtil;
-import net.minecraft.Util;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.Text;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.util.Mth;
+import net.minecraft.util.Util;
+import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
@@ -70,13 +70,13 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 		}
 	};
 
-	private final Cursor cursor = new Cursor(true);
-	private final Selection selection = new Selection();
+	private final dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget.Cursor cursor = new dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget.Cursor(true);
+	private final dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget.Selection selection = new dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget.Selection();
 	private String text = "";
 	private TooltipData tooltip = TooltipData.EMPTY;
 
 	private Consumer<String> changedListener;
-	private Predicate<String> textPredicate;
+	private Predicate<@Nullable String> textPredicate;
 	private BiFunction<String, Integer, FormattedCharSequence> renderTextProvider;
 
 	private int firstCharacterIndex = 0;
@@ -84,11 +84,11 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 	private int tooltipTicks;
 	private long lastTick;
 
-	public SpruceTextFieldWidget(Position position, int width, int height, Text title) {
+	public SpruceTextFieldWidget(Position position, int width, int height, Component title) {
 		this(position, width, height, title, null);
 	}
 
-	public SpruceTextFieldWidget(Position position, int width, int height, Text title, Text placeholder) {
+	public SpruceTextFieldWidget(Position position, int width, int height, Component title, @Nullable Component placeholder) {
 		super(position, width, height, title, placeholder);
 		this.cursor.toStart();
 		this.sanitize();
@@ -109,7 +109,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 	}
 
 	@Override
-	public void setText(String text) {
+	public void setText(@Nullable String text) {
 		if (this.textPredicate.test(text)) {
 			this.text = text;
 
@@ -121,12 +121,12 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 	}
 
 	@Override
-	public @NotNull TooltipData getTooltip() {
+	public TooltipData getTooltip() {
 		return this.tooltip;
 	}
 
 	@Override
-	public void setTooltip(@NotNull TooltipData tooltip) {
+	public void setTooltip(TooltipData tooltip) {
 		Objects.requireNonNull(
 				tooltip,
 				"Tooltip cannot be null, the absence of a tooltip is represented by TooltipData.EMPTY."
@@ -139,6 +139,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 	}
 
 	public void setChangedListener(Consumer<String> changedListener) {
+		Objects.requireNonNull(changedListener, "changedListener cannot be null");
 		this.changedListener = changedListener;
 	}
 
@@ -200,13 +201,11 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 			this.firstCharacterIndex -= this.firstCharacterIndex - this.cursor.column;
 		}
 
-		this.firstCharacterIndex = MathHelper.clamp(this.firstCharacterIndex, 0, textLength);
+		this.firstCharacterIndex = Mth.clamp(this.firstCharacterIndex, 0, textLength);
 	}
 
 	private void onChanged() {
-		if (this.changedListener != null) {
-			this.changedListener.accept(this.text);
-		}
+		this.changedListener.accept(this.text);
 
 		this.editingTime = Util.getMillis() + 5000L;
 	}
@@ -334,7 +333,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 		if (!event.tab() && event.direction().getAxis() == ScreenAxis.HORIZONTAL) {
 			this.setFocused(true);
@@ -352,7 +351,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 	/* Input */
 
 	@Override
-	protected boolean onKeyPress(@NotNull KeyEvent event) {
+	protected boolean onKeyPress(KeyEvent event) {
 		if (!this.isEditorActive())
 			return false;
 
@@ -398,9 +397,9 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 	}
 
 	@Override
-	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+	protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
 		if (event.button() == 0) {
-			int x = MathHelper.floor(event.x()) - this.getX() - 4;
+			int x = Mth.floor(event.x()) - this.getX() - 4;
 
 			this.setFocused(true);
 
@@ -500,7 +499,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 		int cursorY = this.getY() + this.getHeight() / 2 - 4;
 
 		if (this.text.isEmpty()) {
-			graphics.drawShadowedText(this.client.font, Text.literal("_"),
+			graphics.drawShadowedText(this.client.font, Component.literal("_"),
 					this.getX() + 4, cursorY, ColorUtil.TEXT_COLOR);
 			return;
 		}
@@ -567,7 +566,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 
 			if (amount < 0 && this.column <= SpruceTextFieldWidget.this.firstCharacterIndex) {
 				SpruceTextFieldWidget.this.firstCharacterIndex =
-						MathHelper.clamp(SpruceTextFieldWidget.this.firstCharacterIndex = this.column - 1, 0, text.length());
+						Mth.clamp(SpruceTextFieldWidget.this.firstCharacterIndex = this.column - 1, 0, text.length());
 			}
 		}
 

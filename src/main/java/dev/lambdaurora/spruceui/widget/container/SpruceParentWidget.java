@@ -12,7 +12,6 @@ package dev.lambdaurora.spruceui.widget.container;
 import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.navigation.NavigationUtils;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -78,7 +77,7 @@ public interface SpruceParentWidget<E extends SpruceWidget> extends SpruceWidget
 	/* Navigation */
 
 	@Override
-	default boolean onNavigation(@NotNull NavigationEvent event) {
+	default boolean onNavigation(NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 		boolean result = NavigationUtils.tryNavigate(event, this.children(), this.getFocused(), this::setFocused,
 				false);

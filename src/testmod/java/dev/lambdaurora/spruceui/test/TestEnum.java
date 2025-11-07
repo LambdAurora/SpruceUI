@@ -10,24 +10,25 @@
 package dev.lambdaurora.spruceui.test;
 
 import dev.lambdaurora.spruceui.util.Nameable;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Represents a dummy enum.
  *
  * @author LambdAurora
  */
+@NullMarked
 public enum TestEnum implements Nameable {
 	FIRST,
 	SECOND,
 	THIRD,
 	ANOTHER_VALUE;
 
-	private final Text text;
+	private final Component text;
 
 	TestEnum() {
-		this.text = Text.literal(this.getName());
+		this.text = Component.literal(this.getName());
 	}
 
 	/**
@@ -35,7 +36,7 @@ public enum TestEnum implements Nameable {
 	 *
 	 * @return The next available enum value.
 	 */
-	public @NotNull TestEnum next() {
+	public TestEnum next() {
 		var v = values();
 		if (v.length == this.ordinal() + 1)
 			return v[0];
@@ -47,12 +48,12 @@ public enum TestEnum implements Nameable {
 	 *
 	 * @return The text of this enum value.
 	 */
-	public @NotNull Text getText() {
+	public Component getText() {
 		return this.text;
 	}
 
 	@Override
-	public @NotNull String getName() {
+	public String getName() {
 		return this.name().toLowerCase();
 	}
 }

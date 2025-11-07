@@ -95,7 +95,7 @@ dependencies {
 		officialMojangMappings()
 		// Parchment is currently broken when used with the hacked mojmap layer due to remapping shenanigans.
 		//parchment("org.parchmentmc.data:parchment-${mcVersion}:${project.property("parchment_mappings")}@zip")
-		mappings("dev.lambdaurora:yalmm:${Constants.mcVersion()}+build.${libs.versions.mappings.yalmm.get()}")
+		mappings("dev.lambdaurora:yalmm-mojbackward:${Constants.mcVersion()}+build.${libs.versions.mappings.yalmm.get()}")
 	})
 	modImplementation(libs.fabric.loader)
 

@@ -16,7 +16,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.OptionalInt;
@@ -53,17 +52,17 @@ public record ClientThumbnailTooltipComponent(
 	}
 
 	@Override
-	public int getWidth(@NotNull Font font) {
+	public int getWidth(Font font) {
 		return this.getLayout(font).width();
 	}
 
 	@Override
-	public int getHeight(@NotNull Font font) {
+	public int getHeight(Font font) {
 		return this.getLayout(font).height();
 	}
 
 	@Override
-	public void renderText(@NotNull SpruceGuiGraphics graphics, @NotNull Font font, int x, int y) {
+	public void renderText(SpruceGuiGraphics graphics, Font font, int x, int y) {
 		var layout = this.getLayout(font);
 
 		this.thumbnailComponent.renderText(graphics, font, x, y + layout.thumbnailYOffset());
@@ -82,7 +81,7 @@ public record ClientThumbnailTooltipComponent(
 	}
 
 	@Override
-	public void renderImage(@NotNull Font font, int x, int y, int width, int height, @NotNull SpruceGuiGraphics graphics) {
+	public void renderImage(Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics) {
 		var layout = this.getLayout(font);
 
 		this.thumbnailComponent.renderImage(
@@ -103,7 +102,7 @@ public record ClientThumbnailTooltipComponent(
 		);
 	}
 
-	private Layout getLayout(@NotNull Font font) {
+	private Layout getLayout(Font font) {
 		var window = Minecraft.getInstance().getWindow();
 		int thumbnailWidth = this.thumbnailComponent.getWidth(font);
 		int thumbnailHeight = this.thumbnailComponent.getHeight(font);
@@ -117,7 +116,7 @@ public record ClientThumbnailTooltipComponent(
 			remainingWidth = absoluteMaxWidth - (thumbnailWidth + 4);
 		} else if (remainingWidth < absoluteMaxWidth / 3) {
 			// Give up on placing text aside.
-			var lines = font.wrapLines(this.text, maxWidth);
+			var lines = font.split(this.text, maxWidth);
 			return new Layout(
 					thumbnailWidth, thumbnailHeight,
 					font.lineHeight, maxWidth,

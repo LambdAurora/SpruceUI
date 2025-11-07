@@ -23,12 +23,12 @@ import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceContainerWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
-import net.minecraft.TextFormatting;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientBundleTooltip;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.BundleContents;
@@ -96,10 +96,10 @@ public final class SpruceUITest {
 						TooltipData.builder()
 								.component(new ClientThumbnailTooltipComponent(
 										new CheckboxTooltipComponent(),
-										Text.literal("Represents a boolean option as a checkbox, can either be true or false.")
+										Component.literal("Represents a boolean option as a checkbox, can either be true or false.")
 												.append("\n")
 												.append("It's another implementation of ")
-												.append(Text.literal("`SpruceBooleanOption`").withStyle(TextFormatting.ITALIC))
+												.append(Component.literal("`SpruceBooleanOption`").withStyle(ChatFormatting.ITALIC))
 												.append(" internally.")
 								))
 								.build()
@@ -111,9 +111,9 @@ public final class SpruceUITest {
 						newValue -> this.toggleBoolean = newValue
 				).tooltip(TooltipData.builder()
 						.text(
-								Text.literal("Represents a boolean option as a toggle switch, can either be true or false."),
-								Text.literal("It's another implementation of ")
-										.append(Text.literal("`SpruceBooleanOption`").withStyle(TextFormatting.ITALIC))
+								Component.literal("Represents a boolean option as a toggle switch, can either be true or false."),
+								Component.literal("It's another implementation of ")
+										.append(Component.literal("`SpruceBooleanOption`").withStyle(ChatFormatting.ITALIC))
 										.append(" internally.")
 						)
 						.build()
@@ -126,7 +126,7 @@ public final class SpruceUITest {
 						0.0, 50.0, 1.f,
 						() -> this.aDouble,
 						newValue -> this.aDouble = newValue,
-						option -> option.getDisplayText(Text.literal(String.valueOf(this.aDouble)))
+						option -> option.getDisplayText(Component.literal(String.valueOf(this.aDouble)))
 				).tooltip(TooltipData.builder()
 						.text(
 								"Represents an option with a floating point value.",
@@ -152,17 +152,17 @@ public final class SpruceUITest {
 		this.intInputOption = SpruceOption.intInputBuilder("spruceui_test.option.int_input",
 						() -> this.anInt,
 						value -> this.anInt = value
-				).tooltip(Text.literal("Represents an option with an integer value as text."))
+				).tooltip(Component.literal("Represents an option with an integer value as text."))
 				.build();
 		this.floatInputOption = SpruceOption.floatInputBuilder("spruceui_test.option.float_input",
 						() -> this.aFloat,
 						value -> this.aFloat = value
-				).tooltip(Text.literal("Represents an option with a float value as text."))
+				).tooltip(Component.literal("Represents an option with a float value as text."))
 				.build();
 		this.doubleInputOption = SpruceOption.doubleInputBuilder("spruceui_test.option.double_input",
 						() -> this.anInputDouble,
 						value -> this.anInputDouble = value
-				).tooltip(Text.literal("Represents an option with a double value as text."))
+				).tooltip(Component.literal("Represents an option with a double value as text."))
 				.build();
 
 		// Choose whatever action this option should do.
@@ -170,7 +170,7 @@ public final class SpruceUITest {
 				btn -> {
 					Minecraft client = Minecraft.getInstance();
 					SystemToast toast = SystemToast.multiline(client, SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
-							Text.literal("Action button pressed!"), Text.literal("I'm a result of the action"));
+							Component.literal("Action button pressed!"), Component.literal("I'm a result of the action"));
 					client.getToastManager().addToast(toast);
 				},
 				TooltipData.builder()
@@ -215,7 +215,7 @@ public final class SpruceUITest {
 		ScreenEvents.AFTER_INIT.register(context -> {
 			context.addRenderableWidget(
 					new SpruceButtonWidget(
-							Position.of(0, 0), 150, 20, Text.literal("SpruceUI Test Menu"),
+							Position.of(0, 0), 150, 20, Component.literal("SpruceUI Test Menu"),
 							btn -> context.client().setScreen(new SpruceMainMenuScreen(context.screen()))
 					).asVanilla()
 			);
@@ -274,7 +274,7 @@ public final class SpruceUITest {
 			@Nullable SpruceButtonWidget.PressAction doneButtonAction) {
 		int textFieldWidth = (int) (width * (3.0 / 4.0));
 		var textArea = new SpruceTextAreaWidget(Position.of(width / 2 - textFieldWidth / 2, 0), textFieldWidth, height - 50,
-				Text.literal("Text Area"));
+				Component.literal("Text Area"));
 		textArea.setLines(Arrays.asList(
 				"Hello world,",
 				"",
@@ -304,7 +304,7 @@ public final class SpruceUITest {
 
 		int printToConsoleX = width / 2 - (doneButtonAction == null ? 75 : 155);
 		// Print to console button, may be useful for debugging.
-		container.addChild(new SpruceButtonWidget(Position.of(printToConsoleX, height - 29), 150, 20, Text.literal("Print to console"),
+		container.addChild(new SpruceButtonWidget(Position.of(printToConsoleX, height - 29), 150, 20, Component.literal("Print to console"),
 				btn -> {
 					System.out.println("########################## START TEXT AREA CONTENT ##########################");
 					System.out.println(textArea.getText());

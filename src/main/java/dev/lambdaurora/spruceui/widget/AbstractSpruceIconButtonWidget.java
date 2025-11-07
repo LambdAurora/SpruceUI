@@ -11,11 +11,11 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
-import net.minecraft.network.chat.Text;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 
 public abstract class AbstractSpruceIconButtonWidget extends SpruceButtonWidget {
-	public AbstractSpruceIconButtonWidget(Position position, int width, int height, Text message, PressAction action) {
+	public AbstractSpruceIconButtonWidget(Position position, int width, int height, Component message, PressAction action) {
 		super(position, width, height, message, action);
 	}
 
@@ -33,7 +33,7 @@ public abstract class AbstractSpruceIconButtonWidget extends SpruceButtonWidget 
 			int color = this.isActive() ? 16777215 : 10526880;
 			graphics.drawCenteredShadowedText(this.client.font, this.getMessage(),
 					this.getX() + 8 + iconWidth + (this.getWidth() - 8 - iconWidth - 6) / 2,
-					this.getY() + (this.height - 8) / 2, color | MathHelper.ceil(this.getAlpha() * 255.0F) << 24);
+					this.getY() + (this.height - 8) / 2, color | Mth.ceil(this.getAlpha() * 255.0F) << 24);
 		}
 	}
 }

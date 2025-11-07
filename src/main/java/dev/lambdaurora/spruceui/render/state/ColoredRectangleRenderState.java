@@ -75,10 +75,10 @@ public record ColoredRectangleRenderState(
 
 	@Override
 	public void buildVertices(VertexConsumer vertexConsumer) {
-		vertexConsumer.addVertexWith2DPose(this.pose(), this.startX(), this.startY()).color(this.colorTopLeft());
-		vertexConsumer.addVertexWith2DPose(this.pose(), this.startX(), this.endY()).color(this.colorBottomLeft());
-		vertexConsumer.addVertexWith2DPose(this.pose(), this.endX(), this.endY()).color(this.colorBottomRight());
-		vertexConsumer.addVertexWith2DPose(this.pose(), this.endX(), this.startY()).color(this.colorTopRight());
+		vertexConsumer.addVertexWith2DPose(this.pose(), this.startX(), this.startY()).setColor(this.colorTopLeft());
+		vertexConsumer.addVertexWith2DPose(this.pose(), this.startX(), this.endY()).setColor(this.colorBottomLeft());
+		vertexConsumer.addVertexWith2DPose(this.pose(), this.endX(), this.endY()).setColor(this.colorBottomRight());
+		vertexConsumer.addVertexWith2DPose(this.pose(), this.endX(), this.startY()).setColor(this.colorTopRight());
 	}
 
 	@Nullable

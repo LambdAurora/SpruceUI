@@ -9,7 +9,6 @@
 
 package dev.lambdaurora.spruceui.widget.container.tabbed;
 
-import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.background.Background;
@@ -26,10 +25,9 @@ import dev.lambdaurora.spruceui.widget.container.AbstractSpruceParentWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceEntryListWidget;
 import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
@@ -41,20 +39,20 @@ import java.util.List;
  * @since 2.0.0
  */
 public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget> {
-	private final List<FormattedCharSequence> title;
+	private final @Nullable List<FormattedCharSequence> title;
 	private final SideTabList list;
 	private final Position anchor;
 	private boolean isLeft = false;
 
-	public SpruceTabbedWidget(Position position, int width, int height, @Nullable Text title) {
+	public SpruceTabbedWidget(Position position, int width, int height, @Nullable Component title) {
 		this(position, width, height, title, Math.max(100, width / 8));
 	}
 
-	public SpruceTabbedWidget(Position position, int width, int height, @Nullable Text title, int sideWidth) {
+	public SpruceTabbedWidget(Position position, int width, int height, @Nullable Component title, int sideWidth) {
 		super(position, SpruceWidget.class);
 		this.width = width;
 		this.height = height;
-		this.title = title != null ? this.client.font.wrapLines(title, sideWidth - 8) : null;
+		this.title = title != null ? this.client.font.split(title, sideWidth - 8) : null;
 		int sideTopOffset = title == null ? 0 : 6 + (this.title.size() * this.client.font.lineHeight + 4);
 		this.list = new SideTabList(
 				Position.of(position, 0, sideTopOffset),
@@ -64,12 +62,12 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		this.anchor = Position.of(this, this.list.getWidth(), 0);
 	}
 
-	public SpruceTabbedWidget(Position position, int width, int height, @Nullable Text title, int sideWidth,
+	public SpruceTabbedWidget(Position position, int width, int height, @Nullable Component title, int sideWidth,
 			int sideTopOffset) {
 		super(position, SpruceWidget.class);
 		this.width = width;
 		this.height = height;
-		this.title = title != null ? this.client.font.wrapLines(title, sideWidth - 8) : null;
+		this.title = title != null ? this.client.font.split(title, sideWidth - 8) : null;
 		this.list = new SideTabList(
 				Position.of(position, 0, sideTopOffset),
 				sideWidth,
@@ -87,16 +85,16 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		return this.list;
 	}
 
-	public void addTabEntry(Text title, @Nullable Text description, ContainerFactory factory) {
+	public void addTabEntry(Component title, @Nullable Component description, ContainerFactory factory) {
 		this.addTabEntry(title, description, factory.build(this.getWidth() - this.list.getWidth(), this.getHeight()));
 	}
 
-	public void addTabEntry(Text title, @Nullable Text description, AbstractSpruceWidget container) {
+	public void addTabEntry(Component title, @Nullable Component description, AbstractSpruceWidget container) {
 		var entry = this.list.addTabEntry(title, description, container);
 		entry.container.getPosition().setAnchor(this.anchor);
 	}
 
-	public void addSeparatorEntry(Text title) {
+	public void addSeparatorEntry(Component title) {
 		this.list.addSeparatorEntry(title);
 	}
 
@@ -106,7 +104,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	 * @param title the title of the tab entry to remove
 	 * @return {@code true} if the tab entry has been removed, {@code false} otherwise
 	 */
-	public boolean removeTabEntry(Text title) {
+	public boolean removeTabEntry(Component title) {
 		return this.list.removeTabEntry(title);
 	}
 
@@ -116,7 +114,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	 * @param title the title of the separator entry to remove
 	 * @return {@code true} if the separator entry has been removed, {@code false} otherwise
 	 */
-	public boolean removeSeparatorEntry(Text title) {
+	public boolean removeSeparatorEntry(Component title) {
 		return this.list.removeSeparatorEntry(title);
 	}
 
@@ -135,7 +133,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 
 		if (this.list.getCurrentTab() == null)
@@ -193,10 +191,10 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
 	public static abstract class Entry extends SpruceEntryListWidget.Entry implements WithBackground {
 		protected final SideTabList parent;
-		private final Text title;
+		private final Component title;
 		private Background background = EmptyBackground.EMPTY_BACKGROUND;
 
-		protected Entry(SideTabList parent, Text title) {
+		protected Entry(SideTabList parent, Component title) {
 			this.parent = parent;
 			this.title = title;
 		}
@@ -211,7 +209,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		 *
 		 * @return the title
 		 */
-		public Text getTitle() {
+		public Component getTitle() {
 			return this.title;
 		}
 
@@ -235,15 +233,15 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
 	public static class TabEntry extends Entry {
 		private final List<FormattedCharSequence> title;
-		private final List<FormattedCharSequence> description;
+		private final @Nullable List<FormattedCharSequence> description;
 		private final AbstractSpruceWidget container;
 		private boolean selected;
 
-		protected TabEntry(SideTabList parent, Text title, @Nullable Text description, AbstractSpruceWidget container) {
+		protected TabEntry(SideTabList parent, Component title, @Nullable Component description, AbstractSpruceWidget container) {
 			super(parent, title);
-			this.title = this.client.font.wrapLines(title, this.parent.getWidth() - 18);
+			this.title = this.client.font.split(title, this.parent.getWidth() - 18);
 			if (description == null) this.description = null;
-			else this.description = this.client.font.wrapLines(description, this.parent.getWidth() - 18);
+			else this.description = this.client.font.split(description, this.parent.getWidth() - 18);
 			this.container = container;
 
 			if (container instanceof SpruceEntryListWidget<?> listWidget) {
@@ -271,7 +269,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Input */
 
 		@Override
-		protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+		protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
 			if (event.button() == 0) {
 				this.playDownSound();
 				this.parent.setSelected(this);
@@ -334,7 +332,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	public static class SeparatorEntry extends Entry {
 		private final SpruceSeparatorWidget separatorWidget;
 
-		protected SeparatorEntry(SideTabList parent, Text title) {
+		protected SeparatorEntry(SideTabList parent, Component title) {
 			super(parent, title);
 			this.separatorWidget = new SpruceSeparatorWidget(Position.of(this, 0, 2), this.getWidth(), title) {
 				@Override
@@ -356,7 +354,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Navigation */
 
 		@Override
-		public boolean onNavigation(@NotNull NavigationEvent event) {
+		public boolean onNavigation(NavigationEvent event) {
 			return this.separatorWidget.onNavigation(event);
 		}
 
@@ -379,8 +377,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		}
 	}
 
-	public static class SideTabList extends SpruceEntryListWidget<Entry> {
-		private TabEntry currentTab = null;
+	public static class SideTabList extends SpruceEntryListWidget<dev.lambdaurora.spruceui.widget.container.tabbed.SpruceTabbedWidget.Entry> {
+		private @Nullable TabEntry currentTab = null;
 
 		protected SideTabList(Position position, int width, int height) {
 			super(position, width, height, 0, SpruceTabbedWidget.Entry.class);
@@ -388,7 +386,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 			this.setRenderTransition(false);
 		}
 
-		public TabEntry getCurrentTab() {
+		public @Nullable TabEntry getCurrentTab() {
 			return this.currentTab;
 		}
 
@@ -408,7 +406,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 			this.currentTab = tab;
 		}
 
-		public TabEntry addTabEntry(Text title, @Nullable Text description, AbstractSpruceWidget container) {
+		public TabEntry addTabEntry(Component title, @Nullable Component description, AbstractSpruceWidget container) {
 			var entry = new TabEntry(this, title, description, container);
 			this.addEntry(entry);
 			if (this.getCurrentTab() == null)
@@ -416,7 +414,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 			return entry;
 		}
 
-		public SeparatorEntry addSeparatorEntry(Text title) {
+		public SeparatorEntry addSeparatorEntry(Component title) {
 			var entry = new SeparatorEntry(this, title);
 			this.addEntry(entry);
 			return entry;
@@ -430,7 +428,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 			return super.removeEntry(entry);
 		}
 
-		public boolean removeTabEntry(Text title) {
+		public boolean removeTabEntry(Component title) {
 			for (var entry : this) {
 				if (entry instanceof TabEntry && entry.getTitle().equals(title)) {
 					return this.removeEntry(entry);
@@ -439,7 +437,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 			return false;
 		}
 
-		public boolean removeSeparatorEntry(Text title) {
+		public boolean removeSeparatorEntry(Component title) {
 			for (var entry : this) {
 				if (entry instanceof SeparatorEntry && entry.getTitle().equals(title)) {
 					return this.removeEntry(entry);
@@ -473,7 +471,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Navigation */
 
 		@Override
-		public boolean onNavigation(@NotNull NavigationEvent event) {
+		public boolean onNavigation(NavigationEvent event) {
 			if (this.requiresCursor()) return false;
 			var old = this.getFocused();
 			boolean result = super.onNavigation(event);

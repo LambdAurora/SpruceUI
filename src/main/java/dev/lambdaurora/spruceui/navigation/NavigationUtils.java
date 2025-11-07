@@ -10,6 +10,7 @@
 package dev.lambdaurora.spruceui.navigation;
 
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -28,7 +29,9 @@ public final class NavigationUtils {
 		throw new UnsupportedOperationException("NavigationUtils only contains static definitions.");
 	}
 
-	public static <E extends SpruceWidget> boolean tryNavigate(NavigationEvent event, List<E> children, E focused, Consumer<E> setFocused, boolean alwaysFocus) {
+	public static <E extends SpruceWidget> boolean tryNavigate(
+			NavigationEvent event, List<E> children, @Nullable E focused, Consumer<@Nullable E> setFocused, boolean alwaysFocus
+	) {
 		if (children.isEmpty())
 			return false;
 		if (!event.tab() && alwaysFocus && focused != null) {

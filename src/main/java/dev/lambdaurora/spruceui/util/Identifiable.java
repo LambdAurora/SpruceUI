@@ -28,6 +28,6 @@ public interface Identifiable extends Nameable {
 
 	@Override
 	default String getName() {
-		return this.getIdentifier().path();
+		return this.getIdentifier().getPath();
 	}
 }

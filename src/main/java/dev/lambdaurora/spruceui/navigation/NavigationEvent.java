@@ -10,7 +10,6 @@
 package dev.lambdaurora.spruceui.navigation;
 
 import net.minecraft.client.gui.navigation.ScreenDirection;
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Optional;
@@ -25,7 +24,7 @@ import java.util.Optional;
  * @since 9.0.0
  */
 public record NavigationEvent(
-		@NotNull ScreenDirection direction,
+		ScreenDirection direction,
 		boolean tab,
 		boolean hasShiftDown
 ) {

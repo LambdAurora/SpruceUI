@@ -19,10 +19,9 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.network.chat.Text;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
@@ -43,11 +42,11 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 	private int firstLine = 0;
 	private int displayedLines;
 
-	public SpruceTextAreaWidget(Position position, int width, int height, Text title) {
+	public SpruceTextAreaWidget(Position position, int width, int height, Component title) {
 		this(position, width, height, title, null);
 	}
 
-	public SpruceTextAreaWidget(Position position, int width, int height, Text title, Text placeholder) {
+	public SpruceTextAreaWidget(Position position, int width, int height, Component title, @Nullable Component placeholder) {
 		super(position, width, height, title, placeholder);
 		this.font = this.client.font;
 		this.displayedLines = this.getInnerHeight() / this.font.lineHeight;
@@ -127,12 +126,12 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 	}
 
 	@Override
-	protected Cursor cursor() {
+	protected dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget.Cursor cursor() {
 		return this.cursor;
 	}
 
 	@Override
-	protected AbstractSpruceTextInputWidget<Cursor>.Selection selection() {
+	protected AbstractSpruceTextInputWidget<dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget.Cursor>.Selection selection() {
 		return this.selection;
 	}
 
@@ -200,7 +199,11 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 
 		var line = this.lines.get(this.cursor.row);
 
-		if ((line.isEmpty() || line.equals("\n")) && this.lines.size() != 1) {
+		if (line == null) {
+			this.cursor.row = this.lines.getRows().size() - 1;
+			this.cursor.toRowEnd();
+			return;
+		} else if ((line.isEmpty() || line.equals("\n")) && this.lines.size() != 1) {
 			this.lines.remove(this.cursor.row);
 			this.cursor.moveUp();
 			this.cursor.toRowEnd();
@@ -226,7 +229,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 
 		var line = this.lines.get(this.cursor.row);
 
-		if (line.isEmpty()) {
+		if (line == null || line.isEmpty()) {
 			int row = this.cursor.row;
 			if (row >= this.lines.size() - 1)
 				return;
@@ -300,7 +303,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 		if (!event.tab()) {
 			this.setFocused(true);
@@ -319,7 +322,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 	/* Input */
 
 	@Override
-	protected boolean onKeyPress(@NotNull KeyEvent event) {
+	protected boolean onKeyPress(KeyEvent event) {
 		if (!this.isEditorActive())
 			return false;
 
@@ -383,10 +386,10 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 	}
 
 	@Override
-	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+	protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
 		if (event.button() == 0) {
-			int x = MathHelper.floor(event.x()) - this.getX() - 4;
-			int y = MathHelper.floor(event.y()) - this.getY() - 4;
+			int x = Mth.floor(event.x()) - this.getX() - 4;
+			int y = Mth.floor(event.y()) - this.getY() - 4;
 
 			this.setFocused(true);
 
@@ -459,7 +462,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 				continue;
 			if (line.endsWith("\n")) line = line.substring(0, line.length() - 1);
 
-			graphics.drawShadowedText(this.font, Text.literal(line), textX, lineY, textColor);
+			graphics.drawShadowedText(this.font, Component.literal(line), textX, lineY, textColor);
 			this.drawSelection(graphics, line, lineY, row);
 
 			lineY += this.font.lineHeight;
@@ -512,7 +515,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 		if (!this.isFocused())
 			return;
 		if (this.lines.isEmpty()) {
-			graphics.drawShadowedText(this.font, Text.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
+			graphics.drawShadowedText(this.font, Component.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
 			return;
 		}
 

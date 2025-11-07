@@ -21,7 +21,6 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -181,24 +180,24 @@ public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements 
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		return this.getTextFieldWidget().onNavigation(event);
 	}
 
 	/* Input */
 
 	@Override
-	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+	protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
 		return this.getTextFieldWidget().mouseClicked(event, doubleClick);
 	}
 
 	@Override
-	protected boolean onMouseRelease(@NotNull MouseButtonEvent event) {
+	protected boolean onMouseRelease(MouseButtonEvent event) {
 		return this.getTextFieldWidget().mouseReleased(event);
 	}
 
 	@Override
-	protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+	protected boolean onMouseDrag(MouseButtonEvent event, double deltaX, double deltaY) {
 		return this.getTextFieldWidget().mouseDragged(event, deltaX, deltaY);
 	}
 
@@ -208,17 +207,17 @@ public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements 
 	}
 
 	@Override
-	protected boolean onKeyPress(@NotNull KeyEvent event) {
+	protected boolean onKeyPress(KeyEvent event) {
 		return this.getTextFieldWidget().keyPressed(event);
 	}
 
 	@Override
-	protected boolean onKeyRelease(@NotNull KeyEvent event) {
+	protected boolean onKeyRelease(KeyEvent event) {
 		return this.getTextFieldWidget().keyReleased(event);
 	}
 
 	@Override
-	protected boolean onCharTyped(@NotNull CharacterEvent event) {
+	protected boolean onCharTyped(CharacterEvent event) {
 		return this.getTextFieldWidget().charTyped(event);
 	}
 

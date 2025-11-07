@@ -13,11 +13,10 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import net.minecraft.network.chat.Component;
 
 /**
  * Represents a cycling option.
@@ -30,11 +29,11 @@ import java.util.function.Function;
  */
 public class SpruceCyclingOption extends SpruceOption {
 	private final Consumer<Integer> setter;
-	private final Function<SpruceCyclingOption, Text> messageProvider;
+	private final Function<SpruceCyclingOption, Component> messageProvider;
 
 	public SpruceCyclingOption(
-			String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Text> messageProvider,
-			@NotNull TooltipData tooltip
+			String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Component> messageProvider,
+			TooltipData tooltip
 	) {
 		super(key);
 		this.setter = setter;
@@ -66,16 +65,16 @@ public class SpruceCyclingOption extends SpruceOption {
 	 *
 	 * @return The option message.
 	 */
-	public Text getMessage() {
+	public Component getMessage() {
 		return this.messageProvider.apply(this);
 	}
 
 	public static class Builder extends SpruceOption.Builder<Builder, SpruceCyclingOption> {
 		private final Consumer<Integer> setter;
-		private final Function<SpruceCyclingOption, Text> messageProvider;
+		private final Function<SpruceCyclingOption, Component> messageProvider;
 
 		public Builder(
-				String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Text> messageProvider
+				String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Component> messageProvider
 		) {
 			super(key);
 			this.setter = setter;

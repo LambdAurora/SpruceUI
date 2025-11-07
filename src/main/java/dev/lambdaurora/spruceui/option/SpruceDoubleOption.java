@@ -13,13 +13,12 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.option.SpruceOptionSliderWidget;
-import net.minecraft.network.chat.Text;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 
 /**
  * Represents a double option.
@@ -36,12 +35,12 @@ public class SpruceDoubleOption extends SpruceOption {
 	protected double max;
 	private final Supplier<Double> getter;
 	private final Consumer<Double> setter;
-	private final Function<SpruceDoubleOption, Text> displayStringGetter;
+	private final Function<SpruceDoubleOption, Component> displayStringGetter;
 
 	public SpruceDoubleOption(
 			String key, double min, double max, float step,
-			Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Text> displayStringGetter,
-			@NotNull TooltipData tooltip
+			Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Component> displayStringGetter,
+			TooltipData tooltip
 	) {
 		super(key);
 		this.min = min;
@@ -61,11 +60,11 @@ public class SpruceDoubleOption extends SpruceOption {
 	}
 
 	public double getRatio(double value) {
-		return MathHelper.clamp((this.adjust(value) - this.min) / (this.max - this.min), 0.0D, 1.0D);
+		return Mth.clamp((this.adjust(value) - this.min) / (this.max - this.min), 0.0D, 1.0D);
 	}
 
 	public double getValue(double ratio) {
-		return this.adjust(MathHelper.lerp(MathHelper.clamp(ratio, 0.0D, 1.0D), this.min, this.max));
+		return this.adjust(Mth.lerp(Mth.clamp(ratio, 0.0D, 1.0D), this.min, this.max));
 	}
 
 	private double adjust(double value) {
@@ -73,7 +72,7 @@ public class SpruceDoubleOption extends SpruceOption {
 			value = this.step * (float) Math.round(value / (double) this.step);
 		}
 
-		return MathHelper.clamp(value, this.min, this.max);
+		return Mth.clamp(value, this.min, this.max);
 	}
 
 	public double getMin() {
@@ -106,7 +105,7 @@ public class SpruceDoubleOption extends SpruceOption {
 	 *
 	 * @return the display string
 	 */
-	public Text getDisplayString() {
+	public Component getDisplayString() {
 		return this.displayStringGetter.apply(this);
 	}
 
@@ -116,11 +115,11 @@ public class SpruceDoubleOption extends SpruceOption {
 		protected double max;
 		private final Supplier<Double> getter;
 		private final Consumer<Double> setter;
-		private final Function<SpruceDoubleOption, Text> displayStringGetter;
+		private final Function<SpruceDoubleOption, Component> displayStringGetter;
 
 		public Builder(
 				String key, double min, double max, float step,
-				Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Text> displayStringGetter
+				Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Component> displayStringGetter
 		) {
 			super(key);
 			this.min = min;

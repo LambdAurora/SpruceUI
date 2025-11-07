@@ -9,7 +9,7 @@
 
 package dev.lambdaurora.spruceui.tooltip;
 
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -41,7 +41,7 @@ public interface Tooltipable {
 	 *
 	 * @param tooltip the tooltip to show
 	 */
-	default void setTooltip(@NotNull Text tooltip) {
+	default void setTooltip(@NotNull Component tooltip) {
 		this.setTooltip(new TooltipData(new TooltipData.TextEntry(tooltip)));
 	}
 }

@@ -14,12 +14,11 @@ import dev.lambdaurora.spruceui.SpruceTexts;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.TextFormatting;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 
 /**
  * Represents a boolean option.
@@ -37,14 +36,14 @@ public class SpruceBooleanOption extends SpruceOption {
 
 	public SpruceBooleanOption(
 			String key, Supplier<Boolean> getter, Consumer<Boolean> setter,
-			@NotNull TooltipData tooltip
+			TooltipData tooltip
 	) {
 		this(key, getter, setter, tooltip, false);
 	}
 
 	public SpruceBooleanOption(
 			String key, Supplier<Boolean> getter, Consumer<Boolean> setter,
-			@NotNull TooltipData tooltip, boolean colored
+			TooltipData tooltip, boolean colored
 	) {
 		super(key);
 		this.getter = getter;
@@ -98,12 +97,12 @@ public class SpruceBooleanOption extends SpruceOption {
 	 *
 	 * @return the display string
 	 */
-	public Text getDisplayText() {
+	public Component getDisplayText() {
 		boolean value = this.get();
 		var toggleText = SpruceTexts.getToggleText(value);
 		if (this.colored)
 			toggleText = toggleText.copy().setStyle(
-					toggleText.getStyle().withColor(value ? TextFormatting.GREEN : TextFormatting.RED)
+					toggleText.getStyle().withColor(value ? ChatFormatting.GREEN : ChatFormatting.RED)
 			);
 		return this.getDisplayText(toggleText);
 	}
