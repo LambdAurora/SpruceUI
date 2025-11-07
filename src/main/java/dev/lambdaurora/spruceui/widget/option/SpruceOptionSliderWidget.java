@@ -12,7 +12,7 @@ package dev.lambdaurora.spruceui.widget.option;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.option.SpruceDoubleOption;
 import dev.lambdaurora.spruceui.widget.SpruceSliderWidget;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 
 /**
  * Represents an option slider widget.
@@ -25,14 +25,14 @@ public class SpruceOptionSliderWidget extends SpruceSliderWidget {
 	private final SpruceDoubleOption option;
 
 	public SpruceOptionSliderWidget(Position position, int width, int height, SpruceDoubleOption option) {
-		super(position, width, height, Text.empty(), option.getRatio(option.get()), slider -> option.set(option.getValue(slider.getValue())));
+		super(position, width, height, Component.empty(), option.getRatio(option.get()), slider -> option.set(option.getValue(slider.getValue())));
 		this.option = option;
 		this.updateMessage();
 	}
 
 	@Override
 	protected void updateMessage() {
-		if (this.option != null)
+		if (this.option != null) // Beware of larval stage calls!
 			this.setMessage(this.option.getDisplayString());
 	}
 }

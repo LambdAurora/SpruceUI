@@ -15,8 +15,7 @@ import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.util.Nameable;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.chat.Component;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -45,12 +44,12 @@ public abstract class SpruceOption implements Nameable, Tooltipable {
 	}
 
 	@Override
-	public @NotNull TooltipData getTooltip() {
+	public TooltipData getTooltip() {
 		return this.tooltip;
 	}
 
 	@Override
-	public void setTooltip(@NotNull TooltipData tooltip) {
+	public void setTooltip(TooltipData tooltip) {
 		Objects.requireNonNull(
 				tooltip,
 				"Tooltip cannot be null, the absence of a tooltip is represented by TooltipData.EMPTY."
@@ -63,8 +62,8 @@ public abstract class SpruceOption implements Nameable, Tooltipable {
 	 *
 	 * @return the display prefix
 	 */
-	public Text getPrefix() {
-		return Text.translatable(this.key);
+	public Component getPrefix() {
+		return Component.translatable(this.key);
 	}
 
 	/**
@@ -73,8 +72,8 @@ public abstract class SpruceOption implements Nameable, Tooltipable {
 	 * @param value the value
 	 * @return the display text
 	 */
-	public Text getDisplayText(Text value) {
-		return Text.translatable("spruceui.options.generic", this.getPrefix(), value);
+	public Component getDisplayText(Component value) {
+		return Component.translatable("spruceui.options.generic", this.getPrefix(), value);
 	}
 
 	public abstract SpruceWidget createWidget(Position position, int width);
@@ -92,14 +91,14 @@ public abstract class SpruceOption implements Nameable, Tooltipable {
 	}
 
 	public static SpruceCyclingOption.Builder cyclingBuilder(
-			String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Text> messageProvider
+			String key, Consumer<Integer> setter, Function<SpruceCyclingOption, Component> messageProvider
 	) {
 		return new SpruceCyclingOption.Builder(key, setter, messageProvider);
 	}
 
 	public static SpruceDoubleOption.Builder doubleBuilder(
 			String key, double min, double max, float step,
-			Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Text> displayStringGetter
+			Supplier<Double> getter, Consumer<Double> setter, Function<SpruceDoubleOption, Component> displayStringGetter
 	) {
 		return new SpruceDoubleOption.Builder(
 				key, min, max, step,
@@ -145,7 +144,7 @@ public abstract class SpruceOption implements Nameable, Tooltipable {
 		 * @param tooltip the tooltip
 		 * @return this builder
 		 */
-		public B tooltip(@NotNull Text tooltip) {
+		public B tooltip(Component tooltip) {
 			return this.tooltip(new TooltipData(new TooltipData.TextEntry(tooltip)));
 		}
 
@@ -155,7 +154,7 @@ public abstract class SpruceOption implements Nameable, Tooltipable {
 		 * @param tooltip the tooltip
 		 * @return this builder
 		 */
-		public B tooltip(@NotNull TooltipData tooltip) {
+		public B tooltip(TooltipData tooltip) {
 			this.tooltip = tooltip;
 			return this.self();
 		}

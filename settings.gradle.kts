@@ -13,5 +13,3 @@ pluginManagement {
 		}
 	}
 }
-
-includeBuild("build_logic")

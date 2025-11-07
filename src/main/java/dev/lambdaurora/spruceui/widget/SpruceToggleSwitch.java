@@ -16,9 +16,8 @@ import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.locale.Language;
-import net.minecraft.network.chat.Text;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 
 /**
  * Represents a checkbox widget.
@@ -41,21 +40,21 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 			SpruceUI.id("widget/toggle_switch/off_highlighted")
 	);
 
-	public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value) {
+	public SpruceToggleSwitch(Position position, int width, int height, Component message, boolean value) {
 		super(position, width, height, message, value);
 	}
 
-	public SpruceToggleSwitch(Position position, int width, int height, Text message, boolean value,
+	public SpruceToggleSwitch(Position position, int width, int height, Component message, boolean value,
 			boolean showMessage) {
 		super(position, width, height, message, value, showMessage);
 	}
 
-	public SpruceToggleSwitch(Position position, int width, int height, Text message, PressAction action,
+	public SpruceToggleSwitch(Position position, int width, int height, Component message, PressAction action,
 			boolean value) {
 		super(position, width, height, message, action, value);
 	}
 
-	public SpruceToggleSwitch(Position position, int width, int height, Text message, PressAction action,
+	public SpruceToggleSwitch(Position position, int width, int height, Component message, PressAction action,
 			boolean value, boolean showMessage) {
 		super(position, width, height, message, action, value, showMessage);
 	}
@@ -75,7 +74,7 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 					this.client.font.substrByWidth(this.getMessage(), this.getWidth() - 40)
 			);
 			graphics.drawShadowedText(this.client.font, message, this.getX() + 36, this.getY() + (this.getHeight() - 8) / 2,
-					14737632 | MathHelper.ceil(this.alpha * 255.0F) << 24);
+					14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
 		}
 	}
 
@@ -91,8 +90,8 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 	/* Narration */
 
 	@Override
-	protected @Nullable Text getNarrationMessage() {
-		return Text.translatable("spruceui.narration.toggle_switch", this.getMessage(),
+	protected Component getNarrationMessage() {
+		return Component.translatable("spruceui.narration.toggle_switch", this.getMessage(),
 				SpruceTexts.getToggleText(this.getValue()));
 	}
 }

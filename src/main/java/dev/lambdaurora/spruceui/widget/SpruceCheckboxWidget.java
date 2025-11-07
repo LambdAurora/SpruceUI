@@ -15,9 +15,9 @@ import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.locale.Language;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 
 /**
  * Represents a checkbox widget.
@@ -28,27 +28,27 @@ import net.minecraft.util.math.MathHelper;
  */
 public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 	public static final WidgetSprites BACKGROUND_TEXTURE = new WidgetSprites(
-			Identifier.ofDefault("widget/checkbox"),
-			Identifier.ofDefault("widget/checkbox_highlighted")
+			Identifier.withDefaultNamespace("widget/checkbox"),
+			Identifier.withDefaultNamespace("widget/checkbox_highlighted")
 	);
 	public static final Identifier CHECKED_TEXTURE = SpruceUI.id("widget/checkbox/checked");
 	public static final Identifier CROSSED_TEXTURE = SpruceUI.id("widget/checkbox/crossed");
 	private boolean showCross = false;
 	private boolean colored = false;
 
-	public SpruceCheckboxWidget(Position position, int width, int height, Text message, boolean value) {
+	public SpruceCheckboxWidget(Position position, int width, int height, Component message, boolean value) {
 		super(position, width, height, message, value);
 	}
 
-	public SpruceCheckboxWidget(Position position, int width, int height, Text message, boolean value, boolean showMessage) {
+	public SpruceCheckboxWidget(Position position, int width, int height, Component message, boolean value, boolean showMessage) {
 		super(position, width, height, message, value, showMessage);
 	}
 
-	public SpruceCheckboxWidget(Position position, int width, int height, Text message, PressAction action, boolean value) {
+	public SpruceCheckboxWidget(Position position, int width, int height, Component message, PressAction action, boolean value) {
 		super(position, width, height, message, action, value);
 	}
 
-	public SpruceCheckboxWidget(Position position, int width, int height, Text message, PressAction action, boolean value, boolean showMessage) {
+	public SpruceCheckboxWidget(Position position, int width, int height, Component message, PressAction action, boolean value, boolean showMessage) {
 		super(position, width, height, message, action, value, showMessage);
 	}
 
@@ -114,7 +114,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 			);
 			graphics.drawShadowedText(this.client.font, message,
 					this.getX() + this.getHeight() + 4, this.getY() + (this.getHeight() - 8) / 2,
-					0xe0e0e0 | MathHelper.ceil(this.alpha * 255.0F) << 24
+					0xe0e0e0 | Mth.ceil(this.alpha * 255.0F) << 24
 			);
 		}
 	}
@@ -131,12 +131,12 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 	/* Narration */
 
 	@Override
-	protected Text getNarrationFocusedUsageMessage() {
-		return Text.translatable("narration.checkbox.usage.focused");
+	protected Component getNarrationFocusedUsageMessage() {
+		return Component.translatable("narration.checkbox.usage.focused");
 	}
 
 	@Override
-	protected Text getNarrationHoveredUsageMessage() {
-		return Text.translatable("narration.checkbox.usage.hovered");
+	protected Component getNarrationHoveredUsageMessage() {
+		return Component.translatable("narration.checkbox.usage.hovered");
 	}
 }

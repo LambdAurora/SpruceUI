@@ -13,7 +13,6 @@ import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a client tooltip component, a SpruceUI-extended variant of {@link ClientTooltipComponent}.
@@ -23,21 +22,21 @@ import org.jetbrains.annotations.NotNull;
  * @since 8.0.0
  */
 public interface SpruceClientTooltipComponent extends ClientTooltipComponent {
-	default void renderText(@NotNull SpruceGuiGraphics graphics, @NotNull Font font, int x, int y) {
+	default void renderText(SpruceGuiGraphics graphics, Font font, int x, int y) {
 	}
 
 	default void renderImage(
-			@NotNull Font font, int x, int y, int width, int height, @NotNull SpruceGuiGraphics graphics
+			Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics
 	) {
 	}
 
 	@Override
-	default void renderText(@NotNull GuiGraphics graphics, @NotNull Font font, int x, int y) {
+	default void renderText(GuiGraphics graphics, Font font, int x, int y) {
 		this.renderText(SpruceGuiGraphics.of(graphics), font, x, y);
 	}
 
 	@Override
-	default void renderImage(@NotNull Font font, int x, int y, int width, int height, @NotNull GuiGraphics graphics) {
+	default void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
 		this.renderImage(font, x, y, width, height, SpruceGuiGraphics.of(graphics));
 	}
 
@@ -62,12 +61,12 @@ public interface SpruceClientTooltipComponent extends ClientTooltipComponent {
 		} else {
 			return new SpruceClientTooltipComponent() {
 				@Override
-				public int getWidth(@NotNull Font font) {
+				public int getWidth(Font font) {
 					return component.getWidth(font);
 				}
 
 				@Override
-				public int getHeight(@NotNull Font font) {
+				public int getHeight(Font font) {
 					return component.getHeight(font);
 				}
 
@@ -77,13 +76,13 @@ public interface SpruceClientTooltipComponent extends ClientTooltipComponent {
 				}
 
 				@Override
-				public void renderText(@NotNull SpruceGuiGraphics graphics, @NotNull Font font, int x, int y) {
+				public void renderText(SpruceGuiGraphics graphics, Font font, int x, int y) {
 					component.renderText(graphics.vanilla(), font, x, y);
 				}
 
 				@Override
 				public void renderImage(
-						@NotNull Font font, int x, int y, int width, int height, @NotNull SpruceGuiGraphics graphics
+						Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics
 				) {
 					component.renderImage(font, x, y, width, height, graphics.vanilla());
 				}

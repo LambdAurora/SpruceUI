@@ -19,9 +19,8 @@ import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	public static final Consumer<SpruceLabelWidget> DEFAULT_ACTION = label -> {
 	};
 
-	private Text text;
+	private Component text;
 	private List<FormattedCharSequence> lines;
 	private SpruceTextAlignment alignment;
 	private int color = ColorUtil.WHITE;
@@ -55,7 +54,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	private long lastTick;
 
 	public SpruceLabelWidget(
-			Position position, Text text, int maxWidth, Consumer<SpruceLabelWidget> action,
+			Position position, Component text, int maxWidth, Consumer<SpruceLabelWidget> action,
 			SpruceTextAlignment alignment
 	) {
 		super(position);
@@ -67,19 +66,19 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	}
 
 	public SpruceLabelWidget(
-			Position position, Text text, int maxWidth, Consumer<SpruceLabelWidget> action
+			Position position, Component text, int maxWidth, Consumer<SpruceLabelWidget> action
 	) {
 		this(position, text, maxWidth, action, SpruceTextAlignment.LEFT);
 	}
 
 	public SpruceLabelWidget(
-			Position position, Text text, int maxWidth,
+			Position position, Component text, int maxWidth,
 			SpruceTextAlignment alignment
 	) {
 		this(position, text, maxWidth, DEFAULT_ACTION, alignment);
 	}
 
-	public SpruceLabelWidget(Position position, Text text, int maxWidth) {
+	public SpruceLabelWidget(Position position, Component text, int maxWidth) {
 		this(position, text, maxWidth, DEFAULT_ACTION);
 	}
 
@@ -92,7 +91,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	 *
 	 * @return the text
 	 */
-	public Text getText() {
+	public Component getText() {
 		return this.text;
 	}
 
@@ -101,9 +100,9 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	 *
 	 * @param text the text to set
 	 */
-	public void setText(Text text) {
+	public void setText(Component text) {
 		this.text = text;
-		this.lines = this.client.font.wrapLines(text, this.maxWidth);
+		this.lines = this.client.font.split(text, this.maxWidth);
 
 		int width = this.lines.stream().mapToInt(this.client.font::width).max().orElse(this.maxWidth);
 		if (width > this.maxWidth) {
@@ -161,12 +160,12 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	}
 
 	@Override
-	public @NotNull TooltipData getTooltip() {
+	public TooltipData getTooltip() {
 		return this.tooltip;
 	}
 
 	@Override
-	public void setTooltip(@NotNull TooltipData tooltip) {
+	public void setTooltip(TooltipData tooltip) {
 		Objects.requireNonNull(
 				tooltip,
 				"Tooltip cannot be null, the absence of a tooltip is represented by TooltipData.EMPTY."
@@ -201,7 +200,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	/* Input */
 
 	@Override
-	protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+	protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
 		if (event.button() == GLFW.GLFW_MOUSE_BUTTON_1) {
 			if (this.hovered) {
 				this.onPress();
@@ -237,7 +236,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	/* Narration */
 
 	@Override
-	protected Text getNarrationMessage() {
+	protected Component getNarrationMessage() {
 		return this.getText();
 	}
 }

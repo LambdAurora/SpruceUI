@@ -16,8 +16,8 @@ import dev.lambdaurora.spruceui.test.SpruceUITest;
 import dev.lambdaurora.spruceui.widget.SpruceLabelWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextAreaWidget;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a screen to test the {@link SpruceTextAreaWidget} widget.
@@ -29,7 +29,7 @@ public class SpruceTextAreaScreen extends SpruceScreen {
 	private SpruceTextAreaWidget textArea;
 
 	public SpruceTextAreaScreen(@Nullable Screen parent) {
-		super(Text.literal("SpruceUI Test TextArea Menu"));
+		super(Component.literal("SpruceUI Test TextArea Menu"));
 		this.parent = parent;
 	}
 
@@ -49,7 +49,7 @@ public class SpruceTextAreaScreen extends SpruceScreen {
 								textArea.setText(this.textArea.getText());
 							}
 							this.textArea = textArea;
-						}, btn -> this.client.setScreen(this.parent));
+						}, btn -> this.minecraft.setScreen(this.parent));
 		this.addRenderableWidget(containerWidget);
 	}
 }

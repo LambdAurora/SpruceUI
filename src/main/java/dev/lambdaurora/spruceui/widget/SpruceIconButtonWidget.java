@@ -11,10 +11,10 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 
 public class SpruceIconButtonWidget extends AbstractSpruceIconButtonWidget {
-	public SpruceIconButtonWidget(Position position, int width, int height, Text message, PressAction action) {
+	public SpruceIconButtonWidget(Position position, int width, int height, Component message, PressAction action) {
 		super(position, width, height, message, action);
 	}
 

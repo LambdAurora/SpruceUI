@@ -30,7 +30,7 @@ public final class SpruceUI {
 	 * @param path the path
 	 */
 	public static Identifier id(String path) {
-		return Identifier.of(NAMESPACE, path);
+		return Identifier.fromNamespaceAndPath(NAMESPACE, path);
 	}
 
 	private SpruceUI() {

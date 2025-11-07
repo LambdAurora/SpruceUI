@@ -60,7 +60,7 @@ public abstract class ScreenMixin {
 
 	@Shadow
 	@Final
-	protected Minecraft client;
+	protected Minecraft minecraft;
 
 	public ScreenMixin() {
 	}
@@ -70,12 +70,12 @@ public abstract class ScreenMixin {
 			at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screens/Screen;initialized:Z", ordinal = 0)
 	)
 	public void spruceui$beforeInit(int width, int height, CallbackInfo ci) {
-		this.spruceui$handleBeforeInit(this.client, width, height);
+		this.spruceui$handleBeforeInit(this.minecraft, width, height);
 	}
 
 	@Inject(method = "init(II)V", at = @At("TAIL"))
 	public void spruceui$afterInit(int width, int height, CallbackInfo ci) {
-		this.spruceui$afterInitEvent.invoker().afterInitScreen(this.spruceui$createInitContext(this.client, width, height));
+		this.spruceui$afterInitEvent.invoker().afterInitScreen(this.spruceui$createInitContext(this.minecraft, width, height));
 	}
 
 	@Inject(
@@ -83,12 +83,12 @@ public abstract class ScreenMixin {
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;repositionElements()V")
 	)
 	private void spruceui$beforeResizeScreen(int width, int height, CallbackInfo ci) {
-		this.spruceui$handleBeforeInit(this.client, width, height);
+		this.spruceui$handleBeforeInit(this.minecraft, width, height);
 	}
 
 	@Inject(method = "resize", at = @At("TAIL"))
 	private void spruceui$afterResizeScreen(int width, int height, CallbackInfo ci) {
-		this.spruceui$afterInitEvent.invoker().afterInitScreen(this.spruceui$createInitContext(this.client, width, height));
+		this.spruceui$afterInitEvent.invoker().afterInitScreen(this.spruceui$createInitContext(this.minecraft, width, height));
 	}
 
 	@Unique

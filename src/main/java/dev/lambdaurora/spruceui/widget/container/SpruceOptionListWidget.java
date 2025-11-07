@@ -22,8 +22,7 @@ import net.minecraft.client.gui.navigation.ScreenAxis;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -105,7 +104,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 						}
 				);
 
-		builder.add(NarratedElementType.USAGE, Text.translatable("narration.component_list.usage"));
+		builder.add(NarratedElementType.USAGE, Component.translatable("narration.component_list.usage"));
 	}
 
 	public static class OptionEntry extends SpruceEntryListWidget.Entry implements SpruceParentWidget<SpruceWidget> {
@@ -174,7 +173,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 		/* Input */
 
 		@Override
-		protected boolean onMouseClick(@NotNull MouseButtonEvent event, boolean doubleClick) {
+		protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
 			var it = this.iterator();
 
 			SpruceWidget element;
@@ -194,7 +193,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 		}
 
 		@Override
-		protected boolean onMouseRelease(@NotNull MouseButtonEvent event) {
+		protected boolean onMouseRelease(MouseButtonEvent event) {
 			this.dragging = false;
 			return this.hoveredElement(event.x(), event.y())
 					.filter(element -> element.mouseReleased(event))
@@ -202,23 +201,23 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 		}
 
 		@Override
-		protected boolean onMouseDrag(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+		protected boolean onMouseDrag(MouseButtonEvent event, double deltaX, double deltaY) {
 			return this.getFocused() != null && this.dragging && event.button() == GLFW.GLFW_MOUSE_BUTTON_1
 					&& this.getFocused().mouseDragged(event, deltaX, deltaY);
 		}
 
 		@Override
-		protected boolean onKeyPress(@NotNull KeyEvent event) {
+		protected boolean onKeyPress(KeyEvent event) {
 			return this.focused != null && this.focused.keyPressed(event);
 		}
 
 		@Override
-		protected boolean onKeyRelease(@NotNull KeyEvent event) {
+		protected boolean onKeyRelease(KeyEvent event) {
 			return this.focused != null && this.focused.keyReleased(event);
 		}
 
 		@Override
-		protected boolean onCharTyped(@NotNull CharacterEvent event) {
+		protected boolean onCharTyped(CharacterEvent event) {
 			return this.focused != null && this.focused.charTyped(event);
 		}
 
@@ -240,7 +239,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 		/* Navigation */
 
 		@Override
-		public boolean onNavigation(@NotNull NavigationEvent event) {
+		public boolean onNavigation(NavigationEvent event) {
 			if (this.requiresCursor()) return false;
 			if (!event.tab() && event.direction().getAxis() == ScreenAxis.VERTICAL) {
 				if (this.isFocused()) {

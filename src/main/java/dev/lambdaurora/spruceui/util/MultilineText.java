@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.util;
 
 import net.minecraft.client.Minecraft;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -204,9 +204,6 @@ public final class MultilineText {
 
 	public static Collection<? extends String> wrap(Collection<? extends String> text, int width) {
 		var client = Minecraft.getInstance();
-		if (client == null)
-			return text;
-
 		var lines = new ArrayList<String>();
 
 		for (String line : text) {
@@ -221,7 +218,7 @@ public final class MultilineText {
 				line = line.substring(part.length());
 				lines.add(part);
 			}
-			var part = lines.remove(lines.size() - 1);
+			var part = lines.removeLast();
 			lines.add(part + "\n");
 		}
 

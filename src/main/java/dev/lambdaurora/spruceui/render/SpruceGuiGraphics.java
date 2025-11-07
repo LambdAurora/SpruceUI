@@ -19,13 +19,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.render.TextureSetup;
 import net.minecraft.client.gui.render.state.GuiElementRenderState;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fStack;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a wrapper around {@link GuiGraphics} with extra features.
@@ -37,18 +36,18 @@ import org.joml.Matrix3x2fStack;
 public final class SpruceGuiGraphics {
 	private final GuiGraphics wrapped;
 
-	public SpruceGuiGraphics(@NotNull GuiGraphics graphics) {
+	public SpruceGuiGraphics(GuiGraphics graphics) {
 		this.wrapped = graphics;
 	}
 
-	public static SpruceGuiGraphics of(@NotNull GuiGraphics graphics) {
+	public static SpruceGuiGraphics of(GuiGraphics graphics) {
 		return ((GuiGraphicsAccessor) graphics).spruceui$spruced();
 	}
 
 	/**
 	 * {@return the wrapped vanilla GUI graphics object}
 	 */
-	public @NotNull GuiGraphics vanilla() {
+	public GuiGraphics vanilla() {
 		return this.wrapped;
 	}
 
@@ -64,7 +63,7 @@ public final class SpruceGuiGraphics {
 		return this.wrapped.guiHeight();
 	}
 
-	public @NotNull Matrix3x2fStack pose() {
+	public Matrix3x2fStack pose() {
 		return this.wrapped.pose();
 	}
 
@@ -132,7 +131,7 @@ public final class SpruceGuiGraphics {
 	 * @param color the ARGB color
 	 * @see #fill(int, int, int, int, int)
 	 */
-	public void fill(@NotNull RenderPipeline pipeline, int startX, int startY, int endX, int endY, int color) {
+	public void fill(RenderPipeline pipeline, int startX, int startY, int endX, int endY, int color) {
 		if (startX < endX) {
 			int i = startX;
 			startX = endX;
@@ -164,7 +163,7 @@ public final class SpruceGuiGraphics {
 	}
 
 	public void fillGradient(
-			@NotNull RenderPipeline pipeline,
+			RenderPipeline pipeline,
 			int startX, int startY, int endX, int endY,
 			int colorTopLeft, int colorTopRight, int colorBottomRight, int colorBottomLeft
 	) {
@@ -204,70 +203,70 @@ public final class SpruceGuiGraphics {
 	}
 
 	public void drawSprite(
-			@NotNull RenderPipeline pipeline, @NotNull Identifier sprite, int x, int y, int width, int height
+			RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height
 	) {
-		this.wrapped.drawSprite(pipeline, sprite, x, y, width, height);
+		this.wrapped.blitSprite(pipeline, sprite, x, y, width, height);
 	}
 
 	public void drawSprite(
-			@NotNull RenderPipeline pipeline, @NotNull Identifier sprite, int x, int y, int width, int height, int color
+			RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height, int color
 	) {
-		this.wrapped.drawSprite(pipeline, sprite, x, y, width, height, color);
+		this.wrapped.blitSprite(pipeline, sprite, x, y, width, height, color);
 	}
 
 	public void drawTexture(
-			@NotNull RenderPipeline renderPipeline, @NotNull Identifier texture,
+			RenderPipeline renderPipeline, Identifier texture,
 			int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight
 	) {
-		this.wrapped.drawTexture(renderPipeline, texture, x, y, u, v, width, height, width, height, textureWidth, textureHeight);
+		this.wrapped.blit(renderPipeline, texture, x, y, u, v, width, height, width, height, textureWidth, textureHeight);
 	}
 
 	public void drawText(
-			@NotNull Font font, @NotNull String text, int x, int y, int color, boolean shadow
+			Font font, String text, int x, int y, int color, boolean shadow
 	) {
-		this.wrapped.drawText(font, text, x, y, color, shadow);
+		this.wrapped.drawString(font, text, x, y, color, shadow);
 	}
 
 	public void drawText(
-			@NotNull Font font, @NotNull FormattedCharSequence text, int x, int y, int color, boolean shadow
+			Font font, FormattedCharSequence text, int x, int y, int color, boolean shadow
 	) {
-		this.wrapped.drawText(font, text, x, y, color, shadow);
+		this.wrapped.drawString(font, text, x, y, color, shadow);
 	}
 
 	public void drawText(
-			@NotNull Font font, @NotNull Text text, int x, int y, int color, boolean shadow
+			Font font, Component text, int x, int y, int color, boolean shadow
 	) {
-		this.wrapped.drawText(font, text, x, y, color, shadow);
+		this.wrapped.drawString(font, text, x, y, color, shadow);
 	}
 
 	public void drawShadowedText(
-			@NotNull Font font, @NotNull String text, int x, int y, int color
+			Font font, String text, int x, int y, int color
 	) {
 		this.drawText(font, text, x, y, color, true);
 	}
 
 	public void drawShadowedText(
-			@NotNull Font font, @NotNull FormattedCharSequence text, int x, int y, int color
+			Font font, FormattedCharSequence text, int x, int y, int color
 	) {
 		this.drawText(font, text, x, y, color, true);
 	}
 
 	public void drawShadowedText(
-			@NotNull Font font, @NotNull Text text, int x, int y, int color
+			Font font, Component text, int x, int y, int color
 	) {
 		this.drawText(font, text, x, y, color, true);
 	}
 
 	public void drawCenteredShadowedText(
-			@NotNull Font font, @NotNull FormattedCharSequence text, int centerX, int y, int color
+			Font font, FormattedCharSequence text, int centerX, int y, int color
 	) {
-		this.wrapped.drawCenteredShadowedText(font, text, centerX, y, color);
+		this.wrapped.drawCenteredString(font, text, centerX, y, color);
 	}
 
 	public void drawCenteredShadowedText(
-			@NotNull Font font, @NotNull Text text, int centerX, int y, int color
+			Font font, Component text, int centerX, int y, int color
 	) {
-		this.wrapped.drawCenteredShadowedText(font, text, centerX, y, color);
+		this.wrapped.drawCenteredString(font, text, centerX, y, color);
 	}
 
 	public ActiveTextCollector textRenderer(float alpha, GuiGraphics.HoveredTextEffects hoveredTextEffects) {
@@ -280,7 +279,7 @@ public final class SpruceGuiGraphics {
 		return new ActiveTextCollector.Parameters(new Matrix3x2f(this.wrapped.pose()), alpha, this.wrapped.scissorStack.peek());
 	}
 
-	public void submitGuiElement(@NotNull GuiElementRenderState state) {
+	public void submitGuiElement(GuiElementRenderState state) {
 		this.accessor().spruceui$getGuiRenderState().submitGuiElement(state);
 	}
 

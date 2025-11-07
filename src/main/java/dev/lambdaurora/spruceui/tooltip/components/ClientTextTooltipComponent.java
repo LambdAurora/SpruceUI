@@ -13,7 +13,6 @@ import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.util.ColorUtil;
 import net.minecraft.client.gui.Font;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a text tooltip component.
@@ -35,7 +34,7 @@ public record ClientTextTooltipComponent(FormattedCharSequence text) implements 
 	}
 
 	@Override
-	public void renderText(@NotNull SpruceGuiGraphics graphics, @NotNull Font font, int i, int j) {
+	public void renderText(SpruceGuiGraphics graphics, Font font, int i, int j) {
 		graphics.drawText(font, this.text, i, j, ColorUtil.WHITE, true);
 	}
 }

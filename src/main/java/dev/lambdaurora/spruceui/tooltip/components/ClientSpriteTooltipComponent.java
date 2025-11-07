@@ -14,7 +14,6 @@ import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a sprite tooltip component.
@@ -40,17 +39,17 @@ public record ClientSpriteTooltipComponent(
 	}
 
 	@Override
-	public int getWidth(@NotNull Font font) {
+	public int getWidth(Font font) {
 		return this.width;
 	}
 
 	@Override
-	public int getHeight(@NotNull Font font) {
+	public int getHeight(Font font) {
 		return this.height;
 	}
 
 	@Override
-	public void renderImage(@NotNull Font font, int x, int y, int width, int height, @NotNull SpruceGuiGraphics graphics) {
+	public void renderImage(Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics) {
 		int actualX = switch (this.alignment) {
 			case LEFT -> x;
 			case CENTER -> x + (width / 2 - this.width / 2);

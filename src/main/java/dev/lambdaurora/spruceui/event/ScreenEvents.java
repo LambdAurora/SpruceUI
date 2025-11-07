@@ -18,7 +18,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Holds events related to {@linkplain Screen screens}.
@@ -103,8 +102,8 @@ public final class ScreenEvents {
 		 * @param scaledHeight the scaled height of the screen
 		 */
 		void beforeInitScreen(
-				@NotNull Minecraft client,
-				@NotNull Screen screen,
+				Minecraft client,
+				Screen screen,
 				int scaledWidth,
 				int scaledHeight
 		);
@@ -120,7 +119,7 @@ public final class ScreenEvents {
 		 *
 		 * @param context the initialization context
 		 */
-		void afterInitScreen(@NotNull ScreenInitContext context);
+		void afterInitScreen(ScreenInitContext context);
 	}
 
 	/**
@@ -133,7 +132,7 @@ public final class ScreenEvents {
 		 *
 		 * @param screen the screen which has been removed
 		 */
-		void onRemoveScreen(@NotNull Screen screen);
+		void onRemoveScreen(Screen screen);
 	}
 
 	/**
@@ -151,7 +150,7 @@ public final class ScreenEvents {
 		 * @param tickDelta the tick delta
 		 */
 		void onBeforeRenderScreen(
-				@NotNull Screen screen, @NotNull SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta
+				Screen screen, SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta
 		);
 	}
 
@@ -170,7 +169,7 @@ public final class ScreenEvents {
 		 * @param tickDelta the tick delta
 		 */
 		void onAfterRenderScreen(
-				@NotNull Screen screen, @NotNull SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta
+				Screen screen, SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta
 		);
 	}
 
@@ -184,7 +183,7 @@ public final class ScreenEvents {
 		 *
 		 * @param screen the screen which is ticking
 		 */
-		void onBeforeTickScreen(@NotNull Screen screen);
+		void onBeforeTickScreen(Screen screen);
 	}
 
 	/**
@@ -197,7 +196,7 @@ public final class ScreenEvents {
 		 *
 		 * @param screen the screen which ticked
 		 */
-		void onAfterTickScreen(@NotNull Screen screen);
+		void onAfterTickScreen(Screen screen);
 	}
 
 	/**
@@ -207,12 +206,12 @@ public final class ScreenEvents {
 		/**
 		 * {@return the Minecraft client instance}
 		 */
-		@NotNull Minecraft client();
+		Minecraft client();
 
 		/**
 		 * {@return the screen that's being initialized}
 		 */
-		@NotNull Screen screen();
+		Screen screen();
 
 		/**
 		 * {@return the scaled width of the screen}
@@ -231,8 +230,8 @@ public final class ScreenEvents {
 		 * @return the widget that has been added
 		 * @param <E> the type of the widget
 		 */
-		@NotNull <E extends GuiEventListener & Renderable & NarratableEntry> E addRenderableWidget(
-				@NotNull E widget
+		<E extends GuiEventListener & Renderable & NarratableEntry> E addRenderableWidget(
+				E widget
 		);
 	}
 }

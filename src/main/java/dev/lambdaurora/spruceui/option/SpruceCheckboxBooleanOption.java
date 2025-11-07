@@ -13,11 +13,10 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceCheckboxWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import net.minecraft.network.chat.Component;
 
 /**
  * Represents a boolean option.
@@ -31,14 +30,14 @@ import java.util.function.Supplier;
 public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
 	public SpruceCheckboxBooleanOption(
 			String key, Supplier<Boolean> getter, Consumer<Boolean> setter,
-			@NotNull TooltipData tooltip
+			TooltipData tooltip
 	) {
 		super(key, getter, setter, tooltip);
 	}
 
 	public SpruceCheckboxBooleanOption(
 			String key, Supplier<Boolean> getter, Consumer<Boolean> setter,
-			@NotNull TooltipData tooltip, boolean colored
+			TooltipData tooltip, boolean colored
 	) {
 		super(key, getter, setter, tooltip, colored);
 	}
@@ -59,12 +58,12 @@ public class SpruceCheckboxBooleanOption extends SpruceBooleanOption {
 	}
 
 	@Override
-	public Text getDisplayText() {
+	public Component getDisplayText() {
 		return this.getPrefix();
 	}
 
 	@Override
-	public Text getDisplayText(Text value) {
+	public Component getDisplayText(Component value) {
 		return this.getPrefix();
 	}
 

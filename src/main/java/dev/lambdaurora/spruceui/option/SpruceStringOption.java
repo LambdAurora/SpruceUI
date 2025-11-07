@@ -14,8 +14,7 @@ import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceNamedTextFieldWidget;
 import dev.lambdaurora.spruceui.widget.text.SpruceTextFieldWidget;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -36,7 +35,7 @@ public class SpruceStringOption extends SpruceOption {
 	public SpruceStringOption(
 			String key, Supplier<String> getter, Consumer<String> setter,
 			@Nullable Predicate<String> predicate,
-			@NotNull TooltipData tooltip
+			TooltipData tooltip
 	) {
 		super(key);
 		this.getter = getter;

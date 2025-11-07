@@ -24,7 +24,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositione
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Queue;
@@ -46,7 +46,7 @@ public final class Tooltip implements SprucePositioned {
 	private final int y;
 	private final List<ClientTooltipComponent> components;
 	private final ClientTooltipPositioner positioner;
-	private final Identifier style;
+	private final @Nullable Identifier style;
 
 	public Tooltip(int x, int y, List<ClientTooltipComponent> components, ClientTooltipPositioner positioner, @Nullable Identifier style) {
 		this.x = x;
@@ -123,7 +123,7 @@ public final class Tooltip implements SprucePositioned {
 			var tooltipComponents = tooltip.tooltip().stream()
 					.flatMap(entry -> {
 						if (entry instanceof TooltipData.TextEntry(var text)) {
-							var wrappedTooltipText = Minecraft.getInstance().font.wrapLines(text, recommendedMaxWidth);
+							var wrappedTooltipText = Minecraft.getInstance().font.split(text, recommendedMaxWidth);
 							return wrappedTooltipText.stream()
 									.map(ClientTooltipComponent::create);
 						} else {

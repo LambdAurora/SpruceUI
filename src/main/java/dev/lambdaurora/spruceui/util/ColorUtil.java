@@ -9,7 +9,7 @@
 
 package dev.lambdaurora.spruceui.util;
 
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Range;
 
 /**
@@ -46,7 +46,7 @@ public final class ColorUtil {
 	 * @return the color value as integer
 	 */
 	public static @Range(from = 0, to = 255) int intColor(float colorComponent) {
-		return MathHelper.clamp((int) (colorComponent * 255.f), 0, 255);
+		return Mth.clamp((int) (colorComponent * 255.f), 0, 255);
 	}
 
 	/**
@@ -148,9 +148,9 @@ public final class ColorUtil {
 	 */
 	public static int argbMultiply(int color, float multiplier, @Range(from = 0, to = 255) int alpha) {
 		return packARGBColor(
-				MathHelper.clamp((int) (argbUnpackRed(color) * multiplier), 0, 255),
-				MathHelper.clamp((int) (argbUnpackGreen(color) * multiplier), 0, 255),
-				MathHelper.clamp((int) (argbUnpackBlue(color) * multiplier), 0, 255),
+				Mth.clamp((int) (argbUnpackRed(color) * multiplier), 0, 255),
+				Mth.clamp((int) (argbUnpackGreen(color) * multiplier), 0, 255),
+				Mth.clamp((int) (argbUnpackBlue(color) * multiplier), 0, 255),
 				alpha);
 	}
 

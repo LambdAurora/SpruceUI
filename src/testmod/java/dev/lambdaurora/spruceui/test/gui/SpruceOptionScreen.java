@@ -19,8 +19,8 @@ import dev.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceLabelWidget;
 import dev.lambdaurora.spruceui.widget.container.SpruceOptionListWidget;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Represents a screen to test the different {@link SpruceOption} classes.
@@ -34,7 +34,7 @@ public class SpruceOptionScreen extends SpruceScreen {
 	private SpruceOptionListWidget list;
 
 	public SpruceOptionScreen(@Nullable Screen parent) {
-		super(Text.literal("SpruceUI Test Option Menu"));
+		super(Component.literal("SpruceUI Test Option Menu"));
 		this.parent = parent;
 	}
 
@@ -53,7 +53,7 @@ public class SpruceOptionScreen extends SpruceScreen {
 		this.list = SpruceUITest.get().buildOptionList(Position.of(0, 22), this.width, this.height - 35 - 22);
 		SpruceUITest.get().resetConsumer = btn -> {
 			// Re-initialize the screen to update all the values.
-			this.init(this.client.getWindow().getGuiScaledWidth(), this.client.getWindow().getGuiScaledHeight());
+			this.init(this.minecraft.getWindow().getGuiScaledWidth(), this.minecraft.getWindow().getGuiScaledHeight());
 		};
 
 		this.addRenderableWidget(this.list);
@@ -62,6 +62,6 @@ public class SpruceOptionScreen extends SpruceScreen {
 		//this.addButton(this.resetOption.createButton(this.client.options, this.width / 2 - 155, this.height - 29, 150));
 		// Add done button.
 		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
-				btn -> this.client.setScreen(this.parent)).asVanilla());
+				btn -> this.minecraft.setScreen(this.parent)).asVanilla());
 	}
 }

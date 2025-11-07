@@ -26,8 +26,8 @@ public final class SpruceTextures {
 
 	/* Backgrounds */
 
-	public static final Identifier MENU_LIST_BACKGROUND = Identifier.ofDefault("textures/gui/menu_list_background.png");
-	public static final Identifier INWORLD_MENU_LIST_BACKGROUND = Identifier.ofDefault("textures/gui/inworld_menu_list_background.png");
+	public static final Identifier MENU_LIST_BACKGROUND = Identifier.withDefaultNamespace("textures/gui/menu_list_background.png");
+	public static final Identifier INWORLD_MENU_LIST_BACKGROUND = Identifier.withDefaultNamespace("textures/gui/inworld_menu_list_background.png");
 
 	/**
 	 * The dirt background texture used in pre-1.20.5 versions.
@@ -51,6 +51,6 @@ public final class SpruceTextures {
 	public static final Identifier INWORLD_MENU_BOTTOM_BORDER = Screen.INWORLD_FOOTER_SEPARATOR;
 
 	/* Scroller */
-	public static final Identifier SCROLLER = Identifier.ofDefault("widget/scroller");
-	public static final Identifier SCROLLER_BACKGROUND = Identifier.ofDefault("widget/scroller_background");
+	public static final Identifier SCROLLER = Identifier.withDefaultNamespace("widget/scroller");
+	public static final Identifier SCROLLER_BACKGROUND = Identifier.withDefaultNamespace("widget/scroller_background");
 }

@@ -13,8 +13,7 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.widget.SpruceSeparatorWidget;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.chat.Component;
 
 /**
  * Represents a separator option.
@@ -26,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 public class SpruceSeparatorOption extends SpruceOption {
 	private final boolean showTitle;
 
-	public SpruceSeparatorOption(String key, boolean showTitle, @NotNull TooltipData tooltip) {
+	public SpruceSeparatorOption(String key, boolean showTitle, TooltipData tooltip) {
 		super(key);
 		this.showTitle = showTitle;
 		this.setTooltip(tooltip);
@@ -34,7 +33,7 @@ public class SpruceSeparatorOption extends SpruceOption {
 
 	@Override
 	public SpruceWidget createWidget(Position position, int width) {
-		var separator = new SpruceSeparatorWidget(position, width, this.showTitle ? Text.translatable(this.key) : null);
+		var separator = new SpruceSeparatorWidget(position, width, this.showTitle ? Component.translatable(this.key) : null);
 		this.getTooltip().ifPresent(separator::setTooltip);
 		return separator;
 	}

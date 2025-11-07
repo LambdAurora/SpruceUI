@@ -19,8 +19,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.chat.Component;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -33,12 +33,12 @@ import java.util.function.Supplier;
  * @since 2.0.0
  */
 public abstract class SpruceScreen extends Screen implements SprucePositioned, SpruceElement, SpruceRenderable {
-	protected SpruceScreen(Text title) {
+	protected SpruceScreen(Component title) {
 		super(title);
 	}
 
 	@Override
-	public void setFocused(GuiEventListener focused) {
+	public void setFocused(@Nullable GuiEventListener focused) {
 		var old = this.getFocused();
 		if (old == focused) return;
 		if (old instanceof SpruceWidget)
@@ -51,7 +51,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 	/* Input */
 
 	@Override
-	public boolean keyPressed(@NotNull KeyEvent event) {
+	public boolean keyPressed(KeyEvent event) {
 		return NavigationEvent.fromKey(event.key(), event.hasShiftDown())
 				.map(this::onNavigation)
 				.orElseGet(() -> super.keyPressed(event));
@@ -60,7 +60,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 	/* Navigation */
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		if (this.requiresCursor()) return false;
 		var focused = this.getFocused();
 		boolean isNonNull = focused != null;
@@ -91,7 +91,7 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 		return true;
 	}
 
-	private boolean tryNavigating(GuiEventListener element, @NotNull NavigationEvent event) {
+	private boolean tryNavigating(GuiEventListener element, NavigationEvent event) {
 		if (element instanceof SpruceElement) {
 			return ((SpruceElement) element).onNavigation(event);
 		}
@@ -102,12 +102,12 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 	/* Render */
 
 	@Override
-	public final void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public final void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.render(SpruceGuiGraphics.of(graphics), mouseX, mouseY, delta);
 	}
 
 	@Override
-	public void render(@NotNull SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void render(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.renderWidgets(graphics, mouseX, mouseY, delta);
 	}
 

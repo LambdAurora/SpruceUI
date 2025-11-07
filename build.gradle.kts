@@ -1,21 +1,23 @@
 import dev.lambdaurora.mcdev.api.MappingVariant
 import dev.lambdaurora.mcdev.api.McVersionLookup
-import dev.lambdaurora.mcdev.api.manifest.Nmt
-import dev.lambdaurora.mcdev.task.GenerateNmtTask
-import net.fabricmc.loom.LoomGradleExtension
-import net.fabricmc.loom.api.mappings.layered.MappingsNamespace
+import dev.lambdaurora.mcdev.task.ConvertAccessWidenerToTransformer
 import net.fabricmc.loom.task.RemapJarTask
-import spruceui.Constants
-import spruceui.task.XplatTransformJar
 
 plugins {
-	id("spruceui-common")
-	id("dev.yumi.gradle.licenser").version("2.1.+")
+	alias(libs.plugins.loom)
+	alias(libs.plugins.lambdamcdev)
+	alias(libs.plugins.licenser)
 	`java-library`
 	`maven-publish`
 }
 
-base.archivesName.set(Constants.NAMESPACE)
+lambdamcdev.namespace = project.property("mod_namespace").toString()
+base.archivesName.set(lambdamcdev.namespace)
+version = "${project.property("version")}+${McVersionLookup.getVersionTag(libs.versions.minecraft.get())}"
+val javaVersion = Integer.parseInt(project.property("java_version") as String)
+
+val modName = project.property("mod_name").toString()
+val modDescription = project.property("mod_description").toString()
 
 val fabricModules = setOf(
 	"fabric-api-base",
@@ -26,6 +28,13 @@ val fabricModules = setOf(
 	"fabric-key-binding-api-v1"
 )
 
+java {
+	sourceCompatibility = JavaVersion.toVersion(javaVersion)
+	targetCompatibility = JavaVersion.toVersion(javaVersion)
+
+	withSourcesJar()
+}
+
 val testmod: SourceSet by sourceSets.creating {
 	this.compileClasspath += sourceSets.main.get().compileClasspath
 	this.runtimeClasspath += sourceSets.main.get().runtimeClasspath
@@ -33,20 +42,22 @@ val testmod: SourceSet by sourceSets.creating {
 
 lambdamcdev {
 	manifests {
-		fmj {
-			withName(Constants.PRETTY_NAME)
-			withDescription(Constants.DESCRIPTION)
-			withAuthors(Constants.AUTHORS)
+		val fmj = fmj {
+			withName(modName)
+			withDescription(modDescription)
+			withAuthors(listOf("LambdAurora"))
 			withContact {
-				it.withHomepage(Constants.PROJECT_LINK)
-					.withSources(Constants.SOURCES_LINK)
-					.withIssues(Constants.ISSUES_LINK)
+				val projectLink = "https://github.com/LambdAurora/SpruceUI"
+
+				it.withHomepage(projectLink)
+				it.withSources("$projectLink.git")
+				it.withIssues("$projectLink/issues")
 			}
-			withLicense(Constants.LICENSE)
-			withIcon("assets/${Constants.NAMESPACE}/icon.png")
+			withLicense("MIT")
+			withIcon("assets/${lambdamcdev.namespace.get()}/icon.png")
 			withEnvironment("client")
 			withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
-			withDepend("minecraft", "~1.21.9-")
+			withDepend("minecraft", "~1.21.11-")
 			withDepend("fabric-resource-loader-v0", ">=0.4.7")
 			withDepend("java", ">=${project.property("java_version")}")
 			withDepend("yumi_mc_core", "^${libs.versions.yumi.mc.foundation.get()}")
@@ -59,13 +70,34 @@ lambdamcdev {
 					.withLink("modmenu.bluesky", "https://bsky.app/profile/lambdaurora.dev")
 			}
 		}
+		nmt {
+			fmj.copyTo(this)
+			withBlurIcon(false)
+			withLoaderVersion("[2,)")
+			withMixins("spruceui.mixins.json")
+			withDepend("minecraft", "[${McVersionLookup.getRelease(libs.versions.minecraft.get())},)")
+			withDepend("yumi_mc_core", "[${libs.versions.yumi.mc.foundation.get()},)")
+		}
 	}
 
-	setupJarJarCompat()
+	setupActionsRefCheck()
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/spruceui.accesswidener")
+	mixin {
+		useLegacyMixinAp = false
+	}
+	runs {
+		register("testmodClient") {
+			client()
+			source(testmod)
+		}
+	}
 }
 
 repositories {
-	mavenLocal()
+	mavenCentral()
 	maven {
 		name = "TerraformersMC"
 		url = uri("https://maven.terraformersmc.com/releases")
@@ -82,6 +114,7 @@ repositories {
 			includeGroupByRegex("cpw\\.mods.*")
 		}
 	}
+	mavenLocal()
 }
 
 val mojmap = lambdamcdev.setupMojmapRemapping()
@@ -90,13 +123,8 @@ configurations.getByName("mojmapApi") {
 }
 
 dependencies {
-	@Suppress("UnstableApiUsage")
-	mappings(loom.layered {
-		officialMojangMappings()
-		// Parchment is currently broken when used with the hacked mojmap layer due to remapping shenanigans.
-		//parchment("org.parchmentmc.data:parchment-${mcVersion}:${project.property("parchment_mappings")}@zip")
-		mappings("dev.lambdaurora:yalmm:${Constants.mcVersion()}+build.${libs.versions.mappings.yalmm.get()}")
-	})
+	minecraft(libs.minecraft)
+	mappings(loom.officialMojangMappings())
 	modImplementation(libs.fabric.loader)
 
 	modApi(libs.yumi.mc.foundation)
@@ -120,8 +148,16 @@ dependencies {
 }
 
 tasks.withType<JavaCompile>().configureEach {
+	options.encoding = "UTF-8"
+	options.release.set(javaVersion)
 	options.isDeprecation = true
 	options.isIncremental = true
+}
+
+val convertAWtoAT by tasks.registering(ConvertAccessWidenerToTransformer::class) {
+	this.group = "generation"
+	this.input = loom.accessWidenerPath
+	this.output = project.layout.buildDirectory.get().file("generated/accesstransformer.cfg")
 }
 
 tasks.jar {
@@ -130,15 +166,19 @@ tasks.jar {
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties["archivesName"]}" }
 	}
+	from(convertAWtoAT) {
+		into("META-INF")
+	}
 }
 
-loom {
-	accessWidenerPath = file("src/main/resources/spruceui.accesswidener")
-	runs {
-		register("testmodClient") {
-			client()
-			source(testmod)
-		}
+tasks.named<Jar>("sourcesJar") {
+	inputs.property("archivesName", base.archivesName)
+
+	from("LICENSE") {
+		rename { "${it}_${inputs.properties["archivesName"]}" }
+	}
+	from(convertAWtoAT) {
+		into("META-INF")
 	}
 }
 
@@ -158,64 +198,8 @@ val remapTestmodJar = tasks.register<RemapJarTask>("remapTestmodJar") {
 }
 tasks.build.get().dependsOn(remapTestmodJar)
 
-//region Mojmap
-val remapMojmap = mojmap.registerRemap(tasks.remapJar) {
-	this.destinationDirectory.set(layout.buildDirectory.map { it.dir("devlibs") })
-}
-
-val remapMojmapSourcesJar = mojmap.registerSourcesRemap(tasks.remapSourcesJar) {
-	this.classpath.from(configurations["minecraftClientLibraries"])
-	this.archiveClassifier = "preprocessed-mojmap-sources"
-}
-
-val nmtGeneration by tasks.registering(GenerateNmtTask::class) {
-	this.nmt = lambdamcdev.manifests.fmj().map {
-		it.derive(::Nmt)
-			.withBlurIcon(false)
-			.withLoaderVersion("[2,)")
-			.withMixins("spruceui.mixins.json")
-			.withDepend("minecraft", "[${McVersionLookup.getRelease(libs.versions.minecraft.get())},)")
-			.withDepend("yumi_mc_core", "[${libs.versions.yumi.mc.foundation.get()},)")
-	}
-	this.outputDir = project.layout.buildDirectory.map { it.dir("generated/generated_neoforge_resources") }
-}
-
-val xplatTransformJar by tasks.registering(XplatTransformJar::class) {
-	dependsOn(remapMojmap, nmtGeneration)
-
-	inputJar.set(remapMojmap.flatMap { it.archiveFile })
-	from(nmtGeneration)
-	this.archiveClassifier = "mojmap"
-}
-mojmap.setJarArtifact(xplatTransformJar)
-
-val xplatTransformSourcesJar by tasks.registering(XplatTransformJar::class) {
-	dependsOn(remapMojmapSourcesJar, nmtGeneration)
-
-	inputJar.set(remapMojmapSourcesJar.flatMap { it.archiveFile })
-	from(nmtGeneration)
-	this.archiveClassifier = "mojmap-sources"
-}
-mojmap.setSourcesArtifact(xplatTransformSourcesJar)
-
-val remapTestmodMojmapJar = mojmap.registerRemap("remapTestmodJarToMojmap") {
-	dependsOn(remapTestmodJar)
-
-	classpath.setFrom(
-		(loom as LoomGradleExtension).getMinecraftJarsCollection(MappingsNamespace.INTERMEDIARY),
-		tasks.remapJar
-	)
-	inputFile.convention(remapTestmodJar.flatMap { it.archiveFile })
-	archiveClassifier = "preprocessed"
-	sourceNamespace = "intermediary"
-	targetNamespace = "named"
-	archiveClassifier = "testmod-mojmap"
-}
-
-tasks.build.configure {
-	dependsOn(xplatTransformJar, xplatTransformSourcesJar, remapTestmodMojmapJar)
-}
-//endregion
+mojmap.setJarArtifact(tasks.jar)
+mojmap.setSourcesArtifact(tasks["sourcesJar"])
 
 license {
 	rule(file("HEADER"))
@@ -228,8 +212,8 @@ publishing {
 			from(components["java"])
 
 			pom {
-				name.set(Constants.PRETTY_NAME)
-				description.set(Constants.DESCRIPTION)
+				name.set(modName)
+				description.set(modDescription)
 			}
 		}
 	}

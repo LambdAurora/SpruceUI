@@ -19,7 +19,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Represents a vanilla button wrapper for SpruceUI's own button widgets.
@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
  * @since 2.0.0
  */
 @Environment(EnvType.CLIENT)
+@NullMarked
 public class VanillaButtonWrapper extends AbstractWidget implements SpruceElement {
 	private final AbstractSpruceButtonWidget widget;
 
@@ -44,37 +45,37 @@ public class VanillaButtonWrapper extends AbstractWidget implements SpruceElemen
 	}
 
 	@Override
-	public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean doubleClick) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		return this.widget.mouseClicked(event, doubleClick);
 	}
 
 	@Override
-	public boolean mouseReleased(@NotNull MouseButtonEvent event) {
+	public boolean mouseReleased(MouseButtonEvent event) {
 		return this.widget.mouseReleased(event);
 	}
 
 	@Override
-	public boolean mouseDragged(@NotNull MouseButtonEvent event, double deltaX, double deltaY) {
+	public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
 		return this.widget.mouseDragged(event, deltaX, deltaY);
 	}
 
 	@Override
-	public boolean onNavigation(@NotNull NavigationEvent event) {
+	public boolean onNavigation(NavigationEvent event) {
 		return this.widget.onNavigation(event);
 	}
 
 	@Override
-	public boolean keyPressed(@NotNull KeyEvent event) {
+	public boolean keyPressed(KeyEvent event) {
 		return this.widget.keyPressed(event);
 	}
 
 	@Override
-	public boolean keyReleased(@NotNull KeyEvent event) {
+	public boolean keyReleased(KeyEvent event) {
 		return this.widget.keyReleased(event);
 	}
 
 	@Override
-	public @NotNull NarrationPriority narrationPriority() {
+	public NarrationPriority narrationPriority() {
 		return this.widget.narrationPriority();
 	}
 

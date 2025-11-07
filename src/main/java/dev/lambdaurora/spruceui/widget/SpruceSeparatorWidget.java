@@ -15,10 +15,9 @@ import dev.lambdaurora.spruceui.tooltip.Tooltip;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.util.ColorUtil;
-import net.minecraft.network.chat.Text;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,20 +31,20 @@ import java.util.Optional;
  * @since 1.0.1
  */
 public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Tooltipable {
-	private Text title;
+	private @Nullable Component title;
 	private List<FormattedCharSequence> titleToRender = List.of();
 	private TooltipData tooltip = TooltipData.EMPTY;
 	private int tooltipTicks;
 	private long lastTick;
 
-	public SpruceSeparatorWidget(Position position, int width, @Nullable Text title) {
+	public SpruceSeparatorWidget(Position position, int width, @Nullable Component title) {
 		super(position);
 		this.width = width;
 		this.setTitle(title);
 	}
 
 	@Deprecated
-	public SpruceSeparatorWidget(@Nullable Text title, int x, int y, int width) {
+	public SpruceSeparatorWidget(@Nullable Component title, int x, int y, int width) {
 		this(Position.of(x, y), width, title);
 	}
 
@@ -54,7 +53,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 	 *
 	 * @return the title
 	 */
-	public Optional<Text> getTitle() {
+	public Optional<Component> getTitle() {
 		return Optional.ofNullable(this.title);
 	}
 
@@ -78,11 +77,11 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 	 *
 	 * @param title the title
 	 */
-	public void setTitle(@Nullable Text title) {
+	public void setTitle(@Nullable Component title) {
 		this.title = title;
 
 		if (this.title != null) {
-			this.titleToRender = this.client.font.wrapLines(this.title, this.getWidth() - 8);
+			this.titleToRender = this.client.font.split(this.title, this.getWidth() - 8);
 		} else {
 			this.titleToRender = List.of();
 		}
@@ -95,12 +94,12 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 	}
 
 	@Override
-	public @NotNull TooltipData getTooltip() {
+	public TooltipData getTooltip() {
 		return this.tooltip;
 	}
 
 	@Override
-	public void setTooltip(@NotNull TooltipData tooltip) {
+	public void setTooltip(TooltipData tooltip) {
 		Objects.requireNonNull(
 				tooltip,
 				"Tooltip cannot be null, the absence of a tooltip is represented by TooltipData.EMPTY."
@@ -143,10 +142,10 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 	/* Narration */
 
 	@Override
-	protected Text getNarrationMessage() {
-		return this.getTitle().map(Text::getString)
+	protected @Nullable Component getNarrationMessage() {
+		return this.getTitle().map(Component::getString)
 				.filter(title -> !title.isEmpty())
-				.map(title -> Text.translatable("spruceui.narrator.separator", title))
+				.map(title -> Component.translatable("spruceui.narrator.separator", title))
 				.orElse(null);
 	}
 }

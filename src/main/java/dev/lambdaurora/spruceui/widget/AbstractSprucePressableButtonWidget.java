@@ -11,8 +11,7 @@ package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.Position;
 import net.minecraft.client.input.KeyEvent;
-import net.minecraft.network.chat.Text;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -23,7 +22,7 @@ import org.lwjgl.glfw.GLFW;
  * @since 2.0.0
  */
 public abstract class AbstractSprucePressableButtonWidget extends AbstractSpruceButtonWidget {
-	public AbstractSprucePressableButtonWidget(Position position, int width, int height, Text message) {
+	public AbstractSprucePressableButtonWidget(Position position, int width, int height, Component message) {
 		super(position, width, height, message);
 	}
 
@@ -36,7 +35,7 @@ public abstract class AbstractSprucePressableButtonWidget extends AbstractSpruce
 	}
 
 	@Override
-	protected boolean onKeyPress(@NotNull KeyEvent event) {
+	protected boolean onKeyPress(KeyEvent event) {
 		if (event.key() == GLFW.GLFW_KEY_ENTER
 				|| event.key() == GLFW.GLFW_KEY_KP_ENTER
 				|| event.key() == GLFW.GLFW_KEY_SPACE
