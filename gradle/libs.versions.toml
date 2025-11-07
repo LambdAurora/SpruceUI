@@ -27,3 +27,6 @@ yumi-mc-foundation = { module = "dev.yumi.mc.core:yumi-mc-foundation", version.r
 gradle-licenser = { module = "dev.yumi:yumi-gradle-licenser", version.ref = "gradle-licenser" }
 gradle-loom = { module = "net.fabricmc:fabric-loom", version.ref = "gradle-loom" }
 gradle-lambdamcdev = { module = "dev.lambdaurora.mcdev:dev.lambdaurora.mcdev.gradle.plugin", version.ref = "gradle-lambdamcdev" }
+
+[plugins]
+licenser = { id = "dev.yumi.gradle.licenser", version.ref = "gradle-licenser" }

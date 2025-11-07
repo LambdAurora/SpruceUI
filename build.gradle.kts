@@ -10,7 +10,7 @@ import spruceui.task.XplatTransformJar
 
 plugins {
 	id("spruceui-common")
-	id("dev.yumi.gradle.licenser").version("2.1.+")
+	alias(libs.plugins.licenser)
 	`java-library`
 	`maven-publish`
 }
@@ -46,7 +46,7 @@ lambdamcdev {
 			withIcon("assets/${Constants.NAMESPACE}/icon.png")
 			withEnvironment("client")
 			withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
-			withDepend("minecraft", "~1.21.9-")
+			withDepend("minecraft", "~1.21.9- <1.21.11-")
 			withDepend("fabric-resource-loader-v0", ">=0.4.7")
 			withDepend("java", ">=${project.property("java_version")}")
 			withDepend("yumi_mc_core", "^${libs.versions.yumi.mc.foundation.get()}")
