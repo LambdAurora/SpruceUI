@@ -276,7 +276,7 @@ public final class SpruceGuiGraphics {
 	}
 
 	private ActiveTextCollector.Parameters createDefaultTextParameters(float alpha) {
-		return new ActiveTextCollector.Parameters(new Matrix3x2f(this.wrapped.pose()), alpha, this.wrapped.scissorStack.peek());
+		return new ActiveTextCollector.Parameters(new Matrix3x2f(this.wrapped.pose()), alpha, this.accessor().spruceui$getScissorStack().peek());
 	}
 
 	public void submitGuiElement(GuiElementRenderState state) {
