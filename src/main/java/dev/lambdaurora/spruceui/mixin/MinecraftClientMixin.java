@@ -89,7 +89,7 @@ public class MinecraftClientMixin {
 
 	@Inject(
 			method = "doWorldLoad",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;runTick(Z)V")
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/LevelLoadingScreen;tick()V", shift = At.Shift.AFTER)
 	)
 	private void spruceui$onAfterLoadingScreenTick(CallbackInfo ci) {
 		ScreenEvents.AFTER_TICK.forContext(this.tickingScreen).invoker().onAfterTickScreen(this.tickingScreen);

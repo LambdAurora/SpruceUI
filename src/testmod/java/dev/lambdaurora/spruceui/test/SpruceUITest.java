@@ -29,7 +29,7 @@ import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientBundleTooltip;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.BundleContents;
 import org.jetbrains.annotations.Nullable;
@@ -177,7 +177,7 @@ public final class SpruceUITest {
 						.component(
 								new ClientBundleTooltip(
 										new BundleContents(
-												List.of(new ItemStack(Items.POPPY))
+												List.of(new ItemStackTemplate(Items.POPPY))
 										)
 								)
 						)

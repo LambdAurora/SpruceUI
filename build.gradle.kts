@@ -1,7 +1,5 @@
-import dev.lambdaurora.mcdev.api.MappingVariant
 import dev.lambdaurora.mcdev.api.McVersionLookup
 import dev.lambdaurora.mcdev.task.ConvertAccessWidenerToTransformer
-import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
 	alias(libs.plugins.loom)
@@ -23,9 +21,9 @@ val fabricModules = setOf(
 	"fabric-api-base",
 	"fabric-lifecycle-events-v1",
 	"fabric-rendering-v1",
-	"fabric-resource-loader-v0",
+	"fabric-resource-loader-v1",
 	"fabric-screen-api-v1",
-	"fabric-key-binding-api-v1"
+	"fabric-key-mapping-api-v1"
 )
 
 java {
@@ -57,8 +55,8 @@ lambdamcdev {
 			withIcon("assets/${lambdamcdev.namespace.get()}/icon.png")
 			withEnvironment("client")
 			withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
-			withDepend("minecraft", "~1.21.11-")
-			withDepend("fabric-resource-loader-v0", ">=0.4.7")
+			withDepend("minecraft", "~26.1-")
+			withDepend("fabric-resource-loader-v1", ">=2.0.5")
 			withDepend("java", ">=${project.property("java_version")}")
 			withDepend("yumi_mc_core", "^${libs.versions.yumi.mc.foundation.get()}")
 			withAccessWidener("spruceui.accesswidener")
@@ -75,7 +73,7 @@ lambdamcdev {
 			withBlurIcon(false)
 			withLoaderVersion("[2,)")
 			withMixins("spruceui.mixins.json")
-			withDepend("minecraft", "[${McVersionLookup.getRelease(libs.versions.minecraft.get())},)")
+			withDepend("minecraft", "[${libs.versions.minecraft.get()},)")
 			withDepend("yumi_mc_core", "[${libs.versions.yumi.mc.foundation.get()},)")
 		}
 	}
@@ -117,31 +115,19 @@ repositories {
 	mavenLocal()
 }
 
-val mojmap = lambdamcdev.setupMojmapRemapping()
-configurations.getByName("mojmapApi") {
-	this.extendsFrom(configurations["api"])
-}
-
 dependencies {
 	minecraft(libs.minecraft)
-	mappings(loom.officialMojangMappings())
-	modImplementation(libs.fabric.loader)
+	implementation(libs.fabric.loader)
 
-	modApi(libs.yumi.mc.foundation)
+	api(libs.yumi.mc.foundation)
 
 	fabricModules.stream().map { fabricApi.module(it, libs.versions.fabric.api.get()) }.forEach {
-		modImplementation(it)
+		implementation(it)
 	}
 
 	/*modLocalRuntime(libs.modmenu) {
 		isTransitive = false
 	}*/
-
-	"mojmapApi"(libs.yumi.mc.foundation) {
-		attributes {
-			attribute(MappingVariant.ATTRIBUTE, objects.named(MappingVariant.MOJMAP))
-		}
-	}
 
 	"testmodCompileOnly"(libs.neoforge.loader)
 	"testmodImplementation"(sourceSets.main.get().output)
@@ -185,21 +171,9 @@ tasks.named<Jar>("sourcesJar") {
 val testmodJar = tasks.register<Jar>("testmodJar") {
 	this.group = "build"
 	this.from(testmod.output)
-	this.archiveClassifier = "testmod-dev"
-	this.destinationDirectory = project.file("build/devlibs")
-}
-
-val remapTestmodJar = tasks.register<RemapJarTask>("remapTestmodJar") {
-	this.group = "build"
-	this.dependsOn(testmodJar.get())
-	this.inputFile.set(testmodJar.get().archiveFile)
-	this.classpath.from(testmod.compileClasspath)
 	this.archiveClassifier = "testmod"
 }
-tasks.build.get().dependsOn(remapTestmodJar)
-
-mojmap.setJarArtifact(tasks.jar)
-mojmap.setSourcesArtifact(tasks["sourcesJar"])
+tasks.build.get().dependsOn(testmodJar)
 
 license {
 	rule(file("HEADER"))

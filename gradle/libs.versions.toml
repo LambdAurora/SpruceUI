@@ -1,16 +1,16 @@
 [versions]
-minecraft = "1.21.11-rc1"
-fabric-loader = "0.18.1"
+minecraft = "26.1-snapshot-6"
+fabric-loader = "0.18.4"
 neoforge-loader = "10.0.10"
-fabric-api = "0.139.4+1.21.11"
+fabric-api = "0.143.2+26.1"
 modmenu = "15.0.0-beta.1"
 
-yumi-mc-foundation = "1.0.0-beta.1+1.21.11"
+yumi-mc-foundation = "1.0.0-beta.2+26.1-snapshot-6"
 
 # Gradle
 gradle-licenser = "2.2.+"
-gradle-loom = "1.14.+"
-gradle-lambdamcdev = "1.8.+"
+gradle-loom = "1.15.+"
+gradle-lambdamcdev = "1.9.+"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
@@ -29,5 +29,5 @@ gradle-lambdamcdev = { module = "dev.lambdaurora.mcdev:dev.lambdaurora.mcdev.gra
 
 [plugins]
 licenser = { id = "dev.yumi.gradle.licenser", version.ref = "gradle-licenser" }
-loom = { id = "fabric-loom", version.ref = "gradle-loom" }
+loom = { id = "net.fabricmc.fabric-loom", version.ref = "gradle-loom" }
 lambdamcdev = { id = "dev.lambdaurora.mcdev", version.ref = "gradle-lambdamcdev" }
