@@ -1,5 +1,4 @@
 import dev.lambdaurora.mcdev.api.McVersionLookup
-import dev.lambdaurora.mcdev.task.ConvertAccessWidenerToTransformer
 
 plugins {
 	alias(libs.plugins.loom)
@@ -59,7 +58,6 @@ lambdamcdev {
 			withDepend("fabric-resource-loader-v1", ">=2.0.5")
 			withDepend("java", ">=${project.property("java_version")}")
 			withDepend("yumi_mc_core", "^${libs.versions.yumi.mc.foundation.get()}")
-			withAccessWidener("spruceui.accesswidener")
 			withMixins("spruceui.mixins.json")
 
 			withModMenu {
@@ -82,7 +80,6 @@ lambdamcdev {
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/spruceui.accesswidener")
 	mixin {
 		useLegacyMixinAp = false
 	}
@@ -140,20 +137,11 @@ tasks.withType<JavaCompile>().configureEach {
 	options.isIncremental = true
 }
 
-val convertAWtoAT by tasks.registering(ConvertAccessWidenerToTransformer::class) {
-	this.group = "generation"
-	this.input = loom.accessWidenerPath
-	this.output = project.layout.buildDirectory.get().file("generated/accesstransformer.cfg")
-}
-
 tasks.jar {
 	inputs.property("archivesName", base.archivesName)
 
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties["archivesName"]}" }
-	}
-	from(convertAWtoAT) {
-		into("META-INF")
 	}
 }
 
@@ -162,9 +150,6 @@ tasks.named<Jar>("sourcesJar") {
 
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties["archivesName"]}" }
-	}
-	from(convertAWtoAT) {
-		into("META-INF")
 	}
 }
 
