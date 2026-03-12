@@ -20,5 +20,5 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
  * @since 2.0.0
  */
 public interface Background {
-	void render(SpruceGuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta);
+	void extractRenderState(SpruceGuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta);
 }

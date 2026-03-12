@@ -4,7 +4,7 @@
 	"compatibilityLevel": "JAVA_25",
 	"client": [
 		"GameRendererMixin",
-		"GuiGraphicsMixin",
+      "GuiGraphicsExtractorMixin",
 		"MinecraftClientMixin",
 		"ScreenMixin"
 	],

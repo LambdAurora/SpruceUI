@@ -108,10 +108,10 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 
 	@Override
 	public void extractRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.renderWidgets(graphics, mouseX, mouseY, delta);
+		this.extractWidgets(graphics, mouseX, mouseY, delta);
 	}
 
-	public void renderWidgets(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void extractWidgets(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		super.extractRenderState(graphics.vanilla(), mouseX, mouseY, delta);
 	}
 }

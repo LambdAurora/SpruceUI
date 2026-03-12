@@ -190,7 +190,7 @@ public final class SpruceGuiGraphics {
 			RenderPipeline pipeline, TextureSetup textureSetup, int startX, int startY, int endX, int endY,
 			int colorTopLeft, @Nullable Integer colorTopRight, @Nullable Integer colorBottomRight, @Nullable Integer colorBottomLeft
 	) {
-		this.submitGuiElement(
+		this.addGuiElement(
 				new ColoredRectangleRenderState(
 						pipeline, textureSetup, new Matrix3x2f(this.pose()),
 						startX, startY, endX, endY,
@@ -202,68 +202,68 @@ public final class SpruceGuiGraphics {
 		);
 	}
 
-	public void drawSprite(
+	public void blitSprite(
 			RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height
 	) {
 		this.wrapped.blitSprite(pipeline, sprite, x, y, width, height);
 	}
 
-	public void drawSprite(
+	public void blitSprite(
 			RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height, int color
 	) {
 		this.wrapped.blitSprite(pipeline, sprite, x, y, width, height, color);
 	}
 
-	public void drawTexture(
+	public void blit(
 			RenderPipeline renderPipeline, Identifier texture,
 			int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight
 	) {
 		this.wrapped.blit(renderPipeline, texture, x, y, u, v, width, height, width, height, textureWidth, textureHeight);
 	}
 
-	public void drawText(
+	public void text(
 			Font font, String text, int x, int y, int color, boolean shadow
 	) {
 		this.wrapped.text(font, text, x, y, color, shadow);
 	}
 
-	public void drawText(
+	public void text(
 			Font font, FormattedCharSequence text, int x, int y, int color, boolean shadow
 	) {
 		this.wrapped.text(font, text, x, y, color, shadow);
 	}
 
-	public void drawText(
+	public void text(
 			Font font, Component text, int x, int y, int color, boolean shadow
 	) {
 		this.wrapped.text(font, text, x, y, color, shadow);
 	}
 
-	public void drawShadowedText(
+	public void shadowedText(
 			Font font, String text, int x, int y, int color
 	) {
-		this.drawText(font, text, x, y, color, true);
+		this.text(font, text, x, y, color, true);
 	}
 
-	public void drawShadowedText(
+	public void shadowedText(
 			Font font, FormattedCharSequence text, int x, int y, int color
 	) {
-		this.drawText(font, text, x, y, color, true);
+		this.text(font, text, x, y, color, true);
 	}
 
-	public void drawShadowedText(
+	public void shadowedText(
 			Font font, Component text, int x, int y, int color
 	) {
-		this.drawText(font, text, x, y, color, true);
+		this.text(font, text, x, y, color, true);
 	}
 
-	public void drawCenteredShadowedText(
+	public void centeredShadowedText(
 			Font font, FormattedCharSequence text, int centerX, int y, int color
 	) {
 		this.wrapped.centeredText(font, text, centerX, y, color);
 	}
 
-	public void drawCenteredShadowedText(
+	public void centeredShadowedText(
 			Font font, Component text, int centerX, int y, int color
 	) {
 		this.wrapped.centeredText(font, text, centerX, y, color);
@@ -279,7 +279,7 @@ public final class SpruceGuiGraphics {
 		return new ActiveTextCollector.Parameters(new Matrix3x2f(this.wrapped.pose()), alpha, this.accessor().spruceui$getScissorStack().peek());
 	}
 
-	public void submitGuiElement(GuiElementRenderState state) {
+	public void addGuiElement(GuiElementRenderState state) {
 		this.accessor().spruceui$getGuiRenderState().addGuiElement(state);
 	}
 

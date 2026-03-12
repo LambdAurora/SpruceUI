@@ -56,6 +56,6 @@ public record ClientSpriteTooltipComponent(
 			case RIGHT -> x + width - this.width;
 		};
 
-		graphics.drawSprite(RenderPipelines.GUI_TEXTURED, this.spriteId, actualX, y, this.width, this.height);
+		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, this.spriteId, actualX, y, this.width, this.height);
 	}
 }

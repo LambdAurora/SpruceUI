@@ -20,7 +20,7 @@ import dev.lambdaurora.spruceui.widget.SpruceWidget;
  * @since 2.0.0
  */
 public interface Border {
-	void render(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta);
+	void extractRenderState(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta);
 
 	/**
 	 * Returns the thickness of the top border.

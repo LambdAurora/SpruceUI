@@ -61,19 +61,19 @@ public class SpruceTexturedButtonWidget extends SpruceButtonWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.showMessage)
-			super.renderButton(graphics, mouseX, mouseY, delta);
+			super.extractButton(graphics, mouseX, mouseY, delta);
 	}
 
 	@Override
-	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int v = this.v;
 		if (this.isFocusedOrHovered()) {
 			v += this.hoveredVOffset;
 		}
 
-		graphics.drawTexture(
+		graphics.blit(
 				RenderPipelines.GUI_TEXTURED, this.texture,
 				this.getX(), this.getY(),
 				this.u, v,

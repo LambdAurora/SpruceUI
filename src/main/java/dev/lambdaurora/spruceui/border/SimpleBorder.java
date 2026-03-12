@@ -48,7 +48,7 @@ public final class SimpleBorder implements Border {
 	}
 
 	@Override
-	public void render(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
+	public void extractRenderState(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
 		int x = widget.getX();
 		int y = widget.getY();
 		int right = x + widget.getWidth();

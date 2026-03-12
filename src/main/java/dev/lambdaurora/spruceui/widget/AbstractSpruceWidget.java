@@ -263,8 +263,8 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 				}
 			}
 
-			this.renderBackground(graphics, mouseX, mouseY, delta);
-			this.renderWidget(graphics, mouseX, mouseY, delta);
+			this.extractBackground(graphics, mouseX, mouseY, delta);
+			this.extractWidgetRenderState(graphics, mouseX, mouseY, delta);
 
 			this.wasHovered = this.isMouseHovered();
 		} else {
@@ -280,7 +280,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * @param mouseY the mouse Y-coordinate
 	 * @param delta the tick delta
 	 */
-	protected abstract void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta);
+	protected abstract void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta);
 
 	/**
 	 * Renders the background of the widget.
@@ -290,7 +290,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * @param mouseY the mouse Y-coordinate
 	 * @param delta the tick delta
 	 */
-	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 	}
 
 	/* Sound */

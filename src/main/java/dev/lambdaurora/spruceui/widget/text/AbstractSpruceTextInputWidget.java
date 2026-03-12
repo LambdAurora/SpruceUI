@@ -231,8 +231,8 @@ public abstract class AbstractSpruceTextInputWidget<C extends AbstractSpruceText
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
+	protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.getBorder().extractRenderState(graphics, this, mouseX, mouseY, delta);
 
 		if (this.isMouseHovered()) {
 			graphics.requestCursor(this.isEditable() ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED);
@@ -240,8 +240,8 @@ public abstract class AbstractSpruceTextInputWidget<C extends AbstractSpruceText
 	}
 
 	@Override
-	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
+	protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.getBackground().extractRenderState(graphics, this, 0, mouseX, mouseY, delta);
 	}
 
 	/* Narration */

@@ -42,9 +42,9 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	private List<FormattedCharSequence> lines;
 	private SpruceTextAlignment alignment;
 	private int color = ColorUtil.WHITE;
-	private int maxWidth;
+	private final int maxWidth;
 	private final Consumer<SpruceLabelWidget> action;
-	private int baseX;
+	private final int baseX;
 	//private final int                         maxHeight;
 
 	private TooltipData tooltip = TooltipData.EMPTY;
@@ -213,7 +213,7 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int y = this.getY() + 2;
 		for (var it = this.lines.iterator(); it.hasNext(); y += 9) {
 			var line = it.next();
@@ -222,10 +222,10 @@ public class SpruceLabelWidget extends AbstractSpruceWidget implements Tooltipab
 				case CENTER -> (this.getInnerX() + this.maxWidth / 2) - this.client.font.width(line) / 2;
 				case RIGHT -> this.getInnerX() + this.maxWidth - this.client.font.width(line);
 			};
-			graphics.drawShadowedText(this.client.font, line, x, y, this.color);
+			graphics.shadowedText(this.client.font, line, x, y, this.color);
 		}
 
-		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
+		this.getBorder().extractRenderState(graphics, this, mouseX, mouseY, delta);
 
 		if (!this.dragging) {
 			Tooltip.queueFor(this, mouseX, mouseY, this.tooltipTicks,

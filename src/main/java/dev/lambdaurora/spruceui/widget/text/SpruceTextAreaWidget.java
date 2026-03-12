@@ -148,7 +148,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 	@Override
 	protected void insertCharacter(String character) {
 		if (this.lines.isEmpty()) {
-			this.lines.add(String.valueOf(character));
+			this.lines.add(character);
 			this.setCursorToStart();
 			return;
 		} else {
@@ -431,8 +431,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		super.renderWidget(graphics, mouseX, mouseY, delta);
+	protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		super.extractWidgetRenderState(graphics, mouseX, mouseY, delta);
 
 		this.drawText(graphics);
 		this.drawCursor(graphics);
@@ -452,7 +452,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 		var placeholder = this.getPlaceholder();
 
 		if (this.getText().isEmpty() && placeholder != null) {
-			graphics.drawShadowedText(this.client.font, placeholder, textX, lineY, textColor);
+			graphics.shadowedText(this.client.font, placeholder, textX, lineY, textColor);
 			return;
 		}
 
@@ -462,7 +462,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 				continue;
 			if (line.endsWith("\n")) line = line.substring(0, line.length() - 1);
 
-			graphics.drawShadowedText(this.font, Component.literal(line), textX, lineY, textColor);
+			graphics.shadowedText(this.font, Component.literal(line), textX, lineY, textColor);
 			this.drawSelection(graphics, line, lineY, row);
 
 			lineY += this.font.lineHeight;
@@ -515,7 +515,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 		if (!this.isFocused())
 			return;
 		if (this.lines.isEmpty()) {
-			graphics.drawShadowedText(this.font, Component.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
+			graphics.shadowedText(this.font, Component.literal("_"), this.getX(), this.getY() + 4, ColorUtil.TEXT_COLOR);
 			return;
 		}
 
@@ -529,7 +529,7 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 		if (this.cursor.row < this.lines.size() - 1 || this.cursor.column < cursorLine.length() || this.doesLineOccupyFullSpace(cursorLine))
 			graphics.fill(cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
 		else
-			graphics.drawShadowedText(this.font, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
+			graphics.shadowedText(this.font, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
 	}
 
 	/**

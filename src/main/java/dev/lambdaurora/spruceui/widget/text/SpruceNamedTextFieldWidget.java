@@ -224,8 +224,8 @@ public class SpruceNamedTextFieldWidget extends AbstractSpruceWidget implements 
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawShadowedText(this.client.font, this.getTextFieldWidget().getTitle(), this.getX() + 2, this.getY() + 2, ColorUtil.TEXT_COLOR);
+	protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		graphics.shadowedText(this.client.font, this.getTextFieldWidget().getTitle(), this.getX() + 2, this.getY() + 2, ColorUtil.TEXT_COLOR);
 
 		this.getTextFieldWidget().extractRenderState(graphics, mouseX, mouseY, delta);
 	}

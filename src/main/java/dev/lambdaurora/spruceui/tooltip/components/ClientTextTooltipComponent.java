@@ -35,6 +35,6 @@ public record ClientTextTooltipComponent(FormattedCharSequence text) implements 
 
 	@Override
 	public void extractText(SpruceGuiGraphics graphics, Font font, int i, int j) {
-		graphics.drawText(font, this.text, i, j, ColorUtil.WHITE, true);
+		graphics.text(font, this.text, i, j, ColorUtil.WHITE, true);
 	}
 }

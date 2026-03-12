@@ -69,13 +69,13 @@ public record ClientThumbnailTooltipComponent(
 
 		int sideY = y;
 		for (var line : layout.sideLines) {
-			graphics.drawText(font, line, x + layout.thumbnailWidth + 2, sideY, ColorUtil.WHITE, true);
+			graphics.text(font, line, x + layout.thumbnailWidth + 2, sideY, ColorUtil.WHITE, true);
 			sideY += font.lineHeight + 1;
 		}
 
 		int belowY = y + layout.belowLinesY;
 		for (var line : layout.belowLines) {
-			graphics.drawText(font, line, x, belowY, ColorUtil.WHITE, true);
+			graphics.text(font, line, x, belowY, ColorUtil.WHITE, true);
 			belowY += font.lineHeight + 1;
 		}
 	}

@@ -31,7 +31,7 @@ public class CheckboxTooltipComponent implements SpruceClientTooltipComponent {
 
 	@Override
 	public void extractImage(@NotNull Font font, int x, int y, int width, int height, @NotNull SpruceGuiGraphics graphics) {
-		graphics.drawSprite(
+		graphics.blitSprite(
 				RenderPipelines.GUI_TEXTURED, SpruceCheckboxWidget.BACKGROUND_TEXTURE.get(true, false),
 				x + 4, y + 4, 20, 20
 		);
@@ -39,7 +39,7 @@ public class CheckboxTooltipComponent implements SpruceClientTooltipComponent {
 		long currentTime = System.currentTimeMillis() % ANIMATION_DURATION;
 
 		if (currentTime > ANIMATION_DURATION / 2) {
-			graphics.drawSprite(
+			graphics.blitSprite(
 					RenderPipelines.GUI_TEXTURED, SpruceCheckboxWidget.CHECKED_TEXTURE,
 					x + 4, y + 4, 20, 20,
 					0xff00ff00

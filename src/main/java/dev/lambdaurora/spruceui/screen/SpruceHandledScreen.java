@@ -107,15 +107,15 @@ public abstract class SpruceHandledScreen<T extends AbstractContainerMenu> exten
 	@Override
 	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		super.extractRenderState(graphics, mouseX, mouseY, delta);
-		this.renderWidgets(graphics, mouseX, mouseY, delta);
-		this.renderTitle(graphics, mouseX, mouseY, delta);
-		Tooltip.renderAll(graphics);
+		this.extractWidgets(graphics, mouseX, mouseY, delta);
+		this.extractTitle(graphics, mouseX, mouseY, delta);
+		Tooltip.extractAllRenderStates(graphics);
 	}
 
-	public void renderTitle(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+	public void extractTitle(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 	}
 
-	public void renderWidgets(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+	public void extractWidgets(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		for (var element : this.children()) {
 			if (element instanceof Renderable drawable)
 				drawable.extractRenderState(graphics, mouseX, mouseY, delta);

@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 @Environment(EnvType.CLIENT)
 @Mixin(GuiGraphicsExtractor.class)
-public class GuiGraphicsMixin implements GuiGraphicsAccessor {
+public class GuiGraphicsExtractorMixin implements GuiGraphicsAccessor {
 	@Unique
 	private final SpruceGuiGraphics spruce$graphics = new SpruceGuiGraphics((GuiGraphicsExtractor) (Object) this);
 
