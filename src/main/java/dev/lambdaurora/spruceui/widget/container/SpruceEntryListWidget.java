@@ -353,7 +353,7 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		int bottom = this.getEndInnerBorderedY();
 
 		graphics.enableScissor(left, top, right, bottom);
-		this.entries.forEach(e -> e.render(graphics, mouseX, mouseY, delta));
+		this.entries.forEach(e -> e.extractRenderState(graphics, mouseX, mouseY, delta));
 		graphics.disableScissor();
 
 		// Render the transition thingy.

@@ -62,10 +62,10 @@ public record ClientThumbnailTooltipComponent(
 	}
 
 	@Override
-	public void renderText(SpruceGuiGraphics graphics, Font font, int x, int y) {
+	public void extractText(SpruceGuiGraphics graphics, Font font, int x, int y) {
 		var layout = this.getLayout(font);
 
-		this.thumbnailComponent.renderText(graphics, font, x, y + layout.thumbnailYOffset());
+		this.thumbnailComponent.extractText(graphics, font, x, y + layout.thumbnailYOffset());
 
 		int sideY = y;
 		for (var line : layout.sideLines) {
@@ -81,10 +81,10 @@ public record ClientThumbnailTooltipComponent(
 	}
 
 	@Override
-	public void renderImage(Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics) {
+	public void extractImage(Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics) {
 		var layout = this.getLayout(font);
 
-		this.thumbnailComponent.renderImage(
+		this.thumbnailComponent.extractImage(
 				font,
 				x, y + layout.thumbnailYOffset(),
 				layout.thumbnailWidth, layout.thumbnailHeight,

@@ -16,7 +16,7 @@ import dev.lambdaurora.spruceui.tooltip.Tooltip;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -174,7 +174,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 		int margin = 2;
 		int startX = this.getX() + margin;
 		int endX = this.getX() + this.getWidth() - margin;
-		var collector = graphics.textRenderer(this.alpha, GuiGraphics.HoveredTextEffects.NONE);
+		var collector = graphics.textRenderer(this.alpha, GuiGraphicsExtractor.HoveredTextEffects.NONE);
 		collector.acceptScrolling(this.getMessage(),
 				this.getX() + this.getWidth() / 2, startX, endX,
 				this.getY(), this.getY() + this.getHeight()

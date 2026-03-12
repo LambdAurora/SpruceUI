@@ -184,9 +184,9 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 				);
 			}
 		}
-		this.list.render(graphics, mouseX, mouseY, delta);
+		this.list.extractRenderState(graphics, mouseX, mouseY, delta);
 		if (this.list.getCurrentTab() != null)
-			this.list.getCurrentTab().container.render(graphics, mouseX, mouseY, delta);
+			this.list.getCurrentTab().container.extractRenderState(graphics, mouseX, mouseY, delta);
 	}
 
 	public static abstract class Entry extends SpruceEntryListWidget.Entry implements WithBackground {
@@ -362,7 +362,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
 		@Override
 		protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-			this.separatorWidget.render(graphics, mouseX, mouseY, delta);
+			this.separatorWidget.extractRenderState(graphics, mouseX, mouseY, delta);
 		}
 
 		@Override

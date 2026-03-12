@@ -49,7 +49,7 @@ public record ClientSpriteTooltipComponent(
 	}
 
 	@Override
-	public void renderImage(Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics) {
+	public void extractImage(Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics) {
 		int actualX = switch (this.alignment) {
 			case LEFT -> x;
 			case CENTER -> x + (width / 2 - this.width / 2);

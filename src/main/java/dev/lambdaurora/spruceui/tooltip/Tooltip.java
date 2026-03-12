@@ -16,7 +16,7 @@ import dev.lambdaurora.spruceui.event.ScreenEvents;
 import dev.lambdaurora.spruceui.tooltip.components.SpruceClientTooltipComponent;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.inventory.tooltip.BelowOrAboveWidgetTooltipPositioner;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -69,10 +69,10 @@ public final class Tooltip implements SprucePositioned {
 	/**
 	 * Renders the tooltip.
 	 *
-	 * @param graphics The GuiGraphics instance used to render.
+	 * @param graphics The GuiGraphicsExtractor instance used to render.
 	 */
-	public void render(GuiGraphics graphics) {
-		graphics.renderTooltip(Minecraft.getInstance().font, this.components, this.x, this.y, this.positioner, this.style);
+	public void render(GuiGraphicsExtractor graphics) {
+		graphics.tooltip(Minecraft.getInstance().font, this.components, this.x, this.y, this.positioner, this.style);
 	}
 
 	/**
@@ -168,7 +168,7 @@ public final class Tooltip implements SprucePositioned {
 	 *
 	 * @param graphics the GUI graphics to render from
 	 */
-	public static void renderAll(GuiGraphics graphics) {
+	public static void renderAll(GuiGraphicsExtractor graphics) {
 		if (delayed)
 			return;
 		synchronized (TOOLTIPS) {

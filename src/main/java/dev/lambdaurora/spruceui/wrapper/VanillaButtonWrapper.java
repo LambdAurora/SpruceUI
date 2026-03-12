@@ -14,7 +14,7 @@ import dev.lambdaurora.spruceui.widget.AbstractSpruceButtonWidget;
 import dev.lambdaurora.spruceui.widget.SpruceElement;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.KeyEvent;
@@ -39,9 +39,9 @@ public class VanillaButtonWrapper extends AbstractWidget implements SpruceElemen
 	}
 
 	@Override
-	public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		this.widget.getPosition().setRelativeY(this.getY());
-		this.widget.render(graphics, mouseX, mouseY, delta);
+		this.widget.extractRenderState(graphics, mouseX, mouseY, delta);
 	}
 
 	@Override

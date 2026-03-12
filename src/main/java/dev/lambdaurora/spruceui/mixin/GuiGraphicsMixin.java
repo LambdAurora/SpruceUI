@@ -13,22 +13,22 @@ import dev.lambdaurora.spruceui.impl.GuiGraphicsAccessor;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.render.state.GuiRenderState;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.state.gui.GuiRenderState;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 @Environment(EnvType.CLIENT)
-@Mixin(GuiGraphics.class)
+@Mixin(GuiGraphicsExtractor.class)
 public class GuiGraphicsMixin implements GuiGraphicsAccessor {
 	@Unique
-	private final SpruceGuiGraphics spruce$graphics = new SpruceGuiGraphics((GuiGraphics) (Object) this);
+	private final SpruceGuiGraphics spruce$graphics = new SpruceGuiGraphics((GuiGraphicsExtractor) (Object) this);
 
 	@Shadow
 	@Final
-	public GuiGraphics.ScissorStack scissorStack;
+	public GuiGraphicsExtractor.ScissorStack scissorStack;
 	@Shadow
 	@Final
 	public GuiRenderState guiRenderState;
@@ -39,7 +39,7 @@ public class GuiGraphicsMixin implements GuiGraphicsAccessor {
 	}
 
 	@Override
-	public GuiGraphics.ScissorStack spruceui$getScissorStack() {
+	public GuiGraphicsExtractor.ScissorStack spruceui$getScissorStack() {
 		return this.scissorStack;
 	}
 

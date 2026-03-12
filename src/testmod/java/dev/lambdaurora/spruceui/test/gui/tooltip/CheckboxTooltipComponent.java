@@ -30,7 +30,7 @@ public class CheckboxTooltipComponent implements SpruceClientTooltipComponent {
 	}
 
 	@Override
-	public void renderImage(@NotNull Font font, int x, int y, int width, int height, @NotNull SpruceGuiGraphics graphics) {
+	public void extractImage(@NotNull Font font, int x, int y, int width, int height, @NotNull SpruceGuiGraphics graphics) {
 		graphics.drawSprite(
 				RenderPipelines.GUI_TEXTURED, SpruceCheckboxWidget.BACKGROUND_TEXTURE.get(true, false),
 				x + 4, y + 4, 20, 20

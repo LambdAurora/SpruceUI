@@ -225,7 +225,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 
 		@Override
 		protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-			this.forEach(widget -> widget.render(graphics, mouseX, mouseY, delta));
+			this.forEach(widget -> widget.extractRenderState(graphics, mouseX, mouseY, delta));
 		}
 
 		/* Narration */

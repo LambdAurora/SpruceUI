@@ -79,7 +79,7 @@ public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidg
 
 	@Override
 	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.forEach(child -> child.render(graphics, mouseX, mouseY, delta));
+		this.forEach(child -> child.extractRenderState(graphics, mouseX, mouseY, delta));
 		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
 	}
 

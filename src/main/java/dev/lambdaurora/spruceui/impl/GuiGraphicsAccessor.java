@@ -10,15 +10,15 @@
 package dev.lambdaurora.spruceui.impl;
 
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.render.state.GuiRenderState;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.state.gui.GuiRenderState;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public interface GuiGraphicsAccessor {
 	SpruceGuiGraphics spruceui$spruced();
 
-	GuiGraphics.ScissorStack spruceui$getScissorStack();
+	GuiGraphicsExtractor.ScissorStack spruceui$getScissorStack();
 
 	GuiRenderState spruceui$getGuiRenderState();
 }

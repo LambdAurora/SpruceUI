@@ -41,7 +41,7 @@ public class MinecraftClientMixin {
 	@Unique
 	private Screen tickingScreen;
 
-	@Inject(method = "resizeDisplay", at = @At("RETURN"))
+	@Inject(method = "resizeGui", at = @At("RETURN"))
 	private void onResolutionChanged(CallbackInfo ci) {
 		ResolutionChangeCallback.EVENT.invoker().apply((Minecraft) (Object) this);
 	}

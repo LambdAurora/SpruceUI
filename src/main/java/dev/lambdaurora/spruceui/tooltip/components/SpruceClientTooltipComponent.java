@@ -11,7 +11,7 @@ package dev.lambdaurora.spruceui.tooltip.components;
 
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 
 /**
@@ -22,22 +22,22 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
  * @since 8.0.0
  */
 public interface SpruceClientTooltipComponent extends ClientTooltipComponent {
-	default void renderText(SpruceGuiGraphics graphics, Font font, int x, int y) {
+	default void extractText(SpruceGuiGraphics graphics, Font font, int x, int y) {
 	}
 
-	default void renderImage(
+	default void extractImage(
 			Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics
 	) {
 	}
 
 	@Override
-	default void renderText(GuiGraphics graphics, Font font, int x, int y) {
-		this.renderText(SpruceGuiGraphics.of(graphics), font, x, y);
+	default void extractText(GuiGraphicsExtractor graphics, Font font, int x, int y) {
+		this.extractText(SpruceGuiGraphics.of(graphics), font, x, y);
 	}
 
 	@Override
-	default void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
-		this.renderImage(font, x, y, width, height, SpruceGuiGraphics.of(graphics));
+	default void extractImage(Font font, int x, int y, int width, int height, GuiGraphicsExtractor graphics) {
+		this.extractImage(font, x, y, width, height, SpruceGuiGraphics.of(graphics));
 	}
 
 	/**
@@ -76,15 +76,15 @@ public interface SpruceClientTooltipComponent extends ClientTooltipComponent {
 				}
 
 				@Override
-				public void renderText(SpruceGuiGraphics graphics, Font font, int x, int y) {
-					component.renderText(graphics.vanilla(), font, x, y);
+				public void extractText(SpruceGuiGraphics graphics, Font font, int x, int y) {
+					component.extractText(graphics.vanilla(), font, x, y);
 				}
 
 				@Override
-				public void renderImage(
+				public void extractImage(
 						Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics
 				) {
-					component.renderImage(font, x, y, width, height, graphics.vanilla());
+					component.extractImage(font, x, y, width, height, graphics.vanilla());
 				}
 			};
 		}

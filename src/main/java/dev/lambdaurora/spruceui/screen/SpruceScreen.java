@@ -15,7 +15,7 @@ import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import dev.lambdaurora.spruceui.widget.SpruceElement;
 import dev.lambdaurora.spruceui.widget.SpruceRenderable;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -102,16 +102,16 @@ public abstract class SpruceScreen extends Screen implements SprucePositioned, S
 	/* Render */
 
 	@Override
-	public final void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.render(SpruceGuiGraphics.of(graphics), mouseX, mouseY, delta);
+	public final void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+		this.extractRenderState(SpruceGuiGraphics.of(graphics), mouseX, mouseY, delta);
 	}
 
 	@Override
-	public void render(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void extractRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		this.renderWidgets(graphics, mouseX, mouseY, delta);
 	}
 
 	public void renderWidgets(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		super.render(graphics.vanilla(), mouseX, mouseY, delta);
+		super.extractRenderState(graphics.vanilla(), mouseX, mouseY, delta);
 	}
 }
