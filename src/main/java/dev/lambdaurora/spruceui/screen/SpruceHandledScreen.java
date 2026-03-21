@@ -14,7 +14,7 @@ import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.tooltip.Tooltip;
 import dev.lambdaurora.spruceui.widget.SpruceElement;
 import dev.lambdaurora.spruceui.widget.SpruceWidget;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -45,10 +45,10 @@ public abstract class SpruceHandledScreen<T extends AbstractContainerMenu> exten
 		var old = this.getFocused();
 		if (old == focused) return;
 		if (old instanceof SpruceWidget)
-			((SpruceWidget) old).setFocused(false);
+			old.setFocused(false);
 		super.setFocused(focused);
 		if (focused instanceof SpruceWidget)
-			((SpruceWidget) focused).setFocused(true);
+			focused.setFocused(true);
 	}
 
 	/* Input */
@@ -105,20 +105,20 @@ public abstract class SpruceHandledScreen<T extends AbstractContainerMenu> exten
 	/* Render */
 
 	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		super.render(graphics, mouseX, mouseY, delta);
-		this.renderWidgets(graphics, mouseX, mouseY, delta);
-		this.renderTitle(graphics, mouseX, mouseY, delta);
-		Tooltip.renderAll(graphics);
+	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+		super.extractRenderState(graphics, mouseX, mouseY, delta);
+		this.extractWidgets(graphics, mouseX, mouseY, delta);
+		this.extractTitle(graphics, mouseX, mouseY, delta);
+		Tooltip.extractAllRenderStates(graphics);
 	}
 
-	public void renderTitle(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void extractTitle(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 	}
 
-	public void renderWidgets(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void extractWidgets(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		for (var element : this.children()) {
 			if (element instanceof Renderable drawable)
-				drawable.render(graphics, mouseX, mouseY, delta);
+				drawable.extractRenderState(graphics, mouseX, mouseY, delta);
 		}
 	}
 }

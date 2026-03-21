@@ -13,7 +13,7 @@ import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.CharacterEvent;
@@ -248,11 +248,11 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	/* Rendering */
 
 	@Override
-	public final void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.render(new SpruceGuiGraphics(graphics), mouseX, mouseY, delta);
+	public final void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+		this.extractRenderState(new SpruceGuiGraphics(graphics), mouseX, mouseY, delta);
 	}
 
-	public void render(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	public void extractRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.isVisible()) {
 			this.hovered = mouseX >= this.getX() && mouseY >= this.getY()
 					&& mouseX < this.getX() + this.getWidth() && mouseY < this.getY() + this.getHeight();
@@ -263,8 +263,8 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 				}
 			}
 
-			this.renderBackground(graphics, mouseX, mouseY, delta);
-			this.renderWidget(graphics, mouseX, mouseY, delta);
+			this.extractBackground(graphics, mouseX, mouseY, delta);
+			this.extractWidgetRenderState(graphics, mouseX, mouseY, delta);
 
 			this.wasHovered = this.isMouseHovered();
 		} else {
@@ -280,7 +280,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * @param mouseY the mouse Y-coordinate
 	 * @param delta the tick delta
 	 */
-	protected abstract void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta);
+	protected abstract void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta);
 
 	/**
 	 * Renders the background of the widget.
@@ -290,7 +290,7 @@ public abstract class AbstractSpruceWidget implements SpruceWidget {
 	 * @param mouseY the mouse Y-coordinate
 	 * @param delta the tick delta
 	 */
-	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 	}
 
 	/* Sound */

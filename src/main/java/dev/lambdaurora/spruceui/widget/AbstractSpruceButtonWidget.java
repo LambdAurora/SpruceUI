@@ -16,7 +16,7 @@ import dev.lambdaurora.spruceui.tooltip.Tooltip;
 import dev.lambdaurora.spruceui.tooltip.TooltipData;
 import dev.lambdaurora.spruceui.tooltip.Tooltipable;
 import dev.lambdaurora.spruceui.wrapper.VanillaButtonWrapper;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -153,8 +153,8 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.renderButton(graphics, mouseX, mouseY, delta);
+	protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.extractButton(graphics, mouseX, mouseY, delta);
 
 		if (this.isMouseHovered()) {
 			graphics.requestCursor(this.isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
@@ -165,16 +165,16 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 					i -> this.tooltipTicks = i, this.lastTick, i -> this.lastTick = i);
 	}
 
-	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int color = this.active ? 16777215 : 10526880;
-		this.renderText(graphics, color | Mth.ceil(this.alpha * 255.0F) << 24);
+		this.extractText(graphics, color | Mth.ceil(this.alpha * 255.0F) << 24);
 	}
 
-	protected void renderText(SpruceGuiGraphics graphics, int color) {
+	protected void extractText(SpruceGuiGraphics graphics, int color) {
 		int margin = 2;
 		int startX = this.getX() + margin;
 		int endX = this.getX() + this.getWidth() - margin;
-		var collector = graphics.textRenderer(this.alpha, GuiGraphics.HoveredTextEffects.NONE);
+		var collector = graphics.textRenderer(this.alpha, GuiGraphicsExtractor.HoveredTextEffects.NONE);
 		collector.acceptScrolling(this.getMessage(),
 				this.getX() + this.getWidth() / 2, startX, endX,
 				this.getY(), this.getY() + this.getHeight()
@@ -182,8 +182,8 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	}
 
 	@Override
-	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawSprite(RenderPipelines.GUI_TEXTURED, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
+	protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 	}
 
 	/* Narration */

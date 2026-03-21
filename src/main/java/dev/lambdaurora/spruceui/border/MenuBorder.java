@@ -35,7 +35,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 	public static final MenuBorder TAB_LIST = new MenuBorder(true, true, true, false);
 
 	@Override
-	public void render(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
+	public void extractRenderState(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
 		if (this.top) {
 			Identifier topTexture = CLIENT.level == null
 					? SpruceTextures.MENU_TOP_BORDER
@@ -47,7 +47,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 				width -= THICKNESS;
 			}
 
-			graphics.drawTexture(
+			graphics.blit(
 					RenderPipelines.GUI_TEXTURED,
 					topTexture,
 					widget.getX(), widget.getY(),
@@ -61,7 +61,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 			Identifier cornerTexture = CLIENT.level == null
 					? SpruceTextures.MENU_TOP_RIGHT_BORDER
 					: SpruceTextures.INWORLD_MENU_TOP_RIGHT_BORDER;
-			graphics.drawTexture(
+			graphics.blit(
 					RenderPipelines.GUI_TEXTURED,
 					cornerTexture,
 					widget.getEndX() - THICKNESS, widget.getY(),
@@ -88,7 +88,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 				height -= THICKNESS;
 			}
 
-			graphics.drawTexture(
+			graphics.blit(
 					RenderPipelines.GUI_TEXTURED, rightTexture,
 					widget.getEndX() - THICKNESS, y,
 					0, 0,
@@ -100,7 +100,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 		if (this.bottom && this.right) {
 			Identifier cornerTexture = CLIENT.level == null
 					? SpruceTextures.MENU_BOTTOM_RIGHT_BORDER : SpruceTextures.INWORLD_MENU_BOTTOM_RIGHT_BORDER;
-			graphics.drawTexture(
+			graphics.blit(
 					RenderPipelines.GUI_TEXTURED,
 					cornerTexture,
 					widget.getEndX() - THICKNESS, widget.getEndY() - THICKNESS,
@@ -121,7 +121,7 @@ public record MenuBorder(boolean top, boolean right, boolean bottom, boolean lef
 				width -= THICKNESS;
 			}
 
-			graphics.drawTexture(
+			graphics.blit(
 					RenderPipelines.GUI_TEXTURED,
 					bottomTexture,
 					widget.getX(), widget.getEndY() - THICKNESS,

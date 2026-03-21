@@ -419,8 +419,8 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		super.renderWidget(graphics, mouseX, mouseY, delta);
+	protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		super.extractWidgetRenderState(graphics, mouseX, mouseY, delta);
 
 		this.drawText(graphics);
 		this.drawCursor(graphics);
@@ -445,7 +445,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 		var placeholder = this.getPlaceholder();
 
 		if (this.text.isEmpty() && placeholder != null) {
-			graphics.drawShadowedText(this.client.font, placeholder, x, y, textColor);
+			graphics.shadowedText(this.client.font, placeholder, x, y, textColor);
 			return;
 		}
 
@@ -454,7 +454,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 				this.getInnerWidth()
 		);
 
-		graphics.drawShadowedText(
+		graphics.shadowedText(
 				this.client.font, this.renderTextProvider.apply(displayedText, this.firstCharacterIndex),
 				x, y, textColor
 		);
@@ -499,7 +499,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 		int cursorY = this.getY() + this.getHeight() / 2 - 4;
 
 		if (this.text.isEmpty()) {
-			graphics.drawShadowedText(this.client.font, Component.literal("_"),
+			graphics.shadowedText(this.client.font, Component.literal("_"),
 					this.getX() + 4, cursorY, ColorUtil.TEXT_COLOR);
 			return;
 		}
@@ -514,7 +514,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 		if (this.cursor.column - this.firstCharacterIndex < cursorLine.length())
 			graphics.fill(cursorX - 1, cursorY - 1, cursorX, cursorY + 9, ColorUtil.TEXT_COLOR);
 		else
-			graphics.drawShadowedText(this.client.font, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
+			graphics.shadowedText(this.client.font, "_", cursorX, cursorY, ColorUtil.TEXT_COLOR);
 	}
 
 	/* Narration */

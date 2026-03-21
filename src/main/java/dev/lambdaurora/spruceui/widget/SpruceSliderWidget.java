@@ -32,8 +32,8 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	private Component baseMessage;
 	protected double value;
 	private final Consumer<SpruceSliderWidget> applyConsumer;
-	private double multiplier;
-	private String sign;
+	private final double multiplier;
+	private final String sign;
 	private boolean inUse = false;
 
 	private static final Identifier SLIDER = Identifier.withDefaultNamespace("widget/slider");
@@ -170,9 +170,9 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 	}
 
 	@Override
-	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		final Identifier texture = this.isFocusedOrHovered() ? SLIDER_HANDLE_HIGHLIGHTED : SLIDER_HANDLE;
-		graphics.drawSprite(
+		graphics.blitSprite(
 				RenderPipelines.GUI_TEXTURED,
 				texture,
 				this.getX() + (int) (this.value * (double) (this.getWidth() - 8)), this.getY(),
@@ -183,7 +183,7 @@ public class SpruceSliderWidget extends AbstractSpruceButtonWidget implements To
 			this.inUse = false;
 		}
 
-		super.renderButton(graphics, mouseX, mouseY, delta);
+		super.extractButton(graphics, mouseX, mouseY, delta);
 	}
 
 	/* Narration */

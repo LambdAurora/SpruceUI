@@ -341,19 +341,19 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 	/* Rendering */
 
 	@Override
-	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
+	protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.getBackground().extractRenderState(graphics, this, 0, mouseX, mouseY, delta);
 	}
 
 	@Override
-	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int left = this.getInnerBorderedX();
 		int right = this.getEndInnerBorderedX();
 		int top = this.getInnerBorderedY();
 		int bottom = this.getEndInnerBorderedY();
 
 		graphics.enableScissor(left, top, right, bottom);
-		this.entries.forEach(e -> e.render(graphics, mouseX, mouseY, delta));
+		this.entries.forEach(e -> e.extractRenderState(graphics, mouseX, mouseY, delta));
 		graphics.disableScissor();
 
 		// Render the transition thingy.
@@ -368,12 +368,12 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 		}
 
 		// Scrollbar
-		this.renderScrollbar(graphics, mouseX, mouseY);
+		this.extractScrollbar(graphics, mouseX, mouseY);
 
-		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
+		this.getBorder().extractRenderState(graphics, this, mouseX, mouseY, delta);
 	}
 
-	protected void renderScrollbar(SpruceGuiGraphics graphics, int mouseX, int mouseY) {
+	protected void extractScrollbar(SpruceGuiGraphics graphics, int mouseX, int mouseY) {
 		if (this.isScrollbarVisible()) {
 			int top = this.getInnerBorderedY();
 			int height = this.getInnerBorderedHeight();
@@ -385,10 +385,10 @@ public abstract class SpruceEntryListWidget<E extends SpruceEntryListWidget.Entr
 				scrollbarY = top;
 			}
 
-			graphics.drawSprite(RenderPipelines.GUI_TEXTURED, SpruceTextures.SCROLLER_BACKGROUND,
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SpruceTextures.SCROLLER_BACKGROUND,
 					scrollbarX, top, 6, this.getInnerBorderedHeight()
 			);
-			graphics.drawSprite(RenderPipelines.GUI_TEXTURED, SpruceTextures.SCROLLER,
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, SpruceTextures.SCROLLER,
 					scrollbarX, scrollbarY, 6, scrollerHeight
 			);
 

@@ -62,8 +62,8 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawSprite(
+	protected void extractButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		graphics.blitSprite(
 				RenderPipelines.GUI_TEXTURED, (this.getValue() ? ON_TEXTURE : OFF_TEXTURE).get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX() + (this.getValue() ? 14 : 0), this.getY() + (this.getHeight() / 2 - 9),
 				18, 18
@@ -73,14 +73,14 @@ public class SpruceToggleSwitch extends AbstractSpruceBooleanButtonWidget {
 			var message = Language.getInstance().getVisualOrder(
 					this.client.font.substrByWidth(this.getMessage(), this.getWidth() - 40)
 			);
-			graphics.drawShadowedText(this.client.font, message, this.getX() + 36, this.getY() + (this.getHeight() - 8) / 2,
+			graphics.shadowedText(this.client.font, message, this.getX() + 36, this.getY() + (this.getHeight() - 8) / 2,
 					14737632 | Mth.ceil(this.alpha * 255.0F) << 24);
 		}
 	}
 
 	@Override
-	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawSprite(
+	protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		graphics.blitSprite(
 				RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX(), this.getY() + (this.getHeight() / 2 - 9),
 				32, 18

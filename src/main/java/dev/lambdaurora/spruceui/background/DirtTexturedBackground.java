@@ -18,8 +18,8 @@ public record DirtTexturedBackground(int red, int green, int blue, int alpha) im
 	public static final Background DARKENED = new DirtTexturedBackground(32, 32, 32, 255);
 
 	@Override
-	public void render(SpruceGuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
-		RenderUtil.renderBackgroundTexture(graphics,
+	public void extractRenderState(SpruceGuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
+		RenderUtil.extractBackgroundTexture(graphics,
 				widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight(),
 				vOffset / 32.f, this.red, this.green, this.blue, this.alpha
 		);

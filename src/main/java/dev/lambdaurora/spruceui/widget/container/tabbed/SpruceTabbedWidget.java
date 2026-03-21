@@ -174,19 +174,19 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 	/* Render */
 
 	@Override
-	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.title != null) {
 			int y = this.getY() + 6;
 			for (var it = this.title.iterator(); it.hasNext(); y += 9) {
 				var line = it.next();
-				graphics.drawCenteredShadowedText(
+				graphics.centeredShadowedText(
 						this.client.font, line, this.getX() + this.list.getWidth() / 2, y, ColorUtil.WHITE
 				);
 			}
 		}
-		this.list.render(graphics, mouseX, mouseY, delta);
+		this.list.extractRenderState(graphics, mouseX, mouseY, delta);
 		if (this.list.getCurrentTab() != null)
-			this.list.getCurrentTab().container.render(graphics, mouseX, mouseY, delta);
+			this.list.getCurrentTab().container.extractRenderState(graphics, mouseX, mouseY, delta);
 	}
 
 	public static abstract class Entry extends SpruceEntryListWidget.Entry implements WithBackground {
@@ -226,8 +226,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Rendering */
 
 		@Override
-		protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-			this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
+		protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+			this.getBackground().extractRenderState(graphics, this, 0, mouseX, mouseY, delta);
 		}
 	}
 
@@ -281,17 +281,17 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Render */
 
 		@Override
-		protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 			int y = this.getY() + 4;
 			for (var it = this.title.iterator(); it.hasNext(); y += 9) {
 				var line = it.next();
-				graphics.drawText(this.client.font, line, this.getX() + 4, y, ColorUtil.WHITE, false);
+				graphics.text(this.client.font, line, this.getX() + 4, y, ColorUtil.WHITE, false);
 			}
 			if (this.description != null) {
 				y += 4;
 				for (var it = this.description.iterator(); it.hasNext(); y += 9) {
 					var line = it.next();
-					graphics.drawText(this.client.font, line, this.getX() + 8, y, ColorUtil.WHITE, false);
+					graphics.text(this.client.font, line, this.getX() + 8, y, ColorUtil.WHITE, false);
 				}
 			}
 
@@ -301,8 +301,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		}
 
 		@Override
-		protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-			super.renderBackground(graphics, mouseX, mouseY, delta);
+		protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+			super.extractBackground(graphics, mouseX, mouseY, delta);
 			if (this.isFocused() && this.parent.isFocused())
 				graphics.fill(this.getX(), this.getY(),
 						this.getX() + this.getWidth(),
@@ -361,8 +361,8 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 		/* Rendering */
 
 		@Override
-		protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-			this.separatorWidget.render(graphics, mouseX, mouseY, delta);
+		protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+			this.separatorWidget.extractRenderState(graphics, mouseX, mouseY, delta);
 		}
 
 		@Override

@@ -91,16 +91,16 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 	/* Rendering */
 
 	@Override
-	protected void renderButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractButton(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		if (this.getValue()) {
-			graphics.drawSprite(
+			graphics.blitSprite(
 					RenderPipelines.GUI_TEXTURED, CHECKED_TEXTURE,
 					this.getX(), this.getY(),
 					this.getHeight(), this.getHeight(),
 					this.colored ? 0xff00ff00 : -1
 			);
 		} else if (this.showCross) {
-			graphics.drawSprite(
+			graphics.blitSprite(
 					RenderPipelines.GUI_TEXTURED, CROSSED_TEXTURE,
 					this.getX(), this.getY(),
 					this.getHeight(), this.getHeight(),
@@ -112,7 +112,7 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 			var message = Language.getInstance().getVisualOrder(
 					this.client.font.substrByWidth(this.getMessage(), this.getWidth() - this.getHeight() - 4)
 			);
-			graphics.drawShadowedText(this.client.font, message,
+			graphics.shadowedText(this.client.font, message,
 					this.getX() + this.getHeight() + 4, this.getY() + (this.getHeight() - 8) / 2,
 					0xe0e0e0 | Mth.ceil(this.alpha * 255.0F) << 24
 			);
@@ -120,8 +120,8 @@ public class SpruceCheckboxWidget extends AbstractSpruceBooleanButtonWidget {
 	}
 
 	@Override
-	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		graphics.drawSprite(
+	protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		graphics.blitSprite(
 				RenderPipelines.GUI_TEXTURED, BACKGROUND_TEXTURE.get(this.isActive(), this.isFocusedOrHovered()),
 				this.getX(), this.getY(),
 				this.getHeight(), this.getHeight()

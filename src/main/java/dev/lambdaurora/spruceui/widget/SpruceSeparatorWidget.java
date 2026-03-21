@@ -117,7 +117,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+	protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
 		int lineY = this.getY() + this.getHeight() / 2 - 1;
 
 		if (this.title != null) {
@@ -129,7 +129,7 @@ public class SpruceSeparatorWidget extends AbstractSpruceWidget implements Toolt
 			int y = this.getY();
 			for (var line : this.titleToRender) {
 				int lineX = this.getX() + (this.getWidth() / 2 - this.client.font.width(line) / 2);
-				graphics.drawShadowedText(this.client.font, line, lineX, y, ColorUtil.WHITE);
+				graphics.shadowedText(this.client.font, line, lineX, y, ColorUtil.WHITE);
 				y += 2 + this.client.font.lineHeight;
 			}
 		} else {

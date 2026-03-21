@@ -35,7 +35,7 @@ public record MenuBackground(Identifier texture, Identifier inWorldTexture) impl
 	);
 
 	@Override
-	public void render(SpruceGuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
+	public void extractRenderState(SpruceGuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
 		int x = widget.getX();
 		int y = widget.getY();
 		int width = widget.getWidth();
@@ -52,7 +52,7 @@ public record MenuBackground(Identifier texture, Identifier inWorldTexture) impl
 		}
 
 		Identifier identifier = CLIENT.level == null ? this.inWorldTexture : this.texture;
-		graphics.drawTexture(
+		graphics.blit(
 				RenderPipelines.GUI_TEXTURED, identifier,
 				x, y,
 				0, 0,

@@ -78,14 +78,14 @@ public class SpruceContainerWidget extends AbstractSpruceParentWidget<SpruceWidg
 	/* Rendering */
 
 	@Override
-	protected void renderWidget(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.forEach(child -> child.render(graphics, mouseX, mouseY, delta));
-		this.getBorder().render(graphics, this, mouseX, mouseY, delta);
+	protected void extractWidgetRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.forEach(child -> child.extractRenderState(graphics, mouseX, mouseY, delta));
+		this.getBorder().extractRenderState(graphics, this, mouseX, mouseY, delta);
 	}
 
 	@Override
-	protected void renderBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
-		this.getBackground().render(graphics, this, 0, mouseX, mouseY, delta);
+	protected void extractBackground(SpruceGuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		this.getBackground().extractRenderState(graphics, this, 0, mouseX, mouseY, delta);
 	}
 
 	public interface ChildrenFactory {

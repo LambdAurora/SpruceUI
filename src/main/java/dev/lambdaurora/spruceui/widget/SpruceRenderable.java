@@ -10,7 +10,7 @@
 package dev.lambdaurora.spruceui.widget;
 
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 
 /**
@@ -29,10 +29,10 @@ public interface SpruceRenderable extends Renderable {
 	 * @param mouseY the Y-coordinate of the mouse cursor
 	 * @param tickDelta the partial tick time
 	 */
-	void render(SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta);
+	void extractRenderState(SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta);
 
-	@Override
-	default void render(GuiGraphics graphics, int mouseX, int mouseY, float tickDelta) {
-		this.render(SpruceGuiGraphics.of(graphics), mouseX, mouseY, tickDelta);
+
+	default void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta) {
+		this.extractRenderState(SpruceGuiGraphics.of(graphics), mouseX, mouseY, tickDelta);
 	}
 }

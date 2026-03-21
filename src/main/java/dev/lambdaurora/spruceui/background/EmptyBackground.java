@@ -26,7 +26,7 @@ public final class EmptyBackground implements Background {
 	}
 
 	@Override
-	public void render(SpruceGuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
+	public void extractRenderState(SpruceGuiGraphics graphics, SpruceWidget widget, int vOffset, int mouseX, int mouseY, float delta) {
 	}
 
 	@Override

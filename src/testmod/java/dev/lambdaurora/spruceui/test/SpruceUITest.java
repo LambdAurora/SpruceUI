@@ -236,11 +236,11 @@ public final class SpruceUITest {
 					(screen, graphics, mouseX, mouseY, tickDelta) -> {
 						var text = "Greetings from SpruceUI";
 						int width = screen.getFont().width(text);
-						graphics.drawShadowedText(screen.getFont(), text, screen.width - width - 2, 2, 0xffffffff);
+						graphics.shadowedText(screen.getFont(), text, screen.width - width - 2, 2, 0xffffffff);
 
 						var tickText = String.valueOf(tick[0]);
 						int tickWidth = screen.getFont().width(tickText);
-						graphics.drawShadowedText(
+						graphics.shadowedText(
 								screen.getFont(), tickText,
 								screen.width - tickWidth - 2, 4 + screen.getFont().lineHeight,
 								0xffffffff

@@ -15,10 +15,10 @@ import dev.lambdaurora.spruceui.impl.GuiGraphicsAccessor;
 import dev.lambdaurora.spruceui.render.state.ColoredRectangleRenderState;
 import net.minecraft.client.gui.ActiveTextCollector;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.render.TextureSetup;
-import net.minecraft.client.gui.render.state.GuiElementRenderState;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
@@ -27,27 +27,27 @@ import org.joml.Matrix3x2fStack;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Represents a wrapper around {@link GuiGraphics} with extra features.
+ * Represents a wrapper around {@link GuiGraphicsExtractor} with extra features.
  *
  * @author LambdAurora
  * @version 8.0.0
  * @since 8.0.0
  */
 public final class SpruceGuiGraphics {
-	private final GuiGraphics wrapped;
+	private final GuiGraphicsExtractor wrapped;
 
-	public SpruceGuiGraphics(GuiGraphics graphics) {
+	public SpruceGuiGraphics(GuiGraphicsExtractor graphics) {
 		this.wrapped = graphics;
 	}
 
-	public static SpruceGuiGraphics of(GuiGraphics graphics) {
+	public static SpruceGuiGraphics of(GuiGraphicsExtractor graphics) {
 		return ((GuiGraphicsAccessor) graphics).spruceui$spruced();
 	}
 
 	/**
 	 * {@return the wrapped vanilla GUI graphics object}
 	 */
-	public GuiGraphics vanilla() {
+	public GuiGraphicsExtractor vanilla() {
 		return this.wrapped;
 	}
 
@@ -76,7 +76,7 @@ public final class SpruceGuiGraphics {
 	 * @param endY the end Y-coordinate of the scissor area
 	 * @see #disableScissor()
 	 * @see #containsPointInScissor(int, int)
-	 * @see GuiGraphics#enableScissor(int, int, int, int)
+	 * @see GuiGraphicsExtractor#enableScissor(int, int, int, int)
 	 */
 	public void enableScissor(int startX, int startY, int endX, int endY) {
 		this.wrapped.enableScissor(startX, startY, endX, endY);
@@ -87,7 +87,7 @@ public final class SpruceGuiGraphics {
 	 *
 	 * @see #enableScissor(int, int, int, int)
 	 * @see #containsPointInScissor(int, int)
-	 * @see GuiGraphics#disableScissor()
+	 * @see GuiGraphicsExtractor#disableScissor()
 	 */
 	public void disableScissor() {
 		this.wrapped.disableScissor();
@@ -100,7 +100,7 @@ public final class SpruceGuiGraphics {
 	 * @param y the Y-coordinate to check
 	 * @see #enableScissor(int, int, int, int)
 	 * @see #disableScissor()
-	 * @see GuiGraphics#containsPointInScissor(int, int)
+	 * @see GuiGraphicsExtractor#containsPointInScissor(int, int)
 	 */
 	public boolean containsPointInScissor(int x, int y) {
 		return this.wrapped.containsPointInScissor(x, y);
@@ -190,7 +190,7 @@ public final class SpruceGuiGraphics {
 			RenderPipeline pipeline, TextureSetup textureSetup, int startX, int startY, int endX, int endY,
 			int colorTopLeft, @Nullable Integer colorTopRight, @Nullable Integer colorBottomRight, @Nullable Integer colorBottomLeft
 	) {
-		this.submitGuiElement(
+		this.addGuiElement(
 				new ColoredRectangleRenderState(
 						pipeline, textureSetup, new Matrix3x2f(this.pose()),
 						startX, startY, endX, endY,
@@ -202,74 +202,74 @@ public final class SpruceGuiGraphics {
 		);
 	}
 
-	public void drawSprite(
+	public void blitSprite(
 			RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height
 	) {
 		this.wrapped.blitSprite(pipeline, sprite, x, y, width, height);
 	}
 
-	public void drawSprite(
+	public void blitSprite(
 			RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height, int color
 	) {
 		this.wrapped.blitSprite(pipeline, sprite, x, y, width, height, color);
 	}
 
-	public void drawTexture(
+	public void blit(
 			RenderPipeline renderPipeline, Identifier texture,
 			int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight
 	) {
 		this.wrapped.blit(renderPipeline, texture, x, y, u, v, width, height, width, height, textureWidth, textureHeight);
 	}
 
-	public void drawText(
+	public void text(
 			Font font, String text, int x, int y, int color, boolean shadow
 	) {
-		this.wrapped.drawString(font, text, x, y, color, shadow);
+		this.wrapped.text(font, text, x, y, color, shadow);
 	}
 
-	public void drawText(
+	public void text(
 			Font font, FormattedCharSequence text, int x, int y, int color, boolean shadow
 	) {
-		this.wrapped.drawString(font, text, x, y, color, shadow);
+		this.wrapped.text(font, text, x, y, color, shadow);
 	}
 
-	public void drawText(
+	public void text(
 			Font font, Component text, int x, int y, int color, boolean shadow
 	) {
-		this.wrapped.drawString(font, text, x, y, color, shadow);
+		this.wrapped.text(font, text, x, y, color, shadow);
 	}
 
-	public void drawShadowedText(
+	public void shadowedText(
 			Font font, String text, int x, int y, int color
 	) {
-		this.drawText(font, text, x, y, color, true);
+		this.text(font, text, x, y, color, true);
 	}
 
-	public void drawShadowedText(
+	public void shadowedText(
 			Font font, FormattedCharSequence text, int x, int y, int color
 	) {
-		this.drawText(font, text, x, y, color, true);
+		this.text(font, text, x, y, color, true);
 	}
 
-	public void drawShadowedText(
+	public void shadowedText(
 			Font font, Component text, int x, int y, int color
 	) {
-		this.drawText(font, text, x, y, color, true);
+		this.text(font, text, x, y, color, true);
 	}
 
-	public void drawCenteredShadowedText(
+	public void centeredShadowedText(
 			Font font, FormattedCharSequence text, int centerX, int y, int color
 	) {
-		this.wrapped.drawCenteredString(font, text, centerX, y, color);
+		this.wrapped.centeredText(font, text, centerX, y, color);
 	}
 
-	public void drawCenteredShadowedText(
+	public void centeredShadowedText(
 			Font font, Component text, int centerX, int y, int color
 	) {
-		this.wrapped.drawCenteredString(font, text, centerX, y, color);
+		this.wrapped.centeredText(font, text, centerX, y, color);
 	}
 
-	public ActiveTextCollector textRenderer(float alpha, GuiGraphics.HoveredTextEffects hoveredTextEffects) {
+	public ActiveTextCollector textRenderer(float alpha, GuiGraphicsExtractor.HoveredTextEffects hoveredTextEffects) {
 		var collector = this.wrapped.textRenderer(hoveredTextEffects);
 		collector.defaultParameters(this.createDefaultTextParameters(alpha));
 		return collector;
@@ -279,8 +279,8 @@ public final class SpruceGuiGraphics {
 		return new ActiveTextCollector.Parameters(new Matrix3x2f(this.wrapped.pose()), alpha, this.accessor().spruceui$getScissorStack().peek());
 	}
 
-	public void submitGuiElement(GuiElementRenderState state) {
-		this.accessor().spruceui$getGuiRenderState().submitGuiElement(state);
+	public void addGuiElement(GuiElementRenderState state) {
+		this.accessor().spruceui$getGuiRenderState().addGuiElement(state);
 	}
 
 	public void requestCursor(CursorType pendingCursor) {

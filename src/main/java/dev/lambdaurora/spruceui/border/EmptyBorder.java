@@ -26,7 +26,7 @@ public final class EmptyBorder implements Border {
 	}
 
 	@Override
-	public void render(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
+	public void extractRenderState(SpruceGuiGraphics graphics, SpruceWidget widget, int mouseX, int mouseY, float delta) {
 	}
 
 	@Override

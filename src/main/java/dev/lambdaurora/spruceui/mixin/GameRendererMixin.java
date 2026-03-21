@@ -13,7 +13,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.lambdaurora.spruceui.event.ScreenEvents;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Dynamic;
@@ -25,23 +25,26 @@ public class GameRendererMixin {
 	@SuppressWarnings({"MixinAnnotationTarget"})
 	@Dynamic
 	@WrapOperation(
-			method = "render",
+			method = "extractGui",
 			at = {
 					@At(
 							value = "INVOKE",
-							target = "Lnet/minecraft/client/gui/screens/Screen;renderWithTooltipAndSubtitles(Lnet/minecraft/client/gui/GuiGraphics;IIF)V"
+							target = "Lnet/minecraft/client/gui/screens/Screen;extractRenderStateWithTooltipAndSubtitles(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V"
 					),
+					// FIXME: see what Neoforge names this hook.
+					/*
 					@At(
 							value = "INVOKE",
-							target = "Lnet/neoforged/neoforge/client/ClientHooks;drawScreen(Lnet/minecraft/client/gui/screens/Screen;Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
+							target = "Lnet/neoforged/neoforge/client/ClientHooks;drawScreen(Lnet/minecraft/client/gui/screens/Screen;Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V",
 							remap = false
 					),
+					*/
 			},
 			require = 1,
 			allow = 1
 	)
 	private void spruceui$onRenderScreen(
-			Screen currentScreen, GuiGraphics graphics, int mouseX, int mouseY, float tickDelta, Operation<Void> operation
+			Screen currentScreen, GuiGraphicsExtractor graphics, int mouseX, int mouseY, float tickDelta, Operation<Void> operation
 	) {
 		var sprucedGraphics = SpruceGuiGraphics.of(graphics);
 

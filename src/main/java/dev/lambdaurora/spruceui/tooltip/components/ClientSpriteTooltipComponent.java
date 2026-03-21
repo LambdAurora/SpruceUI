@@ -49,13 +49,13 @@ public record ClientSpriteTooltipComponent(
 	}
 
 	@Override
-	public void renderImage(Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics) {
+	public void extractImage(Font font, int x, int y, int width, int height, SpruceGuiGraphics graphics) {
 		int actualX = switch (this.alignment) {
 			case LEFT -> x;
 			case CENTER -> x + (width / 2 - this.width / 2);
 			case RIGHT -> x + width - this.width;
 		};
 
-		graphics.drawSprite(RenderPipelines.GUI_TEXTURED, this.spriteId, actualX, y, this.width, this.height);
+		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, this.spriteId, actualX, y, this.width, this.height);
 	}
 }
