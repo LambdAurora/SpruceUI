@@ -156,9 +156,10 @@
 - Updated to Minecraft 1.21.11.
 - Updated [Yumi Minecraft Libraries: Foundation].
 
-## 9.2.0
+## 10.0.0
 
-- Updated to Minecraft 26.1.
+- Updated to Minecraft 26.1 (with help from [#65](https://github.com/LambdAurora/SpruceUI/pull/65)).
+  - Renamed a lot of methods to be in line with Vanilla's name scheming for GUI rendering.
 - Updated [Yumi Minecraft Libraries: Foundation].
 
 [Yumi Minecraft Libraries: Foundation]: https://github.com/YumiProject/yumi-minecraft-foundation-library "Yumi Minecraft Foundation Library page"

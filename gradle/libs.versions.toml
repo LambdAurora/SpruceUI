@@ -1,16 +1,16 @@
 [versions]
-minecraft = "26.1-pre-1"
+minecraft = "26.1-rc-2"
 fabric-loader = "0.18.4"
-neoforge-loader = "10.0.10"
-fabric-api = "0.143.12+26.1"
+neoforge-loader = "11.0.0"
+fabric-api = "0.143.15+26.1"
 modmenu = "18.0.0-alpha.5"
 
-yumi-mc-foundation = "1.0.0-beta.2+26.1-snapshot-6"
+yumi-mc-foundation = "1.0.0-beta.2+26.1"
 
 # Gradle
 gradle-licenser = "2.2.+"
 gradle-loom = "1.15.+"
-gradle-lambdamcdev = "1.9.+"
+gradle-lambdamcdev = "2.0.+"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }

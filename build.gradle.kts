@@ -71,7 +71,7 @@ lambdamcdev {
 			withBlurIcon(false)
 			withLoaderVersion("[2,)")
 			withMixins("spruceui.mixins.json")
-			withDepend("minecraft", "[${libs.versions.minecraft.get()},)")
+			withDepend("minecraft", "[26.1,)")
 			withDepend("yumi_mc_core", "[${libs.versions.yumi.mc.foundation.get()},)")
 		}
 	}

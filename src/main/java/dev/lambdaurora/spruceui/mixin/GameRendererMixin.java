@@ -31,14 +31,11 @@ public class GameRendererMixin {
 							value = "INVOKE",
 							target = "Lnet/minecraft/client/gui/screens/Screen;extractRenderStateWithTooltipAndSubtitles(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V"
 					),
-					// FIXME: see what Neoforge names this hook.
-					/*
 					@At(
 							value = "INVOKE",
 							target = "Lnet/neoforged/neoforge/client/ClientHooks;drawScreen(Lnet/minecraft/client/gui/screens/Screen;Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V",
 							remap = false
-					),
-					*/
+					)
 			},
 			require = 1,
 			allow = 1
