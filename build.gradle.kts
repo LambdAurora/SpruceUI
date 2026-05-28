@@ -1,4 +1,6 @@
 import dev.lambdaurora.mcdev.api.McVersionLookup
+import dev.yumi.gradle.licenser.task.CheckLicenseTask
+import kotlin.jvm.java
 
 plugins {
 	alias(libs.plugins.loom)
@@ -54,7 +56,7 @@ lambdamcdev {
 			withIcon("assets/${lambdamcdev.namespace.get()}/icon.png")
 			withEnvironment("client")
 			withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
-			withDepend("minecraft", "~26.1-")
+			withDepend("minecraft", "~26.2-")
 			withDepend("fabric-resource-loader-v1", ">=2.0.5")
 			withDepend("java", ">=${project.property("java_version")}")
 			withDepend("yumi_mc_core", "^${libs.versions.yumi.mc.foundation.get()}")
@@ -71,7 +73,7 @@ lambdamcdev {
 			withBlurIcon(false)
 			withLoaderVersion("[2,)")
 			withMixins("spruceui.mixins.json")
-			withDepend("minecraft", "[26.1,)")
+			withDepend("minecraft", "[26.2,)")
 			withDepend("yumi_mc_core", "[${libs.versions.yumi.mc.foundation.get()},)")
 		}
 	}
@@ -162,6 +164,13 @@ tasks.build.get().dependsOn(testmodJar)
 
 license {
 	rule(file("HEADER"))
+
+	include("**/*.java")
+}
+
+tasks.withType(CheckLicenseTask::class.java) {
+	dependsOn(tasks.named("generateFmj"))
+	dependsOn(tasks.named("generateNmt"))
 }
 
 // Configure the maven publication.

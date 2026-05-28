@@ -169,9 +169,9 @@ public final class SpruceUITest {
 		this.actionOption = SpruceSimpleActionOption.of("spruceui_test.option.action",
 				btn -> {
 					Minecraft client = Minecraft.getInstance();
-					SystemToast toast = SystemToast.multiline(client, SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
+					var toast = new SystemToast(SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
 							Component.literal("Action button pressed!"), Component.literal("I'm a result of the action"));
-					client.getToastManager().addToast(toast);
+					client.gui.toastManager().addToast(toast);
 				},
 				TooltipData.builder()
 						.component(
@@ -216,11 +216,11 @@ public final class SpruceUITest {
 			context.addRenderableWidget(
 					new SpruceButtonWidget(
 							Position.of(0, 0), 150, 20, Component.literal("SpruceUI Test Menu"),
-							btn -> context.client().setScreen(new SpruceMainMenuScreen(context.screen()))
+							btn -> context.client().setScreenAndShow(new SpruceMainMenuScreen(context.screen()))
 					).asVanilla()
 			);
 
-			ScreenEvents.REMOVE.forContext(context.screen()).register(screen -> {
+			ScreenEvents.REMOVE.forContext(context.screen()).register(_ -> {
 				LOGGER.info("bye bye title screen");
 			});
 		}, TitleScreen.class::isInstance);
@@ -228,12 +228,12 @@ public final class SpruceUITest {
 		ScreenEvents.AFTER_INIT.register(context -> {
 			final int[] tick = new int[]{0};
 
-			ScreenEvents.BEFORE_TICK.forContext(context.screen()).register(screen -> {
+			ScreenEvents.BEFORE_TICK.forContext(context.screen()).register(_ -> {
 				tick[0]++;
 			});
 
 			ScreenEvents.AFTER_RENDER.forContext(context.screen()).register(
-					(screen, graphics, mouseX, mouseY, tickDelta) -> {
+					(screen, graphics, _, _, _) -> {
 						var text = "Greetings from SpruceUI";
 						int width = screen.getFont().width(text);
 						graphics.shadowedText(screen.getFont(), text, screen.width - width - 2, 2, 0xffffffff);

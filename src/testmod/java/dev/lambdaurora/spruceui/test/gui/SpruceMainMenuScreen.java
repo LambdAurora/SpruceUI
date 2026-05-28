@@ -40,14 +40,14 @@ public class SpruceMainMenuScreen extends SpruceScreen {
 
 		int startY = this.height / 4 + 48;
 		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY), 200, 20, Component.literal("Option Test"),
-				btn -> this.minecraft.setScreen(new SpruceOptionScreen(this))));
+				btn -> this.minecraft.setScreenAndShow(new SpruceOptionScreen(this))));
 		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Component.literal("Text Area Test"),
-				btn -> this.minecraft.setScreen(new SpruceTextAreaScreen(this))));
+				btn -> this.minecraft.setScreenAndShow(new SpruceTextAreaScreen(this))));
 		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 100, startY += 25), 200, 20, Component.literal("Tabbed Screen Test"),
-				btn -> this.minecraft.setScreen(new SpruceTabbedTestScreen(this))));
+				btn -> this.minecraft.setScreenAndShow(new SpruceTabbedTestScreen(this))));
 
 		// Add done button.
 		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 75, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
-				btn -> this.minecraft.setScreen(this.parent)));
+				btn -> this.minecraft.setScreenAndShow(this.parent)));
 	}
 }

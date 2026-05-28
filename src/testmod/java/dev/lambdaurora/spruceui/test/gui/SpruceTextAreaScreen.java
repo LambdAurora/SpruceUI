@@ -49,7 +49,7 @@ public class SpruceTextAreaScreen extends SpruceScreen {
 								textArea.setText(this.textArea.getText());
 							}
 							this.textArea = textArea;
-						}, btn -> this.minecraft.setScreen(this.parent));
+						}, btn -> this.minecraft.setScreenAndShow(this.parent));
 		this.addRenderableWidget(containerWidget);
 	}
 }

@@ -1,15 +1,15 @@
 [versions]
-minecraft = "26.1-rc-2"
-fabric-loader = "0.18.4"
-neoforge-loader = "11.0.0"
-fabric-api = "0.143.15+26.1"
-modmenu = "18.0.0-alpha.5"
+minecraft = "26.2-pre-1"
+fabric-loader = "0.19.2"
+neoforge-loader = "11.0.13"
+fabric-api = "0.150.0+26.2"
+modmenu = "19.0.0-alpha.1"
 
-yumi-mc-foundation = "1.0.0-beta.2+26.1"
+yumi-mc-foundation = "1.1.0+26.2-pre-1"
 
 # Gradle
-gradle-licenser = "2.2.+"
-gradle-loom = "1.15.+"
+gradle-licenser = "4.0.+"
+gradle-loom = "1.16.+"
 gradle-lambdamcdev = "2.0.+"
 
 [libraries]

@@ -162,4 +162,9 @@
   - Renamed a lot of methods to be in line with Vanilla's name scheming for GUI rendering.
 - Updated [Yumi Minecraft Libraries: Foundation].
 
+## 11.0.0
+
+- Updated to Minecraft 26.2.
+- Updated [Yumi Minecraft Libraries: Foundation].
+
 [Yumi Minecraft Libraries: Foundation]: https://github.com/YumiProject/yumi-minecraft-foundation-library "Yumi Minecraft Foundation Library page"

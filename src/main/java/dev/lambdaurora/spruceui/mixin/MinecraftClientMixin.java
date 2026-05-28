@@ -9,15 +9,14 @@
 
 package dev.lambdaurora.spruceui.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.lambdaurora.spruceui.event.ResolutionChangeCallback;
 import dev.lambdaurora.spruceui.event.ScreenEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.client.gui.screens.Screen;
-import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -29,15 +28,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Represents the injection point for the {@link ScreenEvents} and {@link ResolutionChangeCallback} events.
  *
  * @author LambdAurora
- * @version 8.0.0
+ * @version 11.0.0
  * @since 1.2.0
  */
 @Mixin(Minecraft.class)
 public class MinecraftClientMixin {
 	@Shadow
-	@Nullable
-	public Screen screen;
-
+	@Final
+	public Gui gui;
 	@Unique
 	private Screen tickingScreen;
 
@@ -47,31 +45,13 @@ public class MinecraftClientMixin {
 	}
 
 	@Inject(
-			method = "setScreen",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;removed()V", shift = At.Shift.AFTER)
-	)
-	private void spruceui$onScreenRemove(@Nullable Screen screen, CallbackInfo ci) {
-		assert this.screen != null;
-		ScreenEvents.REMOVE.forContext(this.screen).invoker().onRemoveScreen(this.screen);
-	}
-
-	@Inject(
-			method = "destroy",
+			method = "exitWorldAndClose",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;removed()V", shift = At.Shift.AFTER)
 	)
 	private void spruceui$onScreenRemoveBecauseStopping(CallbackInfo ci) {
-		assert this.screen != null;
-		ScreenEvents.REMOVE.forContext(this.screen).invoker().onRemoveScreen(this.screen);
-	}
-
-	@WrapOperation(
-			method = "tick",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/Screen;tick()V")
-	)
-	private void spruceui$onScreenTick(Screen instance, Operation<Void> original) {
-		ScreenEvents.BEFORE_TICK.forContext(instance).invoker().onBeforeTickScreen(instance);
-		original.call(instance);
-		ScreenEvents.AFTER_TICK.forContext(instance).invoker().onAfterTickScreen(instance);
+		var screen = this.gui.screen();
+		assert screen != null;
+		ScreenEvents.REMOVE.forContext(screen).invoker().onRemoveScreen(screen);
 	}
 
 	// For some reason LevelLoadingScreen isn't ticked by the main tick loop,

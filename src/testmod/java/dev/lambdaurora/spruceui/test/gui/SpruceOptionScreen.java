@@ -62,6 +62,6 @@ public class SpruceOptionScreen extends SpruceScreen {
 		//this.addButton(this.resetOption.createButton(this.client.options, this.width / 2 - 155, this.height - 29, 150));
 		// Add done button.
 		this.addRenderableWidget(new SpruceButtonWidget(Position.of(this, this.width / 2 - 155 + 160, this.height - 29), 150, 20, SpruceTexts.GUI_DONE,
-				btn -> this.minecraft.setScreen(this.parent)).asVanilla());
+				btn -> this.minecraft.setScreenAndShow(this.parent)).asVanilla());
 	}
 }
