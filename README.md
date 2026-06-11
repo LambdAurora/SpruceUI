@@ -33,14 +33,14 @@ dependencies {
 	/* Fabric definitions */
 
 	include(modImplementation("dev.lambdaurora:spruceui:${project.spruceui_version}"))
-	include("dev.yumi.mc.core:yumi-mc-foundation:1.0.0-beta.2+26.1")
+	include("dev.yumi.mc.core:yumi-mc-foundation:1.1.1+26.2")
 }
 ```
 
 And this to your `gradle.properties`:
 
 ```properties
-spruceui_version=9.2.0+26.1
+spruceui_version=11.0.0+26.1
 ```
 
 It will JAR-in-JAR SpruceUI so users of your mod don't need to download it separately!
@@ -53,9 +53,9 @@ Defining the dependency on NeoForge is slightly different:
 dependencies {
 	val spruceui = implementation("dev.lambdaurora:spruceui:${project.spruceui_version}")
 
-	jarJar("dev.yumi.mc.core:yumi-mc-foundation:1.0.0-beta.2+26.1")
+	jarJar("dev.yumi.mc.core:yumi-mc-foundation:1.1.1+26.2")
 	jarJar(spruceui) {
-		jarJar.pin(it, "[9.2.0,10.0.0)")
+		jarJar.pin(it, "[11.0.0,12.0.0)")
 	}
 }
 ```

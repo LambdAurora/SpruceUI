@@ -27,6 +27,8 @@ import net.minecraft.resources.Identifier;
  * to do so the main entrypoint is going to be when a screen is being initialized ({@link #BEFORE_INIT} or {@link #AFTER_INIT}),
  * and other events can be registered within the callback of the initialization events
  * using {@link FilteredEvent#forContext(Object)}.
+ *
+ * @version 11.0.0
  */
 public final class ScreenEvents {
 	/**
@@ -57,20 +59,20 @@ public final class ScreenEvents {
 	);
 
 	/**
-	 * An event that is called before a screen is rendered.
+	 * An event that is called before a screen is extracted.
 	 *
-	 * @see #AFTER_RENDER
+	 * @see #AFTER_EXTRACT
 	 */
-	public static final FilteredEvent<Identifier, BeforeRender, Screen> BEFORE_RENDER
-			= YumiEvents.EVENTS.createFiltered(BeforeRender.class, Screen.class);
+	public static final FilteredEvent<Identifier, BeforeExtract, Screen> BEFORE_EXTRACT
+			= YumiEvents.EVENTS.createFiltered(BeforeExtract.class, Screen.class);
 
 	/**
-	 * An event that is called after a screen is rendered.
+	 * An event that is called after a screen is extracted.
 	 *
-	 * @see #BEFORE_RENDER
+	 * @see #BEFORE_EXTRACT
 	 */
-	public static final FilteredEvent<Identifier, AfterRender, Screen> AFTER_RENDER
-			= YumiEvents.EVENTS.createFiltered(AfterRender.class, Screen.class);
+	public static final FilteredEvent<Identifier, AfterExtract, Screen> AFTER_EXTRACT
+			= YumiEvents.EVENTS.createFiltered(AfterExtract.class, Screen.class);
 
 	/**
 	 * An event that is called before a screen is ticked.
@@ -136,39 +138,39 @@ public final class ScreenEvents {
 	}
 
 	/**
-	 * Represents the callback interface of the {@linkplain ScreenEvents#BEFORE_RENDER before screen render event}.
+	 * Represents the callback interface of the {@linkplain ScreenEvents#BEFORE_EXTRACT before screen extraction event}.
 	 */
 	@FunctionalInterface
-	public interface BeforeRender {
+	public interface BeforeExtract {
 		/**
-		 * Called before the given screen has rendered.
+		 * Called before the given screen has been extracted.
 		 *
-		 * @param screen the screen which is rendering
+		 * @param screen the screen which is being extracted
 		 * @param graphics the graphics
 		 * @param mouseX the mouse X-coordinate
 		 * @param mouseY the mouse Y-coordinate
 		 * @param tickDelta the tick delta
 		 */
-		void onBeforeRenderScreen(
+		void onBeforeExtractScreen(
 				Screen screen, SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta
 		);
 	}
 
 	/**
-	 * Represents the callback interface of the {@linkplain ScreenEvents#AFTER_RENDER after screen render event}.
+	 * Represents the callback interface of the {@linkplain ScreenEvents#AFTER_EXTRACT after screen extraction event}.
 	 */
 	@FunctionalInterface
-	public interface AfterRender {
+	public interface AfterExtract {
 		/**
-		 * Called after the given screen has rendered.
+		 * Called after the given screen has been extracted.
 		 *
-		 * @param screen the screen which rendered
+		 * @param screen the screen which is being extracted
 		 * @param graphics the graphics
 		 * @param mouseX the mouse X-coordinate
 		 * @param mouseY the mouse Y-coordinate
 		 * @param tickDelta the tick delta
 		 */
-		void onAfterRenderScreen(
+		void onAfterExtractScreen(
 				Screen screen, SpruceGuiGraphics graphics, int mouseX, int mouseY, float tickDelta
 		);
 	}

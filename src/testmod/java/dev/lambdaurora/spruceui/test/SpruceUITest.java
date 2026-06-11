@@ -232,7 +232,7 @@ public final class SpruceUITest {
 				tick[0]++;
 			});
 
-			ScreenEvents.AFTER_RENDER.forContext(context.screen()).register(
+			ScreenEvents.AFTER_EXTRACT.forContext(context.screen()).register(
 					(screen, graphics, _, _, _) -> {
 						var text = "Greetings from SpruceUI";
 						int width = screen.getFont().width(text);

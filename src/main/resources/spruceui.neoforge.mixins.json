@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "dev.lambdaurora.spruceui.mixin.neoforge",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+		"GuiMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

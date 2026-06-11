@@ -1,6 +1,6 @@
 import dev.lambdaurora.mcdev.api.McVersionLookup
-import dev.yumi.gradle.licenser.task.CheckLicenseTask
-import kotlin.jvm.java
+import dev.lambdaurora.mcdev.task.ConvertAccessWidenerToTransformer
+import org.gradle.kotlin.dsl.assign
 
 plugins {
 	alias(libs.plugins.loom)
@@ -61,6 +61,7 @@ lambdamcdev {
 			withDepend("java", ">=${project.property("java_version")}")
 			withDepend("yumi_mc_core", "^${libs.versions.yumi.mc.foundation.get()}")
 			withMixins("spruceui.mixins.json")
+			withAccessWidener("spruceui.classtweaker")
 
 			withModMenu {
 				it.withBadges("library")
@@ -72,16 +73,19 @@ lambdamcdev {
 			fmj.copyTo(this)
 			withBlurIcon(false)
 			withLoaderVersion("[2,)")
-			withMixins("spruceui.mixins.json")
-			withDepend("minecraft", "[26.2,)")
+			withMixins("spruceui.mixins.json", "spruceui.neoforge.mixins.json")
+			withDepend("minecraft", "[${libs.versions.minecraft.get()},)")
 			withDepend("yumi_mc_core", "[${libs.versions.yumi.mc.foundation.get()},)")
 		}
+
+		fmj.withMixins("spruceui.fabric.mixins.json")
 	}
 
 	setupActionsRefCheck()
 }
 
 loom {
+	accessWidenerPath.set(file("src/main/resources/spruceui.classtweaker"))
 	mixin {
 		useLegacyMixinAp = false
 	}
@@ -132,6 +136,12 @@ dependencies {
 	"testmodImplementation"(sourceSets.main.get().output)
 }
 
+val convertAWtoAT by tasks.registering(ConvertAccessWidenerToTransformer::class) {
+	this.group = "generation"
+	this.input = project.file("src/main/resources/spruceui.classtweaker")
+	this.output = project.layout.buildDirectory.get().file("generated/accesstransformer.cfg")
+}
+
 tasks.withType<JavaCompile>().configureEach {
 	options.encoding = "UTF-8"
 	options.release.set(javaVersion)
@@ -144,6 +154,10 @@ tasks.jar {
 
 	from("LICENSE") {
 		rename { "${it}_${inputs.properties["archivesName"]}" }
+	}
+
+	from(convertAWtoAT) {
+		into("META-INF")
 	}
 }
 
@@ -166,11 +180,6 @@ license {
 	rule(file("HEADER"))
 
 	include("**/*.java")
-}
-
-tasks.withType(CheckLicenseTask::class.java) {
-	dependsOn(tasks.named("generateFmj"))
-	dependsOn(tasks.named("generateNmt"))
 }
 
 // Configure the maven publication.

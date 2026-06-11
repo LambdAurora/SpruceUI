@@ -40,12 +40,12 @@ public abstract class ScreenMixin {
 			= ScreenEvents.REMOVE.forContext(this.$self());
 	@Unique
 	@SuppressWarnings("unused") // The reference MUST be kept alive until the Screen dies.
-	private ContextualizedEvent<Identifier, ScreenEvents.BeforeRender, Screen> spruceui$beforeRenderEvent
-			= ScreenEvents.BEFORE_RENDER.forContext(this.$self());
+	private ContextualizedEvent<Identifier, ScreenEvents.BeforeExtract, Screen> spruceui$beforeRenderEvent
+			= ScreenEvents.BEFORE_EXTRACT.forContext(this.$self());
 	@Unique
 	@SuppressWarnings("unused") // The reference MUST be kept alive until the Screen dies.
-	private ContextualizedEvent<Identifier, ScreenEvents.AfterRender, Screen> spruceui$afterRenderEvent
-			= ScreenEvents.AFTER_RENDER.forContext(this.$self());
+	private ContextualizedEvent<Identifier, ScreenEvents.AfterExtract, Screen> spruceui$afterRenderEvent
+			= ScreenEvents.AFTER_EXTRACT.forContext(this.$self());
 	@Unique
 	@SuppressWarnings("unused") // The reference MUST be kept alive until the Screen dies.
 	private ContextualizedEvent<Identifier, ScreenEvents.BeforeTick, Screen> spruceui$beforeTickEvent
@@ -94,8 +94,8 @@ public abstract class ScreenMixin {
 	@Unique
 	private void spruceui$handleBeforeInit(Minecraft client, int width, int height) {
 		this.spruceui$removeEvent = ScreenEvents.REMOVE.forContext(this.$self(), true);
-		this.spruceui$beforeRenderEvent = ScreenEvents.BEFORE_RENDER.forContext(this.$self(), true);
-		this.spruceui$afterRenderEvent = ScreenEvents.AFTER_RENDER.forContext(this.$self(), true);
+		this.spruceui$beforeRenderEvent = ScreenEvents.BEFORE_EXTRACT.forContext(this.$self(), true);
+		this.spruceui$afterRenderEvent = ScreenEvents.AFTER_EXTRACT.forContext(this.$self(), true);
 		this.spruceui$beforeTickEvent = ScreenEvents.BEFORE_TICK.forContext(this.$self(), true);
 		this.spruceui$afterTickEvent = ScreenEvents.AFTER_TICK.forContext(this.$self(), true);
 

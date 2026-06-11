@@ -181,8 +181,8 @@ public final class Tooltip implements SprucePositioned {
 
 	static {
 		var tooltipPhase = SpruceUI.id("tooltip");
-		ScreenEvents.AFTER_RENDER.addPhaseOrdering(ScreenEvents.AFTER_RENDER.defaultPhaseId(), tooltipPhase);
-		ScreenEvents.AFTER_RENDER.register(tooltipPhase,
+		ScreenEvents.AFTER_EXTRACT.addPhaseOrdering(ScreenEvents.AFTER_EXTRACT.defaultPhaseId(), tooltipPhase);
+		ScreenEvents.AFTER_EXTRACT.register(tooltipPhase,
 				(screen, graphics, mouseX, mouseY, tickDelta) -> extractAllRenderStates(graphics.vanilla())
 		);
 	}
