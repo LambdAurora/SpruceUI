@@ -9,6 +9,7 @@
 
 package dev.lambdaurora.spruceui.widget.container;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.navigation.NavigationUtils;
@@ -24,7 +25,6 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.List;
  * A {@link SpruceOption} allows to have an easy control over the widgets present in the list.
  *
  * @author LambdAurora
- * @version 9.0.0
+ * @version 12.0.0
  * @since 2.0.0
  */
 public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionListWidget.OptionEntry> {
@@ -186,7 +186,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 			} while (!element.mouseClicked(event, doubleClick));
 
 			this.setFocused(element);
-			if (event.button() == GLFW.GLFW_MOUSE_BUTTON_1)
+			if (event.button() == InputConstants.MOUSE_BUTTON_LEFT)
 				this.dragging = true;
 
 			return true;
@@ -202,7 +202,7 @@ public class SpruceOptionListWidget extends SpruceEntryListWidget<SpruceOptionLi
 
 		@Override
 		protected boolean onMouseDrag(MouseButtonEvent event, double deltaX, double deltaY) {
-			return this.getFocused() != null && this.dragging && event.button() == GLFW.GLFW_MOUSE_BUTTON_1
+			return this.getFocused() != null && this.dragging && event.button() == InputConstants.MOUSE_BUTTON_LEFT
 					&& this.getFocused().mouseDragged(event, deltaX, deltaY);
 		}
 

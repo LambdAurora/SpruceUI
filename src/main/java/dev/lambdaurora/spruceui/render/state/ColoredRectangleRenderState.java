@@ -9,8 +9,8 @@
 
 package dev.lambdaurora.spruceui.render.state;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
@@ -19,30 +19,28 @@ import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2f;
 
-/**
- * Represents a render state of a colored rectangle.
- * <p>
- * This is similar to Vanilla's {@link net.minecraft.client.gui.render.state.ColoredRectangleRenderState},
- * but with better control of each corner's colors.
- *
- * @param pipeline the render pipeline
- * @param textureSetup the texture setup
- * @param pose the pose of this rectangle
- * @param startX the start X-coordinate of this rectangle
- * @param startY the start Y-coordinate of this rectangle
- * @param endX the end X-coordinate of this rectangle
- * @param endY the end Y-coordinate of this rectangle
- * @param colorTopLeft the color of the top left corner
- * @param colorTopRight the color of the top right corner
- * @param colorBottomRight the color of the bottom right corner
- * @param colorBottomLeft the color of the bottom left corner
- * @param scissorArea the scissor area
- * @param bounds the bounds of this rectangle
- *
- * @version 9.0.0
- * @since 8.0.0
- * @author LambdAurora
- */
+/// Represents a render state of a colored rectangle.
+///
+/// This is similar to Vanilla's [net.minecraft.client.renderer.state.gui.ColoredRectangleRenderState],
+/// but with better control of each corner's colors.
+///
+/// @param pipeline the render pipeline
+/// @param textureSetup the texture setup
+/// @param pose the pose of this rectangle
+/// @param startX the start X-coordinate of this rectangle
+/// @param startY the start Y-coordinate of this rectangle
+/// @param endX the end X-coordinate of this rectangle
+/// @param endY the end Y-coordinate of this rectangle
+/// @param colorTopLeft the color of the top left corner
+/// @param colorTopRight the color of the top right corner
+/// @param colorBottomRight the color of the bottom right corner
+/// @param colorBottomLeft the color of the bottom left corner
+/// @param scissorArea the scissor area
+/// @param bounds the bounds of this rectangle
+///
+/// @version 12.0.0
+/// @since 8.0.0
+/// @author LambdAurora
 @Environment(EnvType.CLIENT)
 public record ColoredRectangleRenderState(
 		RenderPipeline pipeline, TextureSetup textureSetup,

@@ -9,6 +9,7 @@
 
 package dev.lambdaurora.spruceui.widget.text;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.navigation.NavigationEvent;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
@@ -27,7 +28,6 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 import org.jspecify.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -38,7 +38,7 @@ import java.util.function.Predicate;
  * Represents a text field widget.
  *
  * @author LambdAurora
- * @version 9.0.0
+ * @version 12.0.0
  * @since 2.1.0
  */
 public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceTextFieldWidget.Cursor> implements Tooltipable {
@@ -374,19 +374,19 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 		}
 
 		return switch (event.key()) {
-			case GLFW.GLFW_KEY_RIGHT -> this.onSelectionUpdate(this.cursor::moveRight, event.hasShiftDown());
-			case GLFW.GLFW_KEY_LEFT -> this.onSelectionUpdate(this.cursor::moveLeft, event.hasShiftDown());
-			case GLFW.GLFW_KEY_END -> this.onSelectionUpdate(this.cursor::toEnd, event.hasShiftDown());
-			case GLFW.GLFW_KEY_HOME -> this.onSelectionUpdate(this.cursor::toStart, event.hasShiftDown());
-			case GLFW.GLFW_KEY_BACKSPACE -> {
+			case InputConstants.KEY_RIGHT -> this.onSelectionUpdate(this.cursor::moveRight, event.hasShiftDown());
+			case InputConstants.KEY_LEFT -> this.onSelectionUpdate(this.cursor::moveLeft, event.hasShiftDown());
+			case InputConstants.KEY_END -> this.onSelectionUpdate(this.cursor::toEnd, event.hasShiftDown());
+			case InputConstants.KEY_HOME -> this.onSelectionUpdate(this.cursor::toStart, event.hasShiftDown());
+			case InputConstants.KEY_BACKSPACE -> {
 				this.eraseCharacter();
 				yield true;
 			}
-			case GLFW.GLFW_KEY_DELETE -> {
+			case InputConstants.KEY_DELETE -> {
 				this.removeCharacterForward();
 				yield true;
 			}
-			case GLFW.GLFW_KEY_D -> {
+			case InputConstants.KEY_D -> {
 				if (event.hasControlDown() && !this.text.isEmpty()) {
 					this.setText("");
 				}
@@ -398,7 +398,7 @@ public class SpruceTextFieldWidget extends AbstractSpruceTextInputWidget<SpruceT
 
 	@Override
 	protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
-		if (event.button() == 0) {
+		if (event.button() == InputConstants.MOUSE_BUTTON_LEFT) {
 			int x = Mth.floor(event.x()) - this.getX() - 4;
 
 			this.setFocused(true);

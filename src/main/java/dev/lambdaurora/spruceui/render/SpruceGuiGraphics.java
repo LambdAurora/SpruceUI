@@ -9,8 +9,8 @@
 
 package dev.lambdaurora.spruceui.render;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import dev.lambdaurora.spruceui.impl.GuiGraphicsAccessor;
 import dev.lambdaurora.spruceui.render.state.ColoredRectangleRenderState;
 import net.minecraft.client.gui.ActiveTextCollector;
@@ -30,7 +30,7 @@ import org.jspecify.annotations.Nullable;
  * Represents a wrapper around {@link GuiGraphicsExtractor} with extra features.
  *
  * @author LambdAurora
- * @version 8.0.0
+ * @version 12.0.0
  * @since 8.0.0
  */
 public final class SpruceGuiGraphics {

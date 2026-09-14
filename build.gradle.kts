@@ -1,6 +1,5 @@
 import dev.lambdaurora.mcdev.api.McVersionLookup
 import dev.lambdaurora.mcdev.task.ConvertAccessWidenerToTransformer
-import org.gradle.kotlin.dsl.assign
 
 plugins {
 	alias(libs.plugins.loom)
@@ -56,7 +55,7 @@ lambdamcdev {
 			withIcon("assets/${lambdamcdev.namespace.get()}/icon.png")
 			withEnvironment("client")
 			withDepend("fabricloader", ">=${libs.versions.fabric.loader.get()}")
-			withDepend("minecraft", "~26.2-")
+			withDepend("minecraft", "~26.3-")
 			withDepend("fabric-resource-loader-v1", ">=2.0.5")
 			withDepend("java", ">=${project.property("java_version")}")
 			withDepend("yumi_mc_core", "^${libs.versions.yumi.mc.foundation.get()}")
@@ -92,7 +91,7 @@ loom {
 	runs {
 		register("testmodClient") {
 			client()
-			source(testmod)
+			sourceSet = "testmod"
 		}
 	}
 }

@@ -9,6 +9,7 @@
 
 package dev.lambdaurora.spruceui.widget.container.tabbed;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.background.Background;
@@ -35,7 +36,7 @@ import java.util.List;
  * Represents a container widget with tabs.
  *
  * @author LambdAurora
- * @version 9.0.0
+ * @version 12.0.0
  * @since 2.0.0
  */
 public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget> {
@@ -270,7 +271,7 @@ public class SpruceTabbedWidget extends AbstractSpruceParentWidget<SpruceWidget>
 
 		@Override
 		protected boolean onMouseClick(MouseButtonEvent event, boolean doubleClick) {
-			if (event.button() == 0) {
+			if (event.button() == InputConstants.MOUSE_BUTTON_LEFT) {
 				this.playDownSound();
 				this.parent.setSelected(this);
 				return true;

@@ -9,8 +9,8 @@
 
 package dev.lambdaurora.spruceui.navigation;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.navigation.ScreenDirection;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Optional;
 
@@ -34,7 +34,7 @@ public record NavigationEvent(
 
 	public static Optional<NavigationEvent> fromKey(int keyCode, boolean shift) {
 		return directionFromKey(keyCode, shift)
-				.map(direction -> new NavigationEvent(direction, keyCode == GLFW.GLFW_KEY_TAB, shift));
+				.map(direction -> new NavigationEvent(direction, keyCode == InputConstants.KEY_TAB, shift));
 	}
 
 	/**
@@ -45,19 +45,19 @@ public record NavigationEvent(
 	 * @return the direction if associated to the specified key, else empty
 	 */
 	private static Optional<ScreenDirection> directionFromKey(int keyCode, boolean shift) {
-		if (shift && keyCode != GLFW.GLFW_KEY_TAB)
+		if (shift && keyCode != InputConstants.KEY_TAB)
 			return Optional.empty();
 		switch (keyCode) {
-			case GLFW.GLFW_KEY_LEFT:
+			case InputConstants.KEY_LEFT:
 				return Optional.of(ScreenDirection.LEFT);
-			case GLFW.GLFW_KEY_RIGHT:
+			case InputConstants.KEY_RIGHT:
 				return Optional.of(ScreenDirection.RIGHT);
-			case GLFW.GLFW_KEY_UP:
+			case InputConstants.KEY_UP:
 				return Optional.of(ScreenDirection.UP);
-			case GLFW.GLFW_KEY_TAB:
+			case InputConstants.KEY_TAB:
 				if (shift)
 					return Optional.of(ScreenDirection.UP);
-			case GLFW.GLFW_KEY_DOWN:
+			case InputConstants.KEY_DOWN:
 				return Optional.of(ScreenDirection.DOWN);
 			default:
 				return Optional.empty();

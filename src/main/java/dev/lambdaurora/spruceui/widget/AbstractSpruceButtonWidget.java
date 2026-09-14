@@ -9,6 +9,7 @@
 
 package dev.lambdaurora.spruceui.widget;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import dev.lambdaurora.spruceui.Position;
 import dev.lambdaurora.spruceui.render.SpruceGuiGraphics;
@@ -26,7 +27,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.jspecify.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
 
@@ -34,7 +34,7 @@ import java.util.Objects;
  * Represents a button-like widget.
  *
  * @author LambdAurora
- * @version 9.0.0
+ * @version 12.0.0
  * @since 2.0.0
  */
 public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget implements Tooltipable {
@@ -107,7 +107,7 @@ public abstract class AbstractSpruceButtonWidget extends AbstractSpruceWidget im
 	/* Input */
 
 	protected boolean isValidClickButton(int button) {
-		return button == GLFW.GLFW_MOUSE_BUTTON_1;
+		return button == InputConstants.MOUSE_BUTTON_LEFT;
 	}
 
 	@Override

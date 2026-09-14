@@ -36,7 +36,7 @@ import java.util.stream.Stream;
  * Represents a tooltip.
  *
  * @author LambdAurora
- * @version 8.0.0
+ * @version 12.0.0
  * @since 1.0.0
  */
 public final class Tooltip implements SprucePositioned {
@@ -72,7 +72,7 @@ public final class Tooltip implements SprucePositioned {
 	 * @param graphics The GuiGraphicsExtractor instance used to render.
 	 */
 	public void extractRenderState(GuiGraphicsExtractor graphics) {
-		graphics.tooltip(Minecraft.getInstance().font, this.components, this.x, this.y, this.positioner, this.style);
+		graphics.tooltip(Minecraft.getInstance().font, this.components, this.x, this.y, this.positioner, this.style, false);
 	}
 
 	/**
