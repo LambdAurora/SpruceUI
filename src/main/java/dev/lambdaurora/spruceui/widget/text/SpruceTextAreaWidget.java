@@ -147,6 +147,8 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 
 	@Override
 	protected void insertCharacter(String character) {
+		int oldRow = this.cursor.row;
+
 		if (this.lines.isEmpty()) {
 			this.lines.add(character);
 			this.setCursorToStart();
@@ -189,6 +191,16 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 			if (oldSize + 1 == this.lines.size())
 				this.cursor.moveRight(); // Extra move right.
 		}
+
+		this.wrapCursorWhenInserting(character, oldRow);
+	}
+
+	private void wrapCursorWhenInserting(String character, int oldRow) {
+		boolean rowChanged = oldRow < this.cursor.row;
+
+		if (this.cursor.column == 0 && rowChanged && !character.equals("\n")) {
+			this.cursor.moveRight();
+		}
 	}
 
 	private void eraseCharacter() {
@@ -197,6 +209,12 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 			return;
 		}
 
+		int oldRow = this.cursor.row;
+
+		String oldLine = null;
+		if (oldRow > 1) {
+			oldLine = this.lines.get(oldRow - 1);
+		}
 		var line = this.lines.get(this.cursor.row);
 
 		if (line == null) {
@@ -215,6 +233,16 @@ public class SpruceTextAreaWidget extends AbstractSpruceTextInputWidget<SpruceTe
 
 		var text = this.getText();
 		int cursorPosition = this.cursor.getPosition();
+		if (this.cursor.column == 0) {
+			this.cursor.moveUp();
+			this.cursor.toRowEnd();
+
+			boolean rowChanged = oldRow > this.cursor.row;
+
+			if (rowChanged && oldLine != null && oldLine.endsWith("\n")) {
+				return;
+			}
+		}
 		this.cursor.moveLeft();
 		this.lines.clear();
 		this.lines.add(text.substring(0, cursorPosition - 1) + text.substring(cursorPosition));

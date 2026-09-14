@@ -167,4 +167,8 @@
 - Updated to Minecraft 26.2.
 - Updated [Yumi Minecraft Libraries: Foundation].
 
+### 11.0.1
+
+- Fixed `SpruceTextAreaWidget` not wrapping cursor along wrapped lines correctly ([#66](https://github.com/LambdAurora/SpruceUI/issues/66)).
+
 [Yumi Minecraft Libraries: Foundation]: https://github.com/YumiProject/yumi-minecraft-foundation-library "Yumi Minecraft Foundation Library page"
